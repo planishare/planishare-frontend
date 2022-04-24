@@ -1,0 +1,105 @@
+{
+  "root": true,
+  "ignorePatterns": [
+    "projects/**/*"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "parserOptions": {
+        "project": [
+          "tsconfig.json"
+        ],
+        "createDefaultProgram": true
+      },
+      "extends": [
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates"
+      ],
+      "rules": {
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "app",
+            "style": "camelCase"
+          }
+        ],
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": "app",
+            "style": "kebab-case"
+          }
+        ],
+        "require-jsdoc" : 0,
+        "valid-jsdoc": "off",                                               // Disable JSDoc requirement
+        "no-extra-boolean-cast": "off",                                     // Don't validate !! rules
+        "max-lines": "off",                                                 // Disable max lines validation per file
+        "max-len": "off",                                                   // Disable max lenght validation per line
+        "curly": ["error", "all"],                                          // Force {} on if, else, for, while
+        "object-curly-spacing": ["error", "always"],                        // Force a space before and after an object declaration { X }
+        "indent": ["error", 4, {                                            // Force indent of files to 4 spaces
+            "SwitchCase": 1                                                 // Force Swtich/case indent into 4 a spaces as well, Meaning CASE should be not at the same lever at SWITCH
+        }],
+        "arrow-parens": ["error", "as-needed"],                             // If parenthesis are optionals in arrow function, we can skip it
+        "comma-dangle": ["error", "never"],                                 // Force not allowing trailing comma on objects and arrays
+        "@typescript-eslint/no-explicit-any": "off",                        // Allow infering type any if not specified
+        "@typescript-eslint/explicit-member-accessibility": ["error", {     // Explicitly specified access modifier for functions, parameters and attributes
+            "accessibility": "explicit",
+            "overrides": {
+                "constructors": "no-public"
+            }
+        }],
+        "no-trailing-spaces": ["error", {                                   // Not allowing trailing spaces
+            "skipBlankLines": false,
+            "ignoreComments": true
+        }],
+        "eol-last": ["error", "always" ],                                   // Files must finish with a new line
+        "no-multiple-empty-lines": ["error", {                              // Max consecutive NEW LINES are 1
+            "maxBOF": 0,                                                    // Not allow a NEW LINE at the begining of the file
+            "maxEOF": 0,                                                    // Max NEW LINE at the end of files is 1
+            "max": 1
+        }],
+        "key-spacing": ["error", {                                          // Must be an empty space after : in objects
+            "mode": "strict"
+        }],
+        "block-spacing": ["error", "always"],
+        "func-call-spacing": ["error", "never"],                            // A function call must be like this: foo()
+        "brace-style": ["error", "1tbs"],                                   // Brace style ltbs meaning else and catch are like this: } else {
+        "implicit-arrow-linebreak": ["error", "beside"],                    // Must be a break line after an arrow
+        "space-before-blocks": ["error", "always"],                         // Must be a white space before blocks {
+        "keyword-spacing": ["error", {                                      // Must be a space before keyword
+            "before": true,
+            "after": true
+        }],
+        "arrow-spacing": ["error", {                                        // Must be an space before and after =>
+            "before": true,
+            "after": true
+        }],
+        "space-unary-ops": ["error", {                                      // Must be a white space after new, typeof, for, ...
+            "words": true,
+            "nonwords": false
+        }],
+        "eqeqeq": ["error", "smart"],                                       // Force use of === and !==
+        "space-infix-ops": ["error", {                                      // Force space before and after +, -, <, >, ?, etc
+            "int32Hint": false
+        }],
+        "semi": ["error", "always"],                                        // Force semicolon ";" after each sentence
+        "@typescript-eslint/interface-name-prefix": "off" 
+      }
+    },
+    {
+      "files": [
+        "*.html"
+      ],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended"
+      ],
+      "rules": {}
+    }
+  ]
+}
