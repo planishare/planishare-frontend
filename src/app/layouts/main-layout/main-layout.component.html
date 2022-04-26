@@ -1,0 +1,11 @@
+<mat-sidenav-container>
+    <mat-sidenav mode="push" [(opened)]="isOpened">
+        <ng-container [ngSwitch]="component">
+            <app-navigation-sidenav *ngSwitchCase="sidenavComponent.NAVIGATION_SIDENAV"></app-navigation-sidenav>
+        </ng-container>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <app-navbar></app-navbar>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>

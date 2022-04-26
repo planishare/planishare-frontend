@@ -1,0 +1,44 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    background-color: var(--accent-color);
+    
+    padding: 0.7rem 1rem;
+    
+    ul {
+        list-style-type: none;
+        
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+
+        margin: 0;
+        padding: 0;
+    }
+}
+
+.logo {
+    background-color: var(--green-dark-color);
+    padding: 0.3em 0.7em;
+
+    border-radius: 5px;
+
+    color: var(--light-text);
+    font-size: 1.2rem;
+}
+
+.menu {
+    display: grid;
+    place-items: center;
+
+    border: 0;
+
+    background-color: rgba(0,0,0,0);
+}
+
+.profile-button {
+    color: var(--button-text);
+    background-color: var(--button-background);
+}

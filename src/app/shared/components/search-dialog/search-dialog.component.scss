@@ -1,0 +1,25 @@
+.search-field {
+    display: block;
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    // gap: 1rem;
+}
+
+.actions-section {
+    display: grid;
+    place-items: center;
+
+    button {
+        border-radius: 30px;
+    }
+}
+
+.academic-level-select, .subject-select, .axis-select {
+    width: 100%;
+}

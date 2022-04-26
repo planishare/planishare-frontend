@@ -1,0 +1,44 @@
+<h1 mat-dialog-title>Buscar</h1>
+<div mat-dialog-content>
+  <form class="search-form">
+    <mat-form-field class="search-field" appearance="outline">
+      <mat-label>Busqueda</mat-label>
+      <input matInput type="text">
+      <button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="search=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  
+    <div class="filters">
+      <mat-form-field class="academic-level-select" appearance="outline">
+        <mat-label>Nivel Académico</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let option of academicLevels" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field class="subject-select" appearance="outline">
+        <mat-label>Asignatura</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let option of subjects" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field class="axis-select" appearance="outline">
+        <mat-label>Eje</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let option of axises" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions class="actions-section">
+  <button mat-raised-button mat-dialog-close color="accent">Ver resultados</button>
+</div>
