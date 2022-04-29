@@ -9,7 +9,7 @@
       </button>
     </mat-form-field>
   
-    <div class="filters">
+    <div class="filters" [ngClass]="{'flex_wrap': isMobile()}">
       <mat-form-field class="academic-level-select" appearance="outline">
         <mat-label>Nivel Académico</mat-label>
         <mat-select>

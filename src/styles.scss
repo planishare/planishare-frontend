@@ -4,10 +4,26 @@
 @use '@angular/material' as mat;
 // Plus imports for other components in your app.
 
+$fontConfig: (
+  display-4: mat.define-typography-level(112px, 112px, 400, 'Manrope', -0.0134em),
+  display-3: mat.define-typography-level(56px, 56px, 400, 'Manrope', -0.0089em),
+  display-2: mat.define-typography-level(45px, 48px, 400, 'Manrope', 0.0000em),
+  display-1: mat.define-typography-level(34px, 40px, 400, 'Manrope', 0.0074em),
+  headline: mat.define-typography-level(24px, 32px, 400, 'Manrope', 0.0000em),
+  title: mat.define-typography-level(20px, 32px, 400, 'Manrope', 0.0075em),
+  subheading-2: mat.define-typography-level(16px, 28px, 400, 'Manrope', 0.0094em),
+  subheading-1: mat.define-typography-level(15px, 24px, 400, 'Manrope', 0.0067em),
+  body-2: mat.define-typography-level(14px, 24px, 400, 'Manrope', 0.0179em),
+  body-1: mat.define-typography-level(14px, 20px, 400, 'Manrope', 0.0179em),
+  button: mat.define-typography-level(14px, 14px, 400, 'Manrope', 0.0893em),
+  caption: mat.define-typography-level(12px, 20px, 400, 'Manrope', 0.0333em),
+  input: mat.define-typography-level(inherit, 1.125, 400, 'Manrope', 1.5px)
+);
+
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
-@include mat.core();
+@include mat.core($fontConfig);
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
@@ -46,6 +62,6 @@ $planishare-dark-theme: mat.define-dark-theme((
 
 // Anuglar Material generated
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: 'Manrope', Roboto, "Helvetica Neue", sans-serif; }
 
 @import './assets/styles/index';

@@ -1,130 +1,134 @@
-<!-- <p>homepage works!</p>
+<header class="header">
+  <div></div>
+  <div class="container">
+    <div class="logo">
+      <h1>Planishare</h1>
+    </div>
+    <h3 class="subtitle">
+      Aquí podrás encontrar planificaciones de enseñanza básica
+      hechas por profesores y estudiantes.<br>
+      Puedes buscar usando los filtros que están abajo o usando la barra de búsqueda.
+    </h3>
+    
+    <div class="filters">
+      <button mat-raised-button>Nivel académico</button>
+      <button mat-raised-button>Asignatura</button>
+      <button mat-raised-button>Eje</button>
+    </div>  
+  </div>
 
-<section>
-    <div class="example-label">Basic</div>
-    <div class="example-button-row">
-      <button mat-button>Basic</button>
-      <button mat-button color="primary">Primary</button>
-      <button mat-button color="accent">Accent</button>
-      <button mat-button color="warn">Warn</button>
-      <button mat-button disabled>Disabled</button>
-      <a mat-button href="https://www.google.com/" target="_blank">Link</a>
+  <div class="scroll-text">
+    <p>Revisa las publicaciones más populares y recientes</p>
+    <mat-icon>expand_more</mat-icon>
+  </div>
+</header>
+
+<!-- Top posts -->
+<main class="main">
+  <section class="top-section">
+    <div class="top-likes-header">
+      <mat-icon>schedule</mat-icon>
+      <h4>Las más gustadas</h4>
+    </div>
+    <div class="ranking">
+      <mat-card class="card">
+        <mat-card-subtitle class="card-subtitle">
+          Mariela Bustamante - Hace 1 Mes
+          <div>
+            <mat-icon>description</mat-icon>
+            3
+          </div>
+        </mat-card-subtitle>
+        <mat-card-title>Planificación de Matemática para 3ro básico</mat-card-title>
+        <mat-card-content>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Et amet molestias cumque, neque fuga dignissimos saepe ipsa expedita maxime laborum natus praesentium accusamus veniam quidem delectus. Ullam molestiae facere quae.
+        </mat-card-content>
+        <div class="card-footer">
+          <mat-chip-list class="tags">
+            <mat-chip class="academic-level-tag">3ro básico</mat-chip>
+            <mat-chip class="subject-tag">Historia, geografía y ciencias sociales</mat-chip>
+            <mat-chip class="axis-tag">Formación ciudadana</mat-chip>
+          </mat-chip-list>
+          <div class="reactions">
+            <div>
+              <mat-icon>favorite</mat-icon>
+              <span>8 Me gusta</span>
+            </div>
+            <div>
+              <mat-icon>download</mat-icon>
+              <span>13 Descargas</span>
+            </div>
+          </div>
+        </div>
+      </mat-card>
     </div>
   </section>
-  <mat-divider></mat-divider>
-  <section>
-    <div class="example-label">Raised</div>
-    <div class="example-button-row">
-      <button mat-raised-button>Basic</button>
-      <button mat-raised-button color="primary">Primary</button>
-      <button mat-raised-button color="accent">Accent</button>
-      <button mat-raised-button color="warn">Warn</button>
-      <button mat-raised-button disabled="true">Disabled</button>
-      <a mat-raised-button href="https://www.google.com/" target="_blank">Link</a>
+  <section class="top-section">
+    <div class="top-recent-header">
+      <mat-icon>schedule</mat-icon>
+      <h4>Las más recientes</h4>
+    </div>
+    <div class="ranking">
+      <mat-card class="card">
+        <mat-card-subtitle class="card-subtitle">
+          Mariela Bustamante - Hace 1 Mes
+          <div>
+            <mat-icon>description</mat-icon>
+            3
+          </div>
+        </mat-card-subtitle>
+        <mat-card-title>Planificación de Matemática para 3ro básico</mat-card-title>
+        <mat-card-content>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Et amet molestias cumque, neque fuga dignissimos saepe ipsa expedita maxime laborum natus praesentium accusamus veniam quidem delectus. Ullam molestiae facere quae.
+        </mat-card-content>
+        <div class="card-footer">
+          <mat-chip-list class="tags">
+            <mat-chip class="academic-level-tag">3ro básico</mat-chip>
+            <mat-chip class="subject-tag">Historia, geografía y ciencias sociales</mat-chip>
+            <mat-chip class="axis-tag">Formación ciudadana</mat-chip>
+          </mat-chip-list>
+          <div class="reactions">
+            <div>
+              <mat-icon>favorite</mat-icon>
+              <span>8 Me gusta</span>
+            </div>
+            <div>
+              <mat-icon>download</mat-icon>
+              <span>13 Descargas</span>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+      <mat-card class="card">
+        <mat-card-subtitle class="card-subtitle">
+          Mariela Bustamante - Hace 1 Mes
+          <div>
+            <mat-icon>description</mat-icon>
+            3
+          </div>
+        </mat-card-subtitle>
+        <mat-card-title>Planificación de Matemática para 3ro básico</mat-card-title>
+        <mat-card-content>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Et amet molestias cumque, neque fuga dignissimos saepe ipsa expedita maxime laborum natus praesentium accusamus veniam quidem delectus. Ullam molestiae facere quae.
+        </mat-card-content>
+        <div class="card-footer">
+          <mat-chip-list class="tags">
+            <mat-chip class="academic-level-tag">3ro básico</mat-chip>
+            <mat-chip class="subject-tag">Historia, geografía y ciencias sociales</mat-chip>
+            <mat-chip class="axis-tag">Formación ciudadana</mat-chip>
+          </mat-chip-list>
+          <div class="reactions">
+            <div>
+              <mat-icon>favorite</mat-icon>
+              <span>8 Me gusta</span>
+            </div>
+            <div>
+              <mat-icon>download</mat-icon>
+              <span>13 Descargas</span>
+            </div>
+          </div>
+        </div>
+      </mat-card>
     </div>
   </section>
-  <mat-divider></mat-divider>
-  <section>
-    <div class="example-label">Stroked</div>
-    <div class="example-button-row">
-      <button mat-stroked-button>Basic</button>
-      <button mat-stroked-button color="primary">Primary</button>
-      <button mat-stroked-button color="accent">Accent</button>
-      <button mat-stroked-button color="warn">Warn</button>
-      <button mat-stroked-button disabled>Disabled</button>
-      <a mat-stroked-button href="https://www.google.com/" target="_blank">Link</a>
-    </div>
-  </section>
-  <mat-divider></mat-divider>
-  <section>
-    <div class="example-label">Flat</div>
-    <div class="example-button-row">
-      <button mat-flat-button>Basic</button>
-      <button mat-flat-button color="primary">Primary</button>
-      <button mat-flat-button color="accent">Accent</button>
-      <button mat-flat-button color="warn">Warn</button>
-      <button mat-flat-button disabled>Disabled</button>
-      <a mat-flat-button href="https://www.google.com/" target="_blank">Link</a>
-    </div>
-  </section>
-  <mat-divider></mat-divider>
-  <section>
-    <div class="example-label">Icon</div>
-    <div class="example-button-row">
-      <div class="example-flex-container">
-        <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
-          <mat-icon>home</mat-icon>
-        </button>
-        <button mat-icon-button color="accent" aria-label="Example icon button with a menu icon">
-          <mat-icon>menu</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" aria-label="Example icon button with a heart icon">
-          <mat-icon>favorite</mat-icon>
-        </button>
-        <button mat-icon-button disabled aria-label="Example icon button with a open in new tab icon">
-          <mat-icon>open_in_new</mat-icon>
-        </button>
-      </div>
-    </div>
-  </section>
-  <mat-divider></mat-divider>
-  <section>
-    <div class="example-label">FAB</div>
-    <div class="example-button-row">
-      <div class="example-flex-container">
-        <div class="example-button-container">
-          <button mat-fab color="primary" aria-label="Example icon button with a delete icon">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
-        <div class="example-button-container">
-          <button mat-fab color="accent" aria-label="Example icon button with a bookmark icon">
-            <mat-icon>bookmark</mat-icon>
-          </button>
-        </div>
-        <div class="example-button-container">
-          <button mat-fab color="warn" aria-label="Example icon button with a home icon">
-            <mat-icon>home</mat-icon>
-          </button>
-        </div>
-        <div class="example-button-container">
-          <button mat-fab disabled aria-label="Example icon button with a heart icon">
-            <mat-icon>favorite</mat-icon>
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
-  <mat-divider></mat-divider>
-  <section>
-    <div class="example-label">Mini FAB</div>
-    <div class="example-button-row">
-      <div class="example-flex-container">
-        <div class="example-button-container">
-          <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon">
-            <mat-icon>menu</mat-icon>
-          </button>
-        </div>
-        <div class="example-button-container">
-          <button mat-mini-fab color="accent" aria-label="Example icon button with a plus one icon">
-            <mat-icon>plus_one</mat-icon>
-          </button>
-        </div>
-        <div class="example-button-container">
-          <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon">
-            <mat-icon>filter_list</mat-icon>
-          </button>
-        </div>
-        <div class="example-button-container">
-          <button mat-mini-fab disabled aria-label="Example icon button with a home icon">
-            <mat-icon>home</mat-icon>
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
-   -->
-<p>contenido</p>
+</main>

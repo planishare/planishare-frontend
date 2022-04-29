@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { isMobile } from '../../utils';
 
 @Component({
     selector: 'app-search-dialog',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./search-dialog.component.scss']
 })
 export class SearchDialogComponent implements OnInit {
+    public isMobile = isMobile;
+
     public search: string = '';
 
     public academicLevel: string = '';

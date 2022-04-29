@@ -5,3 +5,9 @@ mat-sidenav-container{
 mat-sidenav {
     width: 60%;
 }
+
+.navbar {
+    position: fixed;
+    z-index: 2;
+    width: 100vw;
+}

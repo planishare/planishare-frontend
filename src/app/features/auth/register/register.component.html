@@ -1,1 +1,65 @@
-<p>register works!</p>
+<nav class="navbar">
+    <button mat-raised-button>
+        <mat-icon>login</mat-icon>
+        Iniciar Sesión
+    </button>
+</nav>
+
+<main class="main">
+    <div class="logo">
+        <h1>Planishare</h1>
+    </div>
+    
+    <div class="card">
+        <mat-card>
+            <mat-card-title>Registrate para poder crear publicaciones, dar likes y mucho más, anímate!</mat-card-title>
+            <mat-card-content>
+                <form class="form">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Email</mat-label>
+                      <input type="email" matInput>
+                      <!-- <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+                        Please enter a valid email address
+                      </mat-error>
+                      <mat-error *ngIf="emailFormControl.hasError('required')">
+                        Email is <strong>required</strong>
+                      </mat-error> -->
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                      <mat-label>Contraseña</mat-label>
+                      <input type="password" matInput>
+                      <!-- <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+                        Please enter a valid email address
+                      </mat-error>
+                      <mat-error *ngIf="emailFormControl.hasError('required')">
+                        Email is <strong>required</strong>
+                      </mat-error> -->
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                      <mat-label>Repetir contraseña</mat-label>
+                      <input type="password" matInput>
+                      <!-- <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+                        Please enter a valid email address
+                      </mat-error>
+                      <mat-error *ngIf="emailFormControl.hasError('required')">
+                        Email is <strong>required</strong>
+                      </mat-error> -->
+                    </mat-form-field>
+        
+                    <div class="buttons">
+                        <button mat-raised-button color="primary">
+                            <mat-icon>login</mat-icon>
+                            Iniciar sesión
+                        </button>
+                        <span>o</span>
+                        <button mat-stroked-button>
+                            <mat-icon>login</mat-icon>
+                            Continuar con google
+                        </button>
+                    </div>
+                  </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</main>
+

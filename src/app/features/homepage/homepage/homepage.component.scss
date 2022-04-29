@@ -1,0 +1,149 @@
+:host {
+    // background-color: var(--accent-color); // Temporal
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+
+    // background-image: url('../../../../assets/images/bg-desktop-orange.png');
+    background-image: url('../../../../assets/images/bg-desktop-yellow.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+    min-height: 100vh;
+}
+
+.container {
+    display: grid;
+    place-items: center;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+    
+    h1 {
+        display: inline;
+        
+        background-color: var(--green-dark-color);
+        
+        color: var(--light-text);
+        // font-size: 5rem;
+        font-weight: 500;
+        
+        padding: 0.6em 1em;
+        margin: 0;
+        
+        border-radius: 15px;
+    }
+}
+
+.subtitle {
+    text-align: center;
+    font-weight: 500;
+}
+
+.filters {
+    display: flex;
+    gap: 0.5em;
+}
+
+.scroll-text {
+    text-align: center;
+    font-weight: bold;
+}
+
+.main {
+    display: grid;
+    // TODO: Revisar si 24rem está bien
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+    gap: 1.5rem;
+    padding: 0 1.2rem 1.2rem 1.2rem;
+}
+
+.top-likes-header, .top-recent-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.7rem;
+
+    text-align: center;
+    color: var(--light-text);
+
+    border-radius: 10px;
+
+    padding: 1rem 0;
+    margin-bottom: 0.5rem;
+
+    h4 {
+        // TODO
+        font-size: 1.5rem;
+        font-weight: 500;
+
+        padding: 0;
+        margin: 0;
+    }
+}
+
+.top-likes-header {
+    background-color: var(--warn-color);
+}
+
+.top-recent-header {
+    background-color: var(--primary-color);
+}
+
+.ranking {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.card-subtitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    > div {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.academic-level-tag, .subject-tag, .axis-tag{
+    color: var(--light-text);
+}
+
+.academic-level-tag {
+    background-color: var(--purple-color);
+}
+
+.subject-tag {
+    background-color: var(--warn-color);
+}
+
+.axis-tag {
+    background-color: var(--primary-color);
+}
+
+.reactions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 1rem;
+
+    > div {
+        display: flex;
+        align-items: center;
+    }
+}

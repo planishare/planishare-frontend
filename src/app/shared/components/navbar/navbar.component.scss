@@ -1,9 +1,12 @@
+:host {
+    display: block;
+    background-color: var(--accent-color);
+}
+
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
-    background-color: var(--accent-color);
     
     padding: 0.7rem 1rem;
     

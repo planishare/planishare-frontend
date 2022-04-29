@@ -1,0 +1,20 @@
+app-navigation-sidenav {
+    ul {
+        list-style-type: none;
+        
+        padding: 0;
+        margin: 0;
+    }
+
+    .menu-button {
+        padding: 0.5em 0;
+        width: 100%;
+    }
+
+    .mat-button-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5em;
+    }
+}

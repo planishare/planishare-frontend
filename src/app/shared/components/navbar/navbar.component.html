@@ -1,4 +1,4 @@
-<!-- <nav class="navbar">
+<nav class="navbar" *ngIf="!isMobile()">
     <app-search-button></app-search-button>
     <ul>
         <li>
@@ -20,8 +20,8 @@
         </li>
     </ul>
 </nav>
-<p></p> -->
-<nav class="navbar">
+
+<nav class="navbar" *ngIf="isMobile()">
     <button mat-icon-button (click)="openSidenav()">
         <mat-icon>menu</mat-icon>
     </button>

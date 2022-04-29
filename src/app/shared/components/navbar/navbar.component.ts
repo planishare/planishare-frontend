@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SidenavComponent } from 'src/app/core/enums/sidenav.enum';
 import { SidenavService } from 'src/app/core/services/sidenav.service';
-import { isDesktop, isMobile, isTablet } from '../../utils';
+import { isMobile } from '../../utils';
 
 @Component({
     selector: 'app-navbar',
@@ -9,6 +9,8 @@ import { isDesktop, isMobile, isTablet } from '../../utils';
     styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
+    public isMobile = isMobile;
+
     constructor(
         private sidenav: SidenavService
     ) { }
