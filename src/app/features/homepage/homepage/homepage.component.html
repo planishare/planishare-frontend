@@ -1,15 +1,14 @@
 <header class="header">
-  <div></div>
-  <div class="container">
+  <div class="container1">
     <div class="logo">
       <h1>Planishare</h1>
     </div>
-    <h3 class="subtitle">
-      Aquí podrás encontrar planificaciones de enseñanza básica
-      hechas por profesores y estudiantes.<br>
-      Puedes buscar usando los filtros que están abajo o usando la barra de búsqueda.
-    </h3>
-    
+    <div class="subtitle1" *ngIf="!isMobile()">
+      <h2>
+        Busca y publica planificaciones de enseñanza básica.<br>
+        Puedes buscar usando los filtros que están abajo o usando la barra de búsqueda.
+      </h2>
+    </div>
     <div class="filters">
       <button mat-raised-button>Nivel académico</button>
       <button mat-raised-button>Asignatura</button>
@@ -17,9 +16,18 @@
     </div>  
   </div>
 
-  <div class="scroll-text">
-    <p>Revisa las publicaciones más populares y recientes</p>
-    <mat-icon>expand_more</mat-icon>
+
+  <div class="container2">
+    <div class="subtitle2" *ngIf="isMobile()">
+      <h2>
+        Busca y publica planificaciones de enseñanza básica.<br>
+        Puedes buscar usando los filtros que están arriba o usando la barra de búsqueda.
+      </h2>
+    </div>
+    <div class="scroll-text">
+      <p>Revisa las publicaciones populares y recientes</p>
+      <mat-icon>expand_more</mat-icon>
+    </div>
   </div>
 </header>
 
@@ -27,7 +35,7 @@
 <main class="main">
   <section class="top-section">
     <div class="top-likes-header">
-      <mat-icon>schedule</mat-icon>
+      <mat-icon>favorite</mat-icon>
       <h4>Las más gustadas</h4>
     </div>
     <div class="ranking">
