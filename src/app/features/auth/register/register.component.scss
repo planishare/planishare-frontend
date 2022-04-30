@@ -1,11 +1,14 @@
 :host {
-    display: block;
+    display: flex;
+    flex-direction: column;
+
     height: 100%;
 
     // background-color: var(--warn-color);
-    background-image: url('../../../../assets/images/bg-desktop-red.png');
+    background-image: url('../../../../assets/images/bg-desktop-purple.png');
     background-size: cover;
-    background-position: center;
+    background-position: left;
+    background-attachment: fixed;
 }
 
 .navbar {
@@ -15,30 +18,53 @@
     padding: 1rem;
 }
 
+.main {
+    padding: 0 1.2rem 1.2rem 1.2rem;
+}
+
 .logo {
     display: flex;
     justify-content: center;
-    margin-bottom: 1rem;
     
     h1 {
         display: inline;
         
-        background-color: rgba($color: #000000, $alpha: 0.5);
+        box-shadow: 0px 1px 3px #303030;
+        background-color: var(--purple-dark-color);
         
         color: var(--light-text);
-        // font-size: 5rem;
+        font-size: clamp(2rem, -0.2500rem + 10vw, 5rem);
         font-weight: 500;
         
         padding: 0.6em 1em;
-        margin: 0;
+        // margin: 0;
         
         border-radius: 15px;
     }
 }
 
-.card {
+.container {
     display: flex;
     justify-content: center;
+}
+
+.card {
+    flex-basis: 700px;
+
+   > mat-card-title {
+       padding-top: 1rem;
+   }
+    
+    > mat-card-content {
+        padding: 1rem;
+    }
+}
+
+.card-title {
+    text-align: center;
+    font-weight: 500;
+
+    margin-bottom: 1rem;
 }
 
 .form {
@@ -49,4 +75,5 @@
 .buttons {
     display: grid;
     place-items: center;
+    gap: 0.5rem;
 }
