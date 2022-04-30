@@ -2,10 +2,10 @@
     <app-search-button></app-search-button>
     <ul>
         <li>
-            <app-big-button text="Registrarse" icon="person_add"></app-big-button>
+            <app-big-button text="Registrarse" icon="person_add" [routerLink]="['/auth/register']"></app-big-button>
         </li>
         <li>
-            <app-big-button text="Iniciar Sesión" icon="login"></app-big-button>
+            <app-big-button text="Iniciar Sesión" icon="login" [routerLink]="['/auth/login']"></app-big-button>
         </li>
         <li>
             <app-big-button text="Mis publicaciones" icon="description"></app-big-button>

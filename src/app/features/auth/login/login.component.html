@@ -1,5 +1,5 @@
 <nav class="navbar">
-    <button mat-raised-button>
+    <button mat-raised-button [routerLink]="'/auth/register'">
         <mat-icon>person_add</mat-icon>
         Registrarse
     </button>
@@ -7,7 +7,9 @@
 
 <main class="main">
     <div class="logo">
-        <h1>Planishare</h1>
+      <button mat-raised-button [routerLink]="'/'">
+        Planishare
+      </button>
     </div>
     
     <div class="container">

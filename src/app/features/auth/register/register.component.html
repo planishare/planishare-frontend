@@ -1,5 +1,5 @@
 <nav class="navbar">
-    <button mat-raised-button>
+    <button mat-raised-button [routerLink]="['/auth/login']">
         <mat-icon>login</mat-icon>
         Iniciar Sesión
     </button>
@@ -7,7 +7,9 @@
 
 <main class="main">
     <div class="logo">
-        <h1>Planishare</h1>
+      <button mat-raised-button [routerLink]="'/'">
+        Planishare
+      </button>
     </div>
     
     <div class="container">
@@ -48,9 +50,9 @@
                     </mat-form-field>
         
                     <div class="buttons">
-                        <button mat-raised-button color="primary">
-                            <mat-icon>login</mat-icon>
-                            Iniciar sesión
+                        <button mat-raised-button class="register-button">
+                            <mat-icon>person_add</mat-icon>
+                            Registrarse
                         </button>
                         <span>o</span>
                         <button mat-stroked-button>

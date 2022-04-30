@@ -3,13 +3,12 @@
     flex-direction: column;
     justify-content: center;
 
-    // background-image: url('../../../../assets/images/bg-desktop-orange.png');
     background-image: url('../../../../assets/images/bg-desktop-yellow.png');
-    // background-color: var(--accent-color);
-    background-size: cover;
+    // background-size: cover;
+    background-size: contain;
     background-attachment: fixed;
 
-    background-position: left; // mobile
+    background-position: left top; // mobile
 }
 
 .header {
@@ -36,24 +35,21 @@
 }
 
 .logo {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    place-items: center;
     margin-bottom: 1rem;
     
-    h1 {
-        display: inline;
+    > button {
+        background-color: var(--green-dark-color);
+
+        font-size: clamp(2rem, -0.2500rem + 10vw, 5rem);
+        color: var(--light-text);
+        
+        padding: 0.5em 1em;
+        border-radius: 15px;
         
         box-shadow: 0px 1px 3px #303030;
-        background-color: var(--green-dark-color);
-        
-        color: var(--light-text);
-        font-size: clamp(2rem, -0.2500rem + 10vw, 5rem);
         font-weight: 500;
-        
-        padding: 0.6em 1em;
-        margin: 0;
-        
-        border-radius: 15px;
     }
 }
 
@@ -183,5 +179,6 @@
     > div {
         display: flex;
         align-items: center;
+        gap: 0.2rem;
     }
 }

@@ -8,6 +8,7 @@ import { BigButtonComponent } from './components/big-button/big-button.component
 import { SearchDialogComponent } from './components/search-dialog/search-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { NavigationSidenavComponent } from './components/navigation-sidenav/navigation-sidenav.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
     declarations: [
@@ -20,7 +21,8 @@ import { NavigationSidenavComponent } from './components/navigation-sidenav/navi
     imports: [
         CommonModule,
         MaterialModule,
-        FormsModule
+        FormsModule,
+        RouterModule
     ],
     exports: [
         // Components

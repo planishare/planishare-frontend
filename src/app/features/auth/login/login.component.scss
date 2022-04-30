@@ -2,12 +2,12 @@
     display: flex;
     flex-direction: column;
 
-    height: 100%;
+    min-height: 100%;
 
     // background-color: var(--primary-color);
     background-image: url('../../../../assets/images/bg-desktop-blue.png');
-    background-size: cover;
-    background-position: left;
+    // background-size: cover;
+    background-size: contain;
 }
 
 .navbar {
@@ -23,23 +23,21 @@
 }
 
 .logo {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    place-items: center;
+    margin-bottom: 1rem;
     
-    h1 {
-        display: inline;
+    > button {
+        background-color: var(--purple-dark-color);
+
+        font-size: clamp(2rem, -0.2500rem + 10vw, 5rem);
+        color: var(--light-text);
+        
+        padding: 0.4em 0.7em;
+        border-radius: 15px;
         
         box-shadow: 0px 1px 3px #303030;
-        background-color: var(--purple-dark-color);
-        
-        color: var(--light-text);
-        font-size: clamp(2rem, -0.2500rem + 10vw, 5rem);
         font-weight: 500;
-        
-        padding: 0.6em 1em;
-        // margin: 0;
-        
-        border-radius: 15px;
     }
 }
 

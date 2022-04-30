@@ -1,7 +1,12 @@
 <header class="header">
   <div class="container1">
-    <div class="logo">
+    <!-- <div class="logo">
       <h1>Planishare</h1>
+    </div> -->
+    <div class="logo">
+      <button mat-raised-button [routerLink]="'/'">
+        Planishare
+      </button>
     </div>
     <div class="subtitle1" *ngIf="!isMobile()">
       <h2>
@@ -41,10 +46,12 @@
     <div class="ranking">
       <mat-card class="card">
         <mat-card-subtitle class="card-subtitle">
-          Mariela Bustamante - Hace 1 Mes
+          <div>
+            <span>Mariela Bustamante - Hace 1 Mes</span>
+          </div>
           <div>
             <mat-icon>description</mat-icon>
-            3
+            <span>3</span>
           </div>
         </mat-card-subtitle>
         <mat-card-title>Planificación de Matemática para 3ro básico</mat-card-title>
