@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { SidenavService } from 'src/app/core/services/sidenav.service';
 
 @Component({
     selector: 'app-navigation-sidenav',
@@ -6,11 +7,13 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     styleUrls: ['./navigation-sidenav.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class NavigationSidenavComponent implements OnInit {
+export class NavigationSidenavComponent {
 
-    constructor() { }
+    constructor(
+        private sidenav: SidenavService
+    ) { }
 
-    ngOnInit(): void {
+    public hideSidenav(): void {
+        this.sidenav.close();
     }
-
 }
