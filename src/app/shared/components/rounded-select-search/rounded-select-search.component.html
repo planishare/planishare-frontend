@@ -1,0 +1,17 @@
+<button
+  class="button-toggle-select"
+  mat-raised-button
+  (click)="toggleSelect(custom_select)">
+    <span>Nivel académico</span>
+    <mat-icon>expand_more</mat-icon>
+</button>
+
+<mat-form-field appearance="fill" class="select-hidden">
+  <mat-label>Nivel académico</mat-label>
+  <mat-select [(value)]="value" disableOptionCentering #custom_select>
+      <mat-option>
+        <ngx-mat-select-search></ngx-mat-select-search>
+      </mat-option>
+      <mat-option [value]="option" *ngFor="let option of list">{{ option }}</mat-option>
+  </mat-select>
+</mat-form-field>

@@ -1,0 +1,40 @@
+app-rounded-select-search {
+    display: flex;
+    flex-direction: column;
+    border: 1px black solid;
+    position: relative;
+
+    mat-form-field {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        visibility: hidden;
+        height: 0;
+        width: 0;
+
+        * {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+    }
+
+    .button-toggle-select {
+        display: block;
+        width: 100%;
+
+        border-radius: 10px;
+    }
+}
+
+// Mobile  responsive fix to center options in scren
+@media (max-width: 40rem) {
+    .cdk-overlay-pane {
+        position: static;
+    }
+    .cdk-overlay-connected-position-bounding-box {
+        align-items: center;
+        justify-content: center;
+    }    
+}
+

@@ -9,6 +9,9 @@ import { SearchDialogComponent } from './components/search-dialog/search-dialog.
 import { FormsModule } from '@angular/forms';
 import { NavigationSidenavComponent } from './components/navigation-sidenav/navigation-sidenav.component';
 import { RouterModule } from '@angular/router';
+import { RoundedSelectSearchComponent } from './components/rounded-select-search/rounded-select-search.component';
+
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @NgModule({
     declarations: [
@@ -16,21 +19,25 @@ import { RouterModule } from '@angular/router';
         SearchButtonComponent,
         BigButtonComponent,
         SearchDialogComponent,
-        NavigationSidenavComponent
+        NavigationSidenavComponent,
+        RoundedSelectSearchComponent
     ],
     imports: [
         CommonModule,
         MaterialModule,
         FormsModule,
-        RouterModule
+        RouterModule,
+        NgxMatSelectSearchModule
     ],
     exports: [
         // Components
         NavbarComponent,
         NavigationSidenavComponent,
+        RoundedSelectSearchComponent,
 
         // Modules
-        MaterialModule
+        MaterialModule,
+        NgxMatSelectSearchModule
     ]
 })
 export class SharedModule { }
