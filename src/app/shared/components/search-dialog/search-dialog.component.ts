@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { option } from '../../types/rounded-select-search.type';
 import { isMobile } from '../../utils';
 
 @Component({
@@ -6,35 +8,34 @@ import { isMobile } from '../../utils';
     templateUrl: './search-dialog.component.html',
     styleUrls: ['./search-dialog.component.scss']
 })
-export class SearchDialogComponent implements OnInit {
+export class SearchDialogComponent {
     public isMobile = isMobile;
 
     public search: string = '';
 
-    public academicLevel: string = '';
-    public academicLevels = [
-        'Primero básico',
-        'Segundo básico',
-        'Tercero básico',
-        'Cuarto básico'
+    public exampleList: option[] = [
+        {
+            text: '1ro Básico',
+            value: '1basico'
+        },
+        {
+            text: 'Geometría',
+            value: 'geometria'
+        },
+        {
+            text: 'Historia, geografía y ciencias sociales',
+            value: 'historia'
+        }
     ];
 
-    public subject: string = '';
-    public subjects = [
-        'Matemática',
-        'Lenguaje',
-        'Historia geografía y ciencias sociales'
-    ];
+    public academicLevelControl: FormControl;
+    public subjectControl: FormControl;
+    public axisControl: FormControl;
 
-    public axis: string = '';
-    public axises = [
-        'Geometría',
-        'Formación ciudadana'
-    ];
-
-    constructor() { }
-
-    public ngOnInit(): void {
+    constructor() {
+        this.academicLevelControl = new FormControl();
+        this.subjectControl = new FormControl();
+        this.axisControl = new FormControl();
     }
 
 }

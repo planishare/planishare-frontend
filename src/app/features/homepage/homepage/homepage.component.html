@@ -15,9 +15,30 @@
       </h2>
     </div>
     <div class="filters">
-      <app-rounded-select-search></app-rounded-select-search>
-      <app-rounded-select-search></app-rounded-select-search>
-      <app-rounded-select-search></app-rounded-select-search>
+      <app-rounded-select-search
+        [list]="exampleList"
+        [control]="academicLevelControl"
+        buttonText="Nivel Académico"
+        bgColor="var(--primary-color)"
+        textColor="var(--light-text)"
+        placeholder="Buscar nivel académico">
+      </app-rounded-select-search>
+      <app-rounded-select-search
+        [list]="exampleList"
+        [control]="subjectControl"
+        buttonText="Asignatura"
+        bgColor="var(--warn-color)"
+        textColor="var(--light-text)"
+        placeholder="Buscar asignatura">
+      </app-rounded-select-search>
+      <app-rounded-select-search
+        [list]="exampleList"
+        [control]="axisControl"
+        buttonText="Eje"
+        bgColor="var(--purple-color)"
+        textColor="var(--light-text)"
+        placeholder="Buscar eje">
+      </app-rounded-select-search>
     </div>  
   </div>
 

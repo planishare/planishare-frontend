@@ -1,41 +1,42 @@
 <h1 mat-dialog-title>Buscar</h1>
-<div mat-dialog-content>
+<div class="dialog-content">
   <form class="search-form">
     <mat-form-field class="search-field" appearance="outline">
       <mat-label>Busqueda</mat-label>
-      <input matInput type="text">
+      <input matInput type="text" autocomplete="off">
       <button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="search=''">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
-  
-    <div class="filters" [ngClass]="isMobile() ? 'flex_wrap' : 'gap-1'">
-      <mat-form-field class="academic-level-select" appearance="outline">
-        <mat-label>Nivel Académico</mat-label>
-        <mat-select>
-          <mat-option *ngFor="let option of academicLevels" [value]="option">
-            {{option}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      
-      <mat-form-field class="subject-select" appearance="outline">
-        <mat-label>Asignatura</mat-label>
-        <mat-select>
-          <mat-option *ngFor="let option of subjects" [value]="option">
-            {{option}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      
-      <mat-form-field class="axis-select" appearance="outline">
-        <mat-label>Eje</mat-label>
-        <mat-select>
-          <mat-option *ngFor="let option of axises" [value]="option">
-            {{option}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+    
+    <div class="filters" [ngClass]="{'flex_column': isMobile()}">
+      <app-rounded-select-search
+        class="filter"
+        [list]="exampleList"
+        [control]="academicLevelControl"
+        buttonText="Nivel Académico"
+        bgColor="var(--primary-color)"
+        textColor="var(--light-text)"
+        placeholder="Buscar nivel académico">
+      </app-rounded-select-search>
+      <app-rounded-select-search
+        class="filter"
+        [list]="exampleList"
+        [control]="subjectControl"
+        buttonText="Asignatura"
+        bgColor="var(--warn-color)"
+        textColor="var(--light-text)"
+        placeholder="Buscar asignatura">
+      </app-rounded-select-search>
+      <app-rounded-select-search
+        class="filter"
+        [list]="exampleList"
+        [control]="axisControl"
+        buttonText="Eje"
+        bgColor="var(--purple-color)"
+        textColor="var(--light-text)"
+        placeholder="Buscar eje">
+      </app-rounded-select-search>
     </div>
   </form>
 </div>

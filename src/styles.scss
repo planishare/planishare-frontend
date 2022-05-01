@@ -45,8 +45,8 @@ $planishare-theme: mat.define-light-theme((
 ));
 $planishare-dark-theme: mat.define-dark-theme((
   color: (
-    primary: $planishare-primary,
-    accent: $planishare-accent,
+    primary: $planishare-accent,
+    accent: $planishare-primary,
     warn: $planishare-warn,
   )
 ));

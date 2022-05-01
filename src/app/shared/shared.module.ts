@@ -6,7 +6,7 @@ import { MaterialModule } from './material/material.module';
 import { SearchButtonComponent } from './components/search-button/search-button.component';
 import { BigButtonComponent } from './components/big-button/big-button.component';
 import { SearchDialogComponent } from './components/search-dialog/search-dialog.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavigationSidenavComponent } from './components/navigation-sidenav/navigation-sidenav.component';
 import { RouterModule } from '@angular/router';
 import { RoundedSelectSearchComponent } from './components/rounded-select-search/rounded-select-search.component';
@@ -27,7 +27,8 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
         MaterialModule,
         FormsModule,
         RouterModule,
-        NgxMatSelectSearchModule
+        NgxMatSelectSearchModule,
+        ReactiveFormsModule
     ],
     exports: [
         // Components
@@ -37,7 +38,8 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
         // Modules
         MaterialModule,
-        NgxMatSelectSearchModule
+        NgxMatSelectSearchModule,
+        ReactiveFormsModule
     ]
 })
 export class SharedModule { }

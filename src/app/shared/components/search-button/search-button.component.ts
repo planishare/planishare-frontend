@@ -7,18 +7,17 @@ import { SearchDialogComponent } from '../search-dialog/search-dialog.component'
     templateUrl: './search-button.component.html',
     styleUrls: ['./search-button.component.scss']
 })
-export class SearchButtonComponent implements OnInit {
+export class SearchButtonComponent {
     @Input() public simpleIcon = false;
 
     constructor(
         public dialog: MatDialog
     ) { }
 
-    public ngOnInit(): void {
-    }
-
     public openSearchDialog() {
-        this.dialog.open(SearchDialogComponent);
+        this.dialog.open(SearchDialogComponent, {
+            autoFocus: false
+        });
     }
 
 }
