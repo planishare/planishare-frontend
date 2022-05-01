@@ -1,5 +1,10 @@
 app-navigation-sidenav {
     ul {
+        background-color: var(--dark-background);
+        color: var(--light-text);
+
+        min-height: 100%;
+
         list-style-type: none;
         
         padding: 0;
