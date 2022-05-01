@@ -36,7 +36,7 @@ export class RoundedSelectSearchComponent implements OnInit {
         };
 
         this.control.valueChanges.subscribe((value: option) => {
-            this._buttonText = value.text;
+            this._buttonText = value?.text;
             this._list = this.list;
         });
 
@@ -56,6 +56,10 @@ export class RoundedSelectSearchComponent implements OnInit {
 
     public toggleSelect(select: MatSelect): void {
         select.toggle();
+    }
+
+    public test(): void {
+        console.log('elimianr');
     }
 
     private checkInputs(): void {

@@ -23,6 +23,54 @@ export class HomepageComponent implements OnInit {
         {
             text: 'Historia, geografía y ciencias sociales',
             value: 'historia'
+        },
+        {
+            text: '1ro Básico',
+            value: '1basico'
+        },
+        {
+            text: 'Geometría',
+            value: 'geometria'
+        },
+        {
+            text: 'Historia, geografía y ciencias sociales',
+            value: 'historia'
+        },
+        {
+            text: '1ro Básico',
+            value: '1basico'
+        },
+        {
+            text: 'Geometría',
+            value: 'geometria'
+        },
+        {
+            text: 'Historia, geografía y ciencias sociales',
+            value: 'historia'
+        },
+        {
+            text: '1ro Básico',
+            value: '1basico'
+        },
+        {
+            text: 'Geometría',
+            value: 'geometria'
+        },
+        {
+            text: 'Historia, geografía y ciencias sociales',
+            value: 'historia'
+        },
+        {
+            text: '1ro Básico',
+            value: '1basico'
+        },
+        {
+            text: 'Geometría',
+            value: 'geometria'
+        },
+        {
+            text: 'Historia, geografía y ciencias sociales',
+            value: 'historia'
         }
     ];
 
