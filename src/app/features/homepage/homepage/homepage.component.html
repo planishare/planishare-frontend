@@ -42,7 +42,6 @@
     </div>  
   </div>
 
-
   <div class="container2">
     <div class="subtitle2" *ngIf="isMobile()">
       <h2>
@@ -52,7 +51,11 @@
     </div>
     <div class="scroll-text">
       <p>Revisa las publicaciones populares y recientes</p>
-      <mat-icon>expand_more</mat-icon>
+      <div #expand_button>
+        <button mat-icon-button (click)="scroll(expand_button)">
+          <mat-icon>expand_more</mat-icon>
+        </button>
+      </div>
     </div>
   </div>
 </header>

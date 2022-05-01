@@ -11,3 +11,9 @@ mat-sidenav {
     z-index: 2;
     width: calc(100% - 1rem - 1px);
 }
+
+@media (max-width: 40rem) {
+    .navbar {
+        width: 100%;
+    }
+}

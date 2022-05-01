@@ -89,4 +89,8 @@ export class HomepageComponent implements OnInit {
         this.subjectControl.valueChanges.subscribe(val => console.log('asignatura', val));
         this.axisControl.valueChanges.subscribe(val => console.log('eje', val));
     }
+
+    public scroll(element: HTMLElement): void {
+        element.scrollIntoView({ behavior: 'smooth' });
+    }
 }
