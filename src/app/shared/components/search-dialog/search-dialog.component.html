@@ -12,7 +12,7 @@
     <div class="filters" [ngClass]="{'flex_column': isMobile()}">
       <app-rounded-select-search
         class="filter"
-        [list]="exampleList"
+        [list]="academicLevelsList"
         [control]="academicLevelControl"
         buttonText="Nivel Académico"
         bgColor="var(--primary-color)"
@@ -21,7 +21,7 @@
       </app-rounded-select-search>
       <app-rounded-select-search
         class="filter"
-        [list]="exampleList"
+        [list]="subjectList"
         [control]="subjectControl"
         buttonText="Asignatura"
         bgColor="var(--warn-color)"
@@ -30,7 +30,7 @@
       </app-rounded-select-search>
       <app-rounded-select-search
         class="filter"
-        [list]="exampleList"
+        [list]="axesList"
         [control]="axisControl"
         buttonText="Eje"
         bgColor="var(--purple-color)"

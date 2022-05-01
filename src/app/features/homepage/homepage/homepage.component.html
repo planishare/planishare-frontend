@@ -16,7 +16,7 @@
     </div>
     <div class="filters">
       <app-rounded-select-search
-        [list]="exampleList"
+        [list]="academicLevelsList"
         [control]="academicLevelControl"
         buttonText="Nivel Académico"
         bgColor="var(--primary-color)"
@@ -24,7 +24,7 @@
         placeholder="Buscar nivel académico">
       </app-rounded-select-search>
       <app-rounded-select-search
-        [list]="exampleList"
+        [list]="subjectList"
         [control]="subjectControl"
         buttonText="Asignatura"
         bgColor="var(--warn-color)"
@@ -32,7 +32,7 @@
         placeholder="Buscar asignatura">
       </app-rounded-select-search>
       <app-rounded-select-search
-        [list]="exampleList"
+        [list]="axesList"
         [control]="axisControl"
         buttonText="Eje"
         bgColor="var(--purple-color)"
@@ -52,7 +52,7 @@
     <div class="scroll-text">
       <p>Revisa las publicaciones populares y recientes</p>
       <div #expand_button>
-        <button mat-icon-button (click)="scroll(expand_button)">
+        <button mat-icon-button (click)="scroll(expand_button)" [disabled]="isTopLoading">
           <mat-icon>expand_more</mat-icon>
         </button>
       </div>
@@ -61,41 +61,41 @@
 </header>
 
 <!-- Top posts -->
-<main class="main">
+<main class="main" *ngIf="!isTopLoading">
   <section class="top-section">
     <div class="top-likes-header">
       <mat-icon>favorite</mat-icon>
       <h4>Las más gustadas</h4>
     </div>
     <div class="ranking">
-      <mat-card class="card">
+      <mat-card class="card" *ngFor="let item of mostLikedPosts">
         <mat-card-subtitle class="card-subtitle">
           <div>
-            <span>Mariela Bustamante - Hace 1 Mes</span>
+            <span> {{ item.user|getUsername }} - {{ item.created_at|timeAgo }}</span>
           </div>
           <div>
             <mat-icon>description</mat-icon>
-            <span>3</span>
+            <span>{{ (item.suporting_material|stringToArray).length + 1 }}</span>
           </div>
         </mat-card-subtitle>
-        <mat-card-title>Planificación de Matemática para 3ro básico</mat-card-title>
+        <mat-card-title>{{ item.title }}</mat-card-title>
         <mat-card-content>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Et amet molestias cumque, neque fuga dignissimos saepe ipsa expedita maxime laborum natus praesentium accusamus veniam quidem delectus. Ullam molestiae facere quae.
+          {{ item.description }}
         </mat-card-content>
         <div class="card-footer">
           <mat-chip-list class="tags">
-            <mat-chip class="academic-level-tag">3ro básico</mat-chip>
-            <mat-chip class="subject-tag">Historia, geografía y ciencias sociales</mat-chip>
-            <mat-chip class="axis-tag">Formación ciudadana</mat-chip>
+            <mat-chip class="academic-level-tag">{{ item.academic_level.name }}</mat-chip>
+            <mat-chip class="subject-tag">{{ item.axis.subject.name }}</mat-chip>
+            <mat-chip class="axis-tag">{{ item.axis.name }}</mat-chip>
           </mat-chip-list>
           <div class="reactions">
             <div>
               <mat-icon>favorite</mat-icon>
-              <span>8 Me gusta</span>
+              <span>{{ item.likes }} Me gusta</span>
             </div>
             <div>
               <mat-icon>download</mat-icon>
-              <span>13 Descargas</span>
+              <span>{{ item.downloads }} Descargas</span>
             </div>
           </div>
         </div>
@@ -108,62 +108,34 @@
       <h4>Las más recientes</h4>
     </div>
     <div class="ranking">
-      <mat-card class="card">
+      <mat-card class="card" *ngFor="let item of latestPosts">
         <mat-card-subtitle class="card-subtitle">
-          Mariela Bustamante - Hace 1 Mes
+          <div>
+            <span> {{ item.user|getUsername }} - {{ item.created_at|timeAgo }}</span>
+          </div>
           <div>
             <mat-icon>description</mat-icon>
-            3
+            <span>{{ item.suporting_material }}</span>
           </div>
         </mat-card-subtitle>
-        <mat-card-title>Planificación de Matemática para 3ro básico</mat-card-title>
+        <mat-card-title>{{ item.title }}</mat-card-title>
         <mat-card-content>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Et amet molestias cumque, neque fuga dignissimos saepe ipsa expedita maxime laborum natus praesentium accusamus veniam quidem delectus. Ullam molestiae facere quae.
+          {{ item.description }}
         </mat-card-content>
         <div class="card-footer">
           <mat-chip-list class="tags">
-            <mat-chip class="academic-level-tag">3ro básico</mat-chip>
-            <mat-chip class="subject-tag">Historia, geografía y ciencias sociales</mat-chip>
-            <mat-chip class="axis-tag">Formación ciudadana</mat-chip>
+            <mat-chip class="academic-level-tag">{{ item.academic_level.name }}</mat-chip>
+            <mat-chip class="subject-tag">{{ item.axis.subject.name }}</mat-chip>
+            <mat-chip class="axis-tag">{{ item.axis.name }}</mat-chip>
           </mat-chip-list>
           <div class="reactions">
             <div>
               <mat-icon>favorite</mat-icon>
-              <span>8 Me gusta</span>
+              <span>{{ item.likes }} Me gusta</span>
             </div>
             <div>
               <mat-icon>download</mat-icon>
-              <span>13 Descargas</span>
-            </div>
-          </div>
-        </div>
-      </mat-card>
-      <mat-card class="card">
-        <mat-card-subtitle class="card-subtitle">
-          Mariela Bustamante - Hace 1 Mes
-          <div>
-            <mat-icon>description</mat-icon>
-            3
-          </div>
-        </mat-card-subtitle>
-        <mat-card-title>Planificación de Matemática para 3ro básico</mat-card-title>
-        <mat-card-content>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Et amet molestias cumque, neque fuga dignissimos saepe ipsa expedita maxime laborum natus praesentium accusamus veniam quidem delectus. Ullam molestiae facere quae.
-        </mat-card-content>
-        <div class="card-footer">
-          <mat-chip-list class="tags">
-            <mat-chip class="academic-level-tag">3ro básico</mat-chip>
-            <mat-chip class="subject-tag">Historia, geografía y ciencias sociales</mat-chip>
-            <mat-chip class="axis-tag">Formación ciudadana</mat-chip>
-          </mat-chip-list>
-          <div class="reactions">
-            <div>
-              <mat-icon>favorite</mat-icon>
-              <span>8 Me gusta</span>
-            </div>
-            <div>
-              <mat-icon>download</mat-icon>
-              <span>13 Descargas</span>
+              <span>{{ item.downloads }} Descargas</span>
             </div>
           </div>
         </div>

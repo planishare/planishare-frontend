@@ -1,4 +1,5 @@
 <button
+  [disabled]="disabled"
   class="button-toggle-select"
   mat-raised-button
   [ngStyle]="buttonStyle"
@@ -20,6 +21,6 @@
       </mat-option>
       <mat-option *ngIf="!!control.value" [value]="null">Borrar</mat-option>
       <mat-divider></mat-divider>
-      <mat-option [value]="option" *ngFor="let option of _list">{{ option.text }}</mat-option>
+      <mat-option [value]="option" *ngFor="let option of filteredList">{{ option.text }}</mat-option>
   </mat-select>
 </mat-form-field>

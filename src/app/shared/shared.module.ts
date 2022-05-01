@@ -12,6 +12,9 @@ import { RouterModule } from '@angular/router';
 import { RoundedSelectSearchComponent } from './components/rounded-select-search/rounded-select-search.component';
 
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { GetUsernamePipe } from './pipes/get-username.pipe';
+import { TimeAgoPipe } from './pipes/time-ago.pipe';
+import { StringToArrayPipe } from './pipes/string-to-array.pipe';
 
 @NgModule({
     declarations: [
@@ -20,7 +23,10 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
         BigButtonComponent,
         SearchDialogComponent,
         NavigationSidenavComponent,
-        RoundedSelectSearchComponent
+        RoundedSelectSearchComponent,
+        GetUsernamePipe,
+        TimeAgoPipe,
+        StringToArrayPipe
     ],
     imports: [
         CommonModule,
@@ -39,7 +45,12 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
         // Modules
         MaterialModule,
         NgxMatSelectSearchModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+
+        // Pipes
+        GetUsernamePipe,
+        TimeAgoPipe,
+        StringToArrayPipe
     ]
 })
 export class SharedModule { }

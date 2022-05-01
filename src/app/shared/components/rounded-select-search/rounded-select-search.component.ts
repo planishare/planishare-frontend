@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
-import { option } from '../../types/rounded-select-search.type';
+import { RoundedSelectSearchOption } from '../../types/rounded-select-search.type';
 
 @Component({
     selector: 'app-rounded-select-search',
@@ -15,12 +15,17 @@ export class RoundedSelectSearchComponent implements OnInit {
     @Input() public bgColor?: string;
     @Input() public textColor?: string;
     @Input() public control!: FormControl;
-    @Input() public list!: option[];
+    @Input() public set list(options: RoundedSelectSearchOption[]) {
+        this._list =  options;
+        this.filteredList = this._list;
+    }
+    @Input() public disabled: boolean = false;
 
     public search: FormControl;
     public _buttonText: string = '';
     public buttonStyle!: any;
-    public _list!: option[];
+    public _list!: RoundedSelectSearchOption[];
+    public filteredList!: RoundedSelectSearchOption[];
 
     constructor() {
         this.search = new FormControl();
@@ -35,21 +40,20 @@ export class RoundedSelectSearchComponent implements OnInit {
             'color': this.textColor
         };
 
-        this.control.valueChanges.subscribe((value: option) => {
+        this.control.valueChanges.subscribe((value: RoundedSelectSearchOption) => {
             this._buttonText = value?.text;
-            this._list = this.list;
+            this.filteredList = this._list;
         });
 
-        this._list = this.list;
         this.search.valueChanges.subscribe((value: string) => {
             if (!!value) {
                 value = value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                this._list = this.list.filter(el => {
+                this.filteredList = this._list.filter(el => {
                     const textNormalized = el.text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                     return textNormalized.includes(value);
                 });
             } else {
-                this._list = this.list;
+                this.filteredList = this._list;
             }
         });
     }
@@ -66,7 +70,7 @@ export class RoundedSelectSearchComponent implements OnInit {
         if (!!!this.control) {
             throw 'No FormControl provided in rounded-select-search!';
         }
-        if (!!!this.list) {
+        if (!!!this._list) {
             throw 'No List provided in rounded-select-search!';
         }
         if (!!!this.buttonText) {

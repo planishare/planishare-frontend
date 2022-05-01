@@ -1,4 +1,4 @@
-export type option = {
+export type RoundedSelectSearchOption = {
     text: string;
-    value: any;
+    data?: any;
 }
