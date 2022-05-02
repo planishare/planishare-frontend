@@ -17,40 +17,35 @@
             <mat-card-title class="card-title">Registrarse</mat-card-title>
             <!-- <mat-card-title>Registrate para poder crear publicaciones, dar likes y mucho más, anímate!</mat-card-title> -->
             <mat-card-content>
-                <form class="form">
+                <form class="form" [formGroup]="form" (ngSubmit)="register($event)">
                     <mat-form-field appearance="outline">
                       <mat-label>Email</mat-label>
-                      <input type="email" matInput>
-                      <!-- <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-                        Please enter a valid email address
-                      </mat-error>
-                      <mat-error *ngIf="emailFormControl.hasError('required')">
-                        Email is <strong>required</strong>
-                      </mat-error> -->
+                      <input type="email" matInput formControlName="email">
+                      <mat-error *ngIf="emailControl?.invalid">{{ getEmailErrorMessage() }}</mat-error>
                     </mat-form-field>
+
                     <mat-form-field appearance="outline">
                       <mat-label>Contraseña</mat-label>
-                      <input type="password" matInput>
-                      <!-- <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-                        Please enter a valid email address
-                      </mat-error>
-                      <mat-error *ngIf="emailFormControl.hasError('required')">
-                        Email is <strong>required</strong>
-                      </mat-error> -->
+                      <input [type]="hidePassword? 'password' : 'text'" matInput formControlName="password">
+                      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+                        <mat-icon *ngIf="hidePassword">visibility</mat-icon>
+                        <mat-icon *ngIf="!hidePassword">visibility_off</mat-icon>
+                      </button>
+                      <mat-error *ngIf="passwordControl?.invalid">{{ getPasswordErrorMessage() }}</mat-error>
                     </mat-form-field>
+
                     <mat-form-field appearance="outline">
                       <mat-label>Repetir contraseña</mat-label>
-                      <input type="password" matInput>
-                      <!-- <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-                        Please enter a valid email address
-                      </mat-error>
-                      <mat-error *ngIf="emailFormControl.hasError('required')">
-                        Email is <strong>required</strong>
-                      </mat-error> -->
+                      <input [type]="hideRepeatPassword? 'password' : 'text'" matInput formControlName="repeatPassword">
+                      <button mat-icon-button matSuffix (click)="hideRepeatPassword = !hideRepeatPassword">
+                        <mat-icon *ngIf="hideRepeatPassword">visibility</mat-icon>
+                        <mat-icon *ngIf="!hideRepeatPassword">visibility_off</mat-icon>
+                      </button>
+                      <mat-error *ngIf="repeatPasswordControl?.invalid">{{ getRepeatPasswordErrorMessage() }}</mat-error>
                     </mat-form-field>
         
                     <div class="buttons">
-                        <button mat-raised-button class="register-button">
+                        <button mat-raised-button class="register-button" type="submit">
                             <mat-icon>person_add</mat-icon>
                             Registrarse
                         </button>
