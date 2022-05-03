@@ -11,7 +11,6 @@
         Planishare
       </button>
     </div>
-    
     <div class="container">
         <mat-card class="card">
             <mat-card-title class="card-title">Iniciar sesión</mat-card-title>
@@ -36,10 +35,11 @@
                     </mat-form-field>
 
                     <div class="buttons">
-                        <button mat-raised-button color="primary" type="submit">
+                        <button mat-raised-button color="primary" type="submit" *ngIf="!isLoading">
                             <mat-icon>login</mat-icon>
                             Iniciar sesión
                         </button>
+                        <app-square-loader *ngIf="isLoading"></app-square-loader>
                         <span>- o -</span>
                         <button mat-stroked-button type="button">
                             <mat-icon>login</mat-icon>

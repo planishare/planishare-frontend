@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
     public hidePassword = true;
 
     public wrongCredentials = false;
+    public isLoading = false;
 
     constructor(
         private authService: AuthService,
@@ -44,6 +45,7 @@ export class LoginComponent implements OnInit {
                 email: this.form.get('email')?.value,
                 password: this.form.get('password')?.value
             };
+            this.isLoading = true;
             this.authService.login(credentials)
                 .pipe(
                     catchError((error: HttpErrorResponse) => {
@@ -58,6 +60,7 @@ export class LoginComponent implements OnInit {
                         // TODO: redirect to a specific route
                         this.router.navigate(['/']);
                     }
+                    this.isLoading = false;
                 });
         } else {
             this.form.markAllAsTouched();

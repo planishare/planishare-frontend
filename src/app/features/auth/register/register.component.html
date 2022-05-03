@@ -45,10 +45,11 @@
                     </mat-form-field>
         
                     <div class="buttons">
-                        <button mat-raised-button class="register-button" type="submit">
+                        <button mat-raised-button class="register-button" type="submit" *ngIf="!isLoading">
                             <mat-icon>person_add</mat-icon>
                             Registrarse
                         </button>
+                        <app-square-loader *ngIf="isLoading"></app-square-loader>
                         <span>o</span>
                         <button mat-stroked-button>
                             <mat-icon>login</mat-icon>

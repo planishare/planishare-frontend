@@ -15,6 +15,8 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { GetUsernamePipe } from './pipes/get-username.pipe';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { StringToArrayPipe } from './pipes/string-to-array.pipe';
+import { BookLoaderComponent } from './components/loaders/book-loader/book-loader.component';
+import { SquareLoaderComponent } from './components/loaders/square-loader/square-loader.component';
 
 @NgModule({
     declarations: [
@@ -26,7 +28,9 @@ import { StringToArrayPipe } from './pipes/string-to-array.pipe';
         RoundedSelectSearchComponent,
         GetUsernamePipe,
         TimeAgoPipe,
-        StringToArrayPipe
+        StringToArrayPipe,
+        BookLoaderComponent,
+        SquareLoaderComponent
     ],
     imports: [
         CommonModule,
@@ -41,6 +45,8 @@ import { StringToArrayPipe } from './pipes/string-to-array.pipe';
         NavbarComponent,
         NavigationSidenavComponent,
         RoundedSelectSearchComponent,
+        BookLoaderComponent,
+        SquareLoaderComponent,
 
         // Modules
         MaterialModule,

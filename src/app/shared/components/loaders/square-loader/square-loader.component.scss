@@ -1,0 +1,32 @@
+// Loader from https://cssloaders.github.io/
+
+:host {
+  display: flex;
+}
+
+// Circle
+.shapes-1 {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--warn-color);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  animation: sh1 2.5s infinite cubic-bezier(0.3, 1, 0, 1);
+}
+
+@keyframes sh1 {
+  // Square
+  33% {
+    border-radius: 0;
+    background: var(--accent-color);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+
+  // Triangle
+  66% {
+    border-radius: 0;
+    background: var(--primary-color);
+    clip-path: polygon(50% 0, 50% 0, 100% 100%, 0 100%);
+    transform: rotate(360deg);
+  }
+}

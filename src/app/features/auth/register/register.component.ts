@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControlOptions, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { Router } from '@angular/router';
+import { catchError, of } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { BasicCredentials } from 'src/app/core/types/auth.type';
 
@@ -26,8 +28,11 @@ export class RegisterComponent {
     public hidePassword = true;
     public hideRepeatPassword = true;
 
+    public isLoading = false;
+
     constructor(
-        private authService: AuthService
+        private authService: AuthService,
+        private router: Router
     ) {
         this.form = new FormGroup(
             {
@@ -52,7 +57,19 @@ export class RegisterComponent {
                 email: this.form.get('email')?.value,
                 password: this.form.get('password')?.value
             };
-            this.authService.register(credentials).subscribe();
+            this.isLoading = true;
+            this.authService.register(credentials)
+                .pipe(
+                    catchError(error => {
+                        return of(null);
+                    })
+                )
+                .subscribe(resp => {
+                    if (!!resp) {
+                        this.router.navigate(['/']);
+                    }
+                    this.isLoading = false;
+                });
         } else {
             this.form.markAllAsTouched();
         }
