@@ -70,6 +70,17 @@
     flex-direction: column;
 }
 
+.error-msg {
+    display: grid;
+    place-items: center;
+    padding-bottom: 1.3em;
+
+    span {
+        color: var(--warn-color);
+        font-weight: 500;
+    }
+}
+
 .buttons {
     display: grid;
     place-items: center;

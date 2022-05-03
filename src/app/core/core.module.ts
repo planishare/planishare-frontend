@@ -5,6 +5,8 @@ import { PostsService } from './services/posts.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './services/auth.service';
 import { JwtService } from './services/jwt.service';
+import { IsAuthGuard } from './guards/is-auth.guard';
+import { IsNotAuthGuard } from './guards/is-not-auth.guard';
 
 @NgModule({
     declarations: [],
@@ -13,10 +15,15 @@ import { JwtService } from './services/jwt.service';
         HttpClientModule
     ],
     providers: [
+        // Services
         SidenavService,
         PostsService,
         AuthService,
-        JwtService
+        JwtService,
+
+        // Guards
+        IsAuthGuard,
+        IsNotAuthGuard
     ]
 })
 export class CoreModule { }

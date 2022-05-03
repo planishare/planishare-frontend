@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { IsNotAuthGuard } from './core/guards/is-not-auth.guard';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 
 const routes: Routes = [
@@ -15,7 +16,12 @@ const routes: Routes = [
     },
     {
         path: 'auth',
-        loadChildren: () => import('./features/auth/auth.module').then(mod => mod.AuthModule)
+        loadChildren: () => import('./features/auth/auth.module').then(mod => mod.AuthModule),
+        canActivate: [IsNotAuthGuard]
+    },
+    {
+        path: '**',
+        redirectTo: ''
     }
 ];
 

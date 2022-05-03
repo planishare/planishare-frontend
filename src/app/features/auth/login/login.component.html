@@ -15,6 +15,9 @@
     <div class="container">
         <mat-card class="card">
             <mat-card-title class="card-title">Iniciar sesión</mat-card-title>
+            <div class="error-msg">
+              <span *ngIf="wrongCredentials">Email o contraseña incorrectos</span>
+            </div>
             <mat-card-content>
                 <form class="form" [formGroup]="form" (ngSubmit)="login($event)">
                     <mat-form-field appearance="outline">
@@ -31,7 +34,7 @@
                       </button>
                       <mat-error *ngIf="passwordControl?.invalid">{{ getPasswordErrorMessage() }}</mat-error>
                     </mat-form-field>
-        
+
                     <div class="buttons">
                         <button mat-raised-button color="primary" type="submit">
                             <mat-icon>login</mat-icon>

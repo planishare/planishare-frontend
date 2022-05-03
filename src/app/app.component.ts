@@ -17,10 +17,12 @@ export class AppComponent implements OnInit {
 
     public ngOnInit(): void {
         this.authService.checkSesion();
+
+        // TODO: Change loader and add animation
         this.authService.isCompleted$.asObservable()
-            .pipe(
-                filter(isComplete => isComplete)
-            )
+            // .pipe(
+            //     filter(isComplete => isComplete)
+            // )
             .subscribe(() => {
                 this.isAuthCompleted = true;
             });

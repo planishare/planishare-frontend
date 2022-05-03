@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, catchError, Observable, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { BasicCredentials } from '../types/auth.type';
 import { JwtService } from './jwt.service';
@@ -14,6 +14,8 @@ export class AuthService {
 
     public accessToken$: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
     public isAuth$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
+    // Emits true when auth services finish loading
     public isCompleted$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     constructor(
@@ -31,11 +33,6 @@ export class AuthService {
                     if (!!resp) {
                         this.setNewLogin(resp.access);
                     }
-                }),
-                catchError(error => {
-                    this.authServiceConsoleLog('Error al hacer login');
-                    console.error(error);
-                    return of(null);
                 })
             );
     }
@@ -61,7 +58,6 @@ export class AuthService {
                     if (!!resp) {
                         this.setNewLogin(resp.access);
                     } else {
-                        // TODO: redirect to login view
                         this.authServiceConsoleLog('refreshToken cookie is not valid!');
                         this.logout();
                     }
@@ -111,7 +107,6 @@ export class AuthService {
                     }
                 });
         } else {
-            // TODO: redirect to login view
             this.authServiceConsoleLog('No accessToken found in localStorage!');
             this.logout();
         }
@@ -141,11 +136,11 @@ export class AuthService {
             if (!!savedAccessToken) {
                 this.authServiceConsoleLog('Login from another tab!', savedAccessToken);
                 this.setNewLogin(savedAccessToken);
-                this.router.navigate(['']);
+                this.router.navigate([]);
             } else {
                 this.authServiceConsoleLog('Logout from another tab!', savedAccessToken);
                 this.logout();
-                this.router.navigate(['']);
+                this.router.navigate([]);
             }
         });
     }

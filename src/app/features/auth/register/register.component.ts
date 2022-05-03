@@ -18,7 +18,7 @@ class MyErrorStateMatcher implements ErrorStateMatcher {
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
 
     public form: FormGroup;
     public matcher = new MyErrorStateMatcher();
@@ -43,13 +43,6 @@ export class RegisterComponent implements OnInit {
                 validators: this.checkPasswords
             } as AbstractControlOptions
         );
-    }
-
-    public ngOnInit(): void {
-        this.form.valueChanges.subscribe(resp => {
-            console.log(this.form.hasError('notSame'));
-            console.log(this.form.errors);
-        });
     }
 
     public register(event: Event): void {

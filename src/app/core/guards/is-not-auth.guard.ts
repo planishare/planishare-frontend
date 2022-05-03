@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { filter, Observable, of, switchMap } from 'rxjs';
+import { filter, map, Observable, of, switchMap } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class IsAuthGuard implements CanActivate {
+export class IsNotAuthGuard implements CanActivate {
     constructor(
         private authService: AuthService,
         private router: Router
@@ -15,10 +15,10 @@ export class IsAuthGuard implements CanActivate {
     public canActivate(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        return this.isAuth();
+        return this.isNotAuth();
     }
 
-    private isAuth(): Observable<boolean> {
+    private isNotAuth(): Observable<boolean> {
         return this.authService.isCompleted$.asObservable()
             .pipe(
                 filter(isAuthComplete => !!isAuthComplete),
@@ -26,9 +26,7 @@ export class IsAuthGuard implements CanActivate {
                     return this.authService.isAuth$.asObservable();
                 }),
                 switchMap(isAuth => {
-                    // TODO: Verify that works
-                    // TODO: Allow redirect to specific route after redirect to login
-                    return !isAuth ? of(true) : this.router.navigate(['/','auth','login']);
+                    return !isAuth ? of(true) : this.router.navigate([]);
                 })
             );
     }

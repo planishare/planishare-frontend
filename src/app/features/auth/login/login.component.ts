@@ -1,5 +1,8 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { catchError, of } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { BasicCredentials } from 'src/app/core/types/auth.type';
 
@@ -10,11 +13,13 @@ import { BasicCredentials } from 'src/app/core/types/auth.type';
 })
 export class LoginComponent implements OnInit {
     public form: FormGroup;
-
     public hidePassword = true;
 
+    public wrongCredentials = false;
+
     constructor(
-        private authService: AuthService
+        private authService: AuthService,
+        private router: Router
     ) {
         this.form = new FormGroup(
             {
@@ -39,7 +44,21 @@ export class LoginComponent implements OnInit {
                 email: this.form.get('email')?.value,
                 password: this.form.get('password')?.value
             };
-            this.authService.login(credentials).subscribe();
+            this.authService.login(credentials)
+                .pipe(
+                    catchError((error: HttpErrorResponse) => {
+                        if (error.status === 401) {
+                            this.wrongCredentials = true;
+                        }
+                        return of(null);
+                    })
+                )
+                .subscribe(resp => {
+                    if (!!resp) {
+                        // TODO: redirect to a specific route
+                        this.router.navigate(['/']);
+                    }
+                });
         } else {
             this.form.markAllAsTouched();
         }
