@@ -7,6 +7,7 @@ import { AuthService } from './services/auth.service';
 import { JwtService } from './services/jwt.service';
 import { IsAuthGuard } from './guards/is-auth.guard';
 import { IsNotAuthGuard } from './guards/is-not-auth.guard';
+import { UsersService } from './services/users.service';
 
 @NgModule({
     declarations: [],
@@ -20,6 +21,7 @@ import { IsNotAuthGuard } from './guards/is-not-auth.guard';
         PostsService,
         AuthService,
         JwtService,
+        UsersService,
 
         // Guards
         IsAuthGuard,

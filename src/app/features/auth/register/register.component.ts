@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControlOptions, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { AbstractControl, AbstractControlOptions, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { Router } from '@angular/router';
-import { catchError, of } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { UsersService } from 'src/app/core/services/users.service';
 import { BasicCredentials } from 'src/app/core/types/auth.type';
 
 class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -32,11 +33,12 @@ export class RegisterComponent {
 
     constructor(
         private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private userService: UsersService
     ) {
         this.form = new FormGroup(
             {
-                email: new FormControl('', [ Validators.required, Validators.email]),
+                email: new FormControl('', [ Validators.required, Validators.email], this.isEmailAvailableValidator.bind(this)),
                 password: new FormControl('', [
                     Validators.required,
                     Validators.minLength(8),
@@ -95,9 +97,25 @@ export class RegisterComponent {
         return null;
     }
 
+    public isEmailAvailableValidator(control: AbstractControl): Observable<any> {
+        const email = control.value;
+        return this.userService.isEmailAvailable(email)
+            .pipe(
+                map(data => {
+                    if (data.isAvailable) {
+                        return null;
+                    }
+                    return { alreadyUsed: true };
+                })
+            );
+    }
+
     public getEmailErrorMessage() {
         if (this.emailControl?.hasError('required')) {
             return 'Ingresa un email';
+        }
+        if (this.emailControl?.hasError('alreadyUsed')) {
+            return 'Este email ya tiene una cuenta creada';
         }
         return this.emailControl?.hasError('email') ? 'Email no válido' : '';
     }
