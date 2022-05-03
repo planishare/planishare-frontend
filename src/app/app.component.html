@@ -1,1 +1,8 @@
-<router-outlet></router-outlet>
+<ng-container *ngIf="isAuthCompleted">
+    <router-outlet></router-outlet>
+</ng-container>
+
+<!-- TODO: Change loader -->
+<div class="loader">
+    <mat-spinner *ngIf="!isAuthCompleted"></mat-spinner>
+</div>

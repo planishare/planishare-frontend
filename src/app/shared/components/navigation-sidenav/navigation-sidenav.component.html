@@ -1,32 +1,64 @@
 <ul class="navigation-sidenav">
     <li>
-        <button mat-button class="menu-button" (click)="hideSidenav()">
-            <mat-icon>person</mat-icon>
-            <span>Mi perfil</span>
+        <button
+            *ngIf="!isUserAuth"
+            mat-button
+            class="menu-button"
+            [routerLink]="['/auth/register']"
+            (click)="hideSidenav()">
+                <mat-icon>person_add</mat-icon>
+                <span>Registrarse</span>
         </button>
     </li>
     <li>
-        <button mat-button class="menu-button" [routerLink]="['/auth/register']" (click)="hideSidenav()">
-            <mat-icon>person_add</mat-icon>
-            <span>Registrarse</span>
+        <button
+            *ngIf="!isUserAuth"
+            mat-button
+            class="menu-button"
+            [routerLink]="['/auth/login']"
+            (click)="hideSidenav()">
+                <mat-icon>login</mat-icon>
+                <span>Iniciar sesión</span>
         </button>
     </li>
     <li>
-        <button mat-button class="menu-button" [routerLink]="['/auth/login']" (click)="hideSidenav()">
-            <mat-icon>login</mat-icon>
-            <span>Iniciar sesión</span>
+        <button
+            *ngIf="isUserAuth"
+            mat-button
+            class="menu-button"
+            (click)="hideSidenav()">
+                <mat-icon>person</mat-icon>
+                <span>Mi perfil</span>
         </button>
     </li>
     <li>
-        <button mat-button class="menu-button" (click)="hideSidenav()">
-            <mat-icon>description</mat-icon>
-            <span>Mis publicaciones</span>
+        <button
+            *ngIf="isUserAuth"
+            mat-button
+            class="menu-button"
+            (click)="hideSidenav()">
+                <mat-icon>description</mat-icon>
+                <span>Mis publicaciones</span>
         </button>
     </li>
     <li>
-        <button mat-button class="menu-button" (click)="hideSidenav()">
-            <mat-icon>control_point</mat-icon>
-            <span>Crear publicación</span>
+        <button
+            *ngIf="isUserAuth"
+            mat-button
+            class="menu-button"
+            (click)="hideSidenav()">
+                <mat-icon>control_point</mat-icon>
+                <span>Crear publicación</span>
+        </button>
+    </li>
+    <li>
+        <button
+            *ngIf="isUserAuth"
+            mat-button
+            class="menu-button"
+            (click)="hideSidenav(); logout()">
+                <mat-icon>logout</mat-icon>
+                <span>Cerrar sesión</span>
         </button>
     </li>
 </ul>

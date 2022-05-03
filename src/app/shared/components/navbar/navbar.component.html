@@ -1,20 +1,34 @@
 <nav class="navbar" *ngIf="!isMobile()">
     <app-search-button></app-search-button>
     <ul>
-        <li>
-            <app-big-button text="Registrarse" icon="person_add" [routerLink]="['/auth/register']"></app-big-button>
+        <li *ngIf="!isUserAuth">
+            <app-big-button
+                text="Registrarse"
+                icon="person_add"
+                [routerLink]="['/auth/register']">
+            </app-big-button>
         </li>
-        <li>
-            <app-big-button text="Iniciar Sesión" icon="login" [routerLink]="['/auth/login']"></app-big-button>
+        <li *ngIf="!isUserAuth">
+            <app-big-button
+                text="Iniciar Sesión"
+                icon="login"
+                [routerLink]="['/auth/login']">
+            </app-big-button>
         </li>
-        <li>
-            <app-big-button text="Mis publicaciones" icon="description"></app-big-button>
+        <li *ngIf="isUserAuth">
+            <app-big-button
+                text="Mis publicaciones"
+                icon="description">
+            </app-big-button>
         </li>
-        <li>
-            <app-big-button text="Crear publicación" icon="control_point"></app-big-button>
+        <li *ngIf="isUserAuth">
+            <app-big-button
+                text="Crear publicación"
+                icon="control_point">
+            </app-big-button>
         </li>
-        <li>
-            <button mat-mini-fab class="profile-button">
+        <li *ngIf="isUserAuth">
+            <button mat-mini-fab class="profile-button" (click)="logout()">
                 <mat-icon>person</mat-icon>
             </button>
         </li>
