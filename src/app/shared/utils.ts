@@ -1,3 +1,4 @@
+// TODO: stop using this in html templates, prefer use css media queries
 export function isMobile(): boolean {
     return window.innerWidth < 768; // 48rem
 }

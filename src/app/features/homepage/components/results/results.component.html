@@ -1,43 +1,93 @@
+<!-- Query bar -->
 <div class="search-and-filters">
-    <div class="searchbar">
-        
-    </div>
-    <div class="filters">
-        <!-- <app-rounded-select-search
-        class="filter"
-        [list]="academicLevelsList"
-        [control]="academicLevelControl"
-        buttonText="Nivel Académico"
-        bgColor="var(--primary-color)"
-        textColor="var(--light-text)"
-        placeholder="Buscar nivel académico">
-      </app-rounded-select-search>
-      <app-rounded-select-search
-        class="filter"
-        [list]="subjectList"
-        [control]="subjectControl"
-        buttonText="Asignatura"
-        bgColor="var(--warn-color)"
-        textColor="var(--light-text)"
-        placeholder="Buscar asignatura">
-      </app-rounded-select-search>
-      <app-rounded-select-search
-        class="filter"
-        [list]="axesList"
-        [control]="axisControl"
-        buttonText="Eje"
-        bgColor="var(--purple-color)"
-        textColor="var(--light-text)"
-        placeholder="Buscar eje">
-      </app-rounded-select-search>
-      <app-rounded-select-search
-        class="filter"
-        [list]="axesList"
-        [control]="axisControl"
-        buttonText="Eje"
-        bgColor="var(--purple-color)"
-        textColor="var(--light-text)"
-        placeholder="Buscar eje">
-      </app-rounded-select-search> -->
-    </div>
+  <div class="searchbar">
+    <input type="text" autocomplete="off" [formControl]="searchControl">
+    <button *ngIf="searchControl.value" mat-icon-button aria-label="Clear" (click)="searchControl.setValue('')">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="filters">
+    <app-rounded-select-search
+      class="filter"
+      [list]="academicLevelsList"
+      [control]="academicLevelControl"
+      [loading]="isAcademicLevelsLoading"
+      buttonText="Nivel Académico"
+      bgColor="var(--primary-color)"
+      textColor="var(--light-text)"
+      placeholder="Buscar nivel académico">
+    </app-rounded-select-search>
+    <app-rounded-select-search
+      class="filter"
+      [list]="subjectList"
+      [control]="subjectControl"
+      [loading]="isSubjectsLoading"
+      buttonText="Asignatura"
+      bgColor="var(--warn-color)"
+      textColor="var(--light-text)"
+      placeholder="Buscar asignatura">
+    </app-rounded-select-search>
+    <app-rounded-select-search
+      class="filter"
+      [list]="axesList"
+      [control]="axisControl"
+      [loading]="isaxesLoading"
+      buttonText="Eje"
+      bgColor="var(--purple-color)"
+      textColor="var(--light-text)"
+      placeholder="Buscar eje">
+    </app-rounded-select-search>
+    <app-rounded-select-search
+      class="filter"
+      [list]="axesList"
+      [control]="axisControl"
+      [loading]="isaxesLoading"
+      buttonText="Ordenar por"
+      bgColor="var(--green-dark-color)"
+      textColor="var(--light-text)"
+      placeholder="Buscar eje">
+    </app-rounded-select-search>
+  </div>
 </div>
+
+<main class="main">
+  
+  <!-- Top pagination -->
+  <div class="top-pagination">
+    <div class="top-pagination__text">
+      <span>Mostrando 10 de 24</span>
+    </div>
+  
+    <div class="top-pagination__butons">
+      <button mat-raised-button class="pagination-button">
+        <mat-icon>navigate_before</mat-icon>
+      </button>
+      <button mat-raised-button class="pagination-button">
+        <span class="pagination-number">1</span>
+      </button>
+      <button mat-raised-button class="pagination-button">
+        <mat-icon>navigate_next</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Posts -->
+  <div class="posts">
+    
+  </div>
+
+  <!-- Bottom pagination -->
+  <div class="buttons-pagination">
+    <button mat-raised-button class="pagination-button">
+      <mat-icon>navigate_before</mat-icon>
+    </button>
+    <button mat-raised-button class="pagination-button">
+      <span class="pagination-number">1</span>
+    </button>
+    <button mat-raised-button class="pagination-button">
+      <mat-icon>navigate_next</mat-icon>
+    </button>
+  </div>
+</main>
+  

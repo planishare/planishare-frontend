@@ -44,7 +44,7 @@ export type Axis = {
     subject: Subject
 }
 
-// Just an object
+// Post query params: structure in frontend
 export type PostsQueryParams = {
     page?: number,
     search?: string,
@@ -55,7 +55,7 @@ export type PostsQueryParams = {
     ordering?: OrderingType
 }
 
-// Query params used in request
+// Post query params: structure in backend
 export type RealPostsQueryParams = {
     page?: number,
     search?: string | '',

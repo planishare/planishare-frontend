@@ -1,0 +1,106 @@
+:host {
+    display: block;
+    background-image: url('/assets/images/bg-desktop-yellow.png');
+    background-size: contain;
+    background-attachment: fixed;
+
+    padding: 65px 1rem 1rem 1rem;
+}
+
+.search-and-filters {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.searchbar {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    align-content: center;
+
+    position: relative;
+
+    input {
+        width: 100%;
+
+        padding: 0.5em 1em;
+        border: 1px solid rgba($color: #000000, $alpha: 0.2);
+
+        border-radius: 20px;
+        font-weight: 600;
+    }
+
+    button {
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background-color: var(--green-dark-color);
+        color: var(--light-text);
+
+        span {
+            height: 100%;
+            color: var(--dark-text);
+        }
+    }
+}
+
+.filters {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.main {
+    margin-top: 1rem;
+}
+
+.top-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;  // desk
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.top-pagination__text {
+    font-weight: 700;
+}
+
+.top-pagination__butons {
+    display: flex;
+    gap: 0.3rem;
+}
+
+.buttons-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.3rem;
+}
+
+.pagination-button {
+    background-color: var(--green-dark-color);
+    color: var(--light-text);
+    border-radius: 30px;
+}
+
+.pagination-number {
+    font-weight: 600;
+}
+
+@media (max-width: 40rem) {
+    .top-pagination {
+        justify-content: flex-end;  // mobile
+    }
+}
