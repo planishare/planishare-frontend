@@ -4,11 +4,8 @@
     justify-content: center;
 
     background-image: url('/assets/images/bg-desktop-yellow.png');
-    // background-size: cover;
     background-size: contain;
-    background-attachment: fixed;
-
-    background-position: left top; // mobile
+    // background-attachment: fixed;
 }
 
 .header {
@@ -172,7 +169,7 @@
 }
 
 .academic-level-tag {
-    background-color: var(--purple-color);
+    background-color: var(--primary-color);
 }
 
 .subject-tag {
@@ -180,7 +177,7 @@
 }
 
 .axis-tag {
-    background-color: var(--primary-color);
+    background-color: var(--purple-color);
 }
 
 .reactions {

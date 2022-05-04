@@ -4,6 +4,7 @@ import { map, tap } from 'rxjs';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { PostsQueryParams } from 'src/app/core/types/posts.type';
 import { RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
+import { isMobileX } from 'src/app/shared/utils';
 
 @Component({
     selector: 'app-results',
@@ -11,6 +12,8 @@ import { RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-s
     styleUrls: ['./results.component.scss']
 })
 export class ResultsComponent implements OnInit {
+    public isMobile = isMobileX;
+
     public form: FormGroup;
 
     public academicLevelsList: RoundedSelectSearchOption[] = [];

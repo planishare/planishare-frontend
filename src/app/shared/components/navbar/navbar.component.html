@@ -1,5 +1,9 @@
 <nav class="navbar" *ngIf="!isMobile()">
-    <app-search-button></app-search-button>
+    <!-- <app-search-button></app-search-button> -->
+    <!-- TODO: Create service to hide/show button in nav -->
+    <button mat-raised-button class="logo" [routerLink]="['/']">
+        Planishare
+    </button>
     <ul>
         <li *ngIf="!isUserAuth">
             <app-big-button
@@ -39,9 +43,9 @@
     <button mat-icon-button (click)="openSidenav()">
         <mat-icon>menu</mat-icon>
     </button>
-    <!-- <div class="logo">
-        <span>Planishare</span>
-    </div> -->
+    <button mat-raised-button class="logo" [routerLink]="['/']">
+        Planishare
+    </button>
     <app-search-button [simpleIcon]="true"></app-search-button>
 </nav>
 

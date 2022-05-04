@@ -1,7 +1,7 @@
 <!-- Query bar -->
 <div class="search-and-filters">
   <div class="searchbar">
-    <input type="text" autocomplete="off" [formControl]="searchControl">
+    <input type="text" autocomplete="off" [formControl]="searchControl" placeholder="Buscar">
     <button *ngIf="searchControl.value" mat-icon-button aria-label="Clear" (click)="searchControl.setValue('')">
       <mat-icon>close</mat-icon>
     </button>
@@ -54,22 +54,19 @@
 <main class="main">
   
   <!-- Top pagination -->
-  <div class="top-pagination">
-    <div class="top-pagination__text">
-      <span>Mostrando 10 de 24</span>
+  <div class="pagination flex_justify_end">
+    <div class="pagination-text">
+      <span>1 - 10 de 24</span>
     </div>
-  
-    <div class="top-pagination__butons">
-      <button mat-raised-button class="pagination-button">
-        <mat-icon>navigate_before</mat-icon>
-      </button>
-      <button mat-raised-button class="pagination-button">
-        <span class="pagination-number">1</span>
-      </button>
-      <button mat-raised-button class="pagination-button">
-        <mat-icon>navigate_next</mat-icon>
-      </button>
-    </div>
+    <button mat-raised-button class="pagination-button">
+      <mat-icon>navigate_before</mat-icon>
+    </button>
+    <button mat-raised-button class="pagination-button pagination-number">
+      1
+    </button>
+    <button mat-raised-button class="pagination-button">
+      <mat-icon>navigate_next</mat-icon>
+    </button>
   </div>
 
   <!-- Posts -->
@@ -77,45 +74,56 @@
 
     <mat-card class="card">
       <div class="card-body">
-        <img src="/assets/images/img.jpg" alt="document-image" class="card-image">
+        <img src="/assets/images/doc-test.jpg" alt="document-image" class="card-image" *ngIf="!isMobile">
+        <!-- <img src="/assets/images/ppt-test.jpg" alt="document-image" class="card-image" *ngIf="!isMobile"> -->
         <div class="card-content">
+          <img src="/assets/images/doc-test.jpg" alt="document-image" class="card-image" *ngIf="isMobile">
+          <!-- <img src="/assets/images/ppt-test.jpg" alt="document-image" class="card-image" *ngIf="isMobile"> -->
           <mat-card-subtitle>Mariela bustamante - hace 2 semanas</mat-card-subtitle>
           <mat-card-title>Planificacion de ejemplo</mat-card-title>
-          <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio omnis doloremque reprehenderit modi odio quam, illo officiis deserunt, sapiente vel cum labore deleniti minima? Rem ducimus nostrum reprehenderit odio veniam.</div>
-          <mat-chip-list class="tags">
-            <mat-chip class="tag axis-tag">
-              <span>Curso:</span>
-              <span>3ro básico</span>
-            </mat-chip>
-            <mat-chip class="tag axis-tag">
-              <span>Curso:</span>
-              <span>3ro básico</span>
-            </mat-chip>
-            <mat-chip class="tag axis-tag">
-              <span>Curso:</span>
-              <span>3ro básico</span>
-            </mat-chip>
-          </mat-chip-list>
-          <mat-chip-list class="tags">
-            <div class="total-docs">
+
+          <div class="doc-types">
+            <mat-chip-list class="tags">
+              <mat-chip class="small-tag pdf-tag">
+                <span>.pdf</span>
+              </mat-chip>
+              <mat-chip class="small-tag doc-tag">
+                <span>.docx</span>
+              </mat-chip>
+              <mat-chip class="small-tag ppt-tag">
+                <span>.pptx</span>
+              </mat-chip>
+              <mat-chip class="small-tag xls-tag">
+                <span>.xlsx</span>
+              </mat-chip>
+            </mat-chip-list>
+
+            <div class="doc-types-text">
               <mat-icon>description</mat-icon>
-              <span>4 Documentos</span>
+              <span *ngIf="isMobile">4</span>
+              <span *ngIf="!isMobile">4 Documentos</span>
             </div>
-            <mat-chip class="small-tag">
-              <span>.pdf</span>
+          </div>
+
+          <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio omnis doloremque reprehenderit modi odio quam, illo officiis deserunt, sapiente vel cum labore deleniti minima? Rem ducimus nostrum reprehenderit odio veniam.</div>
+
+          <mat-chip-list class="tags">
+            <mat-chip class="academic-level-tag">
+              <span *ngIf="!isMobile">Nivel académico: </span>
+              <span>3ro básico</span>
             </mat-chip>
-            <mat-chip class="small-tag">
-              <span>.docx</span>
+            <mat-chip class="subject-tag">
+              <span *ngIf="!isMobile">Asignatura: </span>
+              <span>Matemática</span>
             </mat-chip>
-            <mat-chip class="small-tag">
-              <span>.pptx</span>
-            </mat-chip>
-            <mat-chip class="small-tag">
-              <span>.xlsx</span>
+            <mat-chip class="axis-tag">
+              <span *ngIf="!isMobile">Eje: </span>
+              <span>Geometría</span>
             </mat-chip>
           </mat-chip-list>
         </div>
       </div>
+
       <mat-card-footer class="card-footer">
         <div class="reaction-info">
           <div>
@@ -130,16 +138,82 @@
         <mat-icon>favorite_outline</mat-icon>
       </mat-card-footer>
     </mat-card>
+    
+    <mat-card class="card">
+      <div class="card-body">
+        <!-- <img src="/assets/images/doc-test.jpg" alt="document-image" class="card-image" *ngIf="!isMobile"> -->
+        <img src="/assets/images/ppt-test.jpg" alt="document-image" class="card-image" *ngIf="!isMobile">
+        <div class="card-content">
+          <!-- <img src="/assets/images/doc-test.jpg" alt="document-image" class="card-image" *ngIf="isMobile"> -->
+          <img src="/assets/images/ppt-test.jpg" alt="document-image" class="card-image" *ngIf="isMobile">
+          <mat-card-subtitle>Mariela bustamante - hace 2 semanas</mat-card-subtitle>
+          <mat-card-title>Planificacion de ejemplo</mat-card-title>
 
+          <div class="doc-types">
+            <mat-chip-list class="tags">
+              <mat-chip class="small-tag pdf-tag">
+                <span>.pdf</span>
+              </mat-chip>
+              <mat-chip class="small-tag doc-tag">
+                <span>.docx</span>
+              </mat-chip>
+              <mat-chip class="small-tag ppt-tag">
+                <span>.pptx</span>
+              </mat-chip>
+              <mat-chip class="small-tag xls-tag">
+                <span>.xlsx</span>
+              </mat-chip>
+            </mat-chip-list>
+
+            <div class="doc-types-text">
+              <mat-icon>description</mat-icon>
+              <span *ngIf="isMobile">4</span>
+              <span *ngIf="!isMobile">4 Documentos</span>
+            </div>
+          </div>
+
+          <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio omnis doloremque reprehenderit modi odio quam, illo officiis deserunt, sapiente vel cum labore deleniti minima? Rem ducimus nostrum reprehenderit odio veniam.</div>
+
+          <mat-chip-list class="tags">
+            <mat-chip class="academic-level-tag">
+              <span *ngIf="!isMobile">Nivel académico: </span>
+              <span>3ro básico</span>
+            </mat-chip>
+            <mat-chip class="subject-tag">
+              <span *ngIf="!isMobile">Asignatura: </span>
+              <span>Matemática</span>
+            </mat-chip>
+            <mat-chip class="axis-tag">
+              <span *ngIf="!isMobile">Eje: </span>
+              <span>Geometría</span>
+            </mat-chip>
+          </mat-chip-list>
+        </div>
+      </div>
+
+      <mat-card-footer class="card-footer">
+        <div class="reaction-info">
+          <div>
+            <mat-icon>favorite</mat-icon>
+            <span>21 Me gusta</span>
+          </div>
+          <div>
+            <mat-icon>download</mat-icon>
+            <span>5 Descargas</span>
+          </div>
+        </div>
+        <mat-icon>favorite_outline</mat-icon>
+      </mat-card-footer>
+    </mat-card>
   </div>
 
   <!-- Bottom pagination -->
-  <div class="buttons-pagination">
+  <div class="pagination flex_justify_center">
     <button mat-raised-button class="pagination-button">
       <mat-icon>navigate_before</mat-icon>
     </button>
-    <button mat-raised-button class="pagination-button">
-      <span class="pagination-number">1</span>
+    <button mat-raised-button class="pagination-button pagination-number">
+      1
     </button>
     <button mat-raised-button class="pagination-button">
       <mat-icon>navigate_next</mat-icon>
