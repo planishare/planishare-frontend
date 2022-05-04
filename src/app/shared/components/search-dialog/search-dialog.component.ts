@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { AbstractControl, AbstractControlOptions, FormControl, FormGroup } from '@angular/forms';
 import { forkJoin, map, Observable, tap } from 'rxjs';
+import { OrderingType } from 'src/app/core/enums/posts.enum';
 import { PostsService } from 'src/app/core/services/posts.service';
+import { PostsQueryParams } from 'src/app/core/types/posts.type';
 import { RoundedSelectSearchOption } from '../../types/rounded-select-search.type';
 import { isMobile } from '../../utils';
 
@@ -13,47 +15,86 @@ import { isMobile } from '../../utils';
 export class SearchDialogComponent implements OnInit {
     public isMobile = isMobile;
 
-    public search: string = '';
-
-    public academicLevelControl: FormControl;
-    public subjectControl: FormControl;
-    public axisControl: FormControl;
+    public form: FormGroup;
 
     public academicLevelsList: RoundedSelectSearchOption[] = [];
     public subjectList: RoundedSelectSearchOption[] = [];
     public axesList: RoundedSelectSearchOption[] = [];
 
-    public isFiltersLoading = true;
+    public isAcademicLevelsLoading = true;
+    public isSubjectsLoading = true;
+    public isaxesLoading = true;
 
     constructor(
         private postsService: PostsService
     ) {
-        this.academicLevelControl = new FormControl();
-        this.subjectControl = new FormControl();
-        this.axisControl = new FormControl();
+        this.form = new FormGroup(
+            {
+                search: new FormControl(),
+                academicLevel: new FormControl(),
+                subject: new FormControl(),
+                axis: new FormControl()
+            }
+            // {
+            //     validators: this.atLeastOneSearchParam
+            // } as AbstractControlOptions
+        );
     }
 
     public ngOnInit(): void {
-        this.getFilters();
-
-        this.academicLevelControl.valueChanges.subscribe(val => console.log('curso', val));
-        this.subjectControl.valueChanges.subscribe(val => console.log('asignatura', val));
-        this.axisControl.valueChanges.subscribe(val => console.log('eje', val));
+        this.getAcademicLevels();
+        this.getSubjects();
+        this.getAxes();
     }
 
-    private getFilters(): void {
-        forkJoin([
-            this.getAcademicLevels(),
-            this.getSubjects(),
-            this.getAxes()
-        ]).subscribe(resp => {
-            console.log('Filters', this.academicLevelsList, this.subjectList, this.axesList);
-            this.isFiltersLoading = false;
-        });
+    public makeSearch(event: Event): void {
+        event.preventDefault();
+        if (this.form.valid) {
+            const searchParams: PostsQueryParams = {
+                search: this.searchControl?.value,
+                academicLevel: this.academicLevelControl.value?.data,
+                subject: this.subjectControl.value?.data,
+                axis: this.axisControl.value?.data
+            };
+
+            // TODO: Redirect to result page
+            this.postsService.getPosts(searchParams)
+                .subscribe(resp => {
+                    console.log(resp);
+                });
+        }
     }
 
-    private getAcademicLevels(): Observable<RoundedSelectSearchOption[]> {
-        return this.postsService.getAcademicLevels()
+    // public atLeastOneSearchParam(group: FormGroup): any {
+    //     const valid =
+    //         !!group.controls['search'].value ||
+    //         !!group.controls['academicLevel'].value ||
+    //         !!group.controls['subject'].value ||
+    //         !!group.controls['axis'].value;
+    //     if (!valid) {
+    //         return { emptyParams: true };
+    //     }
+    //     return null;
+    // }
+
+    public get searchControl() {
+        return this.form.get('search') as FormControl;
+    }
+
+    public get academicLevelControl() {
+        return this.form.get('academicLevel') as FormControl;
+    }
+
+    public get subjectControl() {
+        return this.form.get('subject') as FormControl;
+    }
+
+    public get axisControl() {
+        return this.form.get('axis') as FormControl;
+    }
+
+    private getAcademicLevels(): void {
+        this.postsService.getAcademicLevels()
             .pipe(
                 map(resp => {
                     return resp.map(el => {
@@ -64,11 +105,14 @@ export class SearchDialogComponent implements OnInit {
                     });
                 }),
                 tap(resp => this.academicLevelsList = resp)
-            );
+            )
+            .subscribe(() => {
+                this.isAcademicLevelsLoading = false;
+            });
     }
 
-    private getSubjects(): Observable<RoundedSelectSearchOption[]> {
-        return this.postsService.getSubjects()
+    private getSubjects(): void {
+        this.postsService.getSubjects()
             .pipe(
                 map(resp => {
                     return resp.map(el => {
@@ -79,11 +123,14 @@ export class SearchDialogComponent implements OnInit {
                     });
                 }),
                 tap(resp => this.subjectList = resp)
-            );
+            )
+            .subscribe(() => {
+                this.isSubjectsLoading = false;
+            });
     }
 
-    private getAxes(): Observable<RoundedSelectSearchOption[]> {
-        return this.postsService.getAxes()
+    private getAxes(): void {
+        this.postsService.getAxes()
             .pipe(
                 map(resp => {
                     return resp.map(el => {
@@ -94,6 +141,9 @@ export class SearchDialogComponent implements OnInit {
                     });
                 }),
                 tap(resp => this.axesList = resp)
-            );
+            )
+            .subscribe(() => {
+                this.isaxesLoading = false;
+            });
     }
 }

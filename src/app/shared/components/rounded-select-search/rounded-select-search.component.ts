@@ -20,6 +20,7 @@ export class RoundedSelectSearchComponent implements OnInit {
         this.filteredList = this._list;
     }
     @Input() public disabled: boolean = false;
+    @Input() public loading: boolean = false;
 
     public search: FormControl;
     public _buttonText: string = '';

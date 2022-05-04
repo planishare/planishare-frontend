@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { AcademicLevel, Axis, PostDetail, Subject } from '../types/posts.type';
+import { AcademicLevel, Axis, PostDetail, PostsQueryParams, RealPostsQueryParams, Subject } from '../types/posts.type';
 
 @Injectable({
     providedIn: 'root'
@@ -13,6 +13,21 @@ export class PostsService {
     constructor(
         private http: HttpClient
     ) { }
+
+    public getPosts(queryParams: PostsQueryParams): Observable<PostDetail[]> {
+        const params: RealPostsQueryParams = {
+            page: queryParams.page ?? 1,
+            search: queryParams.search ?? '',
+            user__id: queryParams.userId ?? '',
+            academic_level__id: queryParams.academicLevel?.id ?? '',
+            axis__subject__id: queryParams.subject?.id ?? '',
+            axis__id: queryParams.axis?.id ?? '',
+            ordering: queryParams.ordering ?? ''
+        };
+        return this.http.get<PostDetail[]>(this.api_url + '/posts/', {
+            params: params
+        });
+    }
 
     public getLatestPosts(): Observable<PostDetail[]> {
         return this.http.get<PostDetail[]>(this.api_url + '/posts/latest/');

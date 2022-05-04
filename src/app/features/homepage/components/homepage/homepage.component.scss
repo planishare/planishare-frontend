@@ -3,8 +3,7 @@
     flex-direction: column;
     justify-content: center;
 
-    background-image: url('../../../../assets/images/bg-desktop-yellow.png');
-    // background-image: url('../../../../assets/images/bg-desktop-dark.png');
+    background-image: url('/src/assets/images/bg-desktop-yellow.png');
     // background-size: cover;
     background-size: contain;
     background-attachment: fixed;
@@ -43,7 +42,7 @@
     > button {
         background-color: var(--green-dark-color);
 
-        font-size: clamp(2rem, -0.2500rem + 10vw, 5rem);
+        font-size: clamp(2rem, 0.0000rem + 4.1667vw, 5rem);
         color: var(--light-text);
         
         padding: 0.5em 1em;
@@ -53,6 +52,19 @@
         font-weight: 500;
     }
 }
+
+.search-button {
+    animation: animation1 1s;
+}
+@keyframes animation1 {
+    33% {
+      padding: 0.5em 1.1em;
+      transform: rotate(-5deg);
+    }
+    66% {
+      transform: rotate(5deg);
+    }
+  }
 
 .subtitle1 {
     h2 {

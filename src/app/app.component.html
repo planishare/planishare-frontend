@@ -3,6 +3,7 @@
 </ng-container>
 
 <!-- TODO: Change loader -->
-<div class="loader">
-    <mat-spinner *ngIf="!isAuthCompleted"></mat-spinner>
+<div class="loader" *ngIf="!isAuthCompleted">
+    <!-- <mat-spinner></mat-spinner> -->
+    <app-book-loader></app-book-loader>
 </div>

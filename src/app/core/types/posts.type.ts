@@ -1,3 +1,4 @@
+import { OrderingType } from "../enums/posts.enum";
 import { UserSimpleDetail } from "./users.type";
 
 export type PostDetail = {
@@ -41,4 +42,26 @@ export type Axis = {
     id: number,
     name: string,
     subject: Subject
+}
+
+// Just an object
+export type PostsQueryParams = {
+    page?: number,
+    search?: string,
+    userId?: number,
+    academicLevel?: AcademicLevel,
+    subject?: Subject,
+    axis?: Axis,
+    ordering?: OrderingType
+}
+
+// Query params used in request
+export type RealPostsQueryParams = {
+    page?: number,
+    search?: string | '',
+    user__id?: number | '',
+    academic_level__id?: number | '',
+    axis__subject__id?: number | '',
+    axis__id?: number | '',
+    ordering?: OrderingType | ''
 }

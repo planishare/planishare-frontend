@@ -3,8 +3,8 @@
   <form class="search-form">
     <mat-form-field class="search-field" appearance="outline">
       <mat-label>Busqueda</mat-label>
-      <input matInput type="text" autocomplete="off">
-      <button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="search=''">
+      <input matInput type="text" autocomplete="off" [formControl]="searchControl">
+      <button *ngIf="searchControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchControl.setValue('')">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
@@ -14,6 +14,7 @@
         class="filter"
         [list]="academicLevelsList"
         [control]="academicLevelControl"
+        [loading]="isAcademicLevelsLoading"
         buttonText="Nivel Académico"
         bgColor="var(--primary-color)"
         textColor="var(--light-text)"
@@ -23,6 +24,7 @@
         class="filter"
         [list]="subjectList"
         [control]="subjectControl"
+        [loading]="isSubjectsLoading"
         buttonText="Asignatura"
         bgColor="var(--warn-color)"
         textColor="var(--light-text)"
@@ -32,14 +34,15 @@
         class="filter"
         [list]="axesList"
         [control]="axisControl"
+        [loading]="isaxesLoading"
         buttonText="Eje"
         bgColor="var(--purple-color)"
         textColor="var(--light-text)"
         placeholder="Buscar eje">
       </app-rounded-select-search>
     </div>
+    <div mat-dialog-actions class="actions-section">
+      <button mat-raised-button [disabled]="form.invalid" color="accent" (click)="makeSearch($event)">Ver resultados</button>
+    </div>
   </form>
-</div>
-<div mat-dialog-actions class="actions-section">
-  <button mat-raised-button mat-dialog-close color="accent">Ver resultados</button>
 </div>

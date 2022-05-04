@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { filter, pipe } from 'rxjs';
+import { delay, filter, pipe } from 'rxjs';
 import { AuthService } from './core/services/auth.service';
 
 @Component({
@@ -20,9 +20,10 @@ export class AppComponent implements OnInit {
 
         // TODO: Change loader and add animation
         this.authService.isCompleted$.asObservable()
-            // .pipe(
-            //     filter(isComplete => isComplete)
-            // )
+            .pipe(
+                // filter(isComplete => isComplete)
+                delay(1500)
+            )
             .subscribe(() => {
                 this.isAuthCompleted = true;
             });
