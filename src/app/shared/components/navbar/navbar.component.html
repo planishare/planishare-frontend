@@ -1,9 +1,8 @@
 <nav class="navbar" *ngIf="!isMobile()">
-    <!-- <app-search-button></app-search-button> -->
-    <!-- TODO: Create service to hide/show button in nav -->
-    <button mat-raised-button class="logo" [routerLink]="['/']">
+    <app-search-button></app-search-button>
+    <!-- <button mat-raised-button class="logo" [routerLink]="['/']">
         Planishare
-    </button>
+    </button> -->
     <ul>
         <li *ngIf="!isUserAuth">
             <app-big-button
@@ -47,5 +46,6 @@
         Planishare
     </button>
     <app-search-button [simpleIcon]="true"></app-search-button>
+    <!-- TODO: Add profile button and create a way to hide buttons in navbar -->
 </nav>
 

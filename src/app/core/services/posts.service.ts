@@ -19,9 +19,9 @@ export class PostsService {
             page: queryParams.page ?? 1,
             search: queryParams.search ?? '',
             user__id: queryParams.userId ?? '',
-            academic_level__id: queryParams.academicLevel?.id ?? '',
-            axis__subject__id: queryParams.subject?.id ?? '',
-            axis__id: queryParams.axis?.id ?? '',
+            academic_level__id: queryParams.academicLevel ?? '',
+            axis__subject__id: queryParams.subject ?? '',
+            axis__id: queryParams.axis ?? '',
             ordering: queryParams.ordering ?? ''
         };
         return this.http.get<PostDetail[]>(this.api_url + '/posts/', {

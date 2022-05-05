@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
 import { SidenavComponent } from 'src/app/core/enums/sidenav.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { SidenavService } from 'src/app/core/services/sidenav.service';
@@ -16,9 +15,8 @@ export class NavbarComponent implements OnInit {
 
     constructor(
         private sidenav: SidenavService,
-        private authService: AuthService,
-        private activatedRoute: ActivatedRoute
-    ) { }
+        private authService: AuthService
+    ) {}
 
     public ngOnInit(): void {
         this.authService.isAuth$
@@ -26,9 +24,6 @@ export class NavbarComponent implements OnInit {
             .subscribe(isAuth => {
                 this.isUserAuth = isAuth;
             });
-
-        this.activatedRoute.data.subscribe(x => console.log(x));
-        console.log(this.activatedRoute.snapshot.data);
     }
 
     public openSidenav(): void {

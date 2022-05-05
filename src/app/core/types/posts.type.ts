@@ -49,9 +49,9 @@ export type PostsQueryParams = {
     page?: number,
     search?: string,
     userId?: number,
-    academicLevel?: AcademicLevel,
-    subject?: Subject,
-    axis?: Axis,
+    academicLevel?: number,
+    subject?: number,
+    axis?: number,
     ordering?: OrderingType
 }
 

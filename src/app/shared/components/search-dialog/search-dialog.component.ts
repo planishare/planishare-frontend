@@ -52,9 +52,9 @@ export class SearchDialogComponent implements OnInit {
         if (this.form.valid) {
             const searchParams: PostsQueryParams = {
                 search: this.searchControl?.value,
-                academicLevel: this.academicLevelControl.value?.data,
-                subject: this.subjectControl.value?.data,
-                axis: this.axisControl.value?.data
+                academicLevel: this.academicLevelControl.value?.data.id,
+                subject: this.subjectControl.value?.data.id,
+                axis: this.axisControl.value?.data.id
             };
 
             // TODO: Redirect to result page
