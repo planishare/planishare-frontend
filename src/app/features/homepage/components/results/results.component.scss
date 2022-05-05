@@ -4,7 +4,10 @@
     background-size: contain;
     // background-attachment: fixed;
 
-    padding: 65px 1rem 1rem 1rem;
+    padding: 59px 1rem 1rem 1rem;
+    
+    // TODO: Fix navbar height to knwo how much height needs root
+    // min-height: 100%;
 }
 
 .search-and-filters {
@@ -32,7 +35,11 @@
         border-radius: 20px;
         font-weight: 600;
     }
-    /* clears the ‘X’ from Chrome
+
+    input:focus {
+        outline: none;
+    }
+    /* remove the ‘X’ from Chrome
     *  from: https://medium.com/@rion.mrk/how-to-remove-x-icon-from-search-input-field-or-input-type-search-db3c808405fb
     */
     input[type="search"]::-webkit-search-decoration,
@@ -201,4 +208,32 @@
 .xls-tag {
     // TODO: Find green light color
     background-color: var(--green-dark-color);
+}
+
+// No results
+.no-results {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0;
+
+    .card {
+        width: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        color: var(--dark-text);
+    }
+
+    .icon {
+        font-size: 3rem;
+        height: 100%;
+    }
+}
+
+.no-results__title {
+    font-size: 1.5rem;
 }

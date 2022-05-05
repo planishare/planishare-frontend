@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
         this.authService.isCompleted$.asObservable()
             .pipe(
                 // filter(isComplete => isComplete)
-                delay(1500)
+                delay(100)
             )
             .subscribe(() => {
                 this.isAuthCompleted = true;

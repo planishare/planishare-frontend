@@ -1,8 +1,6 @@
-// TODO: Change loader
 .loader {
-    position: fixed;
+    height: 100%;
 
-    margin-bottom: 40%;
-    right: 50%;
-    bottom: 0;
+    display: grid;
+    place-items: center;
 }

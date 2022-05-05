@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { forkJoin, map, Observable, tap } from 'rxjs';
+import { catchError, forkJoin, map, Observable, of, tap } from 'rxjs';
 import { OrderingType, OrderingTypeName } from 'src/app/core/enums/posts.enum';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { PostDetail, PostsQueryParams } from 'src/app/core/types/posts.type';
@@ -16,7 +17,8 @@ import { isMobileX } from 'src/app/shared/utils';
 export class ResultsComponent implements OnInit {
     public isMobile = isMobileX;
     public isLoading = true;
-    public hasData = true; // TODO: implement error handlers and not results view
+
+    public hasData = true;
 
     public posts: PostDetail[] = [];
     public form: FormGroup;
@@ -26,28 +28,20 @@ export class ResultsComponent implements OnInit {
     public axesList: RoundedSelectSearchOption[] = [];
     public orderingList: RoundedSelectSearchOption[] = [
         {
-            data: OrderingType.CREATED_AT_AS,
-            text: OrderingTypeName.CREATED_AT_AS
+            data: OrderingType.MOST_RECENT,
+            text: OrderingTypeName.MOST_RECENT
         },
         {
-            data: OrderingType.CREATED_AT_DES,
-            text: OrderingTypeName.CREATED_AT_DES
+            data: OrderingType.LESS_RECENT,
+            text: OrderingTypeName.LESS_RECENT
         },
         {
-            data: OrderingType.TOTAL_DOWNLOADS_AS,
-            text: OrderingTypeName.TOTAL_DOWNLOADS_AS
+            data: OrderingType.MOST_LIKED,
+            text: OrderingTypeName.MOST_LIKED
         },
         {
-            data: OrderingType.TOTAL_DOWNLOADS_DES,
-            text: OrderingTypeName.TOTAL_DOWNLOADS_DES
-        },
-        {
-            data: OrderingType.TOTAL_LIKES_AS,
-            text: OrderingTypeName.TOTAL_LIKES_AS
-        },
-        {
-            data: OrderingType.TOTAL_LIKES_DES,
-            text: OrderingTypeName.TOTAL_LIKES_DES
+            data: OrderingType.MOST_DOWNLOADED,
+            text: OrderingTypeName.MOST_DOWNLOADED
         }
     ];
 
@@ -58,7 +52,8 @@ export class ResultsComponent implements OnInit {
     constructor(
         private postsService: PostsService,
         private activatedRoute: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        private matSnackbar: MatSnackBar
     ) {
         this.form = new FormGroup(
             {
@@ -72,18 +67,24 @@ export class ResultsComponent implements OnInit {
     }
 
     public ngOnInit(): void {
-        forkJoin([
-            this.getAcademicLevels(),
-            this.getSubjects(),
-            this.getAxes()
-        ]).subscribe(() => {
-            this.getQueryParams();
-
-            this.academicLevelControl.valueChanges.subscribe(() => this.doSearch());
-            this.subjectControl.valueChanges.subscribe(() => this.doSearch());
-            this.axisControl.valueChanges.subscribe(() => this.doSearch());
-            this.orderingControl.valueChanges.subscribe(() => this.doSearch());
-        });
+        forkJoin([this.getAcademicLevels(), this.getSubjects(), this.getAxes() ])
+            .pipe(
+                catchError(error => {
+                    this.showErrorMessage();
+                    return of(null);
+                })
+            )
+            .subscribe(resp => {
+                if (!!resp) {
+                    this.getQueryParams();
+                    this.academicLevelControl.valueChanges.subscribe(() => this.doSearch());
+                    this.subjectControl.valueChanges.subscribe(() => this.doSearch());
+                    this.axisControl.valueChanges.subscribe(() => this.doSearch());
+                    this.orderingControl.valueChanges.subscribe(() => this.doSearch());
+                } else {
+                    this.hasData = false;
+                }
+            });
     }
 
     public doSearch(): void {
@@ -103,10 +104,21 @@ export class ResultsComponent implements OnInit {
     public getPosts(params: PostsQueryParams): void {
         this.isLoading = true;
         this.postsService.getPosts(params)
+            .pipe(
+                catchError(error => {
+                    this.showErrorMessage();
+                    return of(null);
+                })
+            )
             .subscribe(resp => {
                 console.log(resp);
+                if (!!resp) {
+                    this.posts = resp.results;
+                    this.hasData = !!this.posts.length;
+                } else {
+                    this.hasData;
+                }
                 this.isLoading = false;
-                this.posts = resp.results;
             });
     }
 
@@ -223,5 +235,12 @@ export class ResultsComponent implements OnInit {
                 tap(resp => this.axesList = resp),
                 tap(() => this.isaxesLoading = false)
             );
+    }
+
+    private showErrorMessage(): void {
+        const msg = 'Ups! ha ocurrido un problema, intenta recargar';
+        const action = 'Recargar';
+        this.matSnackbar.open(msg, action).onAction()
+            .subscribe(() => this.router.navigate(['']));
     }
 }

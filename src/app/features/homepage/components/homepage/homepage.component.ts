@@ -5,6 +5,7 @@ import { PostsService } from 'src/app/core/services/posts.service';
 import { RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
 import { isMobile } from 'src/app/shared/utils';
 import { AcademicLevel, Axis, PostDetail, PostsQueryParams, Subject } from 'src/app/core/types/posts.type';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-homepage',
@@ -30,7 +31,8 @@ export class HomepageComponent implements OnInit {
     public showSearchButton = false;
 
     constructor(
-        private postsService: PostsService
+        private postsService: PostsService,
+        private router: Router
     ) {
         this.form = new FormGroup(
             {
@@ -64,10 +66,11 @@ export class HomepageComponent implements OnInit {
                 axis: this.axisControl.value?.data.id
             };
 
-            // TODO: Redirect to result page
             this.postsService.getPosts(searchParams)
                 .subscribe(resp => {
-                    console.log(resp);
+                    this.router.navigate(['/results'], {
+                        queryParams: searchParams
+                    });
                 });
         }
     }

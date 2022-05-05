@@ -1,8 +1,8 @@
 <!-- Query bar -->
 <div class="search-and-filters">
   <div class="searchbar">
-    <!-- TODO: Add search icon -->
-    <!-- TODO: Fix focus after search -->
+    <!-- TODO-OPT: Add search icon -->
+    <!-- TODO-OPT: Fix focus after search -->
     <input type="search" autocomplete="off" [formControl]="searchControl" placeholder="Buscar" (keyup.enter)="doSearch()">
     <button *ngIf="searchControl.value" mat-icon-button aria-label="Clear" (click)="clearSearchControl()">
       <mat-icon>close</mat-icon>
@@ -47,7 +47,7 @@
       buttonText="Ordenar por"
       bgColor="var(--green-dark-color)"
       textColor="var(--light-text)"
-      placeholder="Buscar eje">
+      placeholder="Ordenar por">
     </app-rounded-select-search>
   </div>
 </div>
@@ -55,7 +55,7 @@
 <main class="main">
   
   <!-- Top pagination -->
-  <div class="pagination flex_justify_end">
+  <div class="pagination flex_justify_end" *ngIf="hasData">
     <div class="pagination-text">
       <span>1 - 10 de 24</span>
     </div>
@@ -70,9 +70,23 @@
     </button>
   </div>
 
-  <!-- Posts -->
-  <div class="posts">
+  <!-- TODO: Add shimmer -->
+  <!-- Loader -->
+  <div class="search-loader" *ngIf="isLoading">
+    shimer...
+  </div>
 
+  <!-- No results card -->
+  <div class="no-results" *ngIf="!hasData">
+    <mat-card class="card">
+      <mat-icon class="icon">search</mat-icon>
+      <span class="no-results__title">No se encontraron resultados</span>
+      <span>Prueba con algo diferente</span>
+    </mat-card>
+  </div>
+  
+  <!-- Posts -->
+  <div class="posts" *ngIf="hasData">
     <ng-container *ngFor="let post of posts">
       <mat-card class="card">
         <div class="card-body">
@@ -150,7 +164,7 @@
   </div>
 
   <!-- Bottom pagination -->
-  <div class="pagination flex_justify_center">
+  <div class="pagination flex_justify_center" *ngIf="hasData">
     <button mat-raised-button class="pagination-button">
       <mat-icon>navigate_before</mat-icon>
     </button>

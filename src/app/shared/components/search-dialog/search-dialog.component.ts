@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, AbstractControlOptions, FormControl, FormGroup } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { forkJoin, map, Observable, tap } from 'rxjs';
 import { OrderingType } from 'src/app/core/enums/posts.enum';
 import { PostsService } from 'src/app/core/services/posts.service';
@@ -26,7 +28,9 @@ export class SearchDialogComponent implements OnInit {
     public isaxesLoading = true;
 
     constructor(
-        private postsService: PostsService
+        private postsService: PostsService,
+        private router: Router,
+        private dialogRef: MatDialogRef<SearchDialogComponent>
     ) {
         this.form = new FormGroup(
             {
@@ -57,10 +61,12 @@ export class SearchDialogComponent implements OnInit {
                 axis: this.axisControl.value?.data.id
             };
 
-            // TODO: Redirect to result page
             this.postsService.getPosts(searchParams)
                 .subscribe(resp => {
-                    console.log(resp);
+                    this.dialogRef.close();
+                    this.router.navigate(['/results'], {
+                        queryParams: searchParams
+                    });
                 });
         }
     }
