@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { AcademicLevel, Axis, PostDetail, PostsQueryParams, RealPostsQueryParams, Subject } from '../types/posts.type';
+import { AcademicLevel, Axis, PostDetail, PostPageable, PostsQueryParams, RealPostsQueryParams, Subject } from '../types/posts.type';
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +14,7 @@ export class PostsService {
         private http: HttpClient
     ) { }
 
-    public getPosts(queryParams: PostsQueryParams): Observable<PostDetail[]> {
+    public getPosts(queryParams: PostsQueryParams): Observable<PostPageable> {
         const params: RealPostsQueryParams = {
             page: queryParams.page ?? 1,
             search: queryParams.search ?? '',
@@ -24,7 +24,7 @@ export class PostsService {
             axis__id: queryParams.axis ?? '',
             ordering: queryParams.ordering ?? ''
         };
-        return this.http.get<PostDetail[]>(this.api_url + '/posts/', {
+        return this.http.get<PostPageable>(this.api_url + '/posts/', {
             params: params
         });
     }

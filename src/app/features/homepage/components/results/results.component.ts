@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { map, tap } from 'rxjs';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { forkJoin, map, Observable, tap } from 'rxjs';
 import { OrderingType, OrderingTypeName } from 'src/app/core/enums/posts.enum';
 import { PostsService } from 'src/app/core/services/posts.service';
-import { PostsQueryParams } from 'src/app/core/types/posts.type';
+import { PostDetail, PostsQueryParams } from 'src/app/core/types/posts.type';
 import { RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
 import { isMobileX } from 'src/app/shared/utils';
 
@@ -14,7 +15,10 @@ import { isMobileX } from 'src/app/shared/utils';
 })
 export class ResultsComponent implements OnInit {
     public isMobile = isMobileX;
+    public isLoading = true;
+    public hasData = true; // TODO: implement error handlers and not results view
 
+    public posts: PostDetail[] = [];
     public form: FormGroup;
 
     public academicLevelsList: RoundedSelectSearchOption[] = [];
@@ -52,7 +56,9 @@ export class ResultsComponent implements OnInit {
     public isaxesLoading = true;
 
     constructor(
-        private postsService: PostsService
+        private postsService: PostsService,
+        private activatedRoute: ActivatedRoute,
+        private router: Router
     ) {
         this.form = new FormGroup(
             {
@@ -66,29 +72,82 @@ export class ResultsComponent implements OnInit {
     }
 
     public ngOnInit(): void {
-        this.getAcademicLevels();
-        this.getSubjects();
-        this.getAxes();
+        forkJoin([
+            this.getAcademicLevels(),
+            this.getSubjects(),
+            this.getAxes()
+        ]).subscribe(() => {
+            this.getQueryParams();
 
-        this.form.valueChanges.subscribe(() => this.makeSearch());
+            this.academicLevelControl.valueChanges.subscribe(() => this.doSearch());
+            this.subjectControl.valueChanges.subscribe(() => this.doSearch());
+            this.axisControl.valueChanges.subscribe(() => this.doSearch());
+            this.orderingControl.valueChanges.subscribe(() => this.doSearch());
+        });
     }
 
-    public makeSearch(event?: Event): void {
-        event?.preventDefault();
+    public doSearch(): void {
+        const searchParams: PostsQueryParams = {
+            search: this.searchControl?.value,
+            academicLevel: this.academicLevelControl.value?.data.id,
+            subject: this.subjectControl.value?.data.id,
+            axis: this.axisControl.value?.data.id,
+            ordering: this.orderingControl.value?.data
+        };
         if (this.form.valid) {
-            const searchParams: PostsQueryParams = {
-                search: this.searchControl?.value,
-                academicLevel: this.academicLevelControl.value?.data.id,
-                subject: this.subjectControl.value?.data.id,
-                axis: this.axisControl.value?.data.id,
-                ordering: this.orderingControl.value?.data
-            };
-
-            this.postsService.getPosts(searchParams)
-                .subscribe(resp => {
-                    console.log(resp);
-                });
+            this.getPosts(searchParams);
+            this.setQueryParams();
         }
+    }
+
+    public getPosts(params: PostsQueryParams): void {
+        this.isLoading = true;
+        this.postsService.getPosts(params)
+            .subscribe(resp => {
+                console.log(resp);
+                this.isLoading = false;
+                this.posts = resp.results;
+            });
+    }
+
+    private setQueryParams(): void {
+        const queryParams: PostsQueryParams = {};
+        if (!!this.searchControl?.value) {
+            queryParams.search = this.searchControl?.value;
+        }
+        if (!!this.academicLevelControl?.value) {
+            queryParams.academicLevel = this.academicLevelControl.value?.data.id;
+        }
+        if (!!this.subjectControl?.value) {
+            queryParams.subject = this.subjectControl.value?.data.id;
+        }
+        if (!!this.axisControl?.value) {
+            queryParams.axis = this.axisControl.value?.data.id;
+        }
+        if (!!this.orderingControl?.value) {
+            queryParams.ordering = this.orderingControl?.value?.data;
+        }
+        this.router.navigate(
+            [],
+            {
+                relativeTo: this.activatedRoute,
+                queryParams: queryParams
+            }
+        );
+    }
+
+    private getQueryParams(): void {
+        const params: Params | PostsQueryParams = this.activatedRoute.snapshot.queryParams;
+        this.getPosts(params);
+        this.form.patchValue(
+            {
+                search: params.search,
+                academicLevel: this.academicLevelsList.find(el => el.data?.id === Number(params.academicLevel)),
+                subject: this.subjectList.find(el => el.data?.id === Number(params.subject)),
+                axis: this.axesList.find(el => el.data?.id === Number(params.axis)),
+                ordering: this.orderingList.find(el => el.data === params.ordering)
+            }
+        );
     }
 
     // Form stuff
@@ -112,9 +171,14 @@ export class ResultsComponent implements OnInit {
         return this.form.get('ordering') as FormControl;
     }
 
+    public clearSearchControl(): void {
+        this.searchControl.setValue('');
+        this.doSearch();
+    }
+
     // Filters requests
-    private getAcademicLevels(): void {
-        this.postsService.getAcademicLevels()
+    private getAcademicLevels(): Observable<RoundedSelectSearchOption[]> {
+        return this.postsService.getAcademicLevels()
             .pipe(
                 map(resp => {
                     return resp.map(el => {
@@ -124,15 +188,13 @@ export class ResultsComponent implements OnInit {
                         } as RoundedSelectSearchOption;
                     });
                 }),
-                tap(resp => this.academicLevelsList = resp)
-            )
-            .subscribe(() => {
-                this.isAcademicLevelsLoading = false;
-            });
+                tap(resp => this.academicLevelsList = resp),
+                tap(() => this.isAcademicLevelsLoading = false)
+            );
     }
 
-    private getSubjects(): void {
-        this.postsService.getSubjects()
+    private getSubjects(): Observable<RoundedSelectSearchOption[]> {
+        return this.postsService.getSubjects()
             .pipe(
                 map(resp => {
                     return resp.map(el => {
@@ -142,15 +204,13 @@ export class ResultsComponent implements OnInit {
                         } as RoundedSelectSearchOption;
                     });
                 }),
-                tap(resp => this.subjectList = resp)
-            )
-            .subscribe(() => {
-                this.isSubjectsLoading = false;
-            });
+                tap(resp => this.subjectList = resp),
+                tap(() => this.isSubjectsLoading = false)
+            );
     }
 
-    private getAxes(): void {
-        this.postsService.getAxes()
+    private getAxes(): Observable<RoundedSelectSearchOption[]> {
+        return this.postsService.getAxes()
             .pipe(
                 map(resp => {
                     return resp.map(el => {
@@ -160,10 +220,8 @@ export class ResultsComponent implements OnInit {
                         } as RoundedSelectSearchOption;
                     });
                 }),
-                tap(resp => this.axesList = resp)
-            )
-            .subscribe(() => {
-                this.isaxesLoading = false;
-            });
+                tap(resp => this.axesList = resp),
+                tap(() => this.isaxesLoading = false)
+            );
     }
 }

@@ -1,8 +1,8 @@
 <nav class="navbar" *ngIf="!isMobile()">
-    <app-search-button></app-search-button>
-    <!-- <button mat-raised-button class="logo" [routerLink]="['/']">
+    <!-- <app-search-button></app-search-button> -->
+    <button mat-raised-button class="logo" [routerLink]="['/']">
         Planishare
-    </button> -->
+    </button>
     <ul>
         <li *ngIf="!isUserAuth">
             <app-big-button

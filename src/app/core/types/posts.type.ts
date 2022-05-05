@@ -1,4 +1,5 @@
 import { OrderingType } from "../enums/posts.enum";
+import { Pageable } from "./pageable.type";
 import { UserSimpleDetail } from "./users.type";
 
 export type PostDetail = {
@@ -64,4 +65,8 @@ export type RealPostsQueryParams = {
     axis__subject__id?: number | '',
     axis__id?: number | '',
     ordering?: OrderingType | ''
+}
+
+export type PostPageable = Pageable & {
+    results: PostDetail[]
 }
