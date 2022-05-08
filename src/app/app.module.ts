@@ -9,6 +9,11 @@ import { SharedModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { CoreModule } from './core/core.module';
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { provideAnalytics,getAnalytics,ScreenTrackingService,UserTrackingService } from '@angular/fire/analytics';
+import { provideAuth,getAuth } from '@angular/fire/auth';
+import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 
 @NgModule({
     declarations: [
@@ -21,9 +26,15 @@ import { CoreModule } from './core/core.module';
         HomepageModule,
         SharedModule,
         BrowserAnimationsModule,
-        CoreModule
+        CoreModule,
+        provideFirebaseApp(() => initializeApp(environment.firebase)),
+        provideAnalytics(() => getAnalytics()),
+        provideAuth(() => getAuth()),
+        provideFirestore(() => getFirestore())
     ],
-    providers: [],
+    providers: [
+        ScreenTrackingService,UserTrackingService
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
