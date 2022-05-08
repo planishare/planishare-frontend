@@ -7,17 +7,15 @@ import { environment } from 'src/environments/environment';
     providedIn: 'root'
 })
 export class UsersService {
-    private api_url = environment.API_URL;
-
     constructor(
         private http: HttpClient
     ) { }
 
     public isEmailAvailable(email: string): Observable<any> {
-        return this.http.get(`${this.api_url}/users/is-email-available/${email}/`);
+        return this.http.get(`${environment.API_URL}/users/is-email-available/${email}/`);
     }
 
     public getUserProfileByEmail(email: string): Observable<any> {
-        return this.http.get(`${this.api_url}/users/by-email/${email}/`);
+        return this.http.get(`${environment.API_URL}/users/by-email/${email}/`);
     }
 }

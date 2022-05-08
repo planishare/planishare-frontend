@@ -18,6 +18,7 @@ import {
 } from '@angular/fire/auth';
 import { UsersService } from './users.service';
 import { UserDetail } from '../types/users.type';
+import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
 @Injectable({
     providedIn: 'root'
@@ -34,7 +35,8 @@ export class AuthService {
     constructor(
         private auth: Auth,
         private http: HttpClient,
-        private userService: UsersService
+        private userService: UsersService,
+        private commonSnackbarMsg: CommonSnackbarMsgService
     ) {
         onAuthStateChanged(auth, (user: any) => {
             if (!!user) {
@@ -51,9 +53,18 @@ export class AuthService {
 
                     // Get user profile
                     this.userService.getUserProfileByEmail(user.email)
+                        .pipe(
+                            catchError(() => {
+                                this.commonSnackbarMsg.showErrorMessage();
+                                this.isCompleted$.next(false);
+                                return of(null);
+                            })
+                        )
                         .subscribe((userProfile: UserDetail) => {
-                            this.userProfile = userProfile;
-                            this.isCompleted$.next(true);
+                            if (!!userProfile) {
+                                this.userProfile = userProfile;
+                                this.isCompleted$.next(true);
+                            }
                         });
                 }
             } else {
@@ -63,12 +74,17 @@ export class AuthService {
         });
     }
 
-    public loginAnonymously(): Observable<UserCredential> {
+    public loginAnonymously(): Observable<UserCredential | null> {
         this.userProfile = undefined;
         return from(signInAnonymously(this.auth))
             .pipe(
                 tap(resp => {
                     this.authServiceConsoleLog('loginWithEmailAndPassword', resp);
+                }),
+                catchError(() => {
+                    this.commonSnackbarMsg.showErrorMessage();
+                    this.isCompleted$.next(false);
+                    return of(null);
                 })
             );
     }
@@ -122,7 +138,7 @@ export class AuthService {
             );
     }
 
-    // Register in planishare database
+    // Register in planishare backend
     public register(credentials: BasicCredentials | RegisterInfo): Observable<any> {
         return this.http.post(environment.API_URL + '/auth/register/', credentials)
             .pipe(

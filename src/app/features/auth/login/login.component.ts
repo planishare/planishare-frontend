@@ -1,10 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { FirebaseError } from 'firebase/app';
 import { catchError, of } from 'rxjs';
+import { LoginErrorMessage } from 'src/app/core/enums/auth.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { BasicCredentials } from 'src/app/core/types/auth.type';
+import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
 @Component({
     selector: 'app-login',
@@ -20,7 +24,9 @@ export class LoginComponent implements OnInit {
 
     constructor(
         private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private commonSnackbarMsg: CommonSnackbarMsgService,
+        private matSnackbar: MatSnackBar
     ) {
         this.form = new FormGroup(
             {
@@ -49,10 +55,19 @@ export class LoginComponent implements OnInit {
 
             this.authService.loginWithEmailAndPassword(credentials)
                 .pipe(
-                    catchError((error: HttpErrorResponse) => {
-                        // TODO: Check if this still working
-                        if (error.status === 401) {
+                    catchError((error: FirebaseError) => {
+                        if (
+                            error.code === LoginErrorMessage.EMAIL_NOT_FOUND ||
+                            error.code === LoginErrorMessage.INVALID_PASSWORD
+                        ) {
                             this.wrongCredentials = true;
+                        } else if (error.code === LoginErrorMessage.TOO_MANY_REQUESTS) {
+                            this.matSnackbar.open(
+                                'Has hecho demasiados intentos, intenta más tarde :(',
+                                'OK'
+                            );
+                        } else {
+                            this.commonSnackbarMsg.showErrorMessage();
                         }
                         return of(null);
                     })
@@ -73,11 +88,8 @@ export class LoginComponent implements OnInit {
     public loginWithGoogle(): void {
         this.authService.loginWithGoogle()
             .pipe(
-                catchError((error: HttpErrorResponse) => {
-                    // TODO: Check if this still working
-                    if (error.status === 401) {
-                        this.wrongCredentials = true;
-                    }
+                catchError((error: FirebaseError) => {
+                    this.commonSnackbarMsg.showErrorMessage();
                     return of(null);
                 })
             )

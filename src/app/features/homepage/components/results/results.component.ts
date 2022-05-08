@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { ReactionsService } from 'src/app/core/services/reactions.service';
 import { PostDetail, PostsQueryParams } from 'src/app/core/types/posts.type';
+import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 import { RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
 import { isMobileX } from 'src/app/shared/utils';
 
@@ -57,7 +58,7 @@ export class ResultsComponent implements OnInit {
         private authService: AuthService,
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private matSnackbar: MatSnackBar
+        private commonSnackbarMsg: CommonSnackbarMsgService
     ) {
         this.form = new FormGroup(
             {
@@ -74,7 +75,7 @@ export class ResultsComponent implements OnInit {
         forkJoin([this.getAcademicLevels(), this.getSubjects(), this.getAxes() ])
             .pipe(
                 catchError(error => {
-                    this.showErrorMessage();
+                    this.commonSnackbarMsg.showErrorMessage();
                     return of(null);
                 })
             )
@@ -110,7 +111,7 @@ export class ResultsComponent implements OnInit {
         this.postsService.getPosts(params)
             .pipe(
                 catchError(error => {
-                    this.showErrorMessage();
+                    this.commonSnackbarMsg.showErrorMessage();
                     return of(null);
                 })
             )
@@ -169,6 +170,7 @@ export class ResultsComponent implements OnInit {
     public toggleLike(post: PostDetail): any {
         const user = this.authService.getUserProfile();
         if (!!!user) {
+            this.commonSnackbarMsg.showLoginMessage('dar Me gusta');
             return;
         }
         if (!!post.is_liked) {
@@ -183,6 +185,7 @@ export class ResultsComponent implements OnInit {
                     catchError(() => {
                         post.is_liked = likeId;
                         post.likes++;
+                        this.commonSnackbarMsg.showErrorMessage();
                         return of(null);
                     })
                 )
@@ -200,6 +203,7 @@ export class ResultsComponent implements OnInit {
                     catchError(() => {
                         post.is_liked = null;
                         post.likes--;
+                        this.commonSnackbarMsg.showErrorMessage();
                         return of(null);
                     })
                 )
@@ -285,12 +289,5 @@ export class ResultsComponent implements OnInit {
                 tap(resp => this.axesList = resp),
                 tap(() => this.isaxesLoading = false)
             );
-    }
-
-    private showErrorMessage(): void {
-        const msg = 'Ups! ha ocurrido un problema, intenta recargar';
-        const action = 'Recargar';
-        this.matSnackbar.open(msg, action).onAction()
-            .subscribe(() => this.router.navigate(['']));
     }
 }

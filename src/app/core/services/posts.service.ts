@@ -9,8 +9,6 @@ import { AuthService } from './auth.service';
     providedIn: 'root'
 })
 export class PostsService {
-    private api_url = environment.API_URL;
-
     constructor(
         private http: HttpClient,
         private authService: AuthService
@@ -27,29 +25,29 @@ export class PostsService {
             ordering: queryParams.ordering ?? ''
         };
 
-        return this.http.get<PostPageable>(this.api_url + '/posts/', {
+        return this.http.get<PostPageable>(environment.API_URL + '/posts/', {
             params
         });
     }
 
     public getLatestPosts(): Observable<PostDetail[]> {
-        return this.http.get<PostDetail[]>(this.api_url + '/posts/latest/');
+        return this.http.get<PostDetail[]>(environment.API_URL + '/posts/latest/');
     }
 
     public getMostLikedPosts(): Observable<PostDetail[]> {
-        return this.http.get<PostDetail[]>(this.api_url + '/posts/most-liked/');
+        return this.http.get<PostDetail[]>(environment.API_URL + '/posts/most-liked/');
     }
 
     // Academic Level, Subjects and Axis
     public getAcademicLevels(): Observable<AcademicLevel[]> {
-        return this.http.get<AcademicLevel[]>(this.api_url + '/academic-levels/');
+        return this.http.get<AcademicLevel[]>(environment.API_URL + '/academic-levels/');
     }
 
     public getSubjects(): Observable<Subject[]> {
-        return this.http.get<Subject[]>(this.api_url + '/subjects/');
+        return this.http.get<Subject[]>(environment.API_URL + '/subjects/');
     }
 
     public getAxes(): Observable<Axis[]> {
-        return this.http.get<Axis[]>(this.api_url + '/axis/');
+        return this.http.get<Axis[]>(environment.API_URL + '/axis/');
     }
 }

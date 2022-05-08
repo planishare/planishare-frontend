@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { forkJoin, map, Observable, tap } from 'rxjs';
+import { catchError, forkJoin, map, Observable, of, tap } from 'rxjs';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
 import { isMobile } from 'src/app/shared/utils';
 import { AcademicLevel, Axis, PostDetail, PostsQueryParams, Subject } from 'src/app/core/types/posts.type';
 import { Router } from '@angular/router';
+import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
 @Component({
     selector: 'app-homepage',
@@ -32,7 +33,8 @@ export class HomepageComponent implements OnInit {
 
     constructor(
         private postsService: PostsService,
-        private router: Router
+        private router: Router,
+        private commonSnackbarMsg: CommonSnackbarMsgService
     ) {
         this.form = new FormGroup(
             {
@@ -99,9 +101,15 @@ export class HomepageComponent implements OnInit {
                         } as RoundedSelectSearchOption;
                     });
                 }),
-                tap(resp => this.academicLevelsList = resp)
+                catchError(() => {
+                    this.commonSnackbarMsg.showErrorMessage();
+                    return of(null);
+                })
             )
-            .subscribe(() => {
+            .subscribe(resp => {
+                if (!!resp) {
+                    this.academicLevelsList = resp;
+                }
                 this.isAcademicLevelsLoading = false;
             });
     }
@@ -117,9 +125,15 @@ export class HomepageComponent implements OnInit {
                         } as RoundedSelectSearchOption;
                     });
                 }),
-                tap(resp => this.subjectList = resp)
+                catchError(() => {
+                    this.commonSnackbarMsg.showErrorMessage();
+                    return of(null);
+                })
             )
-            .subscribe(() => {
+            .subscribe(resp => {
+                if (!!resp) {
+                    this.subjectList = resp;
+                }
                 this.isSubjectsLoading = false;
             });
     }
@@ -135,9 +149,15 @@ export class HomepageComponent implements OnInit {
                         } as RoundedSelectSearchOption;
                     });
                 }),
-                tap(resp => this.axesList = resp)
+                catchError(() => {
+                    this.commonSnackbarMsg.showErrorMessage();
+                    return of(null);
+                })
             )
-            .subscribe(() => {
+            .subscribe(resp => {
+                if (!!resp) {
+                    this.axesList = resp;
+                }
                 this.isaxesLoading = false;
             });
     }
@@ -150,10 +170,18 @@ export class HomepageComponent implements OnInit {
         forkJoin([
             this.getLatestPosts(),
             this.getMostLikedPosts()
-        ]).subscribe(resp => {
-            console.log('Tops', resp);
-            this.isTopLoading = false;
-        });
+        ])
+            .pipe(
+                catchError(() => {
+                    return of(null);
+                })
+            )
+            .subscribe(resp => {
+                if (!!resp) {
+                    console.log('Tops', resp);
+                }
+                this.isTopLoading = false;
+            });
     }
 
     private getLatestPosts(): Observable<PostDetail[]> {

@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, AbstractControlOptions, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { Router } from '@angular/router';
+import { FirebaseError } from 'firebase/app';
 import { catchError, map, Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UsersService } from 'src/app/core/services/users.service';
 import { BasicCredentials } from 'src/app/core/types/auth.type';
+import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
 class MyErrorStateMatcher implements ErrorStateMatcher {
     public isErrorState(control: FormControl | null): boolean {
@@ -34,7 +36,8 @@ export class RegisterComponent {
     constructor(
         private authService: AuthService,
         private router: Router,
-        private userService: UsersService
+        private userService: UsersService,
+        private commonSnackbarMsg: CommonSnackbarMsgService
     ) {
         this.form = new FormGroup(
             {
@@ -63,7 +66,8 @@ export class RegisterComponent {
 
             this.authService.registerWithEmailAndPassword(credentials)
                 .pipe(
-                    catchError(error => {
+                    catchError((error: FirebaseError) => {
+                        this.commonSnackbarMsg.showErrorMessage();
                         return of(null);
                     })
                 )
@@ -82,7 +86,8 @@ export class RegisterComponent {
     public loginWithGoogle(): void {
         this.authService.loginWithGoogle()
             .pipe(
-                catchError(error => {
+                catchError((error: FirebaseError) => {
+                    this.commonSnackbarMsg.showErrorMessage();
                     return of(null);
                 })
             )
