@@ -162,6 +162,11 @@ export class ResultsComponent implements OnInit {
         );
     }
 
+    public toggleLike(): void {
+        console.log('Like!');
+        // TODO: Make request and change buutton style
+    }
+
     // Form stuff
     public get searchControl() {
         return this.form.get('search') as FormControl;

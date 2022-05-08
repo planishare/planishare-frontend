@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
                 )
                 .subscribe(resp => {
                     if (!!resp) {
-                        // TODO: redirect to a specific route
+                        // TODO-OPT: redirect to a specific route
                         this.router.navigate(['/']);
                     }
                     this.isLoading = false;

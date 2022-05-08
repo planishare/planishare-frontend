@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AcademicLevel, Axis, PostDetail, PostPageable, PostsQueryParams, RealPostsQueryParams, Subject } from '../types/posts.type';
+import { AuthService } from './auth.service';
 
 @Injectable({
     providedIn: 'root'
@@ -11,7 +12,8 @@ export class PostsService {
     private api_url = environment.API_URL;
 
     constructor(
-        private http: HttpClient
+        private http: HttpClient,
+        private authService: AuthService
     ) { }
 
     public getPosts(queryParams: PostsQueryParams): Observable<PostPageable> {
@@ -24,8 +26,19 @@ export class PostsService {
             axis__id: queryParams.axis ?? '',
             ordering: queryParams.ordering ?? ''
         };
+
+        // TODO: remove this after implement interceptor
+        const headers = {
+            Authorization: 'Bearer ' + this.authService.accessToken$.value
+        };
+        if (!!this.authService.accessToken$.value) {
+            return this.http.get<PostPageable>(this.api_url + '/posts/', {
+                params,
+                headers
+            });
+        }
         return this.http.get<PostPageable>(this.api_url + '/posts/', {
-            params: params
+            params
         });
     }
 

@@ -1,5 +1,5 @@
-// TODO: stop using this in html templates, prefer use css media queries
-// TODO: replace isMobile for isMobileX
+// TODO-OPT: stop using this in html templates, prefer use css media queries
+// TODO-OPT: replace isMobile for isMobileX
 export const isMobileX = window.innerWidth < 768; // 48rem
 
 export function isMobile(): boolean {
