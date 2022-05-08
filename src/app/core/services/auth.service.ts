@@ -16,6 +16,8 @@ import {
     createUserWithEmailAndPassword,
     signOut
 } from '@angular/fire/auth';
+import { UsersService } from './users.service';
+import { UserDetail } from '../types/users.type';
 
 @Injectable({
     providedIn: 'root'
@@ -27,14 +29,13 @@ export class AuthService {
     public isCompleted$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     private accessToken?: string;
+    private userProfile?: UserDetail;
 
     constructor(
         private auth: Auth,
-        private http: HttpClient
+        private http: HttpClient,
+        private userService: UsersService
     ) {
-        // User is anonymous is equal to no authenticated
-        this.loginAnonymously();
-
         onAuthStateChanged(auth, (user: any) => {
             if (!!user) {
                 if (user?.isAnonymous) {
@@ -43,17 +44,27 @@ export class AuthService {
                     this.isAuth$.next(null);
                     this.isCompleted$.next(true);
                 } else {
-                    // Email and password or Google authentication
+                    // Authenticate with Google or Email and password
                     this.authServiceConsoleLog('onAuthStateChanged', user);
                     this.accessToken = user?.accessToken;
                     this.isAuth$.next(user);
-                    this.isCompleted$.next(true);
+
+                    // Get user profile
+                    this.userService.getUserProfileByEmail(user.email)
+                        .subscribe((userProfile: UserDetail) => {
+                            this.userProfile = userProfile;
+                            this.isCompleted$.next(true);
+                        });
                 }
+            } else {
+                // Authenticate anonimous, need for make ps-backend requests
+                this.loginAnonymously();
             }
         });
     }
 
     public loginAnonymously(): Observable<UserCredential> {
+        this.userProfile = undefined;
         return from(signInAnonymously(this.auth))
             .pipe(
                 tap(resp => {
@@ -95,9 +106,7 @@ export class AuthService {
 
     public logout(): void {
         this.authServiceConsoleLog('Logout!');
-        from(signOut(this.auth)).subscribe(() => {
-            this.loginAnonymously();
-        });
+        from(signOut(this.auth));
     }
 
     // Register in firebase
@@ -125,6 +134,10 @@ export class AuthService {
 
     public getAccessToken(): string | undefined {
         return this.accessToken;
+    }
+
+    public getUserProfile(): UserDetail | undefined {
+        return this.userProfile;
     }
 
     private authServiceConsoleLog(...data: any[]): void {

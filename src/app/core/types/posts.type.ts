@@ -25,7 +25,8 @@ export type PostDetail = {
     created_at: string | Date,
     updated_at: string | Date,
     likes: number,
-    downloads: number
+    downloads: number,
+    is_liked: number | null // Contains like id if is liked by auth user
 }
 
 // Academic Level, Subjects and Axis

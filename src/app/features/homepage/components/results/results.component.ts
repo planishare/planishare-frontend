@@ -4,7 +4,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { catchError, forkJoin, map, Observable, of, tap } from 'rxjs';
 import { OrderingType, OrderingTypeName } from 'src/app/core/enums/posts.enum';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
+import { ReactionsService } from 'src/app/core/services/reactions.service';
 import { PostDetail, PostsQueryParams } from 'src/app/core/types/posts.type';
 import { RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
 import { isMobileX } from 'src/app/shared/utils';
@@ -51,6 +53,8 @@ export class ResultsComponent implements OnInit {
 
     constructor(
         private postsService: PostsService,
+        private reactionService: ReactionsService,
+        private authService: AuthService,
         private activatedRoute: ActivatedRoute,
         private router: Router,
         private matSnackbar: MatSnackBar
@@ -162,9 +166,50 @@ export class ResultsComponent implements OnInit {
         );
     }
 
-    public toggleLike(): void {
-        console.log('Like!');
-        // TODO: Make request and change buutton style
+    public toggleLike(post: PostDetail): any {
+        const user = this.authService.getUserProfile();
+        if (!!!user) {
+            return;
+        }
+        if (!!post.is_liked) {
+            // Visual efect
+            const likeId = post.is_liked;
+            post.is_liked = null;
+            post.likes--;
+
+            // Request
+            this.reactionService.deleteLike(likeId)
+                .pipe(
+                    catchError(() => {
+                        post.is_liked = likeId;
+                        post.likes++;
+                        return of(null);
+                    })
+                )
+                .subscribe(() => {
+                    console.log('Delete like!');
+                });
+        } else {
+            // Visual efect
+            post.is_liked = 1;
+            post.likes++;
+
+            // Request
+            this.reactionService.createLike(user.id, post.id)
+                .pipe(
+                    catchError(() => {
+                        post.is_liked = null;
+                        post.likes--;
+                        return of(null);
+                    })
+                )
+                .subscribe(like => {
+                    if (!!like) {
+                        post.is_liked = like.id;
+                        console.log('Like!');
+                    }
+                });
+        }
     }
 
     // Form stuff

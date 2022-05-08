@@ -155,9 +155,9 @@
             </div>
           </div>
 
-          <!-- TODO: Add isLiked in request to know if user already likes a post -->
-          <button mat-icon-button (click)="toggleLike()">
-            <mat-icon>favorite_outline</mat-icon>
+          <button mat-icon-button (click)="toggleLike(post)">
+            <mat-icon *ngIf="!!post.is_liked">favorite</mat-icon>
+            <mat-icon *ngIf="!!!post.is_liked">favorite_outline</mat-icon>
           </button>
         </mat-card-footer>
       </mat-card>

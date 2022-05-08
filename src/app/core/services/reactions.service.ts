@@ -1,42 +1,26 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { AuthService } from './auth.service';
+import { LikeDetail } from '../types/reactions.type';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ReactionsService {
-    private api_url = environment.API_URL;
-
     constructor(
-        private http: HttpClient,
-        private authService: AuthService
+        private http: HttpClient
     ) { }
 
-    // public createLike(): Observable<PostPageable> {
-    //     const params: RealPostsQueryParams = {
-    //         page: queryParams.page ?? 1,
-    //         search: queryParams.search ?? '',
-    //         user__id: queryParams.userId ?? '',
-    //         academic_level__id: queryParams.academicLevel ?? '',
-    //         axis__subject__id: queryParams.subject ?? '',
-    //         axis__id: queryParams.axis ?? '',
-    //         ordering: queryParams.ordering ?? ''
-    //     };
+    public createLike(userId: number, postId: number): Observable<LikeDetail> {
+        const body = {
+            user: userId,
+            post: postId
+        };
+        return this.http.post<LikeDetail>(environment.API_URL + '/likes/create/', body);
+    }
 
-    //     // TODO: remove this after implement interceptor
-    //     const headers = {
-    //         Authorization: 'Bearer ' + this.authService.accessToken$.value
-    //     };
-    //     if (!!this.authService.accessToken$.value) {
-    //         return this.http.get<PostPageable>(this.api_url + '/posts/', {
-    //             params,
-    //             headers
-    //         });
-    //     }
-    //     return this.http.get<PostPageable>(this.api_url + '/posts/', {
-    //         params
-    //     });
-    // }
+    public deleteLike(likeId: number): Observable<any> {
+        return this.http.delete(environment.API_URL + `/likes/delete/${likeId}/`);
+    }
 }

@@ -16,4 +16,8 @@ export class UsersService {
     public isEmailAvailable(email: string): Observable<any> {
         return this.http.get(`${this.api_url}/users/is-email-available/${email}/`);
     }
+
+    public getUserProfileByEmail(email: string): Observable<any> {
+        return this.http.get(`${this.api_url}/users/by-email/${email}/`);
+    }
 }
