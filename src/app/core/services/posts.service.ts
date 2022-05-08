@@ -27,16 +27,6 @@ export class PostsService {
             ordering: queryParams.ordering ?? ''
         };
 
-        // TODO: remove this after implement interceptor
-        const headers = {
-            Authorization: 'Bearer ' + this.authService.accessToken$.value
-        };
-        if (!!this.authService.accessToken$.value) {
-            return this.http.get<PostPageable>(this.api_url + '/posts/', {
-                params,
-                headers
-            });
-        }
         return this.http.get<PostPageable>(this.api_url + '/posts/', {
             params
         });

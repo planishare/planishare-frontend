@@ -1,148 +1,101 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { BehaviorSubject, catchError, map, Observable, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, from, map, Observable, of, skip, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { BasicCredentials } from '../types/auth.type';
-import { JwtService } from './jwt.service';
+import { BasicCredentials, RegisterInfo } from '../types/auth.type';
+
+import {
+    Auth,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    User,
+    signOut,
+    UserCredential,
+    signInWithPopup,
+    GoogleAuthProvider,
+    createUserWithEmailAndPassword
+} from '@angular/fire/auth';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    private api_url = environment.API_URL;
-
-    public accessToken$: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
-    public isAuth$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    public isAuth$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
     // Emits true when auth services finish loading
     public isCompleted$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
+    public accessToken?: string;
+
     constructor(
-        private http: HttpClient,
-        private jwtService: JwtService,
-        private router: Router
+        private auth: Auth,
+        private http: HttpClient
     ) {
-        this.localStorageChange();
+        onAuthStateChanged(auth, (user: any) => {
+            this.authServiceConsoleLog('onAuthStateChanged', user);
+            this.accessToken = user?.accessToken;
+            this.isAuth$.next(user);
+            this.isCompleted$.next(true);
+        });
     }
 
-    public login(credentials: BasicCredentials): Observable<any> {
-        return this.http.post(this.api_url + '/login/', credentials, { withCredentials: true })
+    public loginWithEmailAndPassword(credentials: BasicCredentials): Observable<UserCredential> {
+        return from(signInWithEmailAndPassword(this.auth, credentials.email, credentials.password))
             .pipe(
-                tap((resp: any) => {
-                    if (!!resp) {
-                        this.setNewLogin(resp.access);
-                    }
+                tap(resp => {
+                    this.authServiceConsoleLog('loginWithEmailAndPassword', resp);
                 })
             );
     }
 
-    private setNewLogin(accessToken: string): void {
-        localStorage.setItem('accessToken', accessToken);
-        this.accessToken$.next(localStorage.getItem('accessToken'));
-        this.isAuth$.next(true);
-        this.refreshTokenTimeout();
-        this.isCompleted$.next(true);
-        this.authServiceConsoleLog('Session setted!', this.accessToken$.value);
-    }
-
-    private refreshToken(): void {
-        this.authServiceConsoleLog('Request new accessToken with refreshToken');
-        this.http.post(this.api_url + '/login/token-refresh/', {}, { withCredentials: true })
+    public loginWithGoogle(): Observable<UserCredential> {
+        return from(signInWithPopup(this.auth, new GoogleAuthProvider()))
             .pipe(
-                catchError(error => {
-                    console.error(error);
-                    return of(null);
+                tap(resp => {
+                    this.authServiceConsoleLog('loginWithGoogle', resp);
                 }),
-                tap((resp: any) => {
-                    if (!!resp) {
-                        this.setNewLogin(resp.access);
-                    } else {
-                        this.authServiceConsoleLog('refreshToken cookie is not valid!');
-                        this.logout();
+                switchMap((resp: any) => {
+                    const data = resp._tokenResponse;
+                    // If is new user then save data in planishare database
+                    if (data.isNewUser) {
+                        const registerInfo: RegisterInfo = {
+                            email: data.email,
+                            first_name: data.firstName,
+                            last_name: data.lastName
+                        };
+                        return this.register(registerInfo);
                     }
+                    return of(resp);
                 })
-            )
-            .subscribe();
-    }
-
-    private refreshTokenTimeout(): void {
-        const accessToken = this.accessToken$.value;
-        if (!!accessToken) {
-            const expDate = new Date(this.jwtService.getTokenExpirationDate(accessToken));
-            expDate.setMinutes(expDate.getMinutes() - 1);
-            const now = new Date();
-            const expMs = expDate.getTime() - now.getTime();
-            setTimeout(() => {
-                this.refreshToken();
-            }, expMs);
-        } else {
-            this.authServiceConsoleLog('Cant set timeout, no accessToken!');
-            this.logout();
-        }
-    }
-
-    public verifyToken(token: string): Observable<any> {
-        return this.http.post(this.api_url + '/login/token-verify/', { token });
-    }
-
-    public checkSesion(): void {
-        this.authServiceConsoleLog('Checking sesion...');
-        const accessToken = localStorage.getItem('accessToken');
-        if (!!accessToken) {
-            this.verifyToken(accessToken)
-                .pipe(
-                    catchError(error => {
-                        console.error(error);
-                        return of(null);
-                    })
-                )
-                .subscribe(resp => {
-                    // If accessToken still valid
-                    if (!!resp) {
-                        this.authServiceConsoleLog('Setting existing sesion...');
-                        this.setNewLogin(accessToken);
-                    } else {
-                        this.refreshToken();
-                    }
-                });
-        } else {
-            this.authServiceConsoleLog('No accessToken found in localStorage!');
-            this.logout();
-        }
-
+            );
     }
 
     public logout(): void {
-        localStorage.removeItem('accessToken');
-        this.accessToken$.next(null);
-        this.isAuth$.next(false);
-        this.isCompleted$.next(true);
         this.authServiceConsoleLog('Logout!');
+        signOut(this.auth);
     }
 
-    public register(credentials: BasicCredentials): Observable<any> {
-        return this.http.post(this.api_url + '/users/create/', credentials)
+    // Register in firebase
+    public registerWithEmailAndPassword(credentials: BasicCredentials): Observable<UserCredential> {
+        return from(createUserWithEmailAndPassword(this.auth, credentials.email, credentials.password))
             .pipe(
+                tap(resp => {
+                    this.authServiceConsoleLog('registerWithEmailAndPassword', resp);
+                }),
                 switchMap(resp => {
-                    return this.login(credentials);
+                    return this.register(credentials);
                 })
             );
     }
 
-    private localStorageChange(): void {
-        window.addEventListener('storage', () => {
-            const savedAccessToken = localStorage.getItem('accessToken');
-            if (!!savedAccessToken) {
-                this.authServiceConsoleLog('Login from another tab!', savedAccessToken);
-                this.setNewLogin(savedAccessToken);
-                this.router.navigate([]);
-            } else {
-                this.authServiceConsoleLog('Logout from another tab!', savedAccessToken);
-                this.logout();
-                this.router.navigate([]);
-            }
-        });
+    // Register in planishare database
+    public register(credentials: BasicCredentials | RegisterInfo): Observable<any> {
+        return this.http.post(environment.API_URL + '/auth/register/', credentials)
+            .pipe(
+                tap(resp => {
+                    this.authServiceConsoleLog('register', resp);
+                })
+            );
     }
 
     private authServiceConsoleLog(...data: any[]): void {

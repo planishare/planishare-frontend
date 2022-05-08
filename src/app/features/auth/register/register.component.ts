@@ -52,7 +52,7 @@ export class RegisterComponent {
         );
     }
 
-    public register(event: Event): void {
+    public registerWithEmailAndPassword(event: Event): void {
         event.preventDefault();
         if (this.form.valid) {
             const credentials: BasicCredentials = {
@@ -60,7 +60,8 @@ export class RegisterComponent {
                 password: this.form.get('password')?.value
             };
             this.isLoading = true;
-            this.authService.register(credentials)
+
+            this.authService.registerWithEmailAndPassword(credentials)
                 .pipe(
                     catchError(error => {
                         return of(null);
@@ -72,9 +73,26 @@ export class RegisterComponent {
                     }
                     this.isLoading = false;
                 });
+
         } else {
             this.form.markAllAsTouched();
         }
+    }
+
+    public loginWithGoogle(): void {
+        this.authService.loginWithGoogle()
+            .pipe(
+                catchError(error => {
+                    return of(null);
+                })
+            )
+            .subscribe(resp => {
+                if (!!resp) {
+                    // TODO-OPT: redirect to a specific route
+                    this.router.navigate(['/']);
+                }
+                this.isLoading = false;
+            });
     }
 
     public get emailControl() {

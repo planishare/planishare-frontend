@@ -18,7 +18,7 @@
               <span *ngIf="wrongCredentials">Email o contraseña incorrectos</span>
             </div>
             <mat-card-content>
-                <form class="form" [formGroup]="form" (ngSubmit)="login($event)">
+                <form class="form" [formGroup]="form" (ngSubmit)="loginWithEmailAndPassword($event)">
                     <mat-form-field appearance="outline">
                       <mat-label>Email</mat-label>
                       <input type="email" matInput formControlName="email">
@@ -41,7 +41,7 @@
                         </button>
                         <app-square-loader *ngIf="isLoading"></app-square-loader>
                         <span>- o -</span>
-                        <button mat-stroked-button type="button">
+                        <button mat-stroked-button type="button" (click)="loginWithGoogle()">
                             <mat-icon>login</mat-icon>
                             Continuar con google
                         </button>

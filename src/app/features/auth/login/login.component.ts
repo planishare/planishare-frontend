@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
         this.form.valueChanges.subscribe();
     }
 
-    public login(event: Event): void {
+    public loginWithEmailAndPassword(event: Event): void {
         event.preventDefault();
         if (this.form.valid) {
             const credentials: BasicCredentials = {
@@ -46,9 +46,11 @@ export class LoginComponent implements OnInit {
                 password: this.form.get('password')?.value
             };
             this.isLoading = true;
-            this.authService.login(credentials)
+
+            this.authService.loginWithEmailAndPassword(credentials)
                 .pipe(
                     catchError((error: HttpErrorResponse) => {
+                        // TODO: Check if this still working
                         if (error.status === 401) {
                             this.wrongCredentials = true;
                         }
@@ -62,9 +64,30 @@ export class LoginComponent implements OnInit {
                     }
                     this.isLoading = false;
                 });
+
         } else {
             this.form.markAllAsTouched();
         }
+    }
+
+    public loginWithGoogle(): void {
+        this.authService.loginWithGoogle()
+            .pipe(
+                catchError((error: HttpErrorResponse) => {
+                    // TODO: Check if this still working
+                    if (error.status === 401) {
+                        this.wrongCredentials = true;
+                    }
+                    return of(null);
+                })
+            )
+            .subscribe(resp => {
+                if (!!resp) {
+                    // TODO-OPT: redirect to a specific route
+                    this.router.navigate(['/']);
+                }
+                this.isLoading = false;
+            });
     }
 
     public get emailControl() {

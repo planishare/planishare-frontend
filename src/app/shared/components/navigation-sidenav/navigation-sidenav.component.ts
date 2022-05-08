@@ -17,11 +17,9 @@ export class NavigationSidenavComponent implements OnInit {
     ) { }
 
     public ngOnInit(): void {
-        this.authService.isAuth$
-            .asObservable()
-            .subscribe(isAuth => {
-                this.isUserAuth = isAuth;
-            });
+        this.authService.isAuth$.subscribe(isAuth => {
+            this.isUserAuth = !!isAuth;
+        });
     }
 
     public logout(): void {

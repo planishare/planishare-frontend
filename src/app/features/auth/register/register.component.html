@@ -17,7 +17,7 @@
             <mat-card-title class="card-title">Registrarse</mat-card-title>
             <!-- <mat-card-title>Registrate para poder crear publicaciones, dar likes y mucho más, anímate!</mat-card-title> -->
             <mat-card-content>
-                <form class="form" [formGroup]="form" (ngSubmit)="register($event)">
+                <form class="form" [formGroup]="form" (ngSubmit)="registerWithEmailAndPassword($event)">
                     <mat-form-field appearance="outline">
                       <mat-label>Email</mat-label>
                       <input type="email" matInput formControlName="email">
@@ -51,9 +51,9 @@
                         </button>
                         <app-square-loader *ngIf="isLoading"></app-square-loader>
                         <span>o</span>
-                        <button mat-stroked-button>
-                            <mat-icon>login</mat-icon>
-                            Continuar con google
+                        <button mat-stroked-button type="button" (click)="loginWithGoogle()">
+                          <mat-icon>login</mat-icon>
+                          Continuar con google
                         </button>
                     </div>
                   </form>
