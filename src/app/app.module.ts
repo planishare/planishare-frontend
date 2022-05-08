@@ -14,6 +14,8 @@ import { environment } from '../environments/environment';
 import { provideAnalytics,getAnalytics,ScreenTrackingService,UserTrackingService } from '@angular/fire/analytics';
 import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 @NgModule({
     declarations: [
@@ -33,7 +35,13 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
         provideFirestore(() => getFirestore())
     ],
     providers: [
-        ScreenTrackingService,UserTrackingService
+        ScreenTrackingService,
+        UserTrackingService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true // Intercept all requests
+        }
     ],
     bootstrap: [AppComponent]
 })

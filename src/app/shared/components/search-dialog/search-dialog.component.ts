@@ -61,13 +61,10 @@ export class SearchDialogComponent implements OnInit {
                 axis: this.axisControl.value?.data.id
             };
 
-            this.postsService.getPosts(searchParams)
-                .subscribe(resp => {
-                    this.dialogRef.close();
-                    this.router.navigate(['/results'], {
-                        queryParams: searchParams
-                    });
-                });
+            this.dialogRef.close();
+            this.router.navigate(['/results'], {
+                queryParams: searchParams
+            });
         }
     }
 

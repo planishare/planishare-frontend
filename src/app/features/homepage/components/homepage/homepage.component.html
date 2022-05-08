@@ -86,7 +86,7 @@
           </div>
           <div>
             <mat-icon>description</mat-icon>
-            <span>{{ (item.suporting_material|stringToArray).length + 1 }}</span>
+            <span>{{ item.suporting_material?.length ?? 0 + 1 }}</span>
           </div>
         </mat-card-subtitle>
         <mat-card-title>{{ item.title }}</mat-card-title>
@@ -126,7 +126,7 @@
           </div>
           <div>
             <mat-icon>description</mat-icon>
-            <span>{{ item.suporting_material }}</span>
+            <span>{{ item.suporting_material?.length ?? 0 + 1 }}</span>
           </div>
         </mat-card-subtitle>
         <mat-card-title>{{ item.title }}</mat-card-title>

@@ -6,14 +6,15 @@ import { BasicCredentials, RegisterInfo } from '../types/auth.type';
 
 import {
     Auth,
-    signInWithEmailAndPassword,
-    onAuthStateChanged,
     User,
-    signOut,
     UserCredential,
+    onAuthStateChanged,
+    signInWithEmailAndPassword,
     signInWithPopup,
     GoogleAuthProvider,
-    createUserWithEmailAndPassword
+    signInAnonymously,
+    createUserWithEmailAndPassword,
+    signOut
 } from '@angular/fire/auth';
 
 @Injectable({
@@ -25,18 +26,40 @@ export class AuthService {
     // Emits true when auth services finish loading
     public isCompleted$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-    public accessToken?: string;
+    private accessToken?: string;
 
     constructor(
         private auth: Auth,
         private http: HttpClient
     ) {
+        // User is anonymous is equal to no authenticated
+        this.loginAnonymously();
+
         onAuthStateChanged(auth, (user: any) => {
-            this.authServiceConsoleLog('onAuthStateChanged', user);
-            this.accessToken = user?.accessToken;
-            this.isAuth$.next(user);
-            this.isCompleted$.next(true);
+            if (!!user) {
+                if (user?.isAnonymous) {
+                    this.authServiceConsoleLog('onAuthStateChanged (anonymous)', user);
+                    this.accessToken = user?.accessToken;
+                    this.isAuth$.next(null);
+                    this.isCompleted$.next(true);
+                } else {
+                    // Email and password or Google authentication
+                    this.authServiceConsoleLog('onAuthStateChanged', user);
+                    this.accessToken = user?.accessToken;
+                    this.isAuth$.next(user);
+                    this.isCompleted$.next(true);
+                }
+            }
         });
+    }
+
+    public loginAnonymously(): Observable<UserCredential> {
+        return from(signInAnonymously(this.auth))
+            .pipe(
+                tap(resp => {
+                    this.authServiceConsoleLog('loginWithEmailAndPassword', resp);
+                })
+            );
     }
 
     public loginWithEmailAndPassword(credentials: BasicCredentials): Observable<UserCredential> {
@@ -72,7 +95,9 @@ export class AuthService {
 
     public logout(): void {
         this.authServiceConsoleLog('Logout!');
-        signOut(this.auth);
+        from(signOut(this.auth)).subscribe(() => {
+            this.loginAnonymously();
+        });
     }
 
     // Register in firebase
@@ -96,6 +121,10 @@ export class AuthService {
                     this.authServiceConsoleLog('register', resp);
                 })
             );
+    }
+
+    public getAccessToken(): string | undefined {
+        return this.accessToken;
     }
 
     private authServiceConsoleLog(...data: any[]): void {

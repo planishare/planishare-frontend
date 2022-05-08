@@ -66,12 +66,9 @@ export class HomepageComponent implements OnInit {
                 axis: this.axisControl.value?.data.id
             };
 
-            this.postsService.getPosts(searchParams)
-                .subscribe(resp => {
-                    this.router.navigate(['/results'], {
-                        queryParams: searchParams
-                    });
-                });
+            this.router.navigate(['/results'], {
+                queryParams: searchParams
+            });
         }
     }
 
