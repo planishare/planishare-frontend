@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { PostsService } from 'src/app/core/services/posts.service';
 import { ReactionsService } from 'src/app/core/services/reactions.service';
 import { PostDetail, PostPageable, PostsQueryParams } from 'src/app/core/types/posts.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
+import { NavbarService } from 'src/app/shared/services/navbar.service';
 import { RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
 import { isMobileX } from 'src/app/shared/utils';
 
@@ -17,7 +18,7 @@ import { isMobileX } from 'src/app/shared/utils';
     templateUrl: './results.component.html',
     styleUrls: ['./results.component.scss']
 })
-export class ResultsComponent implements OnInit {
+export class ResultsComponent implements OnInit, OnDestroy {
     public isMobile = isMobileX;
     public isLoading = true;
     public hasData = true;
@@ -63,8 +64,10 @@ export class ResultsComponent implements OnInit {
         private authService: AuthService,
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private commonSnackbarMsg: CommonSnackbarMsgService
+        private commonSnackbarMsg: CommonSnackbarMsgService,
+        private navbarService: NavbarService
     ) {
+        this.configNavbar();
         this.form = new FormGroup(
             {
                 search: new FormControl(),
@@ -312,5 +315,18 @@ export class ResultsComponent implements OnInit {
                 tap(resp => this.axesList = resp),
                 tap(() => this.isaxesLoading = false)
             );
+    }
+
+    private configNavbar(): void {
+        this.navbarService.setButtonsConfig({
+            desktopLogo: true,
+            desktopSearchButton: false,
+            mobileLogo: true,
+            mobileSearchButton: false
+        });
+    }
+
+    public ngOnDestroy(): void {
+        this.navbarService.setDefaultButtonConfig();
     }
 }

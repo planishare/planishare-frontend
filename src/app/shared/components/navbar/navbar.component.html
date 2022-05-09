@@ -1,9 +1,10 @@
 <nav class="navbar" *ngIf="!isMobile()">
-    <app-search-button></app-search-button>
-    <!-- <button mat-raised-button class="logo" [routerLink]="['/']">
+    <app-search-button *ngIf="buttons.desktopSearchButton"></app-search-button>
+    <button mat-raised-button class="logo" [routerLink]="['/']" *ngIf="buttons.desktopLogo">
         Planishare
-    </button> -->
+    </button>
     <ul>
+        <!-- TODO: Create active in buttons maybe blue backgrpund -->
         <li *ngIf="!isUserAuth">
             <app-big-button
                 text="Registrarse"
@@ -42,10 +43,9 @@
     <button mat-icon-button (click)="openSidenav()">
         <mat-icon>menu</mat-icon>
     </button>
-    <button mat-raised-button class="logo" [routerLink]="['/']">
+    <button mat-raised-button class="logo" [routerLink]="['/']" *ngIf="buttons.mobileLogo">
         Planishare
     </button>
-    <app-search-button [simpleIcon]="true"></app-search-button>
-    <!-- TODO: Add profile button and create a way to hide buttons in navbar -->
+    <app-search-button [simpleIcon]="true" [ngClass]="!buttons.mobileSearchButton ? 'visibility-hidden': ''"></app-search-button>
 </nav>
 

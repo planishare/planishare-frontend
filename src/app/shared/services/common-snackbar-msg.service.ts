@@ -23,6 +23,6 @@ export class CommonSnackbarMsgService {
         const msg = 'Ups! ha ocurrido un problema, intenta recargar';
         const action = 'Recargar';
         this.matSnackbar.open(msg, action).onAction()
-            .subscribe(() => this.router.navigate(['']));
+            .subscribe(() => window.location.reload());
     }
 }
