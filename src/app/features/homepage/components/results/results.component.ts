@@ -7,7 +7,7 @@ import { OrderingType, OrderingTypeName } from 'src/app/core/enums/posts.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { ReactionsService } from 'src/app/core/services/reactions.service';
-import { PostDetail, PostsQueryParams } from 'src/app/core/types/posts.type';
+import { PostDetail, PostPageable, PostsQueryParams } from 'src/app/core/types/posts.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 import { RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
 import { isMobileX } from 'src/app/shared/utils';
@@ -20,8 +20,13 @@ import { isMobileX } from 'src/app/shared/utils';
 export class ResultsComponent implements OnInit {
     public isMobile = isMobileX;
     public isLoading = true;
-
     public hasData = true;
+
+    public pageInfo?: PostPageable;
+    public searchParams: PostsQueryParams = {
+        page: 1
+    };
+    public maxPage = 1;
 
     public posts: PostDetail[] = [];
     public form: FormGroup;
@@ -82,26 +87,28 @@ export class ResultsComponent implements OnInit {
             .subscribe(resp => {
                 if (!!resp) {
                     this.getQueryParams();
-                    this.academicLevelControl.valueChanges.subscribe(() => this.doSearch());
-                    this.subjectControl.valueChanges.subscribe(() => this.doSearch());
-                    this.axisControl.valueChanges.subscribe(() => this.doSearch());
-                    this.orderingControl.valueChanges.subscribe(() => this.doSearch());
+                    this.academicLevelControl.valueChanges.subscribe(() => this.doSearch(1));
+                    this.subjectControl.valueChanges.subscribe(() => this.doSearch(1));
+                    this.axisControl.valueChanges.subscribe(() => this.doSearch(1));
+                    this.orderingControl.valueChanges.subscribe(() => this.doSearch(1));
                 } else {
                     this.hasData = false;
                 }
             });
     }
 
-    public doSearch(): void {
-        const searchParams: PostsQueryParams = {
-            search: this.searchControl?.value,
-            academicLevel: this.academicLevelControl.value?.data.id,
-            subject: this.subjectControl.value?.data.id,
-            axis: this.axisControl.value?.data.id,
-            ordering: this.orderingControl.value?.data
-        };
+    public doSearch(page?: number): void {
+        if (!!page) {
+            this.searchParams.page = page;
+        }
+        this.searchParams.search = this.searchControl?.value;
+        this.searchParams.academicLevel = this.academicLevelControl.value?.data.id;
+        this.searchParams.subject = this.subjectControl.value?.data.id;
+        this.searchParams.axis = this.axisControl.value?.data.id;
+        this.searchParams.ordering = this.orderingControl.value?.data;
+
         if (this.form.valid) {
-            this.getPosts(searchParams);
+            this.getPosts(this.searchParams);
             this.setQueryParams();
         }
     }
@@ -116,10 +123,12 @@ export class ResultsComponent implements OnInit {
                 })
             )
             .subscribe(resp => {
-                console.log(resp);
                 if (!!resp) {
+                    this.pageInfo = resp;
+                    this.maxPage = ((this.pageInfo.count - this.pageInfo.count % 10) / 10) + 1;
                     this.posts = resp.results;
                     this.hasData = !!this.posts.length;
+                    console.log(this.pageInfo);
                 } else {
                     this.hasData;
                 }
@@ -165,6 +174,20 @@ export class ResultsComponent implements OnInit {
                 ordering: this.orderingList.find(el => el.data === params.ordering)
             }
         );
+    }
+
+    public nextPage(): void {
+        if (this.pageInfo?.next) {
+            this.searchParams.page = (this.searchParams.page ?? 0) + 1;
+            this.doSearch();
+        }
+    }
+
+    public previousPage(): void {
+        if (this.pageInfo?.previous) {
+            this.searchParams.page = (this.searchParams.page ?? 0) - 1;
+            this.doSearch();
+        }
     }
 
     public toggleLike(post: PostDetail): any {

@@ -3,7 +3,7 @@
   <div class="searchbar">
     <!-- TODO-OPT: Add search icon -->
     <!-- TODO-OPT: Fix focus after search -->
-    <input type="search" autocomplete="off" [formControl]="searchControl" placeholder="Buscar" (keyup.enter)="doSearch()">
+    <input type="search" autocomplete="off" [formControl]="searchControl" placeholder="Buscar" (keyup.enter)="doSearch(1)">
     <button *ngIf="searchControl.value" mat-icon-button aria-label="Clear" (click)="clearSearchControl()">
       <mat-icon>close</mat-icon>
     </button>
@@ -57,15 +57,18 @@
   <!-- Top pagination -->
   <div class="pagination flex_justify_end" *ngIf="hasData">
     <div class="pagination-text">
-      <span>1 - 10 de 24</span>
+      <span>{{ 10 * (searchParams.page! - 1) + 1 }} - {{ 10 * (searchParams.page! - 1) + posts.length }} de {{pageInfo?.count}}</span>
     </div>
-    <button mat-raised-button class="pagination-button">
+    <button mat-raised-button class="pagination-button" (click)="previousPage()" [disabled]="!pageInfo?.previous || isLoading">
       <mat-icon>navigate_before</mat-icon>
     </button>
-    <button mat-raised-button class="pagination-button pagination-number">
-      1
+    <button mat-raised-button class="pagination-button pagination-number" [disabled]="isLoading" [matMenuTriggerFor]="pagesMenu">
+      {{ searchParams.page }}
     </button>
-    <button mat-raised-button class="pagination-button">
+    <mat-menu #pagesMenu>
+      <button mat-menu-item *ngFor="let item of [].constructor(maxPage); let i = index" (click)="doSearch(i+1)">{{ i+1 }}</button>
+    </mat-menu>
+    <button mat-raised-button class="pagination-button" (click)="nextPage()" [disabled]="!pageInfo?.next || isLoading">
       <mat-icon>navigate_next</mat-icon>
     </button>
   </div>
@@ -167,13 +170,16 @@
 
   <!-- Bottom pagination -->
   <div class="pagination flex_justify_center" *ngIf="hasData">
-    <button mat-raised-button class="pagination-button">
+    <button mat-raised-button class="pagination-button" (click)="previousPage()" [disabled]="!pageInfo?.previous || isLoading">
       <mat-icon>navigate_before</mat-icon>
     </button>
-    <button mat-raised-button class="pagination-button pagination-number">
-      1
+    <button mat-raised-button class="pagination-button pagination-number" [matMenuTriggerFor]="pagesMenu" [disabled]="isLoading">
+      {{ searchParams.page }}
     </button>
-    <button mat-raised-button class="pagination-button">
+    <mat-menu #pagesMenu>
+      <button mat-menu-item *ngFor="let item of [].constructor(maxPage); let i = index" (click)="doSearch(i+1)">{{ i+1 }}</button>
+    </mat-menu>
+    <button mat-raised-button class="pagination-button" (click)="nextPage()" [disabled]="!pageInfo?.next || isLoading">
       <mat-icon>navigate_next</mat-icon>
     </button>
   </div>

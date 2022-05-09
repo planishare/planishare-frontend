@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, AbstractControlOptions, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FirebaseError } from 'firebase/app';
 import { catchError, map, Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -33,9 +33,12 @@ export class RegisterComponent {
 
     public isLoading = false;
 
+    public redirectTo: string = '/';
+
     constructor(
         private authService: AuthService,
         private router: Router,
+        private activatedRoute: ActivatedRoute,
         private userService: UsersService,
         private commonSnackbarMsg: CommonSnackbarMsgService
     ) {
@@ -53,6 +56,10 @@ export class RegisterComponent {
                 validators: this.checkPasswords
             } as AbstractControlOptions
         );
+
+        // Get url to redirect after login
+        const params: Params = this.activatedRoute.snapshot.queryParams;
+        this.redirectTo = params['redirectTo'] ?? '/';
     }
 
     public registerWithEmailAndPassword(event: Event): void {
@@ -73,7 +80,7 @@ export class RegisterComponent {
                 )
                 .subscribe(resp => {
                     if (!!resp) {
-                        this.router.navigate(['/']);
+                        this.router.navigate([this.redirectTo]);
                     }
                     this.isLoading = false;
                 });
@@ -93,8 +100,7 @@ export class RegisterComponent {
             )
             .subscribe(resp => {
                 if (!!resp) {
-                    // TODO-OPT: redirect to a specific route
-                    this.router.navigate(['/']);
+                    this.router.navigate([this.redirectTo]);
                 }
                 this.isLoading = false;
             });

@@ -51,7 +51,7 @@ export class AuthService {
                     this.accessToken = user?.accessToken;
                     this.isAuth$.next(user);
 
-                    // Get user profile
+                    // TODO: Fix register
                     this.userService.getUserProfileByEmail(user.email)
                         .pipe(
                             catchError(() => {
@@ -60,7 +60,7 @@ export class AuthService {
                                 return of(null);
                             })
                         )
-                        .subscribe((userProfile: UserDetail) => {
+                        .subscribe((userProfile: UserDetail | null) => {
                             if (!!userProfile) {
                                 this.userProfile = userProfile;
                                 this.isCompleted$.next(true);
@@ -120,11 +120,6 @@ export class AuthService {
             );
     }
 
-    public logout(): void {
-        this.authServiceConsoleLog('Logout!');
-        from(signOut(this.auth));
-    }
-
     // Register in firebase
     public registerWithEmailAndPassword(credentials: BasicCredentials): Observable<UserCredential> {
         return from(createUserWithEmailAndPassword(this.auth, credentials.email, credentials.password))
@@ -142,12 +137,20 @@ export class AuthService {
     public register(credentials: BasicCredentials | RegisterInfo): Observable<any> {
         return this.http.post(environment.API_URL + '/auth/register/', credentials)
             .pipe(
-                tap(resp => {
-                    this.authServiceConsoleLog('register', resp);
+                tap((userProfile: any) => {
+                    this.authServiceConsoleLog('register', userProfile);
+                    this.userProfile = userProfile;
+                    this.isCompleted$.next(true);
                 })
             );
     }
 
+    public logout(): void {
+        this.authServiceConsoleLog('Logout!');
+        from(signOut(this.auth));
+    }
+
+    // Utils
     public getAccessToken(): string | undefined {
         return this.accessToken;
     }

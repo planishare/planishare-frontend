@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FirebaseError } from 'firebase/app';
 import { catchError, of } from 'rxjs';
 import { LoginErrorMessage } from 'src/app/core/enums/auth.enum';
@@ -22,9 +22,12 @@ export class LoginComponent implements OnInit {
     public wrongCredentials = false;
     public isLoading = false;
 
+    public redirectTo: string = '/';
+
     constructor(
         private authService: AuthService,
         private router: Router,
+        private activatedRoute: ActivatedRoute,
         private commonSnackbarMsg: CommonSnackbarMsgService,
         private matSnackbar: MatSnackBar
     ) {
@@ -38,6 +41,10 @@ export class LoginComponent implements OnInit {
                 ])
             }
         );
+
+        // Get url to redirect after login
+        const params: Params = this.activatedRoute.snapshot.queryParams;
+        this.redirectTo = params['redirectTo'] ?? '/';
     }
 
     public ngOnInit(): void {
@@ -74,8 +81,7 @@ export class LoginComponent implements OnInit {
                 )
                 .subscribe(resp => {
                     if (!!resp) {
-                        // TODO-OPT: redirect to a specific route
-                        this.router.navigate(['/']);
+                        this.router.navigate([this.redirectTo]);
                     }
                     this.isLoading = false;
                 });
@@ -95,8 +101,7 @@ export class LoginComponent implements OnInit {
             )
             .subscribe(resp => {
                 if (!!resp) {
-                    // TODO-OPT: redirect to a specific route
-                    this.router.navigate(['/']);
+                    this.router.navigate([this.redirectTo]);
                 }
                 this.isLoading = false;
             });
