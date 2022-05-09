@@ -1,8 +1,9 @@
 <!-- Query bar -->
 <div class="search-and-filters">
   <div class="searchbar">
-    <!-- TODO-OPT: Add search icon -->
-    <!-- TODO-OPT: Fix focus after search -->
+    <div class="search-icon">
+      <mat-icon>search</mat-icon>
+    </div>
     <input type="search" autocomplete="off" [formControl]="searchControl" placeholder="Buscar" (keyup.enter)="doSearch(1)">
     <button *ngIf="searchControl.value" mat-icon-button aria-label="Clear" (click)="clearSearchControl()">
       <mat-icon>close</mat-icon>
@@ -125,9 +126,7 @@
               </div>
             </div>
   
-            <!-- TODO: Check how it looks if does not have description -->
             <div>{{ post.description }}</div>
-            <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio omnis doloremque reprehenderit modi odio quam, illo officiis deserunt, sapiente vel cum labore deleniti minima? Rem ducimus nostrum reprehenderit odio veniam.</div>
   
             <mat-chip-list class="tags">
               <mat-chip class="academic-level-tag">

@@ -1,3 +1,7 @@
+// INFO: Navbar height (considerar como 4rem)
+// desktop: 52px
+// mobile: 56px
+
 :host {
     display: block;
     background-color: var(--accent-color);
@@ -8,7 +12,7 @@
     justify-content: space-between;
     align-items: center;
     
-    padding: 0.7rem 1rem;
+    padding: 0.5rem 1rem;
     
     ul {
         list-style-type: none;
