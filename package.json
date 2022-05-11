@@ -24,6 +24,7 @@
     "@angular/router": "~13.1.0",
     "@auth0/angular-jwt": "^5.0.2",
     "firebase": "9.7.0",
+    "ngx-doc-viewer": "^2.1.2",
     "ngx-mat-select-search": "^4.1.1",
     "normalize.css": "^8.0.1",
     "rxjs": "~7.4.0",

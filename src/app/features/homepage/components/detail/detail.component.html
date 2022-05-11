@@ -1,0 +1,158 @@
+<!--
+    pdf
+    url: !mobile
+    * pdf: !safari (google) !mobile (google)
+    google: slow
+ -->
+
+<!-- 
+    docx
+    url: download
+    google: :)
+    * office: :) mobile(not responsive)
+ -->
+
+<!-- 
+    pptx
+    google: :)
+    * office: :)
+ -->
+
+<!-- 
+    xlsx
+    google: show like img
+    * office: 
+ -->
+
+<main class="flex_start gap-1 main">
+    <!-- Card -->
+    <mat-card class="card">
+        <div class="flex_column gap-1">
+            <div class="flex_start_center gap-05">
+                <mat-icon>arrow_back</mat-icon>
+                <h3 class="back-text">Volver a resultados</h3>
+            </div>
+    
+            <div class="flex_between_center">
+                <div class="flex_start_center gap-05">
+                    <mat-icon>schedule</mat-icon>
+                    <span>
+                        Hace {{ post.created_at|timeAgo }} por {{ post.user|getUsername }} -
+                        {{ post.user.education.name }} en {{ post.user.institution.name }}
+                    </span>
+                </div>
+                <button mat-icon-button>
+                    <mat-icon *ngIf="!!post.is_liked">favorite</mat-icon>
+                    <mat-icon *ngIf="!!!post.is_liked">favorite_outline</mat-icon>
+                </button>
+            </div>
+    
+            <mat-card-title>{{ post.title }}</mat-card-title>
+            <div>{{ post.description }}</div>
+    
+            <mat-chip-list class="tags">
+                <mat-chip class="academic-level-tag">
+                    <span>Nivel académico: {{ post.academic_level.name }}</span>
+                </mat-chip>
+                <mat-chip class="subject-tag">
+                    <span>Asignatura: {{ post.axis.subject.name }}</span>
+                </mat-chip>
+                <mat-chip class="axis-tag">
+                    <span>Eje: {{ post.axis.name }}</span>
+                </mat-chip>
+            </mat-chip-list>
+    
+            <div class="flex_start_center gap-05">
+                <mat-icon>description</mat-icon>
+                <span>{{ post.suporting_material?.length ?? 0 + 1 }} Documentos</span>
+            </div>
+            <div class="docs">
+                <div class="flex_start_center gap-05">
+                    <mat-chip class="small-tag pdf-tag">.pdf</mat-chip>
+                    <!-- <mat-chip class="small-tag doc-tag">.docx</mat-chip> -->
+                    <!-- <mat-chip class="small-tag ppt-tag">.pptx</mat-chip> -->
+                    <!-- <mat-chip class="small-tag xls-tag">.xlsx</mat-chip> -->
+    
+                    <span>planificacion_de_ejemplo.pdf</span>
+                    <button mat-stroked-button>
+                        <mat-icon>download</mat-icon>
+                        Descargar
+                    </button>
+                </div>
+                <div class="flex_start_center gap-05">
+                    <mat-chip class="small-tag pdf-tag">.pdf</mat-chip>
+                    <!-- <mat-chip class="small-tag doc-tag">.docx</mat-chip> -->
+                    <!-- <mat-chip class="small-tag ppt-tag">.pptx</mat-chip> -->
+                    <!-- <mat-chip class="small-tag xls-tag">.xlsx</mat-chip> -->
+    
+                    <span>planificacion_de_ejemplo.pdf</span>
+                    <button mat-stroked-button>
+                        <mat-icon>download</mat-icon>
+                        Descargar
+                    </button>
+                </div>
+                <div class="flex_start_center gap-05">
+                    <mat-chip class="small-tag pdf-tag">.pdf</mat-chip>
+                    <!-- <mat-chip class="small-tag doc-tag">.docx</mat-chip> -->
+                    <!-- <mat-chip class="small-tag ppt-tag">.pptx</mat-chip> -->
+                    <!-- <mat-chip class="small-tag xls-tag">.xlsx</mat-chip> -->
+    
+                    <span>planificacion_de_ejemplo.pdf</span>
+                    <button mat-stroked-button>
+                        <mat-icon>download</mat-icon>
+                        Descargar
+                    </button>
+                </div>
+                <div class="flex_start_center gap-05">
+                    <mat-chip class="small-tag pdf-tag">.pdf</mat-chip>
+                    <!-- <mat-chip class="small-tag doc-tag">.docx</mat-chip> -->
+                    <!-- <mat-chip class="small-tag ppt-tag">.pptx</mat-chip> -->
+                    <!-- <mat-chip class="small-tag xls-tag">.xlsx</mat-chip> -->
+    
+                    <span>planificacion_de_ejemplo.pdf</span>
+                    <button mat-stroked-button>
+                        <mat-icon>download</mat-icon>
+                        Descargar
+                    </button>
+                </div>
+            </div>
+    
+            <div class="flex_between_center">
+                <div class="flex_start_center gap-05">
+                    <mat-icon>favorite</mat-icon>
+                    <span>A {{ post.likes }} personas les ha gustado esta publicación</span>
+                </div>
+                <div class="flex_start_center gap-05">
+                    <mat-icon>cloud_download</mat-icon>
+                    <span>{{ post.downloads }} Descargas</span>
+                </div>
+            </div>
+        </div>
+    </mat-card>
+
+    <!-- Doc preview -->
+    <!-- <ngx-doc-viewer
+        class="doc-preview"
+        [url]="pdf"
+        viewer="google"
+    ></ngx-doc-viewer> -->
+
+    <!-- <ngx-doc-viewer
+        class="doc-preview"
+        [url]="docx"
+        viewer="office"
+    ></ngx-doc-viewer> -->
+    
+    <!-- <ngx-doc-viewer
+        class="doc-preview"
+        [url]="pptx"
+        viewer="office"
+    ></ngx-doc-viewer> -->
+    
+    <ngx-doc-viewer
+        class="doc-preview"
+        [url]="xlsx"
+        viewer="office"
+    ></ngx-doc-viewer>
+
+</main>

@@ -17,6 +17,7 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { StringToArrayPipe } from './pipes/string-to-array.pipe';
 import { BookLoaderComponent } from './components/loaders/book-loader/book-loader.component';
 import { SquareLoaderComponent } from './components/loaders/square-loader/square-loader.component';
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
 
 @NgModule({
     declarations: [
@@ -38,7 +39,8 @@ import { SquareLoaderComponent } from './components/loaders/square-loader/square
         FormsModule,
         RouterModule,
         NgxMatSelectSearchModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        NgxDocViewerModule
     ],
     exports: [
         // Components
@@ -52,6 +54,7 @@ import { SquareLoaderComponent } from './components/loaders/square-loader/square
         MaterialModule,
         NgxMatSelectSearchModule,
         ReactiveFormsModule,
+        NgxDocViewerModule,
 
         // Pipes
         GetUsernamePipe,

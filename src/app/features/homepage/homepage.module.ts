@@ -5,11 +5,13 @@ import { HomepageRoutingModule } from './homepage-routing.module';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ResultsComponent } from './components/results/results.component';
+import { DetailComponent } from './components/detail/detail.component';
 
 @NgModule({
     declarations: [
         HomepageComponent,
-        ResultsComponent
+        ResultsComponent,
+        DetailComponent
     ],
     imports: [
         CommonModule,

@@ -1,0 +1,29 @@
+:host {
+    display: block;
+    background-image: url('/assets/images/bg-desktop-yellow.png');
+    background-size: contain;
+    // background-attachment: fixed;
+
+    padding: 4rem 1rem 1rem 1rem;
+    
+    // min-height: calc(100% - 4rem - 1rem); // 4rem = navbar height
+}
+
+.back-text {
+    margin: 0;
+}
+
+.main {
+    margin: 1rem 2rem;
+    height: calc(100vh - 4rem - 1rem - 2rem);
+}
+
+.card {
+    max-width: 25.5rem;
+}
+
+.doc-preview {
+    flex-grow: 1;
+    width: 100%;
+    height: 100%
+}
