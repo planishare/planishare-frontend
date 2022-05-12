@@ -27,7 +27,7 @@
  <main class="flex_start gap-1 flex_wrap">
     <!-- Card -->
     <div class="left-section">
-        <button mat-raised-button>
+        <button mat-raised-button (click)="goBack()">
             <mat-icon>arrow_back</mat-icon>
             <span>Volver a resultados</span>
         </button>
@@ -51,7 +51,7 @@
                             </span>
                         </div>
                     </div>
-                    <button mat-icon-button>
+                    <button mat-icon-button (click)="toggleLike(post)">
                         <mat-icon *ngIf="!!post.is_liked">favorite</mat-icon>
                         <mat-icon *ngIf="!!!post.is_liked">favorite_outline</mat-icon>
                     </button>
@@ -74,28 +74,39 @@
         
                 <div class="flex_start_center gap-05">
                     <mat-icon>description</mat-icon>
-                    <span>{{ post.suporting_material?.length ?? 0 + 1 }} Documentos</span>
+                    <span>{{ (post.suporting_material?.length ?? 0) + 1 }} Documentos</span>
                 </div>
                 <div class="flex_column gap-05">
-                    <div class="document no-select" (click)="viewDocument(post.main_file)" matRipple>
+                    <div
+                        class="document"
+                        (click)="viewDocument(post.main_file); scroll(viewerEl)"
+                        unselectable="on"
+                        matRipple
+                        [ngClass]="post.main_file === currentDocUrl ? (post.main_file|getDocType:docTypes)+'-style' : ''">
                         <span>{{ post.main_file|getDocName }}</span>
 
                         <a [href]="post.main_file" target="_blank">
                             <button
-                                mat-raised-button
-                                class="download-button {{ post.main_file|getDocType:docTypes }}-button">
+                                mat-flat-button
+                                class="download-button {{ post.main_file|getDocType:docTypes }}-style">
                                     <span>.{{ post.main_file|getDocType:docTypes }}</span>
                                     <mat-icon>download</mat-icon>
                             </button>
                         </a>
                     </div>
-                    <div class="document" unselectable="on" *ngFor="let doc of post.suporting_material" (click)="viewDocument(doc)" matRipple>
+                    <div
+                        class="document"
+                        *ngFor="let doc of post.suporting_material"
+                        (click)="viewDocument(doc); scroll(viewerEl)"
+                        unselectable="on"
+                        matRipple
+                        [ngClass]="doc === currentDocUrl ? (doc|getDocType:docTypes)+'-style' : ''">
                         <span>{{ doc|getDocName }}</span>
 
                         <a [href]="doc">
                             <button
-                                mat-raised-button
-                                class="download-button {{ doc|getDocType:docTypes }}-button">
+                                mat-flat-button
+                                class="download-button {{ doc|getDocType:docTypes }}-style">
                                     <span>.{{ doc|getDocType:docTypes }}</span>
                                     <mat-icon>download</mat-icon>
                             </button>
@@ -115,6 +126,7 @@
                 </div>
             </div>
         </mat-card>
+        <div #viewerEl></div>
     </div>
 
     <!-- Doc preview -->

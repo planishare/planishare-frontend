@@ -268,6 +268,12 @@ export class ResultsComponent implements OnInit, OnDestroy {
         this.doSearch();
     }
 
+    public navigateToDetail(postId: number): void {
+        this.router.navigate(['/posts/view/', postId], {
+            queryParams: this.searchParams
+        });
+    }
+
     // Filters requests
     private getAcademicLevels(): Observable<RoundedSelectSearchOption[]> {
         return this.postsService.getAcademicLevels()

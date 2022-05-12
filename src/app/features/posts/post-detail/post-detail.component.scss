@@ -78,20 +78,20 @@
     min-width: 83px;
 }
 
-.pdf-button {
+.pdf-style {
     color: var(--light-text);
     background-color: var(--warn-color);
 }
-.doc-button {
+.doc-style {
     color: var(--light-text);
     background-color: var(--primary-color);
 }
-.ppt-button {
+.ppt-style {
     color: var(--light-text);
     // TODO: Find orange color
     background-color: var(--accent-color);
 }
-.xls-button {
+.xls-style {
     color: var(--light-text);
     // TODO: Find green light color
     background-color: var(--green-dark-color);

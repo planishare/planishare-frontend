@@ -1,9 +1,12 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { viewerType } from 'ngx-doc-viewer';
 import { catchError, of } from 'rxjs';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
-import { PostDetail } from 'src/app/core/types/posts.type';
+import { ReactionsService } from 'src/app/core/services/reactions.service';
+import { PostDetail, PostsQueryParams } from 'src/app/core/types/posts.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 import { isMobileX } from 'src/app/shared/utils';
 
@@ -14,6 +17,7 @@ import { isMobileX } from 'src/app/shared/utils';
 })
 export class PostDetailComponent implements OnInit {
     public isMobile = isMobileX;
+    public searchParams: Params | PostsQueryParams;
 
     public postId: number;
     public post?: PostDetail;
@@ -44,6 +48,7 @@ export class PostDetailComponent implements OnInit {
 
     };
 
+    // Dev porposes
     public pdf = 'https://firebasestorage.googleapis.com/v0/b/planishare.appspot.com/o/ER_Directorio_Oficial_EE_WEB.pdf?alt=media&token=a1c252ec-766a-4844-8d80-de913b7d09bc';
     public docx = 'https://firebasestorage.googleapis.com/v0/b/planishare.appspot.com/o/Formulario-Inscripci%C3%B3n-de-Tesis.docx?alt=media&token=ca6883f2-e4ef-46d4-88f2-d251adb177c3';
     public doc = 'https://firebasestorage.googleapis.com/v0/b/planishare.appspot.com/o/plantilla_informepracticaformato.doc?alt=media&token=5c4ed8f6-96fc-43be-aaac-5d7a39a75fdc';
@@ -53,9 +58,13 @@ export class PostDetailComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private postsService: PostsService,
-        private commonSnackbarMsg: CommonSnackbarMsgService
+        private commonSnackbarMsg: CommonSnackbarMsgService,
+        private router: Router,
+        private authService: AuthService,
+        private reactionService: ReactionsService
     ) {
         this.postId = Number(this.route.snapshot.paramMap.get('id'));
+        this.searchParams = this.route.snapshot.queryParams;
     }
 
     public ngOnInit(): void {
@@ -96,10 +105,9 @@ export class PostDetailComponent implements OnInit {
         return docName[docName.length - 1];
     }
 
-    // TODO: change for mobile
     public getViewer(docType: string): string | viewerType {
         if (docType === 'pdf') {
-            return 'google';
+            return this.isMobile ? 'google' : 'pdf'; // TODO: add safari support
         }
         if (this.docTypes.doc.find(ext => ext === docType)) {
             return 'office';
@@ -113,7 +121,64 @@ export class PostDetailComponent implements OnInit {
         return '';
     }
 
-    public getDocName(docUrl: string): string {
-        return docUrl.split('/o/')[1].split('?')[0];
+    public toggleLike(post: PostDetail): any {
+        const user = this.authService.getUserProfile();
+        if (!!!user) {
+            this.commonSnackbarMsg.showLoginMessage('dar Me gusta');
+            return;
+        }
+        if (!!post.is_liked) {
+            // Visual efect
+            const likeId = post.is_liked;
+            post.is_liked = null;
+            post.likes--;
+
+            // Request
+            this.reactionService.deleteLike(likeId)
+                .pipe(
+                    catchError(() => {
+                        post.is_liked = likeId;
+                        post.likes++;
+                        this.commonSnackbarMsg.showErrorMessage();
+                        return of(null);
+                    })
+                )
+                .subscribe(() => {
+                    console.log('Delete like!');
+                });
+        } else {
+            // Visual efect
+            post.is_liked = 1;
+            post.likes++;
+
+            // Request
+            this.reactionService.createLike(user.id, post.id)
+                .pipe(
+                    catchError(() => {
+                        post.is_liked = null;
+                        post.likes--;
+                        this.commonSnackbarMsg.showErrorMessage();
+                        return of(null);
+                    })
+                )
+                .subscribe(like => {
+                    if (!!like) {
+                        post.is_liked = like.id;
+                        console.log('Like!');
+                    }
+                });
+        }
+    }
+
+    // Utils
+    public scroll(el: HTMLElement) {
+        el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    public goBack(): void {
+        this.router.navigate(['/results']);
+        this.router.navigate(['/results'], {
+            queryParams: this.searchParams
+        });
     }
 }

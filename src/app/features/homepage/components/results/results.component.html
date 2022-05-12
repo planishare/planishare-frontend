@@ -94,13 +94,23 @@
     <ng-container *ngFor="let post of posts">
       <mat-card class="card">
         <div class="card-body">
-          <img src="/assets/images/doc-test.jpg" alt="document-image" class="card-image-desktop" *ngIf="!isMobile">
+          <img
+            src="/assets/images/doc-test.jpg"
+            alt="document-image"
+            class="card-image-desktop"
+            *ngIf="!isMobile"
+            (click)="navigateToDetail(post.id)">
           <!-- <img src="/assets/images/ppt-test.jpg" alt="document-image" class="card-image" *ngIf="!isMobile"> -->
           <div class="card-content">
-            <img src="/assets/images/doc-test.jpg" alt="document-image" class="card-image-mobile" *ngIf="isMobile">
+            <img
+              src="/assets/images/doc-test.jpg"
+              alt="document-image"
+              class="card-image-mobile"
+              *ngIf="isMobile"
+              (click)="navigateToDetail(post.id)">
             <!-- <img src="/assets/images/ppt-test.jpg" alt="document-image" class="card-image" *ngIf="isMobile"> -->
             <mat-card-subtitle>{{ post.user|getUsername }} - {{ post.created_at|timeAgo }}</mat-card-subtitle>
-            <mat-card-title>{{ post.title }}</mat-card-title>
+            <mat-card-title (click)="navigateToDetail(post.id)">{{ post.title }}</mat-card-title>
   
             <!-- TODO: Create pipe to get ext from posts docs -->
             <div class="doc-types">

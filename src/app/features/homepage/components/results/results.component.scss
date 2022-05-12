@@ -132,6 +132,10 @@
 
 .card-content {
     width: 100%;
+
+    mat-card-title {
+        cursor: pointer;
+    }
 }
 
 .card-image-desktop {
@@ -141,6 +145,7 @@
     
     object-fit: cover;
     object-position: top;
+    cursor: pointer;
 }
 
 .card-image-mobile {
