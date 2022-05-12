@@ -112,27 +112,22 @@
             <mat-card-subtitle>{{ post.user|getUsername }} - {{ post.created_at|timeAgo }}</mat-card-subtitle>
             <mat-card-title (click)="navigateToDetail(post.id)">{{ post.title }}</mat-card-title>
   
-            <!-- TODO: Create pipe to get ext from posts docs -->
             <div class="doc-types">
               <mat-chip-list class="tags">
-                <mat-chip class="small-tag pdf-tag">
-                  <span>.pdf</span>
+                <mat-chip class="small-tag {{ post.main_file|getDocType:docTypes }}-tag">
+                  <span>.{{ post.main_file|getDocType:docTypes }}</span>
                 </mat-chip>
-                <mat-chip class="small-tag doc-tag">
-                  <span>.docx</span>
-                </mat-chip>
-                <mat-chip class="small-tag ppt-tag">
-                  <span>.pptx</span>
-                </mat-chip>
-                <mat-chip class="small-tag xls-tag">
-                  <span>.xlsx</span>
+                <mat-chip
+                  *ngFor="let doc of post.suporting_material"
+                  class="small-tag {{ doc|getDocType:docTypes }}-tag">
+                    <span>.{{ doc|getDocType:docTypes }}</span>
                 </mat-chip>
               </mat-chip-list>
   
               <div class="doc-types-text">
                 <mat-icon>description</mat-icon>
-                <span *ngIf="isMobile">{{ post.suporting_material?.length ?? 0 + 1 }}</span>
-                <span *ngIf="!isMobile">{{ post.suporting_material?.length ?? 0 + 1 }} Documentos</span>
+                <span *ngIf="isMobile">{{ (post.suporting_material?.length ?? 0) + 1 }}</span>
+                <span *ngIf="!isMobile">{{ (post.suporting_material?.length ?? 0) + 1 }} Documentos</span>
               </div>
             </div>
   
@@ -162,7 +157,7 @@
               <span>{{ post.likes }} Me gusta</span>
             </div>
             <div>
-              <mat-icon>download</mat-icon>
+              <mat-icon>cloud_download</mat-icon>
               <span>{{ post.downloads }} Descargas</span>
             </div>
           </div>

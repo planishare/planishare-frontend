@@ -58,6 +58,12 @@ export class ResultsComponent implements OnInit, OnDestroy {
     public isSubjectsLoading = true;
     public isaxesLoading = true;
 
+    public docTypes = {
+        doc: ['doc','docm','docx','txt'],
+        xls: ['csv','xlam','xls','xlsx','xml'],
+        ppt: ['ppt','pptx']
+    };
+
     constructor(
         private postsService: PostsService,
         private reactionService: ReactionsService,

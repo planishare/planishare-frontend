@@ -28,24 +28,9 @@ export class PostDetailComponent implements OnInit {
     public hasData = true;
 
     public docTypes = {
-        doc: [
-            'doc',
-            'docm',
-            'docx',
-            'txt'
-        ],
-        xls: [
-            'csv',
-            'xlam',
-            'xls',
-            'xlsx',
-            'xml'
-        ],
-        ppt: [
-            'ppt',
-            'pptx'
-        ]
-
+        doc: ['doc','docm','docx','txt'],
+        xls: ['csv','xlam','xls','xlsx','xml'],
+        ppt: ['ppt','pptx']
     };
 
     // Dev porposes
