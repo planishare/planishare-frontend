@@ -24,7 +24,7 @@
     * office: 
  -->
 
-<main class="flex_start gap-1 flex_wrap">
+ <main class="flex_start gap-1 flex_wrap">
     <!-- Card -->
     <div class="left-section">
         <button mat-raised-button>
@@ -32,7 +32,7 @@
             <span>Volver a resultados</span>
         </button>
 
-        <mat-card class="card">
+        <mat-card class="card" *ngIf="!!post">
             <div class="flex_column gap-1">
                 <div class="flex_between_center">
                     <div>
@@ -40,7 +40,14 @@
                             <mat-icon>schedule</mat-icon>
                             <span>
                                 Hace {{ post.created_at|timeAgo }} por
-                                {{ post.user|getUsername }} <br> {{ post.user.education.name }} en {{ post.user.institution.name }}
+                                {{ post.user|getUsername }}
+                                <br>
+                                <span>
+                                    {{ post.user.education?.name }}
+                                </span>
+                                <span *ngIf="post.user.education?.name && post.user.institution?.name">
+                                    en {{ post.user.institution?.name }}
+                                </span>
                             </span>
                         </div>
                     </div>
@@ -70,26 +77,29 @@
                     <span>{{ post.suporting_material?.length ?? 0 + 1 }} Documentos</span>
                 </div>
                 <div class="flex_column gap-05">
-                    <div class="document">
-                        <span>planificacion_de_ejemplo.pdf</span>
-                        <button mat-raised-button class="download-button pdf-button">
-                            <span>.pdf</span>
-                            <mat-icon>download</mat-icon>
-                        </button>
+                    <div class="document no-select" (click)="viewDocument(post.main_file)" matRipple>
+                        <span>{{ post.main_file|getDocName }}</span>
+
+                        <a [href]="post.main_file" target="_blank">
+                            <button
+                                mat-raised-button
+                                class="download-button {{ post.main_file|getDocType:docTypes }}-button">
+                                    <span>.{{ post.main_file|getDocType:docTypes }}</span>
+                                    <mat-icon>download</mat-icon>
+                            </button>
+                        </a>
                     </div>
-                    <div class="document">
-                        <span>planificacion_de_ejemplo.doc</span>
-                        <button mat-raised-button class="download-button doc-button">
-                            <span>.docx</span>
-                            <mat-icon>download</mat-icon>
-                        </button>
-                    </div>
-                    <div class="document">
-                        <span>planificacion_de_ejemplo.pdf</span>
-                        <button mat-raised-button class="download-button pdf-button">
-                            <span>.pdf</span>
-                            <mat-icon>download</mat-icon>
-                        </button>
+                    <div class="document" unselectable="on" *ngFor="let doc of post.suporting_material" (click)="viewDocument(doc)" matRipple>
+                        <span>{{ doc|getDocName }}</span>
+
+                        <a [href]="doc">
+                            <button
+                                mat-raised-button
+                                class="download-button {{ doc|getDocType:docTypes }}-button">
+                                    <span>.{{ doc|getDocType:docTypes }}</span>
+                                    <mat-icon>download</mat-icon>
+                            </button>
+                        </a>
                     </div>
                 </div>
 
@@ -108,28 +118,10 @@
     </div>
 
     <!-- Doc preview -->
-    <!-- <ngx-doc-viewer
-        class="doc-preview"
-        [url]="pdf"
-        viewer="google"
-    ></ngx-doc-viewer> -->
-
     <ngx-doc-viewer
+        *ngIf="!isLoading"
         class="doc-preview"
-        [url]="docx"
-        viewer="office"
+        [url]="currentDocUrl"
+        [viewer]="currentViewer"
     ></ngx-doc-viewer>
-    
-    <!-- <ngx-doc-viewer
-        class="doc-preview"
-        [url]="pptx"
-        viewer="office"
-    ></ngx-doc-viewer> -->
-    
-    <!-- <ngx-doc-viewer
-        class="doc-preview"
-        [url]="xlsx"
-        viewer="office"
-    ></ngx-doc-viewer> -->
-
 </main>

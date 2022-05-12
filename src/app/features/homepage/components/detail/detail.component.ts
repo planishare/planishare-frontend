@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { isMobileX } from 'src/app/shared/utils';
 
 @Component({
     selector: 'app-detail',
@@ -7,6 +8,8 @@ import { Subscription } from 'rxjs';
     styleUrls: ['./detail.component.scss']
 })
 export class DetailComponent {
+
+    public isMobile = isMobileX;
 
     public pdf = 'https://firebasestorage.googleapis.com/v0/b/planishare.appspot.com/o/ER_Directorio_Oficial_EE_WEB.pdf?alt=media&token=a1c252ec-766a-4844-8d80-de913b7d09bc';
     public docx = 'https://firebasestorage.googleapis.com/v0/b/planishare.appspot.com/o/Formulario-Inscripci%C3%B3n-de-Tesis.docx?alt=media&token=ca6883f2-e4ef-46d4-88f2-d251adb177c3';

@@ -10,7 +10,7 @@
 }
 
 .card {
-    max-width: 25.5rem;
+    max-width: 25.5rem; // desktop
     margin-top: 0.5rem;
 }
 
@@ -42,8 +42,7 @@
 
 
 .document {
-    background-color: #e0e0e0;
-    // box-shadow: 0.5px 0.5px 50px #303030;
+    background-color: #e9e9e9;
     border-radius: 30px;
 
     display: flex;
@@ -52,24 +51,48 @@
     padding-left: 1rem;
 
     font-weight: 500;
+
+    cursor: pointer;
+
+    > span {
+        overflow: hidden;
+        max-width: 40ch; // desktop
+        max-width: 21ch; // mobile
+        text-overflow: ellipsis; 
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 40rem) {
+    .document {
+        cursor: none;
+
+        > span {
+            max-width: 21ch; // mobile
+        }
+    }
 }
 
 .download-button {
     border-radius: 30px;
-    color: var(--light-text);
+    min-width: 83px;
 }
 
 .pdf-button {
+    color: var(--light-text);
     background-color: var(--warn-color);
 }
 .doc-button {
+    color: var(--light-text);
     background-color: var(--primary-color);
 }
 .ppt-button {
+    color: var(--light-text);
     // TODO: Find orange color
     background-color: var(--accent-color);
 }
 .xls-button {
+    color: var(--light-text);
     // TODO: Find green light color
     background-color: var(--green-dark-color);
 }

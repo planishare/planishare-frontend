@@ -18,6 +18,7 @@ import { StringToArrayPipe } from './pipes/string-to-array.pipe';
 import { BookLoaderComponent } from './components/loaders/book-loader/book-loader.component';
 import { SquareLoaderComponent } from './components/loaders/square-loader/square-loader.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
+import { GetDocType, GetDocName } from './pipes/posts.pipe';
 
 @NgModule({
     declarations: [
@@ -27,11 +28,15 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
         SearchDialogComponent,
         NavigationSidenavComponent,
         RoundedSelectSearchComponent,
+        BookLoaderComponent,
+        SquareLoaderComponent,
+
+        // Pipes
         GetUsernamePipe,
         TimeAgoPipe,
         StringToArrayPipe,
-        BookLoaderComponent,
-        SquareLoaderComponent
+        GetDocType,
+        GetDocName
     ],
     imports: [
         CommonModule,
@@ -59,7 +64,9 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
         // Pipes
         GetUsernamePipe,
         TimeAgoPipe,
-        StringToArrayPipe
+        StringToArrayPipe,
+        GetDocType,
+        GetDocName
     ]
 })
 export class SharedModule { }

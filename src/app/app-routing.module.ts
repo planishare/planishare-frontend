@@ -11,6 +11,10 @@ const routes: Routes = [
             {
                 path: '',
                 loadChildren: () => import('./features/homepage/homepage.module').then(mod => mod.HomepageModule)
+            },
+            {
+                path: 'posts',
+                loadChildren: () => import('./features/posts/posts.module').then(mod => mod.PostsModule)
             }
         ]
     },

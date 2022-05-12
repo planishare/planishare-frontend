@@ -10,8 +10,7 @@ import { AuthService } from './auth.service';
 })
 export class PostsService {
     constructor(
-        private http: HttpClient,
-        private authService: AuthService
+        private http: HttpClient
     ) { }
 
     public getPosts(queryParams: PostsQueryParams): Observable<PostPageable> {
@@ -36,6 +35,10 @@ export class PostsService {
 
     public getMostLikedPosts(): Observable<PostDetail[]> {
         return this.http.get<PostDetail[]>(environment.API_URL + '/posts/most-liked/');
+    }
+
+    public getPostById(postId: number): Observable<any> {
+        return this.http.get(environment.API_URL + `/posts/${postId}/`);
     }
 
     // Academic Level, Subjects and Axis
