@@ -1,8 +1,8 @@
-<button mat-raised-button *ngIf="!simpleIcon" (click)="openSearchDialog()">
+<button mat-raised-button class="search-button" *ngIf="!simpleIcon" (click)="openSearchDialog()">
     <mat-icon>search</mat-icon>
-    <!-- Buscar -->
+    <span>Buscar</span>
 </button>
 
-<button mat-icon-button *ngIf="simpleIcon" (click)="openSearchDialog()">
+<button mat-raised-button class="simple-icon"  *ngIf="simpleIcon" (click)="openSearchDialog()">
     <mat-icon>search</mat-icon>
 </button>

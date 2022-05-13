@@ -1,3 +1,15 @@
 button {
-    border-radius: 30px;
+    border-radius: 10px;
+}
+
+.search-button {
+    min-width: 10rem;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.simple-icon {
+    line-height: normal;
+    min-width: auto;
+    padding: 0.2em 0.5em;
 }

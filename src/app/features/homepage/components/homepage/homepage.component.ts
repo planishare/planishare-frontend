@@ -162,8 +162,8 @@ export class HomepageComponent implements OnInit {
             });
     }
 
-    public scroll(element: HTMLElement): void {
-        element.scrollIntoView({ behavior: 'smooth' });
+    public scroll(element?: HTMLElement): void {
+        element?.scrollIntoView({ behavior: 'smooth' });
     }
 
     private getTopPosts(): void {
