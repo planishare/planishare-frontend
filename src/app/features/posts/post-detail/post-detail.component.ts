@@ -176,11 +176,5 @@ export class PostDetailComponent implements OnInit {
         } else {
             location.href = docUrl;
         }
-
-        // TODO: check if user already download something of this post (accessToken?)
-        if (!!this.post && true) {
-            this.post.downloads = this.post.downloads + 1;
-        }
-        // this.reactionService.countDownload(this.user.id, this.postId);
     }
 }

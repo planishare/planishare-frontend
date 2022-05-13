@@ -49,8 +49,8 @@ export class ResultsComponent implements OnInit, OnDestroy {
             text: OrderingTypeName.MOST_LIKED
         },
         {
-            data: OrderingType.MOST_DOWNLOADED,
-            text: OrderingTypeName.MOST_DOWNLOADED
+            data: OrderingType.MOST_VIEWED,
+            text: OrderingTypeName.MOST_VIEWED
         }
     ];
 
