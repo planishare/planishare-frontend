@@ -23,4 +23,12 @@ export class ReactionsService {
     public deleteLike(likeId: number): Observable<any> {
         return this.http.delete(environment.API_URL + `/likes/delete/${likeId}/`);
     }
+
+    public countDownload(userId: number, postId: number): Observable<any> {
+        const body = {
+            user: userId,
+            post: postId
+        };
+        return this.http.post<any>(environment.API_URL + '/downloads/count/', body);
+    }
 }

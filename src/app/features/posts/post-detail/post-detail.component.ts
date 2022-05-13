@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { ReactionsService } from 'src/app/core/services/reactions.service';
 import { PostDetail, PostsQueryParams } from 'src/app/core/types/posts.type';
+import { UserDetail } from 'src/app/core/types/users.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 import { isMobileX } from 'src/app/shared/utils';
 
@@ -18,6 +19,8 @@ import { isMobileX } from 'src/app/shared/utils';
 export class PostDetailComponent implements OnInit {
     public isMobile = isMobileX;
     public searchParams: Params | PostsQueryParams;
+
+    public user: UserDetail;
 
     public postId: number;
     public post?: PostDetail;
@@ -50,6 +53,7 @@ export class PostDetailComponent implements OnInit {
     ) {
         this.postId = Number(this.route.snapshot.paramMap.get('id'));
         this.searchParams = this.route.snapshot.queryParams;
+        this.user = this.authService.getUserProfile() as UserDetail;
     }
 
     public ngOnInit(): void {
@@ -81,7 +85,7 @@ export class PostDetailComponent implements OnInit {
                 this.currentDocUrl = docUrl;
             }
         } else {
-            // TODO: Download file
+            this.download(docUrl);
         }
     }
 
@@ -107,8 +111,7 @@ export class PostDetailComponent implements OnInit {
     }
 
     public toggleLike(post: PostDetail): any {
-        const user = this.authService.getUserProfile();
-        if (!!!user) {
+        if (!!!this.user) {
             this.commonSnackbarMsg.showLoginMessage('dar Me gusta');
             return;
         }
@@ -137,7 +140,7 @@ export class PostDetailComponent implements OnInit {
             post.likes++;
 
             // Request
-            this.reactionService.createLike(user.id, post.id)
+            this.reactionService.createLike(this.user.id, post.id)
                 .pipe(
                     catchError(() => {
                         post.is_liked = null;
@@ -165,5 +168,19 @@ export class PostDetailComponent implements OnInit {
         this.router.navigate(['/results'], {
             queryParams: this.searchParams
         });
+    }
+
+    public download(docUrl: string): void {
+        if (this.getDocType(docUrl) === 'pdf') {
+            window.open(docUrl, '_blank');
+        } else {
+            location.href = docUrl;
+        }
+
+        // TODO: check if user already download something of this post (accessToken?)
+        if (!!this.post && true) {
+            this.post.downloads = this.post.downloads + 1;
+        }
+        // this.reactionService.countDownload(this.user.id, this.postId);
     }
 }

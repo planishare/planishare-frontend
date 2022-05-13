@@ -24,7 +24,7 @@
     * office: 
  -->
 
- <main class="flex_start gap-1 flex_wrap">
+ <main class="flex_start gap-05 flex_wrap">
     <!-- Card -->
     <div class="left-section">
         <button mat-raised-button (click)="goBack()">
@@ -33,7 +33,7 @@
         </button>
 
         <mat-card class="card" *ngIf="!!post">
-            <div class="flex_column gap-1">
+            <div class="flex_column gap-05">
                 <div class="flex_between_center">
                     <div>
                         <div class="flex_start_center gap-05 time-data">
@@ -85,14 +85,13 @@
                         [ngClass]="post.main_file === currentDocUrl ? (post.main_file|getDocType:docTypes)+'-style' : ''">
                         <span>{{ post.main_file|getDocName }}</span>
 
-                        <a [href]="post.main_file" target="_blank">
-                            <button
-                                mat-flat-button
-                                class="download-button {{ post.main_file|getDocType:docTypes }}-style">
-                                    <span>.{{ post.main_file|getDocType:docTypes }}</span>
-                                    <mat-icon>download</mat-icon>
-                            </button>
-                        </a>
+                        <button
+                            (click)="download(post.main_file)"
+                            mat-flat-button
+                            class="download-button {{ post.main_file|getDocType:docTypes }}-style">
+                                <span>.{{ post.main_file|getDocType:docTypes }}</span>
+                                <mat-icon>download</mat-icon>
+                        </button>
                     </div>
                     <div
                         class="document"
@@ -103,14 +102,13 @@
                         [ngClass]="doc === currentDocUrl ? (doc|getDocType:docTypes)+'-style' : ''">
                         <span>{{ doc|getDocName }}</span>
 
-                        <a [href]="doc">
-                            <button
-                                mat-flat-button
-                                class="download-button {{ doc|getDocType:docTypes }}-style">
-                                    <span>.{{ doc|getDocType:docTypes }}</span>
-                                    <mat-icon>download</mat-icon>
-                            </button>
-                        </a>
+                        <button
+                            (click)="download(doc)"
+                            mat-flat-button
+                            class="download-button {{ doc|getDocType:docTypes }}-style">
+                                <span>.{{ doc|getDocType:docTypes }}</span>
+                                <mat-icon>download</mat-icon>
+                        </button>
                     </div>
                 </div>
 

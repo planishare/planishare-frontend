@@ -16,7 +16,6 @@ export class AppComponent implements OnInit {
     ) {}
 
     public ngOnInit(): void {
-        // TODO-OPT: Change loader and add animation
         this.authService.isCompleted$.asObservable()
             .pipe(
                 filter(isComplete => isComplete)
