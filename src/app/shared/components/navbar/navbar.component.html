@@ -1,7 +1,10 @@
 <nav class="navbar" *ngIf="!isMobile()">
-    <app-search-button *ngIf="buttons.desktopSearchButton"></app-search-button>
-    <button mat-raised-button class="logo" [routerLink]="['/']" *ngIf="buttons.desktopLogo">
-        Planishare
+    <button mat-raised-button class="logo" [routerLink]="['/']">
+        <span class="logo-text">Planishare</span>
+        <button mat-raised-button class="logo-search-button" (click)="openSearchDialog(); $event.stopPropagation()">
+            <mat-icon>search</mat-icon>
+            <span>Buscar</span>
+        </button>
     </button>
     <ul>
         <!-- TODO: Create active in buttons maybe blue backgrpund -->
@@ -41,11 +44,13 @@
 
 <nav class="navbar" *ngIf="isMobile()">
     <button mat-icon-button (click)="openSidenav()">
-        <mat-icon>menu</mat-icon>
+        <mat-icon class="menu-icon">menu</mat-icon>
     </button>
-    <button mat-raised-button class="logo" [routerLink]="['/']" *ngIf="buttons.mobileLogo">
+    <button mat-raised-button class="logo-mobile" [routerLink]="['/']">
         Planishare
     </button>
-    <app-search-button [simpleIcon]="true" [ngClass]="!buttons.mobileSearchButton ? 'visibility-hidden': ''"></app-search-button>
+    <button mat-raised-button class="simple-icon" (click)="openSearchDialog()">
+        <mat-icon>search</mat-icon>
+    </button>
 </nav>
 

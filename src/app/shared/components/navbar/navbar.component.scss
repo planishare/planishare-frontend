@@ -36,19 +36,46 @@
     
     box-shadow: 0px 1px 3px #303030;
 
-    padding: 0.1em 1.1em;
+    padding: 0.15em 0.3em 0.15em 1.1em;
+
+    display: flex;
+    
+    .logo-text {
+        margin-right: 1rem;
+    }
+
+    .logo-search-button {
+        border-radius: 10px;
+    }
 }
 
-.menu {
-    display: grid;
-    place-items: center;
+.logo-mobile {
+    background-color: var(--green-dark-color);
+    
+    color: var(--light-text);
+    font-weight: 500;
+    border-radius: 10px;
+    font-size: clamp(1.2rem, 1.7000rem + -0.4167vw, 1rem);
+    
+    box-shadow: 0px 1px 3px #303030;
 
-    border: 0;
+    padding: 0.1 1.1em;
 
-    background-color: rgba(0,0,0,0);
+    display: flex;
+}
+
+.menu-icon {
+    color: var(--green-dark-color);
 }
 
 .profile-button {
     color: var(--button-text);
     background-color: var(--button-background);
+}
+
+.simple-icon {
+    line-height: normal;
+    min-width: auto;
+    padding: 0.2em 0.5em;
+    border-radius: 10px;
 }
