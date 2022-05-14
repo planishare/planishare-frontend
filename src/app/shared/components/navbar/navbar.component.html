@@ -1,4 +1,4 @@
-<nav class="navbar" *ngIf="!isMobile()">
+<nav class="navbar" *ngIf="!isMobile">
     <button mat-raised-button class="logo" [routerLink]="['/']">
         <span class="logo-text">Planishare</span>
         <button mat-raised-button class="logo-search-button" (click)="openSearchDialog(); $event.stopPropagation()">
@@ -42,7 +42,7 @@
     </ul>
 </nav>
 
-<nav class="navbar" *ngIf="isMobile()">
+<nav class="navbar" *ngIf="isMobile">
     <button mat-icon-button (click)="openSidenav()">
         <mat-icon class="menu-icon">menu</mat-icon>
     </button>

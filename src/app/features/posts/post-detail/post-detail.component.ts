@@ -9,7 +9,7 @@ import { ReactionsService } from 'src/app/core/services/reactions.service';
 import { PostDetail, PostsQueryParams } from 'src/app/core/types/posts.type';
 import { UserDetail } from 'src/app/core/types/users.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
-import { isMobileX } from 'src/app/shared/utils';
+import { isMobile } from 'src/app/shared/utils';
 
 @Component({
     selector: 'app-post-detail',
@@ -17,7 +17,7 @@ import { isMobileX } from 'src/app/shared/utils';
     styleUrls: ['./post-detail.component.scss']
 })
 export class PostDetailComponent implements OnInit {
-    public isMobile = isMobileX;
+    public isMobile = isMobile;
     public searchParams: Params | PostsQueryParams;
 
     public user: UserDetail;

@@ -10,7 +10,7 @@ import { ReactionsService } from 'src/app/core/services/reactions.service';
 import { PostDetail, PostPageable, PostsQueryParams } from 'src/app/core/types/posts.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 import { RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
-import { isMobileX } from 'src/app/shared/utils';
+import { isMobile } from 'src/app/shared/utils';
 
 @Component({
     selector: 'app-results',
@@ -18,7 +18,7 @@ import { isMobileX } from 'src/app/shared/utils';
     styleUrls: ['./results.component.scss']
 })
 export class ResultsComponent implements OnInit {
-    public isMobile = isMobileX;
+    public isMobile = isMobile;
     public isLoading = true;
     public hasData = true;
 

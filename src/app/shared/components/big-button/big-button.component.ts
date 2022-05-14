@@ -10,4 +10,6 @@ export class BigButtonComponent {
     @Input() public icon: string = 'cancel';
 
     constructor() { }
+
+    // TODO: Delete this, this doesnt have any style
 }
