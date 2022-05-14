@@ -9,30 +9,28 @@
     <ul>
         <!-- TODO: Create active in buttons maybe blue backgrpund -->
         <li *ngIf="!isUserAuth">
-            <app-big-button
-                text="Registrarse"
-                icon="person_add"
-                [routerLink]="['/auth/register']">
-            </app-big-button>
+            <button mat-raised-button [routerLink]="['/auth/register']">
+                <mat-icon>person_add</mat-icon>
+                Registrarse
+            </button>
         </li>
         <li *ngIf="!isUserAuth">
-            <app-big-button
-                text="Iniciar Sesión"
-                icon="login"
-                [routerLink]="['/auth/login']">
-            </app-big-button>
+            <button mat-raised-button [routerLink]="['/auth/login']">
+                <mat-icon>login</mat-icon>
+                Iniciar Sesión
+            </button>
         </li>
         <li *ngIf="isUserAuth">
-            <app-big-button
-                text="Mis publicaciones"
-                icon="description">
-            </app-big-button>
+            <button mat-raised-button>
+                <mat-icon>description</mat-icon>
+                Mis publicaciones
+            </button>
         </li>
         <li *ngIf="isUserAuth">
-            <app-big-button
-                text="Crear publicación"
-                icon="control_point">
-            </app-big-button>
+            <button mat-raised-button>
+                <mat-icon>control_point</mat-icon>
+                Crear publicación
+            </button>
         </li>
         <li *ngIf="isUserAuth">
             <button mat-mini-fab class="profile-button" (click)="logout()">

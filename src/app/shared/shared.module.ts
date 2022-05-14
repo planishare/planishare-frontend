@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { MaterialModule } from './material/material.module';
 import { SearchButtonComponent } from './components/search-button/search-button.component';
-import { BigButtonComponent } from './components/big-button/big-button.component';
 import { SearchDialogComponent } from './components/search-dialog/search-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavigationSidenavComponent } from './components/navigation-sidenav/navigation-sidenav.component';
@@ -23,7 +22,6 @@ import { GetDocType, GetDocName } from './pipes/posts.pipe';
     declarations: [
         NavbarComponent,
         SearchButtonComponent,
-        BigButtonComponent,
         SearchDialogComponent,
         NavigationSidenavComponent,
         RoundedSelectSearchComponent,
