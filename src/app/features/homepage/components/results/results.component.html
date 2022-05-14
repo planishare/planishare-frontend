@@ -35,7 +35,7 @@
       class="filter"
       [list]="axesList"
       [control]="axisControl"
-      [loading]="isaxesLoading"
+      [loading]="isAxesLoading"
       buttonText="Eje"
       bgColor="var(--purple-color)"
       textColor="var(--light-text)"
@@ -50,6 +50,13 @@
       textColor="var(--light-text)"
       placeholder="Ordenar por">
     </app-rounded-select-search>
+    <button
+      mat-raised-button
+      class="delete-button"
+      *ngIf="showDeleteButton"
+      (click)="clearFilterControls()">
+      <mat-icon>delete</mat-icon>
+    </button>
   </div>
 </div>
 
@@ -135,16 +142,16 @@
   
             <mat-chip-list class="tags">
               <mat-chip class="academic-level-tag">
-                <span *ngIf="!isMobile">Nivel académico: </span>
-                <span>{{ post.academic_level.name }}</span>
+                <span *ngIf="!isMobile">Nivel académico: {{ post.academic_level.name }}</span>
+                <span *ngIf="isMobile">{{ post.academic_level.name }}</span>
               </mat-chip>
               <mat-chip class="subject-tag">
-                <span *ngIf="!isMobile">Asignatura: </span>
-                <span>{{ post.axis.subject.name }}</span>
+                <span *ngIf="!isMobile">Asignatura: {{ post.axis.subject.name }}</span>
+                <span *ngIf="isMobile">{{ post.axis.subject.name }}</span>
               </mat-chip>
               <mat-chip class="axis-tag">
-                <span *ngIf="!isMobile">Eje: </span>
-                <span>{{ post.axis.name }}</span>
+                <span *ngIf="!isMobile">Eje: {{ post.axis.name }}</span>
+                <span *ngIf="isMobile">{{ post.axis.name }}</span>
               </mat-chip>
             </mat-chip-list>
           </div>

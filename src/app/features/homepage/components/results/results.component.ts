@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { catchError, forkJoin, map, Observable, of, tap } from 'rxjs';
+import { catchError, debounceTime, delay, forkJoin, map, merge, Observable, of, race, tap, throttleTime } from 'rxjs';
 import { OrderingType, OrderingTypeName } from 'src/app/core/enums/posts.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
@@ -55,7 +55,9 @@ export class ResultsComponent implements OnInit {
 
     public isAcademicLevelsLoading = true;
     public isSubjectsLoading = true;
-    public isaxesLoading = true;
+    public isAxesLoading = true;
+
+    public showDeleteButton = false;
 
     public docTypes = {
         doc: ['doc','docm','docx','txt'],
@@ -93,10 +95,22 @@ export class ResultsComponent implements OnInit {
             .subscribe(resp => {
                 if (!!resp) {
                     this.getQueryParams();
-                    this.academicLevelControl.valueChanges.subscribe(() => this.doSearch(1));
-                    this.subjectControl.valueChanges.subscribe(() => this.doSearch(1));
-                    this.axisControl.valueChanges.subscribe(() => this.doSearch(1));
-                    this.orderingControl.valueChanges.subscribe(() => this.doSearch(1));
+
+                    merge(
+                        this.academicLevelControl.valueChanges,
+                        this.subjectControl.valueChanges,
+                        this.axisControl.valueChanges,
+                        this.orderingControl.valueChanges
+                    )
+                        .pipe(
+                            debounceTime(500)
+                        )
+                        .subscribe(value => {
+                            if (!!value) {
+                                this.showDeleteButton = true;
+                            }
+                            this.doSearch(1);
+                        });
                 } else {
                     this.hasData = false;
                 }
@@ -107,7 +121,7 @@ export class ResultsComponent implements OnInit {
         if (!!page) {
             this.searchParams.page = page;
         }
-        this.searchParams.search = this.searchControl?.value;
+        this.searchParams.search = this.searchControl.value;
         this.searchParams.academicLevel = this.academicLevelControl.value?.data.id;
         this.searchParams.subject = this.subjectControl.value?.data.id;
         this.searchParams.axis = this.axisControl.value?.data.id;
@@ -134,6 +148,7 @@ export class ResultsComponent implements OnInit {
                     this.maxPage = ((this.pageInfo.count - this.pageInfo.count % 10) / 10) + 1;
                     this.posts = resp.results;
                     this.hasData = !!this.posts.length;
+                    console.log(this.searchParams);
                     console.log(this.pageInfo);
                 } else {
                     this.hasData;
@@ -268,7 +283,20 @@ export class ResultsComponent implements OnInit {
 
     public clearSearchControl(): void {
         this.searchControl.setValue('');
-        this.doSearch();
+        this.doSearch(1);
+    }
+
+    public clearFilterControls(): void {
+        this.form.setValue(
+            {
+                search: null,
+                academicLevel: null,
+                subject: null,
+                axis: null,
+                ordering: null
+            }
+        );
+        this.showDeleteButton = false;
     }
 
     public navigateToDetail(postId: number): void {
@@ -322,7 +350,7 @@ export class ResultsComponent implements OnInit {
                     });
                 }),
                 tap(resp => this.axesList = resp),
-                tap(() => this.isaxesLoading = false)
+                tap(() => this.isAxesLoading = false)
             );
     }
 }

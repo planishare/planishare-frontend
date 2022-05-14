@@ -21,8 +21,7 @@ export class CommonSnackbarMsgService {
 
     public showErrorMessage(): void {
         const msg = 'Ups! ha ocurrido un problema, intenta recargar';
-        const action = 'Recargar';
-        this.matSnackbar.open(msg, action).onAction()
-            .subscribe(() => window.location.reload());
+        const action = 'Cerrar';
+        this.matSnackbar.open(msg, action);
     }
 }
