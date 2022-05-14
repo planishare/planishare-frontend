@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, from, map, Observable, of, skip, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, filter, finalize, from, map, Observable, of, skip, switchMap, take, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { BasicCredentials, RegisterInfo } from '../types/auth.type';
 
@@ -32,12 +32,15 @@ export class AuthService {
     private accessToken?: string;
     private userProfile?: UserDetail;
 
+    private isRegistered$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
     constructor(
         private auth: Auth,
         private http: HttpClient,
         private userService: UsersService,
         private commonSnackbarMsg: CommonSnackbarMsgService
     ) {
+        let isFirstAccess = true;
         onAuthStateChanged(auth, (user: any) => {
             if (!!user) {
                 if (user?.isAnonymous) {
@@ -46,14 +49,25 @@ export class AuthService {
                     this.isAuth$.next(null);
                     this.isCompleted$.next(true);
                 } else {
+                    // The user is already registered if is firts access and user is auth
+                    if (isFirstAccess) {
+                        this.isRegistered$.next(true);
+                        isFirstAccess = false;
+                    }
+
                     // Authenticate with Google or Email and password
                     this.authServiceConsoleLog('onAuthStateChanged', user);
                     this.accessToken = user?.accessToken;
                     this.isAuth$.next(user);
 
-                    // TODO: Fix register
-                    this.userService.getUserProfileByEmail(user.email)
+                    // Get user profile info from planishare backend
+                    this.isRegistered$.asObservable()
                         .pipe(
+                            filter(isRegisted => isRegisted), // If is registered
+                            take(1), // Take one and complete, for performance
+                            switchMap(() => {
+                                return this.userService.getUserProfileByEmail(user.email);
+                            }),
                             catchError(() => {
                                 this.commonSnackbarMsg.showErrorMessage();
                                 this.isCompleted$.next(false);
@@ -79,7 +93,7 @@ export class AuthService {
         return from(signInAnonymously(this.auth))
             .pipe(
                 tap(resp => {
-                    this.authServiceConsoleLog('loginWithEmailAndPassword', resp);
+                    this.authServiceConsoleLog('loginAnonymously', resp);
                 }),
                 catchError(() => {
                     this.commonSnackbarMsg.showErrorMessage();
@@ -94,6 +108,7 @@ export class AuthService {
             .pipe(
                 tap(resp => {
                     this.authServiceConsoleLog('loginWithEmailAndPassword', resp);
+                    this.isRegistered$.next(true);
                 })
             );
     }
@@ -102,7 +117,7 @@ export class AuthService {
         return from(signInWithPopup(this.auth, new GoogleAuthProvider()))
             .pipe(
                 tap(resp => {
-                    this.authServiceConsoleLog('loginWithGoogle', resp);
+                    this.authServiceConsoleLog('loginOrRegisterWithGoogle', resp);
                 }),
                 switchMap((resp: any) => {
                     const data = resp._tokenResponse;
@@ -115,6 +130,7 @@ export class AuthService {
                         };
                         return this.register(registerInfo);
                     }
+                    this.isRegistered$.next(true);
                     return of(resp);
                 })
             );
@@ -139,14 +155,14 @@ export class AuthService {
             .pipe(
                 tap((userProfile: any) => {
                     this.authServiceConsoleLog('register', userProfile);
-                    this.userProfile = userProfile;
-                    this.isCompleted$.next(true);
+                    this.isRegistered$.next(true);
                 })
             );
     }
 
     public logout(): void {
         this.authServiceConsoleLog('Logout!');
+        this.isRegistered$.next(false);
         from(signOut(this.auth));
     }
 

@@ -148,7 +148,6 @@ export class ResultsComponent implements OnInit {
                     this.maxPage = ((this.pageInfo.count - this.pageInfo.count % 10) / 10) + 1;
                     this.posts = resp.results;
                     this.hasData = !!this.posts.length;
-                    console.log(this.searchParams);
                     console.log(this.pageInfo);
                 } else {
                     this.hasData;
