@@ -71,6 +71,8 @@ export class PostDetailComponent implements OnInit {
                     console.log(this.post);
                     this.viewDocument(post.main_file);
                     this.isLoading = false;
+
+                    this.registerView(this.post!);
                 }
             });
     }
@@ -156,6 +158,14 @@ export class PostDetailComponent implements OnInit {
                     }
                 });
         }
+    }
+
+    private registerView(post: PostDetail): void {
+        this.reactionService.registerView(this.postId)
+            .pipe(
+                catchError(error => of(null))
+            )
+            .subscribe();
     }
 
     // Utils

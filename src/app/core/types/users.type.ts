@@ -29,5 +29,10 @@ export type Education = {
 export type Institution = {
     id: number,
     name: string,
-    institution_type: number // TODO: Get institution type info
+    institution_type: InstitutionType
+}
+
+export type InstitutionType = {
+    id: number,
+    name: string
 }

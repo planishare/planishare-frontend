@@ -73,10 +73,10 @@
   <section class="top-section">
     <div class="top-likes-header">
       <mat-icon>favorite</mat-icon>
-      <h4>Las más gustadas</h4>
+      <h4>Las más populares</h4>
     </div>
     <div class="ranking">
-      <mat-card class="card" *ngFor="let item of mostLikedPosts">
+      <mat-card class="card" *ngFor="let item of popularPost">
         <mat-card-subtitle class="card-subtitle">
           <div>
             <span> {{ item.user|getUsername }} - {{ item.created_at|timeAgo }}</span>

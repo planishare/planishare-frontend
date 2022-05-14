@@ -33,8 +33,8 @@ export class PostsService {
         return this.http.get<PostDetail[]>(environment.API_URL + '/posts/latest/');
     }
 
-    public getMostLikedPosts(): Observable<PostDetail[]> {
-        return this.http.get<PostDetail[]>(environment.API_URL + '/posts/most-liked/');
+    public getPopularPosts(): Observable<PostDetail[]> {
+        return this.http.get<PostDetail[]>(environment.API_URL + '/posts/popular/');
     }
 
     public getPostById(postId: number): Observable<any> {

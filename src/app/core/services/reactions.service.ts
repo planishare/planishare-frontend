@@ -3,13 +3,15 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LikeDetail } from '../types/reactions.type';
+import { AuthService } from './auth.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ReactionsService {
     constructor(
-        private http: HttpClient
+        private http: HttpClient,
+        private authService: AuthService
     ) { }
 
     public createLike(userId: number, postId: number): Observable<LikeDetail> {
@@ -24,11 +26,11 @@ export class ReactionsService {
         return this.http.delete(environment.API_URL + `/likes/delete/${likeId}/`);
     }
 
-    public countDownload(userId: number, postId: number): Observable<any> {
+    public registerView(postId: number): Observable<any> {
         const body = {
-            user: userId,
+            firebaseUserUUID: this.authService.getAccessToken(),
             post: postId
         };
-        return this.http.post<any>(environment.API_URL + '/downloads/count/', body);
+        return this.http.post<any>(environment.API_URL + '/views/create/', body);
     }
 }

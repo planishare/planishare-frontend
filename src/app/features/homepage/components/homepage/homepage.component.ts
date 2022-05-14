@@ -19,7 +19,7 @@ export class HomepageComponent implements OnInit {
     public form: FormGroup;
 
     public latestPosts: PostDetail[] = [];
-    public mostLikedPosts: PostDetail[] = [];
+    public popularPost: PostDetail[] = [];
     public academicLevelsList: RoundedSelectSearchOption[] = [];
     public subjectList: RoundedSelectSearchOption[] = [];
     public axesList: RoundedSelectSearchOption[] = [];
@@ -169,7 +169,7 @@ export class HomepageComponent implements OnInit {
     private getTopPosts(): void {
         forkJoin([
             this.getLatestPosts(),
-            this.getMostLikedPosts()
+            this.getPopularPosts()
         ])
             .pipe(
                 catchError(() => {
@@ -191,10 +191,10 @@ export class HomepageComponent implements OnInit {
             );
     }
 
-    private getMostLikedPosts(): Observable<PostDetail[]> {
-        return this.postsService.getMostLikedPosts()
+    private getPopularPosts(): Observable<PostDetail[]> {
+        return this.postsService.getPopularPosts()
             .pipe(
-                tap(resp => this.mostLikedPosts = resp)
+                tap(resp => this.popularPost = resp)
             );
     }
 }
