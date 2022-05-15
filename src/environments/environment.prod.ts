@@ -1,3 +1,5 @@
+// Deploy prod: ng build; firebase deploy
+
 export const environment = {
     firebase: {
         projectId: 'planishare',
