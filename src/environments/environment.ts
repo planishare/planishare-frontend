@@ -4,14 +4,13 @@
 
 export const environment = {
     firebase: {
-        projectId: 'planishare',
-        appId: '1:175030081436:web:c74db7a4a9f1d8d5f59a59',
-        storageBucket: 'planishare.appspot.com',
-        locationId: 'us-central',
-        apiKey: 'AIzaSyDVVvpiE2qBOd7m3wfiIxiIamq6JYF5jxM',
-        authDomain: 'planishare.firebaseapp.com',
-        messagingSenderId: '175030081436',
-        measurementId: 'G-9KZ02B60FB'
+        projectId: "planishare-dev",
+        appId: "1:792556766443:web:1ef9b360cbb004e48aaaae",
+        storageBucket: "planishare-dev.appspot.com",
+        apiKey: "AIzaSyBmIoBovAm-IxiH_hHpdWV8YEHx4REIRVI",
+        authDomain: "planishare-dev.firebaseapp.com",
+        messagingSenderId: "792556766443",
+        measurementId: "G-GSX34V1SMQ"
     },
     production: false,
 
