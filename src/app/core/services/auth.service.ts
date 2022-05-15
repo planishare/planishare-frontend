@@ -52,7 +52,6 @@ export class AuthService {
                     // The user is already registered if is firts access and user is auth
                     if (isFirstAccess) {
                         this.isRegistered$.next(true);
-                        isFirstAccess = false;
                     }
 
                     // Authenticate with Google or Email and password
@@ -65,6 +64,7 @@ export class AuthService {
                         .pipe(
                             filter(isRegisted => isRegisted), // If is registered
                             take(1), // Take one and complete, for performance
+                            tap(v => this.authServiceConsoleLog('IS REGISTERED!', v)),
                             switchMap(() => {
                                 return this.userService.getUserProfileByEmail(user.email);
                             }),
@@ -81,6 +81,7 @@ export class AuthService {
                             }
                         });
                 }
+                isFirstAccess = false;
             } else {
                 // Authenticate anonimous, need for make ps-backend requests
                 this.loginAnonymously();
