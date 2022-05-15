@@ -216,17 +216,17 @@ export class ResultsComponent implements OnInit {
             this.commonSnackbarMsg.showLoginMessage('dar Me gusta');
             return;
         }
-        if (!!post.is_liked) {
+        if (!!post.already_liked) {
             // Visual efect
-            const likeId = post.is_liked;
-            post.is_liked = null;
+            const likeId = post.already_liked;
+            post.already_liked = null;
             post.likes--;
 
             // Request
             this.reactionService.deleteLike(likeId)
                 .pipe(
                     catchError(() => {
-                        post.is_liked = likeId;
+                        post.already_liked = likeId;
                         post.likes++;
                         this.commonSnackbarMsg.showErrorMessage();
                         return of(null);
@@ -237,14 +237,14 @@ export class ResultsComponent implements OnInit {
                 });
         } else {
             // Visual efect
-            post.is_liked = 1;
+            post.already_liked = 1;
             post.likes++;
 
             // Request
             this.reactionService.createLike(user.id, post.id)
                 .pipe(
                     catchError(() => {
-                        post.is_liked = null;
+                        post.already_liked = null;
                         post.likes--;
                         this.commonSnackbarMsg.showErrorMessage();
                         return of(null);
@@ -252,7 +252,7 @@ export class ResultsComponent implements OnInit {
                 )
                 .subscribe(like => {
                     if (!!like) {
-                        post.is_liked = like.id;
+                        post.already_liked = like.id;
                         console.log('Like!');
                     }
                 });

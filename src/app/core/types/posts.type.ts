@@ -26,7 +26,10 @@ export type PostDetail = {
     updated_at: string | Date,
     likes: number,
     views: number,
-    is_liked: number | null // Contains like id if is liked by auth user
+    already_liked: number | null, // Contains like id if is already liked by auth user
+
+    // TODO: add this logic to detail and results views
+    already_viewed: number | null // Contains view id if is already viewed by auth user
 }
 
 // Academic Level, Subjects and Axis
