@@ -24,33 +24,33 @@ export class PostsService {
             ordering: queryParams.ordering ?? ''
         };
 
-        return this.http.get<PostPageable>(environment.API_URL + '/posts/', {
+        return this.http.get<PostPageable>(environment.apiUrl + '/posts/', {
             params
         });
     }
 
     public getLatestPosts(): Observable<PostDetail[]> {
-        return this.http.get<PostDetail[]>(environment.API_URL + '/posts/latest/');
+        return this.http.get<PostDetail[]>(environment.apiUrl + '/posts/latest/');
     }
 
     public getPopularPosts(): Observable<PostDetail[]> {
-        return this.http.get<PostDetail[]>(environment.API_URL + '/posts/popular/');
+        return this.http.get<PostDetail[]>(environment.apiUrl + '/posts/popular/');
     }
 
     public getPostById(postId: number): Observable<any> {
-        return this.http.get(environment.API_URL + `/posts/${postId}/`);
+        return this.http.get(environment.apiUrl + `/posts/${postId}/`);
     }
 
     // Academic Level, Subjects and Axis
     public getAcademicLevels(): Observable<AcademicLevel[]> {
-        return this.http.get<AcademicLevel[]>(environment.API_URL + '/academic-levels/');
+        return this.http.get<AcademicLevel[]>(environment.apiUrl + '/academic-levels/');
     }
 
     public getSubjects(): Observable<Subject[]> {
-        return this.http.get<Subject[]>(environment.API_URL + '/subjects/');
+        return this.http.get<Subject[]>(environment.apiUrl + '/subjects/');
     }
 
     public getAxes(): Observable<Axis[]> {
-        return this.http.get<Axis[]>(environment.API_URL + '/axis/');
+        return this.http.get<Axis[]>(environment.apiUrl + '/axis/');
     }
 }

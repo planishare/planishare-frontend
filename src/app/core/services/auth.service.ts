@@ -151,7 +151,7 @@ export class AuthService {
 
     // Register in planishare backend
     public register(credentials: BasicCredentials | RegisterInfo): Observable<any> {
-        return this.http.post(environment.API_URL + '/auth/register/', credentials)
+        return this.http.post(environment.apiUrl + '/auth/register/', credentials)
             .pipe(
                 tap((userProfile: any) => {
                     this.authServiceConsoleLog('register', userProfile);

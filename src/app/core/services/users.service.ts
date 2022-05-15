@@ -13,10 +13,10 @@ export class UsersService {
     ) { }
 
     public isEmailAvailable(email: string): Observable<any> {
-        return this.http.get(`${environment.API_URL}/users/is-email-available/${email}/`);
+        return this.http.get(`${environment.apiUrl}/users/is-email-available/${email}/`);
     }
 
     public getUserProfileByEmail(email: string): Observable<UserDetail> {
-        return this.http.get<UserDetail>(`${environment.API_URL}/users/by-email/${email}/`);
+        return this.http.get<UserDetail>(`${environment.apiUrl}/users/by-email/${email}/`);
     }
 }

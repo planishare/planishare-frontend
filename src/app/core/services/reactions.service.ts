@@ -19,11 +19,11 @@ export class ReactionsService {
             user: userId,
             post: postId
         };
-        return this.http.post<LikeDetail>(environment.API_URL + '/likes/create/', body);
+        return this.http.post<LikeDetail>(environment.apiUrl + '/likes/create/', body);
     }
 
     public deleteLike(likeId: number): Observable<any> {
-        return this.http.delete(environment.API_URL + `/likes/delete/${likeId}/`);
+        return this.http.delete(environment.apiUrl + `/likes/delete/${likeId}/`);
     }
 
     public registerView(postId: number): Observable<any> {
@@ -31,6 +31,6 @@ export class ReactionsService {
             firebaseUserUUID: this.authService.getAccessToken(),
             post: postId
         };
-        return this.http.post<any>(environment.API_URL + '/views/create/', body);
+        return this.http.post<any>(environment.apiUrl + '/views/create/', body);
     }
 }

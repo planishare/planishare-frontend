@@ -45,9 +45,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# Angular enviroments
-/src/environments
-
 # Firebase
 .firebase
 *-debug.log
