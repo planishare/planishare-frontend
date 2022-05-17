@@ -81,11 +81,8 @@
     </button>
   </div>
 
-  <!-- TODO: Add shimmer and fix bottom pagination -->
-  <!-- Loader -->
-  <div class="search-loader" *ngIf="isLoading">
-    shimer...
-  </div>
+  <!-- Shimmer -->
+  <app-results-shimmer *ngIf="isLoading"></app-results-shimmer>
 
   <!-- No results card -->
   <div class="no-results" *ngIf="!hasData">
@@ -97,7 +94,7 @@
   </div>
   
   <!-- Posts -->
-  <div class="posts" *ngIf="hasData">
+  <div class="posts" *ngIf="hasData && !isLoading">
     <ng-container *ngFor="let post of posts">
       <mat-card class="card">
         <div class="card-body">

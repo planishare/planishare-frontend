@@ -25,6 +25,7 @@
     "firebase": "9.7.0",
     "ngx-doc-viewer": "^2.1.2",
     "ngx-mat-select-search": "^4.1.1",
+    "ngx-shimmer-loading": "0.0.5",
     "normalize.css": "^8.0.1",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",

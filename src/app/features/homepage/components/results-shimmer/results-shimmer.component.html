@@ -1,0 +1,52 @@
+<div class="posts">
+  <mat-card class="card" *ngFor="let item of [].constructor(2); let i = index">
+    <div class="card-content">
+      <ngx-shimmer-loading *ngIf="!isMobile" [width]="'400px'" [height]="'265px'"></ngx-shimmer-loading>
+      <div>
+        <ngx-shimmer-loading *ngIf="isMobile" width="100%" height="12rem"></ngx-shimmer-loading>
+        <div class="m-y-8">
+          <ngx-shimmer-loading width="15rem" height="1rem"></ngx-shimmer-loading>
+        </div>
+        <mat-card-title>
+          <ngx-shimmer-loading width="70%" height="2rem"></ngx-shimmer-loading>
+        </mat-card-title>
+        <mat-card-content>
+          <div class="docs-info">
+            <div class="doc-tags">
+              <ngx-shimmer-loading width="3rem" height="12px" borderRadius="10px"></ngx-shimmer-loading>
+              <ngx-shimmer-loading width="3rem" height="12px" borderRadius="10px"></ngx-shimmer-loading>
+              <ngx-shimmer-loading width="3rem" height="12px" borderRadius="10px"></ngx-shimmer-loading>
+            </div>
+              <ngx-shimmer-loading width="6rem" height="16px" borderRadius="10px"></ngx-shimmer-loading>
+          </div>
+
+          <ngx-shimmer-loading width="100%" height="12px"></ngx-shimmer-loading>
+          <ngx-shimmer-loading width="100%" height="12px"></ngx-shimmer-loading>
+          <ngx-shimmer-loading width="70%" height="12px"></ngx-shimmer-loading>
+          
+          <div class="tags">
+            <ngx-shimmer-loading width="8rem" height="2rem" borderRadius="15px"></ngx-shimmer-loading>
+            <ngx-shimmer-loading width="15rem" height="2rem" borderRadius="15px"></ngx-shimmer-loading>
+            <ngx-shimmer-loading width="10rem" height="2rem" borderRadius="15px"></ngx-shimmer-loading>
+          </div>
+        </mat-card-content>
+      </div>
+    </div>
+    <mat-card-footer class="card-footer">
+      <div class="reaction-info">
+          <div>
+            <mat-icon>favorite</mat-icon>
+            <ngx-shimmer-loading [width]="'5rem'" [height]="'16px'"></ngx-shimmer-loading>
+          </div>
+          <div>
+            <mat-icon>visibility</mat-icon>
+            <ngx-shimmer-loading [width]="'5rem'" [height]="'16px'"></ngx-shimmer-loading>
+          </div>
+      </div>
+
+      <button mat-icon-button>
+          <mat-icon>favorite</mat-icon>
+      </button>
+    </mat-card-footer>
+  </mat-card>
+</div>

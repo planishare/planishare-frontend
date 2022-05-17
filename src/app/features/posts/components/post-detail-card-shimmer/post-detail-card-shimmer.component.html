@@ -1,0 +1,53 @@
+<mat-card class="card">
+    <div class="flex_between_center">
+        <div class="flex_center">
+            <mat-icon>schedule</mat-icon>
+            <div *ngIf="!isMobile">
+                <ngx-shimmer-loading width="25ch" height="12px"></ngx-shimmer-loading>
+            </div>
+            <div *ngIf="isMobile">
+                <ngx-shimmer-loading width="15ch" height="12px"></ngx-shimmer-loading>
+                <ngx-shimmer-loading width="15ch" height="12px"></ngx-shimmer-loading>
+            </div>
+        </div>
+        <mat-icon>favorite</mat-icon>
+    </div>
+    
+    <mat-card-title>
+        <ngx-shimmer-loading [width]="isMobile ? '18ch' : '25ch'" height="2rem"></ngx-shimmer-loading>
+    </mat-card-title>
+    
+    <div>
+        <ngx-shimmer-loading [width]="isMobile ? '18ch' : '25ch'" height="12px"></ngx-shimmer-loading>
+        <ngx-shimmer-loading [width]="isMobile ? '18ch' : '25ch'" height="12px"></ngx-shimmer-loading>
+        <ngx-shimmer-loading [width]="isMobile ? '18ch' : '20ch'" height="12px"></ngx-shimmer-loading>
+    </div>
+    
+    <div class="flex_center flex_wrap">
+        <ngx-shimmer-loading width="8rem" height="2rem" borderRadius="15px"></ngx-shimmer-loading>
+        <ngx-shimmer-loading width="15rem" height="2rem" borderRadius="15px"></ngx-shimmer-loading>
+        <ngx-shimmer-loading width="10rem" height="2rem" borderRadius="15px"></ngx-shimmer-loading>
+    </div>
+    
+    <div class="flex_center gap-05">
+        <mat-icon>description</mat-icon>
+        <ngx-shimmer-loading width="8rem" height="1rem"></ngx-shimmer-loading>
+    </div>
+    
+    <div class="flex_column_start">
+        <ngx-shimmer-loading [width]="isMobile ? '35ch' : '65ch'" height="2rem" borderRadius="15px"></ngx-shimmer-loading>
+        <ngx-shimmer-loading [width]="isMobile ? '35ch' : '65ch'" height="2rem" borderRadius="15px"></ngx-shimmer-loading>
+        <ngx-shimmer-loading [width]="isMobile ? '35ch' : '65ch'" height="2rem" borderRadius="15px"></ngx-shimmer-loading>
+    </div>
+    
+    <div class="flex_between_center">
+        <div class="flex_center gap-05">
+            <mat-icon>favorite</mat-icon>
+            <ngx-shimmer-loading width="8ch" height="1rem"></ngx-shimmer-loading>
+        </div>
+        <div class="flex_center gap-05">
+            <mat-icon>visibility</mat-icon>
+            <ngx-shimmer-loading width="8ch" height="1rem"></ngx-shimmer-loading>
+        </div>
+    </div>
+</mat-card>

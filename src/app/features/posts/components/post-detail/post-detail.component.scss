@@ -9,14 +9,20 @@
     min-height: calc(100% - 4rem - 1rem); // 4rem = navbar height
 }
 
+.main {
+    display: flex;
+    gap: 1rem;
+}
+
 .card {
-    max-width: 25.5rem; // desktop
     margin-top: 0.5rem;
 }
 
 .doc-preview {
-    flex-grow: 3;
-    height: calc(100vh - 4rem - 1rem - 2rem);
+    flex-grow: 1;
+    min-width: 21rem;
+    aspect-ratio: 2 / 2.5;
+    // height: calc(100vh - 4rem - 1rem - 2rem);
 }
 
 .time-data {
@@ -56,19 +62,22 @@
 
     > span {
         overflow: hidden;
-        max-width: 40ch; // desktop
-        max-width: 21ch; // mobile
         text-overflow: ellipsis; 
         white-space: nowrap;
     }
 }
 
-@media (max-width: 40rem) {
+// Tablet and mobile
+@media (max-width: 62rem) {
+    .main {
+        flex-direction: column;
+    }
+
     .document {
         cursor: none;
 
         > span {
-            max-width: 21ch; // mobile
+            max-width: 21ch;
         }
     }
 }
@@ -95,4 +104,9 @@
     color: var(--light-text);
     // TODO: Find green light color
     background-color: var(--green-dark-color);
+}
+
+.doc-shimmer {
+    flex-grow: 1;
+    min-width: 25rem;
 }

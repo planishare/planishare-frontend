@@ -17,6 +17,7 @@ import { BookLoaderComponent } from './components/loaders/book-loader/book-loade
 import { SquareLoaderComponent } from './components/loaders/square-loader/square-loader.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { GetDocType, GetDocName } from './pipes/posts.pipe';
+import { NgxShimmerLoadingModule } from 'ngx-shimmer-loading';
 
 @NgModule({
     declarations: [
@@ -42,7 +43,8 @@ import { GetDocType, GetDocName } from './pipes/posts.pipe';
         RouterModule,
         NgxMatSelectSearchModule,
         ReactiveFormsModule,
-        NgxDocViewerModule
+        NgxDocViewerModule,
+        NgxShimmerLoadingModule
     ],
     exports: [
         // Components
@@ -57,6 +59,7 @@ import { GetDocType, GetDocName } from './pipes/posts.pipe';
         NgxMatSelectSearchModule,
         ReactiveFormsModule,
         NgxDocViewerModule,
+        NgxShimmerLoadingModule,
 
         // Pipes
         GetUsernamePipe,

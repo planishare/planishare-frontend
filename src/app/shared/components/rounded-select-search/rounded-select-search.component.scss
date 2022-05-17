@@ -28,7 +28,7 @@ app-rounded-select-search {
 }
 
 // Mobile  responsive fix to center options in scren
-@media (max-width: 40rem) {
+@media (max-width: 48rem) {
     .cdk-overlay-pane {
         position: static;
     }

@@ -1,0 +1,66 @@
+:host {
+    display: block;
+}
+
+.posts {
+    margin: 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.card {
+    width: 100%;
+    max-width: 62.5rem;
+}
+
+.card-content {
+    display: flex;
+    gap: 0.5rem;
+
+    > div {
+        width: 100%;
+    }
+}
+
+.docs-info {
+    display: flex;
+    justify-content: space-between;
+
+    .doc-tags {
+        display: flex;
+        gap: 0.5rem;
+    }
+}
+
+.tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin: 1rem 0 0 0;
+}
+
+.reaction-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    > div {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+}
+
+mat-icon {
+    color: #edeef1;
+}

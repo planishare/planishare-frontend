@@ -24,7 +24,7 @@
     * office: 
  -->
 
- <main class="flex_start gap-05 flex_wrap">
+ <main class="main">
     <!-- Card -->
     <div class="left-section">
         <button mat-raised-button (click)="goBack()">
@@ -32,7 +32,7 @@
             <span>Volver a resultados</span>
         </button>
 
-        <mat-card class="card" *ngIf="!!post">
+        <mat-card class="card" *ngIf="!!post && !isLoading">
             <div class="flex_column gap-05">
                 <div class="flex_between_center">
                     <div>
@@ -124,6 +124,10 @@
                 </div>
             </div>
         </mat-card>
+
+        <!-- Shimmer -->
+        <app-post-detail-card-shimmer *ngIf="isLoading"></app-post-detail-card-shimmer>
+
         <div #viewerEl></div>
     </div>
 
@@ -134,4 +138,7 @@
         [url]="currentDocUrl"
         [viewer]="currentViewer"
     ></ngx-doc-viewer>
+
+    <!-- Shimmer -->
+    <!-- <ngx-shimmer-loading height="90vh" width="100%" class="doc-shimmer" *ngIf="isLoading"></ngx-shimmer-loading> -->
 </main>
