@@ -1,0 +1,168 @@
+:host {
+    display: block;
+
+    background-image: url('/assets/images/bg-desktop-yellow.png');
+    // background-image: url('/assets/images/bg-desktop-blue.png');
+    background-size: contain;
+    // background-attachment: fixed;
+
+    padding: 4rem 4rem 1rem 4rem;
+    
+    min-height: calc(100% - 4rem - 1rem); // 4rem = navbar height
+}
+
+.main {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+}
+
+.card {
+    flex-grow: 2;
+
+    mat-card-title {
+        margin: 1rem 0;
+    }
+}
+
+.title-field, .select-field {
+    width: 100%;
+}
+
+.categories {
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px rgba(0, 0, 0, 0.12) solid;
+
+    border-radius: 5px;
+
+    > p {
+        color: rgba(0, 0, 0, 0.55);
+        letter-spacing: 0.1em;
+    }
+
+    > div {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding-bottom: 1rem;
+    }
+}
+
+.description-textarea {
+    width: 100%;
+}
+
+
+// Upload section
+.upload-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    
+    margin-bottom: 1rem;
+    padding: 2rem 1rem;
+    border: 1px dashed #8b8b8b;
+
+    border-radius: 5px;
+
+    p {
+        margin: 0;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    > div {
+        filter: opacity(0.5);
+    }
+}
+
+.file-icon {
+    padding: 1.2rem 1rem;
+    border-radius: 5px;
+
+    font-weight: 700;
+}
+
+.document {
+    background-color: #e9e9e9;
+    border-radius: 30px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    > span {
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        white-space: nowrap;
+    }
+
+    > div {
+        display: flex;
+    }
+
+    .action-doc {
+        padding: 0 0.5rem;
+    }
+}
+
+.pdf-style {
+    color: var(--light-text);
+    background-color: var(--warn-color);
+}
+.doc-style {
+    color: var(--light-text);
+    background-color: var(--primary-color);
+}
+.ppt-style {
+    color: var(--light-text);
+    // TODO: Find orange color
+    background-color: var(--accent-color);
+}
+.xls-style {
+    color: var(--light-text);
+    // TODO: Find green light color
+    background-color: var(--green-dark-color);
+}
+
+// Mobile
+@media (max-width: 48rem) {
+    :host {
+        padding: 4rem 1rem 1rem 1rem;
+    }
+
+    .main {
+        flex-direction: column;
+        
+        mat-card {
+            width: auto;
+        }
+    }
+
+    .document {
+        cursor: none;
+
+        > span {
+            max-width: 21ch;
+        }
+    }
+}
+
+// Tablet
+@media (max-width: 62rem) {
+    .document {
+        cursor: none;
+
+        > span {
+            max-width: 21ch;
+        }
+    }
+}

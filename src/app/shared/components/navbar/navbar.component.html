@@ -27,7 +27,7 @@
             </button>
         </li>
         <li *ngIf="isUserAuth">
-            <button mat-raised-button>
+            <button mat-raised-button [routerLink]="['/posts/create']">
                 <mat-icon>control_point</mat-icon>
                 Crear publicación
             </button>

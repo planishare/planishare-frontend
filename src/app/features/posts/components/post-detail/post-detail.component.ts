@@ -174,7 +174,6 @@ export class PostDetailComponent implements OnInit {
     }
 
     public goBack(): void {
-        this.router.navigate(['/results']);
         this.router.navigate(['/results'], {
             queryParams: this.searchParams
         });

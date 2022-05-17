@@ -1,0 +1,127 @@
+<main class="main">
+  <!-- Form -->
+  <mat-card class="card">
+    <mat-card-title>Crear publicación</mat-card-title>  
+
+    <form>
+      <mat-form-field appearance="outline" class="title-field">
+        <mat-label>Título</mat-label>
+        <input matInput placeholder="Título">
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline" class="select-field">
+        <mat-label>Nivel académico</mat-label>
+        <mat-select>
+          <mat-option>
+            <ngx-mat-select-search></ngx-mat-select-search>
+          </mat-option>
+          <mat-option>
+            item1
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline" class="select-field">
+        <mat-label>Asignatura</mat-label>
+        <mat-select>
+          <mat-option>
+            <ngx-mat-select-search></ngx-mat-select-search>
+          </mat-option>
+          <mat-option>
+            item1
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline" class="select-field">
+        <mat-label>Eje</mat-label>
+        <mat-select>
+          <mat-option>
+            <ngx-mat-select-search></ngx-mat-select-search>
+          </mat-option>
+          <mat-option>
+            item1
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- <div class="categories">
+        <p>Categorías</p>
+        <div>
+          <app-rounded-select-search
+            class="filter"
+            [list]="academicLevelsList"
+            [control]="academicLevelControl"
+            [loading]="isAcademicLevelsLoading"
+            buttonText="Nivel Académico"
+            bgColor="var(--primary-color)"
+            textColor="var(--light-text)"
+            placeholder="Buscar nivel académico">
+          </app-rounded-select-search>
+          <app-rounded-select-search
+            class="filter"
+            [list]="subjectList"
+            [control]="subjectControl"
+            [loading]="isSubjectsLoading"
+            buttonText="Asignatura"
+            bgColor="var(--warn-color)"
+            textColor="var(--light-text)"
+            placeholder="Buscar asignatura">
+          </app-rounded-select-search>
+          <app-rounded-select-search
+            class="filter"
+            [list]="axesList"
+            [control]="axisControl"
+            [loading]="isAxesLoading"
+            buttonText="Eje"
+            bgColor="var(--purple-color)"
+            textColor="var(--light-text)"
+            placeholder="Buscar eje">
+          </app-rounded-select-search>
+        </div>
+      </div> -->
+
+      <mat-form-field class="description-textarea" appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="3" cdkAutosizeMaxRows="20"></textarea>
+      </mat-form-field>
+    </form>
+  </mat-card>
+  
+  <!-- Upload section -->
+  <mat-card>
+    <div class="upload-section">
+      <div class="flex_justify_center gap-05">
+        <div class="file-icon pdf-style">.PDF</div>
+        <div class="file-icon doc-style">.DOC</div>
+        <div class="file-icon ppt-style">.XLS</div>
+        <div class="file-icon xls-style">.PPT</div>
+      </div>
+      <p>Arrastra o has click aquí para subir un archivo</p>
+    </div>
+
+    <div class="flex_column gap-05">
+      <div
+        class="document"
+        *ngFor="let doc of post.suporting_material; index as i"
+        unselectable="on"
+        matRipple
+        [ngClass]="i === 0 ? (doc|getDocType:docTypes)+'-style' : ''">
+          <span>{{ doc|getDocName }}</span>
+          <div>
+            <button
+              class="action-doc"
+              mat-icon-button>
+                <mat-icon>download</mat-icon>
+            </button>
+            <button
+              class="action-doc"
+              mat-icon-button>
+                <mat-icon>cancel</mat-icon>
+            </button>
+          </div>
+      </div>
+  </div>
+  </mat-card>
+</main>
+

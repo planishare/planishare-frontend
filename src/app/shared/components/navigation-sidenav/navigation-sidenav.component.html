@@ -46,6 +46,7 @@
             *ngIf="isUserAuth"
             mat-button
             class="menu-button"
+            [routerLink]="['/posts/create']"
             (click)="hideSidenav()">
                 <mat-icon>control_point</mat-icon>
                 <span>Crear publicación</span>

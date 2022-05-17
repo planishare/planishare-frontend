@@ -4,7 +4,7 @@
     background-size: contain;
     // background-attachment: fixed;
 
-    padding: 4rem 1rem 1rem 1rem;
+    padding: 4rem 4rem 1rem 4rem;
     
     min-height: calc(100% - 4rem - 1rem); // 4rem = navbar height
 }
@@ -64,6 +64,12 @@
         overflow: hidden;
         text-overflow: ellipsis; 
         white-space: nowrap;
+    }
+}
+
+@media (max-width: 48rem) {
+    :host {
+        padding: 4rem 1rem 1rem 1rem;
     }
 }
 
