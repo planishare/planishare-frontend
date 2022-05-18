@@ -18,6 +18,7 @@ import { SquareLoaderComponent } from './components/loaders/square-loader/square
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { GetDocType, GetDocName } from './pipes/posts.pipe';
 import { NgxShimmerLoadingModule } from 'ngx-shimmer-loading';
+import { DragAndDropFileDirective } from './directives/drag-and-drop-file.directive';
 
 @NgModule({
     declarations: [
@@ -34,7 +35,10 @@ import { NgxShimmerLoadingModule } from 'ngx-shimmer-loading';
         TimeAgoPipe,
         StringToArrayPipe,
         GetDocType,
-        GetDocName
+        GetDocName,
+
+        // Directives
+        DragAndDropFileDirective
     ],
     imports: [
         CommonModule,
@@ -66,7 +70,10 @@ import { NgxShimmerLoadingModule } from 'ngx-shimmer-loading';
         TimeAgoPipe,
         StringToArrayPipe,
         GetDocType,
-        GetDocName
+        GetDocName,
+
+        // Directives
+        DragAndDropFileDirective
     ]
 })
 export class SharedModule { }

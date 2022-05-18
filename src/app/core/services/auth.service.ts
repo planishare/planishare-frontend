@@ -64,7 +64,6 @@ export class AuthService {
                         .pipe(
                             filter(isRegisted => isRegisted), // If is registered
                             take(1), // Take one and complete, for performance
-                            tap(v => this.authServiceConsoleLog('IS REGISTERED!', v)),
                             switchMap(() => {
                                 return this.userService.getUserProfileByEmail(user.email);
                             }),
@@ -162,7 +161,7 @@ export class AuthService {
     }
 
     public logout(): void {
-        this.authServiceConsoleLog('Logout!');
+        this.authServiceConsoleLog('logout!');
         this.isRegistered$.next(false);
         from(signOut(this.auth));
     }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
 
 @Component({
@@ -57,6 +57,7 @@ export class CreatePostComponent {
     };
 
     public form: FormGroup;
+    public documents: FormArray;
 
     public isLoading = true;
     public isAcademicLevelsLoading = true;
@@ -77,13 +78,36 @@ export class CreatePostComponent {
         this.form = new FormGroup(
             {
                 title: new FormControl(),
+                description: new FormControl(),
                 academicLevel: new FormControl(),
                 subject: new FormControl(),
-                axis: new FormControl(),
-                mainFile: new FormControl(),
-                supportingMaterial: new FormControl()
+                axis: new FormControl()
             }
         );
+        this.documents = new FormArray([
+            new FormControl('', Validators.required)
+        ]);
+    }
+
+    public onFileDroped(event: Event): void {
+        console.log(event);
+    }
+
+    public download(docUrl: string): void {
+        if (this.getDocType(docUrl) === 'pdf') {
+            window.open(docUrl, '_blank');
+        } else {
+            location.href = docUrl;
+        }
+    }
+
+    // Form stuff
+    public get titleControl() {
+        return this.form.get('title') as FormControl;
+    }
+
+    public get descriptionControl() {
+        return this.form.get('description') as FormControl;
     }
 
     public get academicLevelControl() {
@@ -98,14 +122,7 @@ export class CreatePostComponent {
         return this.form.get('axis') as FormControl;
     }
 
-    public download(docUrl: string): void {
-        if (this.getDocType(docUrl) === 'pdf') {
-            window.open(docUrl, '_blank');
-        } else {
-            location.href = docUrl;
-        }
-    }
-
+    // Utils
     public getDocType(docUrl: string): string {
         const docName =  docUrl.split('/o/')[1].split('?')[0].split('.');
         return docName[docName.length - 1];
