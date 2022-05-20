@@ -32,7 +32,6 @@ export class DragAndDropFileDirective {
         this.fileOver = 'opacity(0.6)';
         let files = event.dataTransfer.files;
         if (files.length > 0) {
-            console.log('DragAndDropFileDirective', files);
             this.fileDropped.emit(files);
         }
     }

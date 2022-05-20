@@ -80,7 +80,6 @@
                     <div
                         class="document"
                         (click)="viewDocument(post.main_file); scroll(viewerEl)"
-                        unselectable="on"
                         matRipple
                         [ngClass]="post.main_file === currentDocUrl ? (post.main_file|getDocType:docTypes)+'-style' : ''">
                         <span>{{ post.main_file|getDocName }}</span>
@@ -97,7 +96,6 @@
                         class="document"
                         *ngFor="let doc of post.suporting_material"
                         (click)="viewDocument(doc); scroll(viewerEl)"
-                        unselectable="on"
                         matRipple
                         [ngClass]="doc === currentDocUrl ? (doc|getDocType:docTypes)+'-style' : ''">
                         <span>{{ doc|getDocName }}</span>
