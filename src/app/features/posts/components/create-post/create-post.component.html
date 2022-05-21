@@ -78,10 +78,11 @@
         </mat-form-field>
 
         <div class="flex_justify_end">
-          <button type="submit" mat-raised-button color="primary">
+          <button type="submit" mat-raised-button color="primary" *ngIf="!isLoading">
             <mat-icon>save</mat-icon>
             <span>Guardar</span>
           </button>
+          <app-square-loader *ngIf="isLoading"></app-square-loader>
         </div>
       </form>
     </mat-card>
@@ -110,8 +111,9 @@
         <p>o has click para buscar en tu dispositivo</p>
         <input type="file" (change)="onFileSelected($event)"multiple #inputFile>
         <mat-error *ngIf="this.documentsControl?.hasError('required') && this.form.touched">Debes subir al menos un archivo</mat-error>
-        <mat-error *ngIf="this.documentsControl?.hasError('max')">Puedes subir máximo 5 archivos</mat-error>
-        <mat-error *ngIf="this.documentsControl?.hasError('maxSize')">No puedes subir archivos que pesen más de {{ maxFileSize/1000000 }}MB</mat-error>
+        <mat-error *ngIf="this.documentsControl?.hasError('max')">{{ maxFilesMsg }}</mat-error>
+        <mat-error *ngIf="this.documentsControl?.hasError('maxSize')">{{ maxFileSizeMsg }}</mat-error>
+        <mat-error *ngIf="this.documentsControl?.hasError('firstDocType')">{{ firstDocTypeMsg }}</mat-error>
     </div>
 
     <div class="flex_column gap-05">

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { getDownloadURL, ref, Storage, uploadBytesResumable, UploadTask, UploadTaskSnapshot } from '@angular/fire/storage';
 import { FirebaseStorageService } from 'src/app/core/services/firebase-storage.service';
 import { RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
@@ -26,8 +26,6 @@ type fileUploadInformation = {
 })
 export class CreatePostComponent implements OnInit {
     // TODO: Add logic if subject is selected then filter axis
-    // TODO_OPT: Dialog when upload more than 5 files or a files size is gt maxFileSize
-    // TODO: Add loader square
 
     public form: FormGroup;
     public documentList: fileUploadInformation[] = [];
@@ -50,6 +48,12 @@ export class CreatePostComponent implements OnInit {
     public searchAxes: FormControl;
 
     public maxFileSize = 3000000; // 4Mb
+    public maxFilesMsg = 'Puedes subir máximo 5 archivos';
+    public maxFileSizeMsg = `No puedes subir archivos que pesen más de ${this.maxFileSize / 1000000}MB`;
+    public firstDocTypeMsg = 'El primer archivo debe ser pdf, doc, ppt o xls';
+
+    // Allowed ext for main file
+    public docTypes = ['pdf', 'doc','docm','docx','txt', 'csv','xlam','xls','xlsx','xml','ppt','pptx'];
 
     constructor(
         private storage: Storage,
@@ -67,7 +71,7 @@ export class CreatePostComponent implements OnInit {
                 academicLevel: new FormControl(null, Validators.required),
                 subject: new FormControl(null, Validators.required),
                 axis: new FormControl(null, Validators.required),
-                documents: new FormArray([], [Validators.required, Validators.maxLength(5)])
+                documents: new FormArray([], [Validators.required, Validators.maxLength(5), this.isFirstFileTypeAllowed.bind(this)])
             }
         );
 
@@ -87,8 +91,26 @@ export class CreatePostComponent implements OnInit {
             .subscribe();
     }
 
-    public save(event: Event): void {
+    // Validates first doc have an allowed type
+    private isFirstFileTypeAllowed(control: AbstractControl): any {
+        console.log(control);
+        const firstFileType = this.getDocTypeFromFirebaseUrl(control.value[0] ?? '');
+        console.log(firstFileType);
+        if (firstFileType && !this.docTypes.find(type => type === firstFileType)) {
+            this.matSnackbar.open(this.firstDocTypeMsg, 'OK', { duration: 3000 });
+            return { firstDocType: true };
+        }
+        return null;
+    }
+
+    public save(event: Event): any {
         event.preventDefault();
+
+        // Validate all files uploaded
+        if (this.documentsControl.length !== this.documentList.length) {
+            return this.matSnackbar.open('Espera a que se suban todos los archivos', 'OK', { duration: 2000 });
+        }
+
         const userId = this.authService.getUserProfile()?.id;
         console.log(this.form.valid, !this.isLoading, userId);
         if (this.form.valid && !this.isLoading && userId) {
@@ -104,44 +126,58 @@ export class CreatePostComponent implements OnInit {
                 suporting_material: this.documentsControl.value.slice(1, this.documentsControl.value.length)
             };
             console.log(body);
-            this.postsService.createPost(body).subscribe(resp => {
-                const postId = resp.id;
-                this.router.navigate(['/posts/view/', postId]);
-                this.matSnackbar.open('Publicación creada con exito', 'Cerrar');
-            });
+            this.postsService.createPost(body)
+                .pipe(
+                    catchError(error => {
+                        this.commonSnackbarMsg.showErrorMessage();
+                        return of(null);
+                    })
+                )
+                .subscribe(resp => {
+                    if (resp) {
+                        const postId = resp.id;
+                        this.router.navigate(['/posts/view/', postId]);
+                        this.matSnackbar.open('Publicación creada con exito', 'Cerrar');
+                    }
+                    this.isLoading = false;
+                });
         }
     }
 
-    public onFileSelected(event: Event): void {
+    public onFileSelected(event: Event): any {
         const files = Array.from((event.target as HTMLInputElement).files ?? []);
-        if (!!files?.length
-            && this.documentList?.length + files?.length <= 5) {
+
+        if (!!files?.length && this.documentList?.length + files?.length <= 5) {
             files.forEach(file => {
                 console.log(file);
                 if (file.size <= this.maxFileSize) {
                     this.uploadFile(file);
                 } else {
+                    this.matSnackbar.open(this.maxFileSizeMsg, 'OK', { duration: 3000 });
                     this.documentsControl.setErrors({ maxSize: true });
                 }
             });
         } else {
+            this.matSnackbar.open(this.maxFilesMsg, 'OK', { duration: 3000  });
             this.documentsControl.setErrors({ max: true });
         }
     }
 
     public onFileDroped(event: FileList): void {
         const files = Array.from(event);
-        if (!!files?.length
-            && this.documentList?.length + files?.length <= 5) {
+
+        if (!!files?.length && this.documentList?.length + files?.length <= 5) {
             files.forEach(file => {
                 console.log(file);
                 if (file.size <= this.maxFileSize) {
                     this.uploadFile(file);
                 } else {
+                    this.matSnackbar.open(this.maxFileSizeMsg, 'OK', { duration: 3000 });
                     this.documentsControl.setErrors({ maxSize: true });
                 }
             });
         } else {
+            this.matSnackbar.open(this.maxFilesMsg, 'OK', { duration: 3000 });
             this.documentsControl.setErrors({ max: true });
         }
     }
@@ -183,7 +219,7 @@ export class CreatePostComponent implements OnInit {
     }
 
     public download(docUrl: string): void {
-        if (this.getDocType(docUrl) === 'pdf') {
+        if (this.getDocTypeFromFirebaseUrl(docUrl) === 'pdf') {
             window.open(docUrl, '_blank');
         } else {
             location.href = docUrl;
@@ -262,9 +298,12 @@ export class CreatePostComponent implements OnInit {
     }
 
     // Utils
-    public getDocType(docUrl: string): string {
-        const docName =  docUrl.split('/o/')[1].split('?')[0].split('.');
-        return docName[docName.length - 1];
+    public getDocTypeFromFirebaseUrl(docUrl: string): string {
+        if (!!docUrl.length) {
+            const docName =  docUrl.split('/o/')[1].split('?')[0].split('.');
+            return docName[docName.length - 1];
+        }
+        return '';
     }
 
     private filter(

@@ -20,7 +20,7 @@ export class CommonSnackbarMsgService {
     }
 
     public showErrorMessage(): void {
-        const msg = 'Ups! ha ocurrido un problema, intenta recargar';
+        const msg = 'Ups! ha ocurrido un problema, intentalo de nuevo o recarga al página';
         const action = 'Cerrar';
         this.matSnackbar.open(msg, action);
     }
