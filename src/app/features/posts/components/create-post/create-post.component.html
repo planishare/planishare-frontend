@@ -8,46 +8,65 @@
     <mat-card class="card">
       <mat-card-title>Crear publicación</mat-card-title>  
   
-      <form [formGroup]="form">
+      <form [formGroup]="form" (ngSubmit)="save($event)">
         <mat-form-field appearance="outline" class="title-field">
           <mat-label>Título</mat-label>
           <input matInput placeholder="Título" formControlName="title">
+          <mat-error *ngIf="this.titleControl?.hasError('required')">Este campo es requerido</mat-error>
         </mat-form-field>
         
         <mat-form-field appearance="outline" class="select-field">
           <mat-label>Nivel académico</mat-label>
           <mat-select formControlName="academicLevel">
             <mat-option>
-              <ngx-mat-select-search></ngx-mat-select-search>
+              <ngx-mat-select-search
+                [searching]="isAcademicLevelsLoading"
+                [formControl]="searchAcademicLevel"
+                placeholderLabel="Buscar nivel académico"
+                noEntriesFoundLabel="No se encontraron resultados">
+              </ngx-mat-select-search>
             </mat-option>
-            <mat-option>
-              item1
+            <mat-option *ngFor="let academicLevel of filteredAcademicLevelsList|async" [value]="academicLevel.id">
+              {{ academicLevel.name }}
             </mat-option>
           </mat-select>
+          <mat-error *ngIf="this.academicLevelControl?.hasError('required')">Este campo es requerido</mat-error>
         </mat-form-field>
         
         <mat-form-field appearance="outline" class="select-field">
           <mat-label>Asignatura</mat-label>
           <mat-select formControlName="subject">
             <mat-option>
-              <ngx-mat-select-search></ngx-mat-select-search>
+              <ngx-mat-select-search 
+                [searching]="isSubjectsLoading"
+                [formControl]="searchSubject"
+                placeholderLabel="Buscar asignatura"
+                noEntriesFoundLabel="No se encontraron resultados">
+              </ngx-mat-select-search>
             </mat-option>
-            <mat-option>
-              item1
+            <mat-option *ngFor="let subject of filteredSubjectList|async" [value]="subject.id">
+              {{ subject.name }}
             </mat-option>
           </mat-select>
+          <mat-error *ngIf="this.subjectControl?.hasError('required')">Este campo es requerido</mat-error>
         </mat-form-field>
         
         <mat-form-field appearance="outline" class="select-field">
           <mat-label>Eje</mat-label>
           <mat-select formControlName="axis">
             <mat-option>
-              <ngx-mat-select-search></ngx-mat-select-search>
+              <ngx-mat-select-search 
+                [searching]="isAxesLoading"
+                [formControl]="searchAxes"
+                placeholderLabel="Buscar axis"
+                noEntriesFoundLabel="No se encontraron resultados">
+              </ngx-mat-select-search>
             </mat-option>
-            <mat-option>
-              item1
+            <mat-option *ngFor="let axis of filteredAxesList|async" [value]="axis.id">
+              {{ axis.name }}
             </mat-option>
           </mat-select>
+          <mat-error *ngIf="this.axisControl?.hasError('required')">Este campo es requerido</mat-error>
         </mat-form-field>
   
         <mat-form-field class="description-textarea" appearance="outline">
@@ -75,7 +94,6 @@
       appDragAndDropFile
       (fileDropped)="onFileDroped($event)"
       (click)="inputFile.click()">
-        <!-- TODO: add drop icon -->
         <div class="flex_center">
           <h2>
             Arrastra los archivos aquí
@@ -88,36 +106,42 @@
           <div class="file-icon ppt-style">.xls</div>
           <div class="file-icon xls-style">.ppt</div>
         </div>
+        <mat-hint>(Estos archivos se podrán visualizar en Planishare)</mat-hint>
         <p>o has click para buscar en tu dispositivo</p>
         <input type="file" (change)="onFileSelected($event)"multiple #inputFile>
+        <mat-error *ngIf="this.documentsControl?.hasError('required') && this.form.touched">Debes subir al menos un archivo</mat-error>
+        <mat-error *ngIf="this.documentsControl?.hasError('max')">Puedes subir máximo 5 archivos</mat-error>
     </div>
 
     <div class="flex_column gap-05">
-      <div
-        class="document {{doc.ext}}-style"
-        *ngFor="let doc of documentList; index as i"
-        matRipple>
-        <span>{{ doc.name }}</span>
-        <div>
-          <button
-            class="document-button"
-            *ngIf="doc.isUploadComplete"
-            (click)="download(doc.url)"
-            mat-icon-button>
-            <mat-icon>download</mat-icon>
-          </button>
-          <button
-            class="document-button"
-            *ngIf="doc.isUploadComplete"
-            (click)="removeFile(doc)"
-            mat-icon-button>
-              <mat-icon>cancel</mat-icon>
-          </button>
-          <div class="spinner-container" *ngIf="!doc.isUploadComplete">
-            <div class="spinner"></div>
+      <ng-container *ngFor="let doc of documentList; index as i">
+        <mat-hint *ngIf="i === 0">Planificación</mat-hint>
+        <mat-hint *ngIf="i === 1">Material complementario</mat-hint>
+        <div
+          class="document {{doc.ext}}-style"
+          matRipple>
+          <span>{{ doc.name }}</span>
+          <div>
+            <button
+              class="document-button"
+              *ngIf="doc.isUploadComplete"
+              (click)="download(doc.url)"
+              mat-icon-button>
+              <mat-icon>download</mat-icon>
+            </button>
+            <button
+              class="document-button"
+              *ngIf="doc.isUploadComplete"
+              (click)="removeFile(i)"
+              mat-icon-button>
+                <mat-icon>cancel</mat-icon>
+            </button>
+            <div class="spinner-container" *ngIf="!doc.isUploadComplete">
+              <div class="spinner"></div>
+            </div>
           </div>
         </div>
-      </div>
+      </ng-container>
   </div>
   </mat-card>
 </main>

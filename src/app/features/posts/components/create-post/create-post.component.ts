@@ -4,6 +4,11 @@ import { getDownloadURL, ref, Storage, uploadBytesResumable, UploadTask, UploadT
 import { FirebaseStorageService } from 'src/app/core/services/firebase-storage.service';
 import { RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { catchError, forkJoin, map, Observable, of, startWith, tap } from 'rxjs';
+import { PostsService } from 'src/app/core/services/posts.service';
+import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
+import { AcademicLevel, Axis, Subject } from 'src/app/core/types/posts.type';
 
 type fileUploadInformation = {
     name: string,
@@ -17,9 +22,11 @@ type fileUploadInformation = {
     templateUrl: './create-post.component.html',
     styleUrls: ['./create-post.component.scss']
 })
-export class CreatePostComponent {
+export class CreatePostComponent implements OnInit {
+    // TODO: Error handler
+    // TODO: Just upload allowed files
+
     public form: FormGroup;
-    public documents: FormArray;
     public documentList: fileUploadInformation[] = [];
 
     public isLoading = true;
@@ -27,9 +34,17 @@ export class CreatePostComponent {
     public isSubjectsLoading = true;
     public isAxesLoading = true;
 
-    public academicLevelsList: RoundedSelectSearchOption[] = [];
-    public subjectList: RoundedSelectSearchOption[] = [];
-    public axesList: RoundedSelectSearchOption[] = [];
+    public academicLevelsList: AcademicLevel[] = [];
+    public subjectList: Subject[] = [];
+    public axesList: Axis[] = [];
+
+    public filteredAcademicLevelsList?: Observable<AcademicLevel[]>;
+    public filteredSubjectList?: Observable<Subject[]>;
+    public filteredAxesList?: Observable<Axis[]>;
+
+    public searchAcademicLevel: FormControl;
+    public searchSubject: FormControl;
+    public searchAxes: FormControl;
 
     public docTypes = {
         doc: ['doc','docm','docx','txt'],
@@ -39,37 +54,80 @@ export class CreatePostComponent {
 
     constructor(
         private storage: Storage,
-        private router: Router
+        private location: Location,
+        private postsService: PostsService,
+        private commonSnackbarMsg: CommonSnackbarMsgService
     ) {
         this.form = new FormGroup(
             {
-                title: new FormControl(),
+                title: new FormControl('', Validators.required),
                 description: new FormControl(),
-                academicLevel: new FormControl(),
-                subject: new FormControl(),
-                axis: new FormControl()
+                academicLevel: new FormControl(null, Validators.required),
+                subject: new FormControl(null, Validators.required),
+                axis: new FormControl(null, Validators.required),
+                documents: new FormArray([], [Validators.required, Validators.maxLength(5)])
             }
         );
-        this.documents = new FormArray([
-            new FormControl('', Validators.required)
-        ]);
+
+        this.searchAcademicLevel = new FormControl();
+        this.searchSubject = new FormControl();
+        this.searchAxes = new FormControl();
+    }
+
+    public ngOnInit(): void {
+        forkJoin([this.getAcademicLevels(), this.getSubjects(), this.getAxes() ])
+            .pipe(
+                catchError(error => {
+                    this.commonSnackbarMsg.showErrorMessage();
+                    return of();
+                })
+            )
+            .subscribe(() => {
+                this.prepareSelectsSearch();
+            });
+    }
+
+    private prepareSelectsSearch(): void {
+        this.filteredAcademicLevelsList = this.searchAcademicLevel.valueChanges.pipe(
+            startWith(''),
+            map(value => this.filter(value, this.academicLevelsList))
+        );
+        this.filteredSubjectList = this.searchSubject.valueChanges.pipe(
+            startWith(''),
+            map(value => this.filter(value, this.subjectList))
+        );
+        this.filteredAxesList = this.searchAxes.valueChanges.pipe(
+            startWith(''),
+            map(value => this.filter(value, this.axesList) as Axis[])
+        );
+    }
+
+    public save(event: Event): void {
+        event.preventDefault();
+        console.log(this.form);
+        // if (this.form.valid) {
+        // }
     }
 
     public onFileSelected(event: Event): void {
         const files = Array.from((event.target as HTMLInputElement).files ?? []);
-        if (!!files?.length) {
+        if (!!files?.length && files?.length <= 5 && this.documentList?.length + files?.length <= 5) {
             files.forEach(file => {
                 this.uploadFile(file);
             });
+        } else {
+            this.documentsControl.setErrors({ max: true });
         }
     }
 
     public onFileDroped(event: FileList): void {
         const files = Array.from(event);
-        if (!!files?.length) {
+        if (!!files?.length && files?.length <= 5 && this.documentList?.length + files?.length <= 5) {
             files.forEach(file => {
                 this.uploadFile(file);
             });
+        } else {
+            this.documentsControl.setErrors({ max: true });
         }
     }
 
@@ -98,12 +156,14 @@ export class CreatePostComponent {
             doc.url = url;
             doc.progress = 100;
             doc.isUploadComplete = true;
+            this.documentsControl.push(new FormControl(doc.url));
         }
         console.log(`${file.name}: ${url}`, this.documentList);
     }
 
-    public removeFile(doc: fileUploadInformation): void {
-        this.documentList = this.documentList.filter(file => file.name !== doc.name);
+    public removeFile(index: number): void {
+        this.documentList.splice(index, 1);
+        this.documentsControl.removeAt(index);
         // TODO: Delete file from firebase
     }
 
@@ -116,7 +176,31 @@ export class CreatePostComponent {
     }
 
     public goBack(): void {
-        this.router.navigate(['..']);
+        this.location.back();
+    }
+
+    private getAcademicLevels(): Observable<AcademicLevel[]> {
+        return this.postsService.getAcademicLevels()
+            .pipe(
+                tap(resp => this.academicLevelsList = resp),
+                tap(() => this.isAcademicLevelsLoading = false)
+            );
+    }
+
+    private getSubjects(): Observable<AcademicLevel[]> {
+        return this.postsService.getSubjects()
+            .pipe(
+                tap(resp => this.subjectList = resp),
+                tap(() => this.isSubjectsLoading = false)
+            );
+    }
+
+    private getAxes(): Observable<AcademicLevel[]> {
+        return this.postsService.getAxes()
+            .pipe(
+                tap(resp => this.axesList = resp),
+                tap(() => this.isAxesLoading = false)
+            );
     }
 
     // Form stuff
@@ -140,9 +224,27 @@ export class CreatePostComponent {
         return this.form.get('axis') as FormControl;
     }
 
+    public get documentsControl() {
+        return this.form.get('documents') as FormArray;
+    }
+
     // Utils
     public getDocType(docUrl: string): string {
         const docName =  docUrl.split('/o/')[1].split('?')[0].split('.');
         return docName[docName.length - 1];
+    }
+
+    private filter(
+        searchValue: string,
+        optionList: (AcademicLevel | Subject | Axis)[]): (AcademicLevel | Subject | Axis)[] {
+        if (!!searchValue) {
+            searchValue = searchValue.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            return optionList.filter(el => {
+                const textNormalized = el.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                return textNormalized.includes(searchValue);
+            });
+        } else {
+            return optionList;
+        }
     }
 }
