@@ -33,7 +33,7 @@
           <mat-error *ngIf="this.academicLevelControl?.hasError('required')">Este campo es requerido</mat-error>
         </mat-form-field>
         
-        <mat-form-field appearance="outline" class="select-field">
+        <!-- <mat-form-field appearance="outline" class="select-field">
           <mat-label>Asignatura</mat-label>
           <mat-select formControlName="subject">
             <mat-option>
@@ -49,7 +49,7 @@
             </mat-option>
           </mat-select>
           <mat-error *ngIf="this.subjectControl?.hasError('required')">Este campo es requerido</mat-error>
-        </mat-form-field>
+        </mat-form-field> -->
         
         <mat-form-field appearance="outline" class="select-field">
           <mat-label>Eje</mat-label>
@@ -62,9 +62,22 @@
                 noEntriesFoundLabel="No se encontraron resultados">
               </ngx-mat-select-search>
             </mat-option>
-            <mat-option *ngFor="let axis of filteredAxesList|async" [value]="axis.id">
-              {{ axis.name }}
+            <mat-optgroup *ngFor="let subject of filteredSubjectAxis|async" [label]="subject.name">
+              <mat-option *ngFor="let axis of subject.axis" [value]="axis.id">
+                {{ axis.name }}
+              </mat-option>
+            </mat-optgroup>
+            <!-- <mat-option>
+              <ngx-mat-select-search 
+                [searching]="isAxesLoading"
+                [formControl]="searchAxes"
+                placeholderLabel="Buscar axis"
+                noEntriesFoundLabel="No se encontraron resultados">
+              </ngx-mat-select-search>
             </mat-option>
+            <mat-option *ngFor="let axis of filteredSubjectAxis|async" [value]="axis.id">
+              {{ axis.name }}
+            </mat-option> -->
           </mat-select>
           <mat-error *ngIf="this.axisControl?.hasError('required')">Este campo es requerido</mat-error>
         </mat-form-field>

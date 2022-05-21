@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { AcademicLevel, Axis, PostDetail, PostForm, PostPageable, PostsQueryParams, RealPostsQueryParams, Subject } from '../types/posts.type';
+import { AcademicLevel, Axis, PostDetail, PostForm, PostPageable, PostsQueryParams, RealPostsQueryParams, Subject, SubjectWithAxis } from '../types/posts.type';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -52,6 +52,10 @@ export class PostsService {
 
     public getAxes(): Observable<Axis[]> {
         return this.http.get<Axis[]>(environment.apiUrl + '/axis/');
+    }
+
+    public getSubjectWithAxis(): Observable<SubjectWithAxis[]> {
+        return this.http.get<SubjectWithAxis[]>(environment.apiUrl + '/subjects-with-axis/');
     }
 
     public createPost(postData: PostForm): Observable<any> {

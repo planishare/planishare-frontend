@@ -8,7 +8,7 @@ import { Location } from '@angular/common';
 import { catchError, forkJoin, map, Observable, of, startWith, tap } from 'rxjs';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
-import { AcademicLevel, Axis, PostForm, Subject } from 'src/app/core/types/posts.type';
+import { AcademicLevel, Axis, PostForm, SubjectWithAxis } from 'src/app/core/types/posts.type';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -25,26 +25,20 @@ type fileUploadInformation = {
     styleUrls: ['./create-post.component.scss']
 })
 export class CreatePostComponent implements OnInit {
-    // TODO: Add logic if subject is selected then filter axis
-
     public form: FormGroup;
     public documentList: fileUploadInformation[] = [];
 
     public isLoading = false;
     public isAcademicLevelsLoading = true;
-    public isSubjectsLoading = true;
     public isAxesLoading = true;
 
     public academicLevelsList: AcademicLevel[] = [];
-    public subjectList: Subject[] = [];
-    public axesList: Axis[] = [];
+    public subjectWithAxisList: SubjectWithAxis[] = [];
 
     public filteredAcademicLevelsList?: Observable<AcademicLevel[]>;
-    public filteredSubjectList?: Observable<Subject[]>;
-    public filteredAxesList?: Observable<Axis[]>;
+    public filteredSubjectAxis?: Observable<SubjectWithAxis[]>;
 
     public searchAcademicLevel: FormControl;
-    public searchSubject: FormControl;
     public searchAxes: FormControl;
 
     public maxFileSize = 3000000; // 4Mb
@@ -69,19 +63,17 @@ export class CreatePostComponent implements OnInit {
                 title: new FormControl('', Validators.required),
                 description: new FormControl(),
                 academicLevel: new FormControl(null, Validators.required),
-                subject: new FormControl(null, Validators.required),
                 axis: new FormControl(null, Validators.required),
                 documents: new FormArray([], [Validators.required, Validators.maxLength(5), this.isFirstFileTypeAllowed.bind(this)])
             }
         );
 
         this.searchAcademicLevel = new FormControl();
-        this.searchSubject = new FormControl();
         this.searchAxes = new FormControl();
     }
 
     public ngOnInit(): void {
-        forkJoin([this.getAcademicLevels(), this.getSubjects(), this.getAxes() ])
+        forkJoin([this.getAcademicLevels(), this.getAxes() ])
             .pipe(
                 catchError(error => {
                     this.commonSnackbarMsg.showErrorMessage();
@@ -137,7 +129,7 @@ export class CreatePostComponent implements OnInit {
                     if (resp) {
                         const postId = resp.id;
                         this.router.navigate(['/posts/view/', postId]);
-                        this.matSnackbar.open('Publicación creada con exito', 'Cerrar');
+                        this.matSnackbar.open('Publicación creada con exito', 'OK', { duration: 2000 });
                     }
                     this.isLoading = false;
                 });
@@ -238,35 +230,22 @@ export class CreatePostComponent implements OnInit {
                     this.isAcademicLevelsLoading = false;
                     this.filteredAcademicLevelsList = this.searchAcademicLevel.valueChanges.pipe(
                         startWith(''),
-                        map(value => this.filter(value, this.academicLevelsList))
+                        map(value => this.namefilter(value, this.academicLevelsList))
                     );
                 })
             );
     }
 
-    private getSubjects(): Observable<AcademicLevel[]> {
-        return this.postsService.getSubjects()
+    private getAxes(): Observable<SubjectWithAxis[]> {
+        return this.postsService.getSubjectWithAxis()
             .pipe(
                 tap(resp => {
-                    this.subjectList = resp;
-                    this.isSubjectsLoading = false;
-                    this.filteredSubjectList = this.searchSubject.valueChanges.pipe(
-                        startWith(''),
-                        map(value => this.filter(value, this.subjectList))
-                    );
-                })
-            );
-    }
-
-    private getAxes(): Observable<AcademicLevel[]> {
-        return this.postsService.getAxes()
-            .pipe(
-                tap(resp => {
-                    this.axesList = resp;
+                    this.subjectWithAxisList = resp;
                     this.isAxesLoading = false;
-                    this.filteredAxesList = this.searchAxes.valueChanges.pipe(
+                    this.filteredSubjectAxis = this.searchAxes.valueChanges.pipe(
                         startWith(''),
-                        map(value => this.filter(value, this.axesList) as Axis[])
+                        map(value => this.axisfilter(value, this.subjectWithAxisList))
+                        // map(value => this.subjectWithAxisList)
                     );
                 })
             );
@@ -283,10 +262,6 @@ export class CreatePostComponent implements OnInit {
 
     public get academicLevelControl() {
         return this.form.get('academicLevel') as FormControl;
-    }
-
-    public get subjectControl() {
-        return this.form.get('subject') as FormControl;
     }
 
     public get axisControl() {
@@ -306,14 +281,34 @@ export class CreatePostComponent implements OnInit {
         return '';
     }
 
-    private filter(
+    private namefilter(
         searchValue: string,
-        optionList: (AcademicLevel | Subject | Axis)[]): (AcademicLevel | Subject | Axis)[] {
+        optionList: (AcademicLevel | Axis)[]): (AcademicLevel | Axis)[] {
         if (!!searchValue) {
             searchValue = searchValue.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             return optionList.filter(el => {
                 const textNormalized = el.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                 return textNormalized.includes(searchValue);
+            });
+        } else {
+            return optionList;
+        }
+    }
+
+    private axisfilter(
+        searchValue: string,
+        optionList: SubjectWithAxis[]): SubjectWithAxis[] {
+        if (!!searchValue) {
+            searchValue = searchValue.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            return optionList.filter(el => {
+                const subjectNameNormalized = el.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+                const includeAxisName = el.axis.find(axis => {
+                    const axisNameNormalized = axis.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                    return axisNameNormalized.includes(searchValue);
+                });
+
+                return subjectNameNormalized.includes(searchValue) || includeAxisName;
             });
         } else {
             return optionList;

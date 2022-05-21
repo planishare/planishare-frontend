@@ -49,6 +49,12 @@ export type Axis = {
     subject: Subject
 }
 
+export type SubjectWithAxis = {
+    id: number,
+    name: string,
+    axis: Axis[]
+}
+
 // Post query params: structure in frontend
 export type PostsQueryParams = {
     page?: number,
