@@ -21,7 +21,7 @@ export type PostDetail = {
         }
     },
     main_file: string,
-    suporting_material: string,
+    suporting_material: string[],
     created_at: string | Date,
     updated_at: string | Date,
     likes: number,
@@ -73,4 +73,15 @@ export type RealPostsQueryParams = {
 
 export type PostPageable = Pageable & {
     results: PostDetail[]
+}
+
+export type PostForm = {
+    user: number,
+    title: string,
+    description?: string,
+    image: string,
+    academic_level: number,
+    axis: number,
+    main_file: string,
+    suporting_material: string[]
 }

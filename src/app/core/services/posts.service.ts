@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { AcademicLevel, Axis, PostDetail, PostPageable, PostsQueryParams, RealPostsQueryParams, Subject } from '../types/posts.type';
+import { AcademicLevel, Axis, PostDetail, PostForm, PostPageable, PostsQueryParams, RealPostsQueryParams, Subject } from '../types/posts.type';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -37,8 +37,8 @@ export class PostsService {
         return this.http.get<PostDetail[]>(environment.apiUrl + '/posts/popular/');
     }
 
-    public getPostById(postId: number): Observable<any> {
-        return this.http.get(environment.apiUrl + `/posts/${postId}/`);
+    public getPostById(postId: number): Observable<PostDetail> {
+        return this.http.get<PostDetail>(environment.apiUrl + `/posts/${postId}/`);
     }
 
     // Academic Level, Subjects and Axis
@@ -52,5 +52,9 @@ export class PostsService {
 
     public getAxes(): Observable<Axis[]> {
         return this.http.get<Axis[]>(environment.apiUrl + '/axis/');
+    }
+
+    public createPost(postData: PostForm): Observable<any> {
+        return this.http.post(environment.apiUrl + '/posts/create/', postData);
     }
 }

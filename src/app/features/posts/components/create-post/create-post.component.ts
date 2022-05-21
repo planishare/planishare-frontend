@@ -8,7 +8,9 @@ import { Location } from '@angular/common';
 import { catchError, forkJoin, map, Observable, of, startWith, tap } from 'rxjs';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
-import { AcademicLevel, Axis, Subject } from 'src/app/core/types/posts.type';
+import { AcademicLevel, Axis, PostForm, Subject } from 'src/app/core/types/posts.type';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 type fileUploadInformation = {
     name: string,
@@ -23,12 +25,14 @@ type fileUploadInformation = {
     styleUrls: ['./create-post.component.scss']
 })
 export class CreatePostComponent implements OnInit {
+    // TODO: Add logic if subject is selected then filter axis
     // TODO_OPT: Dialog when upload more than 5 files or a files size is gt maxFileSize
+    // TODO: Add loader square
 
     public form: FormGroup;
     public documentList: fileUploadInformation[] = [];
 
-    public isLoading = true;
+    public isLoading = false;
     public isAcademicLevelsLoading = true;
     public isSubjectsLoading = true;
     public isAxesLoading = true;
@@ -51,7 +55,10 @@ export class CreatePostComponent implements OnInit {
         private storage: Storage,
         private location: Location,
         private postsService: PostsService,
-        private commonSnackbarMsg: CommonSnackbarMsgService
+        private authService: AuthService,
+        private router: Router,
+        private commonSnackbarMsg: CommonSnackbarMsgService,
+        private matSnackbar: MatSnackBar
     ) {
         this.form = new FormGroup(
             {
@@ -77,16 +84,32 @@ export class CreatePostComponent implements OnInit {
                     return of();
                 })
             )
-            .subscribe(() => {
-                //    
-            });
+            .subscribe();
     }
 
     public save(event: Event): void {
         event.preventDefault();
-        console.log(this.form);
-        // if (this.form.valid) {
-        // }
+        const userId = this.authService.getUserProfile()?.id;
+        console.log(this.form.valid, !this.isLoading, userId);
+        if (this.form.valid && !this.isLoading && userId) {
+            this.isLoading = true;
+            const body: PostForm = {
+                user: userId,
+                title: this.titleControl.value,
+                description: this.descriptionControl.value,
+                image: 'https://image.slidesharecdn.com/ceciliaacosta-151125173652-lva1-app6892/85/planificacion-5-320.jpg?cb=1448473158', // TODO: Add upload img and add it here
+                academic_level: this.academicLevelControl.value,
+                axis: this.axisControl.value,
+                main_file: this.documentsControl.value[0],
+                suporting_material: this.documentsControl.value.slice(1, this.documentsControl.value.length)
+            };
+            console.log(body);
+            this.postsService.createPost(body).subscribe(resp => {
+                const postId = resp.id;
+                this.router.navigate(['/posts/view/', postId]);
+                this.matSnackbar.open('Publicación creada con exito', 'Cerrar');
+            });
+        }
     }
 
     public onFileSelected(event: Event): void {
@@ -128,8 +151,8 @@ export class CreatePostComponent implements OnInit {
         const ext = file!.name.split('.').pop();
         const name = file!.name.split('.')[0];
         const date = new Date().getTime();
-        const fileName = `${name}|${file.size}|${date}.${ext}`;
-        const storageRef = ref(this.storage, `/posts/files/${fileName}`);
+        const fileName = `${name}__${file.size}__${date}.${ext}`;
+        const storageRef = ref(this.storage, fileName);
 
         // Add file in documentList
         this.documentList.push({
@@ -144,7 +167,7 @@ export class CreatePostComponent implements OnInit {
 
         const url = await getDownloadURL(storageRef);
         const doc = this.documentList.find(doc => doc.name === file.name);
-        if (doc) {
+        if (!!doc && !!url) {
             doc.url = url;
             doc.progress = 100;
             doc.isUploadComplete = true;

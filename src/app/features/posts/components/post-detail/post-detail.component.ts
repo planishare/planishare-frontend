@@ -36,7 +36,7 @@ export class PostDetailComponent implements OnInit {
         ppt: ['ppt','pptx']
     };
 
-    // Dev porposes
+    // DELETE_THIS: Dev porposes
     public pdf = 'https://firebasestorage.googleapis.com/v0/b/planishare.appspot.com/o/ER_Directorio_Oficial_EE_WEB.pdf?alt=media&token=a1c252ec-766a-4844-8d80-de913b7d09bc';
     public docx = 'https://firebasestorage.googleapis.com/v0/b/planishare.appspot.com/o/Formulario-Inscripci%C3%B3n-de-Tesis.docx?alt=media&token=ca6883f2-e4ef-46d4-88f2-d251adb177c3';
     public doc = 'https://firebasestorage.googleapis.com/v0/b/planishare.appspot.com/o/plantilla_informepracticaformato.doc?alt=media&token=5c4ed8f6-96fc-43be-aaac-5d7a39a75fdc';
