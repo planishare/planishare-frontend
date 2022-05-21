@@ -57,7 +57,7 @@ export class ResultsComponent implements OnInit {
     public isSubjectsLoading = true;
     public isAxesLoading = true;
 
-    // TODO: Show when acces by url with filters
+    // TODO: Show button when acces by url with filters
     public showDeleteButton = false;
 
     public docTypes = {

@@ -23,8 +23,7 @@ type fileUploadInformation = {
     styleUrls: ['./create-post.component.scss']
 })
 export class CreatePostComponent implements OnInit {
-    // TODO: Error handler
-    // TODO: Just upload allowed files
+    // TODO_OPT: Dialog when upload more than 5 files or a files size is gt maxFileSize
 
     public form: FormGroup;
     public documentList: fileUploadInformation[] = [];
@@ -46,11 +45,7 @@ export class CreatePostComponent implements OnInit {
     public searchSubject: FormControl;
     public searchAxes: FormControl;
 
-    public docTypes = {
-        doc: ['doc','docm','docx','txt'],
-        xls: ['csv','xlam','xls','xlsx','xml'],
-        ppt: ['ppt','pptx']
-    };
+    public maxFileSize = 3000000; // 4Mb
 
     constructor(
         private storage: Storage,
@@ -83,23 +78,8 @@ export class CreatePostComponent implements OnInit {
                 })
             )
             .subscribe(() => {
-                this.prepareSelectsSearch();
+                //    
             });
-    }
-
-    private prepareSelectsSearch(): void {
-        this.filteredAcademicLevelsList = this.searchAcademicLevel.valueChanges.pipe(
-            startWith(''),
-            map(value => this.filter(value, this.academicLevelsList))
-        );
-        this.filteredSubjectList = this.searchSubject.valueChanges.pipe(
-            startWith(''),
-            map(value => this.filter(value, this.subjectList))
-        );
-        this.filteredAxesList = this.searchAxes.valueChanges.pipe(
-            startWith(''),
-            map(value => this.filter(value, this.axesList) as Axis[])
-        );
     }
 
     public save(event: Event): void {
@@ -111,9 +91,15 @@ export class CreatePostComponent implements OnInit {
 
     public onFileSelected(event: Event): void {
         const files = Array.from((event.target as HTMLInputElement).files ?? []);
-        if (!!files?.length && files?.length <= 5 && this.documentList?.length + files?.length <= 5) {
+        if (!!files?.length
+            && this.documentList?.length + files?.length <= 5) {
             files.forEach(file => {
-                this.uploadFile(file);
+                console.log(file);
+                if (file.size <= this.maxFileSize) {
+                    this.uploadFile(file);
+                } else {
+                    this.documentsControl.setErrors({ maxSize: true });
+                }
             });
         } else {
             this.documentsControl.setErrors({ max: true });
@@ -122,9 +108,15 @@ export class CreatePostComponent implements OnInit {
 
     public onFileDroped(event: FileList): void {
         const files = Array.from(event);
-        if (!!files?.length && files?.length <= 5 && this.documentList?.length + files?.length <= 5) {
+        if (!!files?.length
+            && this.documentList?.length + files?.length <= 5) {
             files.forEach(file => {
-                this.uploadFile(file);
+                console.log(file);
+                if (file.size <= this.maxFileSize) {
+                    this.uploadFile(file);
+                } else {
+                    this.documentsControl.setErrors({ maxSize: true });
+                }
             });
         } else {
             this.documentsControl.setErrors({ max: true });
@@ -182,24 +174,42 @@ export class CreatePostComponent implements OnInit {
     private getAcademicLevels(): Observable<AcademicLevel[]> {
         return this.postsService.getAcademicLevels()
             .pipe(
-                tap(resp => this.academicLevelsList = resp),
-                tap(() => this.isAcademicLevelsLoading = false)
+                tap(resp => {
+                    this.academicLevelsList = resp;
+                    this.isAcademicLevelsLoading = false;
+                    this.filteredAcademicLevelsList = this.searchAcademicLevel.valueChanges.pipe(
+                        startWith(''),
+                        map(value => this.filter(value, this.academicLevelsList))
+                    );
+                })
             );
     }
 
     private getSubjects(): Observable<AcademicLevel[]> {
         return this.postsService.getSubjects()
             .pipe(
-                tap(resp => this.subjectList = resp),
-                tap(() => this.isSubjectsLoading = false)
+                tap(resp => {
+                    this.subjectList = resp;
+                    this.isSubjectsLoading = false;
+                    this.filteredSubjectList = this.searchSubject.valueChanges.pipe(
+                        startWith(''),
+                        map(value => this.filter(value, this.subjectList))
+                    );
+                })
             );
     }
 
     private getAxes(): Observable<AcademicLevel[]> {
         return this.postsService.getAxes()
             .pipe(
-                tap(resp => this.axesList = resp),
-                tap(() => this.isAxesLoading = false)
+                tap(resp => {
+                    this.axesList = resp;
+                    this.isAxesLoading = false;
+                    this.filteredAxesList = this.searchAxes.valueChanges.pipe(
+                        startWith(''),
+                        map(value => this.filter(value, this.axesList) as Axis[])
+                    );
+                })
             );
     }
 

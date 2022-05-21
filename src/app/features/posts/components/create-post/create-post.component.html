@@ -100,17 +100,18 @@
           </h2>
           <mat-icon>upload_file</mat-icon>
         </div>
+        <small>Solo estos archivos y similares se podrán visualizar en Planishare</small>
         <div class="flex_justify_center gap-05">
           <div class="file-icon pdf-style">.pdf</div>
           <div class="file-icon doc-style">.doc</div>
           <div class="file-icon ppt-style">.xls</div>
           <div class="file-icon xls-style">.ppt</div>
         </div>
-        <mat-hint>(Estos archivos se podrán visualizar en Planishare)</mat-hint>
         <p>o has click para buscar en tu dispositivo</p>
         <input type="file" (change)="onFileSelected($event)"multiple #inputFile>
         <mat-error *ngIf="this.documentsControl?.hasError('required') && this.form.touched">Debes subir al menos un archivo</mat-error>
         <mat-error *ngIf="this.documentsControl?.hasError('max')">Puedes subir máximo 5 archivos</mat-error>
+        <mat-error *ngIf="this.documentsControl?.hasError('maxSize')">No puedes subir archivos que pesen más de {{ maxFileSize/1000000 }}MB</mat-error>
     </div>
 
     <div class="flex_column gap-05">

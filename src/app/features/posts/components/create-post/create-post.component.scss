@@ -22,7 +22,7 @@
 }
 
 .right-side {
-    flex-grow: 2;
+    flex-grow: 1;
 }
 
 .card {
@@ -80,6 +80,8 @@
 
     cursor: pointer;
     user-select: none;
+
+    text-align: center;
 
     p {
         margin: 0;
