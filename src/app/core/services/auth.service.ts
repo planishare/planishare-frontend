@@ -26,6 +26,7 @@ import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackba
 export class AuthService {
     // TODO: Loaders in login and register view if google sign
     // TODO: Logout when catch error
+    // TODO: Redirect to homepage when logout
     public isAuth$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
     // Emits true when auth services finish loading

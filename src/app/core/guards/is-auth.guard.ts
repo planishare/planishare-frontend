@@ -26,9 +26,8 @@ export class IsAuthGuard implements CanActivate {
                     return this.authService.isAuth$.asObservable();
                 }),
                 switchMap(isAuth => {
-                    // TODO: Verify that works
                     // TODO_OPT: Allow redirect to specific route after redirect to login
-                    return !isAuth ? of(true) : this.router.navigate(['/','auth','login']);
+                    return !!isAuth ? of(true) : this.router.navigate(['/','auth','login']);
                 })
             );
     }

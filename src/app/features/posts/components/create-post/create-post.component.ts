@@ -83,18 +83,6 @@ export class CreatePostComponent implements OnInit {
             .subscribe();
     }
 
-    // Validates first doc have an allowed type
-    private isFirstFileTypeAllowed(control: AbstractControl): any {
-        console.log(control);
-        const firstFileType = this.getDocTypeFromFirebaseUrl(control.value[0] ?? '');
-        console.log(firstFileType);
-        if (firstFileType && !this.docTypes.find(type => type === firstFileType)) {
-            this.matSnackbar.open(this.firstDocTypeMsg, 'OK', { duration: 3000 });
-            return { firstDocType: true };
-        }
-        return null;
-    }
-
     public save(event: Event): any {
         event.preventDefault();
 
@@ -104,7 +92,7 @@ export class CreatePostComponent implements OnInit {
         }
 
         const userId = this.authService.getUserProfile()?.id;
-        console.log(this.form.valid, !this.isLoading, userId);
+        // console.log(this.form.valid, !this.isLoading, userId);
         if (this.form.valid && !this.isLoading && userId) {
             this.isLoading = true;
             const body: PostForm = {
@@ -141,7 +129,6 @@ export class CreatePostComponent implements OnInit {
 
         if (!!files?.length && this.documentList?.length + files?.length <= 5) {
             files.forEach(file => {
-                console.log(file);
                 if (file.size <= this.maxFileSize) {
                     this.uploadFile(file);
                 } else {
@@ -160,7 +147,6 @@ export class CreatePostComponent implements OnInit {
 
         if (!!files?.length && this.documentList?.length + files?.length <= 5) {
             files.forEach(file => {
-                console.log(file);
                 if (file.size <= this.maxFileSize) {
                     this.uploadFile(file);
                 } else {
@@ -201,7 +187,7 @@ export class CreatePostComponent implements OnInit {
             doc.isUploadComplete = true;
             this.documentsControl.push(new FormControl(doc.url));
         }
-        console.log(`${file.name}: ${url}`, this.documentList);
+        // console.log(`${file.name}: ${url}`, this.documentList);
     }
 
     public removeFile(index: number): void {
@@ -270,6 +256,16 @@ export class CreatePostComponent implements OnInit {
 
     public get documentsControl() {
         return this.form.get('documents') as FormArray;
+    }
+
+    // Validates first doc have an allowed type
+    private isFirstFileTypeAllowed(control: AbstractControl): any {
+        const firstFileType = this.getDocTypeFromFirebaseUrl(control.value[0] ?? '');
+        if (firstFileType && !this.docTypes.find(type => type === firstFileType)) {
+            this.matSnackbar.open(this.firstDocTypeMsg, 'OK', { duration: 3000 });
+            return { firstDocType: true };
+        }
+        return null;
     }
 
     // Utils
