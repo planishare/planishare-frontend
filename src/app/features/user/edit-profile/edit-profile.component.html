@@ -1,63 +1,79 @@
 <mat-card class="main-card">
     <mat-card-title>Editar perfil</mat-card-title>
     <mat-card-content class="card-content">
-        <div class="profile-form">
-            <form>
-                <mat-form-field appearance="outline" class="form-field">
-                    <mat-label>Email</mat-label>
-                    <input matInput placeholder="Email">
-                    <!-- <mat-error *ngIf="this.?.hasError('required')">Este campo es requerido</mat-error> -->
-                </mat-form-field>
-                
-                <mat-form-field appearance="outline" class="form-field">
-                    <mat-label>Nombre</mat-label>
-                    <input matInput placeholder="Nombre">
-                    <!-- <mat-error *ngIf="this.?.hasError('required')">Este campo es requerido</mat-error> -->
-                </mat-form-field>
-                
-                <mat-form-field appearance="outline" class="form-field">
-                    <mat-label>Apellido</mat-label>
-                    <input matInput placeholder="Apellido">
-                    <!-- <mat-error *ngIf="this.?.hasError('required')">Este campo es requerido</mat-error> -->
-                </mat-form-field>
-                
-                <mat-form-field appearance="outline" class="form-field">
-                    <mat-label>Educación</mat-label>
-                    <mat-select>
-                      <!-- <mat-option *ngFor="let academicLevel of filteredAcademicLevelsList|async" [value]="academicLevel.id">
-                        {{ academicLevel.name }}
-                      </mat-option> -->
-                    </mat-select>
-                </mat-form-field>
-                
-                <mat-form-field appearance="outline" class="form-field">
-                    <mat-label>Institución</mat-label>
-                    <mat-select>
-                      <!-- <mat-option *ngFor="let academicLevel of filteredAcademicLevelsList|async" [value]="academicLevel.id">
-                        {{ academicLevel.name }}
-                      </mat-option> -->
-                    </mat-select>
-                </mat-form-field>
-                
-                <mat-form-field appearance="outline" class="form-field">
-                    <mat-label>Comuna</mat-label>
-                    <mat-select>
-                      <!-- <mat-option *ngFor="let academicLevel of filteredAcademicLevelsList|async" [value]="academicLevel.id">
-                        {{ academicLevel.name }}
-                      </mat-option> -->
-                    </mat-select>
-                </mat-form-field>
+        <form class="profile-form">
+            <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Email</mat-label>
+                <input matInput placeholder="Email">
+                <!-- <mat-error *ngIf="this.?.hasError('required')">Este campo es requerido</mat-error> -->
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Nombre</mat-label>
+                <input matInput placeholder="Nombre">
+                <!-- <mat-error *ngIf="this.?.hasError('required')">Este campo es requerido</mat-error> -->
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Apellido</mat-label>
+                <input matInput placeholder="Apellido">
+                <!-- <mat-error *ngIf="this.?.hasError('required')">Este campo es requerido</mat-error> -->
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Educación</mat-label>
+                <mat-select>
+                  <mat-option *ngFor="let option of educations" [value]="option.id">
+                    {{ option.name }}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Institución</mat-label>
+                <mat-select>
+                    <mat-option>
+                        <ngx-mat-select-search
+                          [searching]="isInstitutionsLoading"
+                          [formControl]="searchInstitution"
+                          placeholderLabel="Buscar nivel académico"
+                          noEntriesFoundLabel="No se encontraron resultados">
+                        </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let institution of filteredInstitutions|async" [value]="institution.id">
+                    {{ institution.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Comuna</mat-label>
+                <mat-select>
+                    <mat-option>
+                        <ngx-mat-select-search 
+                            [searching]="isLocationsLoading"
+                            [formControl]="searchLocation"
+                            placeholderLabel="Buscar comuna"
+                            noEntriesFoundLabel="No se encontraron resultados">
+                        </ngx-mat-select-search>
+                        </mat-option>
+                        <mat-optgroup *ngFor="let region of filteredLocations|async" [label]="region.name">
+                            <mat-option *ngFor="let commune of region.communes" [value]="commune.id">
+                            {{ commune.name }}
+                            </mat-option>
+                        </mat-optgroup>
+                </mat-select>
+            </mat-form-field>
 
-                <div class="button-container">
-                    <button mat-raised-button color="primary">Guardar</button>
-                </div>
-            </form>
-        </div>
+            <div class="flex_justify_end">
+                <button mat-raised-button color="primary">Guardar</button>
+            </div>
+        </form>
         <div class="info">
             <div class="info-card">
                 <h2>Cambiar contraseña</h2>
                 <p>Te enviaremos un correo al email asociado a tu cuenta</p>
-                <div>
+                <div class="flex_justify_end">
                     <button mat-raised-button>Cambiar contraseña</button>
                 </div>
             </div>

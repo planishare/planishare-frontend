@@ -7,15 +7,14 @@
         </button>
     </button>
     <ul>
-        <!-- TODO: Create active in buttons maybe blue backgrpund -->
         <li *ngIf="!isUserAuth">
-            <button mat-raised-button [routerLink]="['/auth/register']">
+            <button mat-raised-button [routerLink]="['/auth/register']" routerLinkActive="button-active">
                 <mat-icon>person_add</mat-icon>
                 Registrarse
             </button>
         </li>
         <li *ngIf="!isUserAuth">
-            <button mat-raised-button [routerLink]="['/auth/login']">
+            <button mat-raised-button [routerLink]="['/auth/login']" routerLinkActive="button-active">
                 <mat-icon>login</mat-icon>
                 Iniciar Sesión
             </button>
@@ -27,15 +26,28 @@
             </button>
         </li>
         <li *ngIf="isUserAuth">
-            <button mat-raised-button [routerLink]="['/posts/create']">
+            <button mat-raised-button [routerLink]="['/posts/create']" routerLinkActive="button-active">
                 <mat-icon>control_point</mat-icon>
                 Crear publicación
             </button>
         </li>
         <li *ngIf="isUserAuth">
-            <button mat-mini-fab class="profile-button" (click)="logout()">
+            <button mat-mini-fab
+            class="profile-button"
+            [matMenuTriggerFor]="menu"
+            aria-label="Menu de perfil">
                 <mat-icon>person</mat-icon>
             </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item [routerLink]="['/user/edit-profile']">
+                  <mat-icon>person</mat-icon>
+                  <span>Mi perfil</span>
+                </button>
+                <button mat-menu-item (click)="logout()">
+                  <mat-icon>logout</mat-icon>
+                  <span>Cerrar sesión</span>
+                </button>
+            </mat-menu>
         </li>
     </ul>
 </nav>

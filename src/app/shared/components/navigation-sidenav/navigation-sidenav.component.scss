@@ -22,4 +22,8 @@ app-navigation-sidenav {
         align-items: center;
         gap: 0.5em;
     }
+
+    .active {
+        background-color: rgba($color: #ffffff, $alpha: 0.1);
+    }
 }

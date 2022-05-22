@@ -83,6 +83,11 @@
     border-radius: 10px;
 }
 
+.button-active {
+    background-color: var(--primary-color);
+    color: var(--light-text);
+}
+
 @media (max-width: 48rem) {
     .navbar {
         padding: 0.5rem 1rem;

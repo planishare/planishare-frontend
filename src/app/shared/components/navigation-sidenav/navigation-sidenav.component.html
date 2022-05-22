@@ -26,6 +26,8 @@
             *ngIf="isUserAuth"
             mat-button
             class="menu-button"
+            [routerLink]="['/user/edit-profile']"
+            routerLinkActive="active"
             (click)="hideSidenav()">
                 <mat-icon>person</mat-icon>
                 <span>Mi perfil</span>
@@ -47,6 +49,7 @@
             mat-button
             class="menu-button"
             [routerLink]="['/posts/create']"
+            routerLinkActive="active"
             (click)="hideSidenav()">
                 <mat-icon>control_point</mat-icon>
                 <span>Crear publicación</span>
