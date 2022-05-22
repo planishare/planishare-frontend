@@ -61,7 +61,7 @@ export class CreatePostComponent implements OnInit {
         this.form = new FormGroup(
             {
                 title: new FormControl('', Validators.required),
-                description: new FormControl(),
+                description: new FormControl(''),
                 academicLevel: new FormControl(null, Validators.required),
                 axis: new FormControl(null, Validators.required),
                 documents: new FormArray([], [Validators.required, Validators.maxLength(5), this.isFirstFileTypeAllowed.bind(this)])
@@ -138,7 +138,9 @@ export class CreatePostComponent implements OnInit {
             });
         } else {
             this.matSnackbar.open(this.maxFilesMsg, 'OK', { duration: 3000  });
-            this.documentsControl.setErrors({ max: true });
+            if (this.documentList.length < 5 ) {
+                this.documentsControl.setErrors({ max: true });
+            }
         }
     }
 
@@ -156,7 +158,9 @@ export class CreatePostComponent implements OnInit {
             });
         } else {
             this.matSnackbar.open(this.maxFilesMsg, 'OK', { duration: 3000 });
-            this.documentsControl.setErrors({ max: true });
+            if (this.documentList.length < 5 ) {
+                this.documentsControl.setErrors({ max: true });
+            }
         }
     }
 
@@ -230,7 +234,7 @@ export class CreatePostComponent implements OnInit {
                     this.isAxesLoading = false;
                     this.filteredSubjectAxis = this.searchAxes.valueChanges.pipe(
                         startWith(''),
-                        map(value => this.axisfilter(value, this.subjectWithAxisList))
+                        map(value => this.axisfilter(value, [...this.subjectWithAxisList]))
                         // map(value => this.subjectWithAxisList)
                     );
                 })
@@ -299,12 +303,17 @@ export class CreatePostComponent implements OnInit {
             return optionList.filter(el => {
                 const subjectNameNormalized = el.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-                const includeAxisName = el.axis.find(axis => {
+                const filteredAxis = el.axis.filter(axis => {
                     const axisNameNormalized = axis.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                     return axisNameNormalized.includes(searchValue);
                 });
 
-                return subjectNameNormalized.includes(searchValue) || includeAxisName;
+                // TODO_OPT: show filtered axis
+                // el.axis = filteredAxis;
+                // console.log(el);
+                // console.log(this.subjectWithAxisList);
+
+                return subjectNameNormalized.includes(searchValue) || !!filteredAxis.length;
             });
         } else {
             return optionList;

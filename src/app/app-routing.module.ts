@@ -15,6 +15,10 @@ const routes: Routes = [
             {
                 path: 'posts',
                 loadChildren: () => import('./features/posts/posts.module').then(mod => mod.PostsModule)
+            },
+            {
+                path: 'user',
+                loadChildren: () => import('./features/user/user.module').then(mod => mod.UserModule)
             }
         ]
     },
