@@ -38,6 +38,14 @@
     background-color: rgba($color: #AF63FF, $alpha: 0.2);
 }
 
+.form-shimmer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+
+    width: 100%;
+}
+
 // Mobile
 @media (max-width: 48rem) {
     :host {

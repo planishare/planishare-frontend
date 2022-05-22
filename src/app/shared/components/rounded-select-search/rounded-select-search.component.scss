@@ -26,18 +26,3 @@ app-rounded-select-search {
         border-radius: 10px;
     }
 }
-
-// Mobile  responsive fix to center options in scren
-@media (max-width: 48rem) {
-    .cdk-overlay-pane {
-        position: static;
-    }
-    .cdk-overlay-connected-position-bounding-box {
-        align-items: center;
-        justify-content: center;
-    }
-    // .cdk-overlay-connected-position-bounding-box {
-
-    // }
-}
-

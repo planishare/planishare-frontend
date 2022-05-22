@@ -1,28 +1,28 @@
 <mat-card class="main-card">
     <mat-card-title>Editar perfil</mat-card-title>
     <mat-card-content class="card-content">
-        <form class="profile-form">
+        <form class="profile-form" [formGroup]="form" (ngSubmit)="save($event)" *ngIf="!isLoading">
             <mat-form-field appearance="outline" class="form-field">
                 <mat-label>Email</mat-label>
-                <input matInput placeholder="Email">
+                <input matInput placeholder="Email" formControlName="email">
                 <!-- <mat-error *ngIf="this.?.hasError('required')">Este campo es requerido</mat-error> -->
             </mat-form-field>
             
             <mat-form-field appearance="outline" class="form-field">
                 <mat-label>Nombre</mat-label>
-                <input matInput placeholder="Nombre">
+                <input matInput placeholder="Nombre" formControlName="firstName">
                 <!-- <mat-error *ngIf="this.?.hasError('required')">Este campo es requerido</mat-error> -->
             </mat-form-field>
             
             <mat-form-field appearance="outline" class="form-field">
                 <mat-label>Apellido</mat-label>
-                <input matInput placeholder="Apellido">
+                <input matInput placeholder="Apellido" formControlName="lastName">
                 <!-- <mat-error *ngIf="this.?.hasError('required')">Este campo es requerido</mat-error> -->
             </mat-form-field>
             
             <mat-form-field appearance="outline" class="form-field">
                 <mat-label>Educación</mat-label>
-                <mat-select>
+                <mat-select formControlName="education" disableOptionCentering>
                   <mat-option *ngFor="let option of educations" [value]="option.id">
                     {{ option.name }}
                   </mat-option>
@@ -31,12 +31,12 @@
             
             <mat-form-field appearance="outline" class="form-field">
                 <mat-label>Institución</mat-label>
-                <mat-select>
+                <mat-select formControlName="institution" disableOptionCentering>
                     <mat-option>
                         <ngx-mat-select-search
                           [searching]="isInstitutionsLoading"
                           [formControl]="searchInstitution"
-                          placeholderLabel="Buscar nivel académico"
+                          placeholderLabel="Buscar institución"
                           noEntriesFoundLabel="No se encontraron resultados">
                         </ngx-mat-select-search>
                     </mat-option>
@@ -48,7 +48,7 @@
             
             <mat-form-field appearance="outline" class="form-field">
                 <mat-label>Comuna</mat-label>
-                <mat-select>
+                <mat-select formControlName="commune" disableOptionCentering>
                     <mat-option>
                         <ngx-mat-select-search 
                             [searching]="isLocationsLoading"
@@ -66,9 +66,47 @@
             </mat-form-field>
 
             <div class="flex_justify_end">
-                <button mat-raised-button color="primary">Guardar</button>
+                <button mat-raised-button color="primary" type="submit" *ngIf="!isSaveLoading">Guardar</button>
+                <app-square-loader *ngIf="isSaveLoading"></app-square-loader>
             </div>
         </form>
+
+        <!-- Shimmer -->
+        <div class="form-shimmer" *ngIf="isLoading">
+            <div>
+                <ngx-shimmer-loading height="0.5rem" width="12ch"></ngx-shimmer-loading>
+                <ngx-shimmer-loading height="2.5rem" width="100%"></ngx-shimmer-loading>
+            </div>
+            <div>
+                <ngx-shimmer-loading height="0.5rem" width="12ch"></ngx-shimmer-loading>
+                <ngx-shimmer-loading height="2.5rem" width="100%"></ngx-shimmer-loading>
+            </div>
+            <div>
+                <ngx-shimmer-loading height="0.5rem" width="12ch"></ngx-shimmer-loading>
+                <ngx-shimmer-loading height="2.5rem" width="100%"></ngx-shimmer-loading>
+            </div>
+            <div>
+                <ngx-shimmer-loading height="0.5rem" width="12ch"></ngx-shimmer-loading>
+                <ngx-shimmer-loading height="2.5rem" width="100%"></ngx-shimmer-loading>
+            </div>
+            <div>
+                <ngx-shimmer-loading height="0.5rem" width="12ch"></ngx-shimmer-loading>
+                <ngx-shimmer-loading height="2.5rem" width="100%"></ngx-shimmer-loading>
+            </div>
+            <div>
+                <ngx-shimmer-loading height="0.5rem" width="12ch"></ngx-shimmer-loading>
+                <ngx-shimmer-loading height="2.5rem" width="100%"></ngx-shimmer-loading>
+            </div>
+            <div class="flex_justify_end">
+                <button mat-raised-button color="primary" disabled>Guardar</button>
+            </div>
+
+            <!-- Just for visual porpuse! -->
+            <mat-form-field appearance="outline" style="display: none;">
+                <input matInput>
+            </mat-form-field>
+        </div>
+
         <div class="info">
             <div class="info-card">
                 <h2>Cambiar contraseña</h2>
