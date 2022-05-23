@@ -20,7 +20,7 @@
             </button>
         </li>
         <li *ngIf="isUserAuth">
-            <button mat-raised-button>
+            <button mat-raised-button [routerLink]="['/posts/user']" routerLinkActive="button-active">
                 <mat-icon>description</mat-icon>
                 Mis publicaciones
             </button>

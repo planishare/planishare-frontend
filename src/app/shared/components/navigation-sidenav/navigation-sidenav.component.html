@@ -38,6 +38,8 @@
             *ngIf="isUserAuth"
             mat-button
             class="menu-button"
+            [routerLink]="['/posts/user']"
+            routerLinkActive="active"
             (click)="hideSidenav()">
                 <mat-icon>description</mat-icon>
                 <span>Mis publicaciones</span>

@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { IsAuthGuard } from 'src/app/core/guards/is-auth.guard';
-import { CreatePostComponent } from './components/create-post/create-post.component';
-import { PostDetailComponent } from './components/post-detail/post-detail.component';
+import { CreatePostComponent } from './create-post/create-post.component';
+import { PostDetailComponent } from './post-detail/post-detail.component';
+import { UserPostsComponent } from './user-posts/user-posts.component';
 
 const routes: Routes = [
     {
@@ -12,6 +13,11 @@ const routes: Routes = [
     {
         path: 'create',
         component: CreatePostComponent,
+        canActivate: [IsAuthGuard]
+    },
+    {
+        path: 'user',
+        component: UserPostsComponent,
         canActivate: [IsAuthGuard]
     }
 ];

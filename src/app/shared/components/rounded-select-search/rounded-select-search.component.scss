@@ -1,3 +1,5 @@
+// TODO: fix this
+
 app-rounded-select-search {
     display: flex;
     flex-direction: column;
@@ -11,7 +13,7 @@ app-rounded-select-search {
 
         visibility: hidden;
         height: 0;
-        width: 0;
+        width: 100%;
 
         * {
             margin: 0 !important;

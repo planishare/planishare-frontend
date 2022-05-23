@@ -1,0 +1,151 @@
+<main class="main">
+    <mat-card class="left-card">
+        <mat-card-title>Mis publicaciones</mat-card-title>
+        
+        <!-- Query bar -->
+        <div class="flex_column gap-07">
+            <div class="searchbar">
+                <div class="search-icon">
+                    <mat-icon>search</mat-icon>
+                </div>
+                <input type="search" autocomplete="off" [formControl]="searchControl" placeholder="Buscar" (keyup.enter)="doSearch(1)">
+                <button *ngIf="searchControl.value" mat-icon-button aria-label="Clear" (click)="clearSearchControl()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+    
+            <div class="flex_column gap-05">
+                <app-rounded-select-search
+                    class="filter"
+                    [list]="academicLevelsList"
+                    [control]="academicLevelControl"
+                    [loading]="isAcademicLevelsLoading"
+                    buttonText="Nivel Académico"
+                    bgColor="var(--primary-color)"
+                    textColor="var(--light-text)"
+                    placeholder="Buscar nivel académico">
+                </app-rounded-select-search>
+                <app-rounded-select-search
+                    class="filter"
+                    [list]="subjectList"
+                    [control]="subjectControl"
+                    [loading]="isSubjectsLoading"
+                    buttonText="Asignatura"
+                    bgColor="var(--warn-color)"
+                    textColor="var(--light-text)"
+                    placeholder="Buscar asignatura">
+                </app-rounded-select-search>
+                <app-rounded-select-search
+                    class="filter"
+                    [list]="axesList"
+                    [control]="axisControl"
+                    [loading]="isAxesLoading"
+                    buttonText="Eje"
+                    bgColor="var(--purple-color)"
+                    textColor="var(--light-text)"
+                    placeholder="Buscar eje">
+                </app-rounded-select-search>
+                <app-rounded-select-search
+                    class="filter"
+                    [list]="orderingList"
+                    [control]="orderingControl"
+                    buttonText="Ordenar por"
+                    bgColor="var(--green-dark-color)"
+                    textColor="var(--light-text)"
+                    placeholder="Ordenar por">
+                </app-rounded-select-search>
+                <button
+                    mat-raised-button
+                    class="delete-button"
+                    *ngIf="showDeleteButton"
+                    (click)="clearFilterControls()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div>
+            <div class="flex_justify_center flex_center gap-1 m-y-32">
+                <div>
+                    <div class="stat-number">
+                        <span>51</span>
+                        <mat-icon class="red-icon">favorite</mat-icon>
+                    </div>
+                    <span class="stat-text">Me gusta</span>
+                </div>
+                <div>
+                    <div class="stat-number">
+                        <span>83</span>
+                        <mat-icon class="blue-icon">visibility</mat-icon>
+                    </div>
+                    <span class="stat-text">Vistas</span>
+                </div>
+            </div>
+            <p class="stat-p">
+                En total, tus publicaciones has sido <span class="blue-icon">vistas 83 veces</span>
+                y han tenido <span class="red-icon">51 me gusta</span>, gracias por ayudar a la comunidad, sigue así!
+            </p>
+        </div>
+    </mat-card>
+
+    <!-- Results -->
+    <div class="right-side">
+        <!-- Top pagination -->
+        <div class="pagination flex_justify_end" *ngIf="hasData">
+            <div class="pagination-text">
+                <span>{{ 10 * (searchParams.page! - 1) + 1 }} - {{ 10 * (searchParams.page! - 1) + posts.length }} de {{pageInfo?.count}}</span>
+            </div>
+            <button mat-raised-button class="pagination-button" (click)="previousPage()" [disabled]="!pageInfo?.previous || isLoading">
+                <mat-icon>navigate_before</mat-icon>
+            </button>
+            <button mat-raised-button class="pagination-button pagination-number" [disabled]="isLoading" [matMenuTriggerFor]="pagesMenu">
+                {{ searchParams.page }}
+            </button>
+            <mat-menu #pagesMenu>
+                <button mat-menu-item *ngFor="let item of [].constructor(maxPage); let i = index" (click)="doSearch(i+1)">{{ i+1 }}</button>
+            </mat-menu>
+            <button mat-raised-button class="pagination-button" (click)="nextPage()" [disabled]="!pageInfo?.next || isLoading">
+                <mat-icon>navigate_next</mat-icon>
+            </button>
+        </div>
+
+        <!-- Posts -->
+        <div class="flex_column gap-05">
+            <mat-card class="card" *ngFor="let item of posts">
+                <mat-card-subtitle class="card-subtitle">
+                  <div>
+                    <span> {{ item.user|getUsername }} - {{ item.created_at|timeAgo }}</span>
+                  </div>
+                  <div class="flex_between_center">
+                    <mat-icon>description</mat-icon>
+                    <span>{{ item.suporting_material?.length ?? 0 + 1 }}</span>
+                  </div>
+                </mat-card-subtitle>
+
+                <mat-card-title>{{ item.title }}</mat-card-title>
+
+                <mat-card-content>
+                  {{ item.description }}
+                </mat-card-content>
+
+                <mat-chip-list class="flex_start_center flex_wrap">
+                  <mat-chip class="academic-level-tag">{{ item.academic_level.name }}</mat-chip>
+                  <mat-chip class="subject-tag">{{ item.axis.subject.name }}</mat-chip>
+                  <mat-chip class="axis-tag">{{ item.axis.name }}</mat-chip>
+                </mat-chip-list>
+
+                <div class="flex_justify_end gap-05 m-t-16">
+                  <button mat-raised-button color="primary" class="flex_between_center">
+                      <mat-icon>edit</mat-icon>
+                      <span>Editar</span>
+                  </button>
+                  <button mat-raised-button color="warn" class="flex_between_center">
+                      <mat-icon>delete</mat-icon>
+                      <span>Eliminar</span>
+                  </button>
+                </div>
+              </mat-card>
+        </div>
+    </div>
+</main>

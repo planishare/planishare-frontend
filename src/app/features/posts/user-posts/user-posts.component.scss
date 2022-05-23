@@ -1,0 +1,167 @@
+:host {
+    display: block;
+    background-image: url('/assets/images/bg-desktop-yellow.png');
+    background-size: contain;
+
+    padding: 4rem 4rem 1rem 4rem;
+    
+    min-height: calc(100% - 4rem - 1rem); // 4rem = navbar height
+}
+
+.main {
+    display: flex;
+    gap: 1rem;
+}
+
+.left-card {
+    height: min-content;
+    width: 35%;
+    padding: 2rem 2rem 1rem 2rem;
+}
+
+.searchbar {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    align-content: center;
+
+    position: relative;
+
+    margin-top: 1rem;
+
+    input {
+        width: 100%;
+        height: 100%;
+
+        padding: 0.5em 1em 0.5em 2.5em;
+        border: 1px solid rgba($color: #000000, $alpha: 0.2);
+
+        border-radius: 10px;
+        font-weight: 600;
+    }
+
+    input:focus {
+        outline: none;
+    }
+    /* remove the ‘X’ from Chrome
+    *  from: https://medium.com/@rion.mrk/how-to-remove-x-icon-from-search-input-field-or-input-type-search-db3c808405fb
+    */
+    input[type="search"]::-webkit-search-decoration,
+    input[type="search"]::-webkit-search-cancel-button,
+    input[type="search"]::-webkit-search-results-button,
+    input[type="search"]::-webkit-search-results-decoration { display: none; }
+
+    button {
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        span {
+            height: 100%;
+            color: var(--dark-text);
+        }
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 0.5rem;
+        top: 0;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.stat-number {
+    font-size: 2rem;
+}
+
+.red-icon {
+    color: var(--warn-color);
+}
+
+.blue-icon {
+    color: var(--primary-color);
+}
+
+.stat-text {
+    font-size: 1rem;
+}
+
+.stat-p {
+    font-weight: 600;
+}
+
+// Right side
+.right-side {
+    flex-grow: 1;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.pagination-text {
+    font-weight: 700;
+}
+
+.pagination-button {
+    background-color: var(--green-dark-color);
+    color: var(--light-text);
+    border-radius: 30px;
+
+    min-width: auto;
+    padding: 0;
+    line-height: normal;
+}
+
+.pagination-number {
+    padding: 0.2em 0.65em;
+    font-weight: 600;
+}
+
+.card-subtitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.academic-level-tag, .subject-tag, .axis-tag{
+    color: var(--light-text);
+}
+
+.academic-level-tag {
+    background-color: var(--primary-color);
+}
+
+.subject-tag {
+    background-color: var(--warn-color);
+}
+
+.axis-tag {
+    background-color: var(--purple-color);
+}
+
+@media (max-width: 48rem) {
+    :host {
+        padding: 4rem 1rem 1rem 1rem;
+    }
+
+    .main {
+        flex-wrap: wrap;
+    }
+
+    .left-card {
+        height: auto;
+        width: auto;
+    }
+}
