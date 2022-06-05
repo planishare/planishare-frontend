@@ -83,6 +83,7 @@ export class UserPostsComponent implements OnInit {
     }
 
     public ngOnInit(): void {
+        this.updateUserProfile();
         forkJoin([this.getAcademicLevels(), this.getSubjects(), this.getAxes() ])
             .pipe(
                 catchError(error => {
