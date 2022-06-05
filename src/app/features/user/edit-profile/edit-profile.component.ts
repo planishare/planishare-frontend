@@ -16,6 +16,7 @@ import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackba
     styleUrls: ['./edit-profile.component.scss']
 })
 export class EditProfileComponent implements OnInit {
+    // TODO: Request user info on init, because when change page and comeback info isnt updated
     public userProfile?: UserDetail;
     public form: FormGroup;
     public isSaveLoading = false;

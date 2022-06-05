@@ -151,6 +151,14 @@
     background-color: var(--purple-color);
 }
 
+.shimmer-icon {
+    color: #edeef1;
+}
+
+.no-results-title {
+    font-size: 1.5rem;
+}
+
 @media (max-width: 48rem) {
     :host {
         padding: 4rem 1rem 1rem 1rem;

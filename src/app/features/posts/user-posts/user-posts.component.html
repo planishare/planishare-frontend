@@ -93,7 +93,7 @@
     <div class="right-side">
         <!-- Top pagination -->
         <div class="pagination flex_justify_end" *ngIf="hasData">
-            <div class="pagination-text">
+            <div *ngIf="!isLoading" class="pagination-text">
                 <span>{{ 10 * (searchParams.page! - 1) + 1 }} - {{ 10 * (searchParams.page! - 1) + posts.length }} de {{pageInfo?.count}}</span>
             </div>
             <button mat-raised-button class="pagination-button" (click)="previousPage()" [disabled]="!pageInfo?.previous || isLoading">
@@ -111,41 +111,113 @@
         </div>
 
         <!-- Posts -->
-        <div class="flex_column gap-05">
-            <mat-card class="card" *ngFor="let item of posts">
+        <div class="flex_column gap-05" *ngIf="!isLoading && hasData">
+            <mat-card class="card" *ngFor="let post of posts">
                 <mat-card-subtitle class="card-subtitle">
                   <div>
-                    <span> {{ item.user|getUsername }} - {{ item.created_at|timeAgo }}</span>
+                    <span> {{ post.user|getUsername }} - {{ post.created_at|timeAgo }}</span>
                   </div>
                   <div class="flex_between_center">
                     <mat-icon>description</mat-icon>
-                    <span>{{ item.suporting_material?.length ?? 0 + 1 }}</span>
+                    <span>{{ post.suporting_material?.length ?? 0 + 1 }}</span>
                   </div>
                 </mat-card-subtitle>
 
-                <mat-card-title>{{ item.title }}</mat-card-title>
+                <mat-card-title [routerLink]="['/posts/view', post.id]">{{ post.title }}</mat-card-title>
 
                 <mat-card-content>
-                  {{ item.description }}
+                  {{ post.description }}
                 </mat-card-content>
 
                 <mat-chip-list class="flex_start_center flex_wrap">
-                  <mat-chip class="academic-level-tag">{{ item.academic_level.name }}</mat-chip>
-                  <mat-chip class="subject-tag">{{ item.axis.subject.name }}</mat-chip>
-                  <mat-chip class="axis-tag">{{ item.axis.name }}</mat-chip>
+                  <mat-chip class="academic-level-tag">{{ post.academic_level.name }}</mat-chip>
+                  <mat-chip class="subject-tag">{{ post.axis.subject.name }}</mat-chip>
+                  <mat-chip class="axis-tag">{{ post.axis.name }}</mat-chip>
                 </mat-chip-list>
 
-                <div class="flex_justify_end gap-05 m-t-16">
-                  <button mat-raised-button color="primary" class="flex_between_center">
-                      <mat-icon>edit</mat-icon>
-                      <span>Editar</span>
-                  </button>
-                  <button mat-raised-button color="warn" class="flex_between_center">
-                      <mat-icon>delete</mat-icon>
-                      <span>Eliminar</span>
-                  </button>
+                <div class="m-t-16 flex_between_center">
+                    <div class="flex gap-05">
+                        <div class="flex_center gap-05">
+                            <mat-icon>favorite</mat-icon>
+                            <span>{{ post.likes }}</span>
+                        </div>
+                        <div class="flex_center gap-05">
+                            <mat-icon>visibility</mat-icon>
+                            <span>{{ post.views }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-05">
+                      <button mat-raised-button color="primary" class="flex_between_center">
+                          <mat-icon>edit</mat-icon>
+                          <span *ngIf="!isMobile">Editar</span>
+                      </button>
+                      <button mat-raised-button color="warn" class="flex_between_center">
+                          <mat-icon>delete</mat-icon>
+                          <span *ngIf="!isMobile">Eliminar</span>
+                      </button>
+                    </div>
                 </div>
               </mat-card>
+        </div>
+
+        <!-- Posts shimmer -->
+        <div class="flex_column gap-05" *ngIf="isLoading">
+            <mat-card *ngFor="let item of [].constructor(3)">
+                <mat-card-subtitle>
+                    <ngx-shimmer-loading width="30%" height="1rem"></ngx-shimmer-loading>
+                </mat-card-subtitle>
+                
+                <mat-card-title>
+                    <ngx-shimmer-loading width="35%" height="2rem"></ngx-shimmer-loading>
+                </mat-card-title>
+                
+                <mat-card-content class="">
+                    <ngx-shimmer-loading width="80%" height="1rem"></ngx-shimmer-loading>
+                    <ngx-shimmer-loading width="70%" height="1rem"></ngx-shimmer-loading>
+                    
+                    <div class="flex-start">
+                        <ngx-shimmer-loading class="m-r-8" width="25%" height="2rem" borderRadius="20px"></ngx-shimmer-loading>
+                        <ngx-shimmer-loading class="m-r-8 m-l-8" width="15%" height="2rem" borderRadius="20px"></ngx-shimmer-loading>
+                        <ngx-shimmer-loading class="m-l-8" width="20%" height="2rem" borderRadius="20px"></ngx-shimmer-loading>
+                    </div>
+
+                    <div class="flex_between">
+                        <div class="flex gap-05">
+                            <div class="flex_center gap-05">
+                                <mat-icon class="shimmer-icon">favorite</mat-icon>
+                                <ngx-shimmer-loading width="4ch" height="1rem"></ngx-shimmer-loading>
+                            </div>
+                            <div class="flex_center gap-05">
+                                <mat-icon class="shimmer-icon">visibility</mat-icon>
+                                <ngx-shimmer-loading width="4ch" height="1rem"></ngx-shimmer-loading>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-05">
+                          <button mat-raised-button color="primary" class="flex_between_center" disabled>
+                              <mat-icon>edit</mat-icon>
+                              <span *ngIf="!isMobile">Editar</span>
+                          </button>
+                          <button mat-raised-button color="warn" class="flex_between_center" disabled>
+                              <mat-icon>delete</mat-icon>
+                              <span *ngIf="!isMobile">Eliminar</span>
+                          </button>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <!-- No results card -->
+        <div *ngIf="!hasData && !isLoading">
+            <mat-card>
+                <div class="flex_column flex_center">
+                    <mat-icon>search</mat-icon>
+                    <p class="no-results-title">No se encontraron resultados</p>
+                    <p>Prueba con algo diferente</p>
+                </div>
+            </mat-card>
         </div>
     </div>
 </main>

@@ -85,33 +85,38 @@ export class UserPostsComponent implements OnInit {
             )
             .subscribe(resp => {
                 if (!!resp) {
-
-                    merge(
-                        this.academicLevelControl.valueChanges,
-                        this.subjectControl.valueChanges,
-                        this.axisControl.valueChanges,
-                        this.orderingControl.valueChanges
-                    )
-                        .pipe(
-                            debounceTime(500),
-                            startWith(true)
-                        )
-                        .subscribe(value => {
-                            if (!!value) {
-                                this.showDeleteButton = true;
-                            }
-                            this.doSearch(1);
-                        });
+                    this.doSearch(1);
+                    this.onFormChange();
                 } else {
                     this.hasData = false;
                 }
             });
     }
 
+    private onFormChange(): void {
+        merge(
+            this.academicLevelControl.valueChanges,
+            this.subjectControl.valueChanges,
+            this.axisControl.valueChanges,
+            this.orderingControl.valueChanges
+        )
+            .pipe(
+                debounceTime(500)
+            )
+            .subscribe(value => {
+                if (!!value) {
+                    this.showDeleteButton = true;
+                }
+                this.doSearch(1);
+            });
+    }
+
     public doSearch(page?: number): void {
+        this.isLoading = true;
         if (!!page) {
             this.searchParams.page = page;
         }
+        this.searchParams.userId = this.authService.getUserProfile()?.id;
         this.searchParams.search = this.searchControl.value;
         this.searchParams.academicLevel = this.academicLevelControl.value?.data.id;
         this.searchParams.subject = this.subjectControl.value?.data.id;
@@ -124,7 +129,6 @@ export class UserPostsComponent implements OnInit {
     }
 
     public getPosts(params: PostsQueryParams): void {
-        this.isLoading = true;
         this.postsService.getPosts(params)
             .pipe(
                 catchError(error => {
