@@ -1,6 +1,6 @@
 <main class="main">
     <mat-card class="left-card">
-        <mat-card-title>Mis publicaciones</mat-card-title>
+        <mat-card-title>Mis publicaciones ({{ user?.total_posts }})</mat-card-title>
         
         <!-- Query bar -->
         <div class="flex_column gap-07">
@@ -69,22 +69,22 @@
             <div class="flex_justify_center flex_center gap-1 m-y-32">
                 <div>
                     <div class="stat-number">
-                        <span>51</span>
+                        <span>{{ user?.total_likes }}</span>
                         <mat-icon class="red-icon">favorite</mat-icon>
                     </div>
                     <span class="stat-text">Me gusta</span>
                 </div>
                 <div>
                     <div class="stat-number">
-                        <span>83</span>
+                        <span>{{ user?.total_views }}</span>
                         <mat-icon class="blue-icon">visibility</mat-icon>
                     </div>
                     <span class="stat-text">Vistas</span>
                 </div>
             </div>
             <p class="stat-p">
-                En total, tus publicaciones has sido <span class="blue-icon">vistas 83 veces</span>
-                y han tenido <span class="red-icon">51 me gusta</span>, gracias por ayudar a la comunidad, sigue así!
+                En total, tus {{ user?.total_posts }} publicaciones han sido <span class="blue-icon">vistas {{ user?.total_views }} veces</span>
+                y han tenido <span class="red-icon">{{ user?.total_likes }} me gusta</span>, gracias por ayudar a la comunidad, sigue así!
             </p>
         </div>
     </mat-card>

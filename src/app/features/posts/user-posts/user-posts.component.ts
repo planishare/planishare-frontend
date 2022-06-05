@@ -30,6 +30,8 @@ export class UserPostsComponent implements OnInit {
     public posts: PostDetail[] = [];
     public form: FormGroup;
 
+    public user = this.authService.getUserProfile();
+
     public academicLevelsList: RoundedSelectSearchOption[] = [];
     public subjectList: RoundedSelectSearchOption[] = [];
     public axesList: RoundedSelectSearchOption[] = [];

@@ -33,6 +33,7 @@ export class AuthService {
     public isCompleted$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     private accessToken?: string;
+    private firebaseUID?: string;
     private userProfile?: UserDetail;
 
     private isRegistered$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -49,6 +50,7 @@ export class AuthService {
                 if (user?.isAnonymous) {
                     this.authServiceConsoleLog('onAuthStateChanged (anonymous)', user);
                     this.accessToken = user?.accessToken;
+                    this.firebaseUID = user?.uid;
                     this.isAuth$.next(null);
                     this.isCompleted$.next(true);
                 } else {
@@ -60,6 +62,7 @@ export class AuthService {
                     // Authenticate with Google or Email and password
                     this.authServiceConsoleLog('onAuthStateChanged', user);
                     this.accessToken = user?.accessToken;
+                    this.firebaseUID = user?.uid;
                     this.isAuth$.next(user);
 
                     // Get user profile info from planishare backend
@@ -172,6 +175,10 @@ export class AuthService {
     // Utils
     public getAccessToken(): string | undefined {
         return this.accessToken;
+    }
+
+    public getFirebaseUID(): string | undefined {
+        return this.firebaseUID;
     }
 
     public getUserProfile(): UserDetail | undefined {
