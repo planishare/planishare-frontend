@@ -185,6 +185,10 @@ export class AuthService {
         return this.userProfile;
     }
 
+    public setUserProfile(data: UserDetail): void {
+        this.userProfile = data;
+    }
+
     private authServiceConsoleLog(...data: any[]): void {
         console.log(
             `%c (AUTH-SERVICE): ${data[0]}`,

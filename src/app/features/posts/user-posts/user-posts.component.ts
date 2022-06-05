@@ -1,14 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { catchError, debounceTime, forkJoin, map, merge, Observable, of, startWith, tap } from 'rxjs';
 import { OrderingType, OrderingTypeName } from 'src/app/core/enums/posts.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
+import { UsersService } from 'src/app/core/services/users.service';
 import { PostDetail, PostPageable, PostsQueryParams } from 'src/app/core/types/posts.type';
+import { UserDetail } from 'src/app/core/types/users.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 import { RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
 import { isMobile } from 'src/app/shared/utils';
+import { DeleteDialogComponent } from '../components/delete-dialog/delete-dialog.component';
 
 @Component({
     selector: 'app-user-posts',
@@ -16,7 +20,6 @@ import { isMobile } from 'src/app/shared/utils';
     styleUrls: ['./user-posts.component.scss']
 })
 export class UserPostsComponent implements OnInit {
-
     public isMobile = isMobile;
     public isLoading = true;
     public hasData = true;
@@ -64,7 +67,9 @@ export class UserPostsComponent implements OnInit {
         private postsService: PostsService,
         private authService: AuthService,
         private router: Router,
-        private commonSnackbarMsg: CommonSnackbarMsgService
+        private commonSnackbarMsg: CommonSnackbarMsgService,
+        public dialog: MatDialog,
+        private userService: UsersService
     ) {
         this.form = new FormGroup(
             {
@@ -166,6 +171,21 @@ export class UserPostsComponent implements OnInit {
         }
     }
 
+    public deletePost(post: PostDetail): void {
+        const dialogRef = this.dialog.open(DeleteDialogComponent, {
+            data: {
+                post
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(refresh => {
+            if (refresh) {
+                this.doSearch(1);
+                this.updateUserProfile();
+            }
+        });
+    }
+
     // Form stuff
     public get searchControl() {
         return this.form.get('search') as FormControl;
@@ -252,5 +272,21 @@ export class UserPostsComponent implements OnInit {
                 tap(resp => this.axesList = resp),
                 tap(() => this.isAxesLoading = false)
             );
+    }
+
+    private updateUserProfile(): void {
+        this.userService.getUserProfileByEmail(this.user?.email!)
+            .pipe(
+                catchError(error => {
+                    this.commonSnackbarMsg.showErrorMessage();
+                    return of(null);
+                })
+            )
+            .subscribe(resp => {
+                if (!!resp) {
+                    this.user = resp;
+                    this.authService.setUserProfile(resp);
+                }
+            });
     }
 }

@@ -1,0 +1,7 @@
+<h1 mat-dialog-title>¿Quieres borrar {{ data.post.title }}?</h1>
+<div mat-dialog-content>Una ves eliminada esta publicación no la podrás recuperar.</div>
+<div mat-dialog-actions>
+  <button mat-button *ngIf="!isLoading" (click)="deletePost()">Eliminar</button>
+  <app-square-loader *ngIf="isLoading"></app-square-loader>
+  <button mat-button [mat-dialog-close]="false">Cancelar</button>
+</div>

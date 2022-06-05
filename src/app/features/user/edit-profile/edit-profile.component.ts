@@ -16,7 +16,6 @@ import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackba
     styleUrls: ['./edit-profile.component.scss']
 })
 export class EditProfileComponent implements OnInit {
-    // TODO: Request user info on init, because when change page and comeback info isnt updated
     public userProfile?: UserDetail;
     public form: FormGroup;
     public isSaveLoading = false;
@@ -101,6 +100,7 @@ export class EditProfileComponent implements OnInit {
                     this.matSnackBar.open('Datos actualizados', 'OK', { duration: 2000 });
                     this.isSaveLoading = false;
                     this.form.setErrors({});
+                    this.updateUserProfile();
                 });
         }
     }
@@ -172,5 +172,20 @@ export class EditProfileComponent implements OnInit {
         } else {
             return optionList;
         }
+    }
+
+    private updateUserProfile(): void {
+        this.userServices.getUserProfileByEmail(this.userProfile!.email)
+            .pipe(
+                catchError(error => {
+                    this.commonSnackbarMsg.showErrorMessage();
+                    return of(null);
+                })
+            )
+            .subscribe(resp => {
+                if (!!resp) {
+                    this.authService.setUserProfile(resp);
+                }
+            });
     }
 }

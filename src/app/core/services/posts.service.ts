@@ -41,6 +41,10 @@ export class PostsService {
         return this.http.get<PostDetail>(environment.apiUrl + `/posts/${postId}/`);
     }
 
+    public deletePostById(postId: number): Observable<PostDetail> {
+        return this.http.delete<PostDetail>(environment.apiUrl + `/posts/delete/${postId}/`);
+    }
+
     // Academic Level, Subjects and Axis
     public getAcademicLevels(): Observable<AcademicLevel[]> {
         return this.http.get<AcademicLevel[]>(environment.apiUrl + '/academic-levels/');

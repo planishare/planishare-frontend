@@ -152,7 +152,7 @@
                           <mat-icon>edit</mat-icon>
                           <span *ngIf="!isMobile">Editar</span>
                       </button>
-                      <button mat-raised-button color="warn" class="flex_between_center">
+                      <button mat-raised-button color="warn" class="flex_between_center" (click)="deletePost(post)">
                           <mat-icon>delete</mat-icon>
                           <span *ngIf="!isMobile">Eliminar</span>
                       </button>
