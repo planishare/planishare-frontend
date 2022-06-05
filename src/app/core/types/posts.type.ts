@@ -27,9 +27,7 @@ export type PostDetail = {
     likes: number,
     views: number,
     already_liked: number | null, // Contains like id if is already liked by auth user
-
-    // TODO: add this logic to detail and results views
-    already_viewed: number | null // Contains view id if is already viewed by auth user
+    // already_viewed
 }
 
 // Academic Level, Subjects and Axis

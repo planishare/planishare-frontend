@@ -17,8 +17,6 @@ import { isMobile } from 'src/app/shared/utils';
     styleUrls: ['./post-detail.component.scss']
 })
 export class PostDetailComponent implements OnInit {
-    // TODO: fix displayed file name
-
     public isMobile = isMobile;
     public searchParams: Params | PostsQueryParams;
 
@@ -163,11 +161,16 @@ export class PostDetailComponent implements OnInit {
     }
 
     private registerView(post: PostDetail): void {
-        this.reactionService.registerView(this.postId)
-            .pipe(
-                catchError(error => of(null))
-            )
-            .subscribe();
+        const isAuth = !!this.authService.isAuth$.value;
+        const isOwner = post.user.email === this.user?.email;
+
+        if ((isAuth && !isOwner) || !isAuth) {
+            this.reactionService.registerView(this.postId)
+                .pipe(
+                    catchError(error => of(null))
+                )
+                .subscribe();
+        }
     }
 
     // Utils

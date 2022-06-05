@@ -169,7 +169,7 @@ export class CreatePostComponent implements OnInit {
         const ext = file!.name.split('.').pop();
         const name = file!.name.split('.')[0];
         const date = new Date().getTime();
-        const fileName = `${name}__${file.size}__${date}.${ext}`;
+        const fileName = `${name}___${file.size}___${date}.${ext}`;
         const storageRef = ref(this.storage, fileName);
 
         // Add file in documentList
