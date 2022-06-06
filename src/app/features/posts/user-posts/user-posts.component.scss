@@ -16,6 +16,7 @@
 .left-card {
     height: min-content;
     width: 35%;
+    min-width: 308px;
     padding: 2rem 2rem 1rem 2rem;
 }
 
@@ -101,6 +102,7 @@
 // Right side
 .right-side {
     flex-grow: 1;
+    max-width: 900px;
 }
 
 .pagination {
@@ -171,5 +173,6 @@
     .left-card {
         height: auto;
         width: auto;
+        min-width: auto;
     }
 }

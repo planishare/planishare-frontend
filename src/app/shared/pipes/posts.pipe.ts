@@ -28,9 +28,8 @@ export class GetDocName implements PipeTransform {
     public transform(docUrl: string): string {
         try {
             const realFileName =  decodeURIComponent(docUrl.split('/o/')[1].split('?')[0]);
-            const fileExt = '.' + realFileName.split('.')[realFileName.split('.').length - 1];
             const shortFileName = realFileName.split('___')[0];
-            return shortFileName + fileExt;
+            return shortFileName;
         } catch (error) {
             return '';
         }

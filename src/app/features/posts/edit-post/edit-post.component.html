@@ -1,0 +1,198 @@
+<main class="main">
+    <div class="flex-grow-1">
+      <button mat-raised-button [routerLink]="['/']"class="back-button">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Volver a publicaciones propias</span>
+      </button>
+
+      <!-- Form -->
+      <mat-card class="card" *ngIf="!isLoading">
+        <mat-card-title>Editar publicación</mat-card-title>
+    
+        <form [formGroup]="form" (ngSubmit)="save($event)">
+          <mat-form-field appearance="outline" class="title-field">
+            <mat-label>Título</mat-label>
+            <input matInput placeholder="Título" formControlName="title">
+            <mat-error *ngIf="this.titleControl?.hasError('required')">Este campo es requerido</mat-error>
+          </mat-form-field>
+          
+          <mat-form-field appearance="outline" class="select-field">
+            <mat-label>Nivel académico</mat-label>
+            <mat-select formControlName="academicLevel">
+              <mat-option>
+                <ngx-mat-select-search
+                  [searching]="isAcademicLevelsLoading"
+                  [formControl]="searchAcademicLevel"
+                  placeholderLabel="Buscar nivel académico"
+                  noEntriesFoundLabel="No se encontraron resultados">
+                </ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let academicLevel of filteredAcademicLevelsList|async" [value]="academicLevel.id">
+                {{ academicLevel.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="this.academicLevelControl?.hasError('required')">Este campo es requerido</mat-error>
+          </mat-form-field>
+          
+          <!-- <mat-form-field appearance="outline" class="select-field">
+            <mat-label>Asignatura</mat-label>
+            <mat-select formControlName="subject">
+              <mat-option>
+                <ngx-mat-select-search 
+                  [searching]="isSubjectsLoading"
+                  [formControl]="searchSubject"
+                  placeholderLabel="Buscar asignatura"
+                  noEntriesFoundLabel="No se encontraron resultados">
+                </ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let subject of filteredSubjectList|async" [value]="subject.id">
+                {{ subject.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="this.subjectControl?.hasError('required')">Este campo es requerido</mat-error>
+          </mat-form-field> -->
+          
+          <mat-form-field appearance="outline" class="select-field">
+            <mat-label>Eje</mat-label>
+            <mat-select formControlName="axis">
+              <mat-option>
+                <ngx-mat-select-search 
+                  [searching]="isAxesLoading"
+                  [formControl]="searchAxes"
+                  placeholderLabel="Buscar axis"
+                  noEntriesFoundLabel="No se encontraron resultados">
+                </ngx-mat-select-search>
+              </mat-option>
+              <mat-optgroup *ngFor="let subject of filteredSubjectAxis|async" [label]="subject.name">
+                <mat-option *ngFor="let axis of subject.axis" [value]="axis.id">
+                  {{ axis.name }}
+                </mat-option>
+              </mat-optgroup>
+              <!-- <mat-option>
+                <ngx-mat-select-search 
+                  [searching]="isAxesLoading"
+                  [formControl]="searchAxes"
+                  placeholderLabel="Buscar axis"
+                  noEntriesFoundLabel="No se encontraron resultados">
+                </ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let axis of filteredSubjectAxis|async" [value]="axis.id">
+                {{ axis.name }}
+              </mat-option> -->
+            </mat-select>
+            <mat-error *ngIf="this.axisControl?.hasError('required')">Este campo es requerido</mat-error>
+          </mat-form-field>
+    
+          <mat-form-field class="description-textarea" appearance="outline">
+            <mat-label>Descripción</mat-label>
+            <textarea matInput 
+            formControlName="description"
+              cdkTextareaAutosize cdkAutosizeMinRows="3" cdkAutosizeMaxRows="20">
+            </textarea>
+          </mat-form-field>
+  
+          <div class="flex_justify_end">
+            <button type="submit" mat-raised-button color="primary" *ngIf="!isLoadingSave">
+              <mat-icon>save</mat-icon>
+              <span>Guardar</span>
+            </button>
+            <app-square-loader *ngIf="isLoadingSave"></app-square-loader>
+          </div>
+        </form>
+      </mat-card>
+
+      <!-- Form Shimmer -->
+      <mat-card class="form-shimmer" *ngIf="isLoading">
+        <mat-card-title class="m-b-16">
+          <ngx-shimmer-loading width="40%" height="2rem"></ngx-shimmer-loading>
+        </mat-card-title>
+        <mat-card-content class="flex_column_start gap-1">
+          <div class="m-b-16">
+            <ngx-shimmer-loading width="40%" height="1rem"></ngx-shimmer-loading>
+            <ngx-shimmer-loading width="80%" height="2.5rem"></ngx-shimmer-loading>
+          </div>
+          <div class="m-b-16">
+            <ngx-shimmer-loading width="40%" height="1rem"></ngx-shimmer-loading>
+            <ngx-shimmer-loading width="80%" height="2.5rem"></ngx-shimmer-loading>
+          </div>
+          <div class="m-b-16">
+            <ngx-shimmer-loading width="40%" height="1rem"></ngx-shimmer-loading>
+            <ngx-shimmer-loading width="80%" height="2.5rem"></ngx-shimmer-loading>
+          </div>
+          <div class="m-b-16">
+            <ngx-shimmer-loading width="40%" height="1rem"></ngx-shimmer-loading>
+            <ngx-shimmer-loading width="80%" height="4rem"></ngx-shimmer-loading>
+          </div>
+          <div class="flex_justify_end">
+            <button type="submit" mat-raised-button color="primary" disabled>
+              <mat-icon>save</mat-icon>
+              <span>Guardar</span>
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <!-- Documents -->
+    <mat-card class="card" *ngIf="!isLoading">
+      <div class="flex_start_center gap-05">
+        <mat-card-title>{{ (post.suporting_material?.length ?? 0) + 1 }} Documentos</mat-card-title>
+        <mat-icon>description</mat-icon>
+      </div>
+      <div class="flex_column gap-05">
+          <div
+              class="document"
+              matRipple
+              [ngClass]="(post.main_file|getDocType:docTypes)+'-style'">
+              <span>{{ post.main_file|getDocName }}</span>
+
+              <button
+                  (click)="download(post.main_file)"
+                  mat-flat-button
+                  class="download-button {{ post.main_file|getDocType:docTypes }}-style">
+                      <span>.{{ post.main_file|getDocType:docTypes }}</span>
+                      <mat-icon>download</mat-icon>
+              </button>
+          </div>
+          <div
+              class="document"
+              *ngFor="let doc of post.suporting_material"
+              matRipple
+              [ngClass]="(doc|getDocType:docTypes)+'-style'">
+              <span>{{ doc|getDocName }}</span>
+
+              <button
+                  (click)="download(doc)"
+                  mat-flat-button
+                  class="download-button {{ doc|getDocType:docTypes }}-style">
+                      <span>.{{ doc|getDocType:docTypes }}</span>
+                      <mat-icon>download</mat-icon>
+              </button>
+          </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="documents-shimmer" *ngIf="isLoading">
+      <mat-card-title>
+        <ngx-shimmer-loading width="50%" height="2rem"></ngx-shimmer-loading>
+      </mat-card-title>
+      <mat-card-content class="flex_column_start gap-1">
+        <div class="m-b-8">
+          <ngx-shimmer-loading width="100%" height="2.5rem" borderRadius="20px"></ngx-shimmer-loading>
+        </div>
+        <div class="m-b-8">
+          <ngx-shimmer-loading width="100%" height="2.5rem" borderRadius="20px"></ngx-shimmer-loading>
+        </div>
+        <div class="m-b-8">
+          <ngx-shimmer-loading width="100%" height="2.5rem" borderRadius="20px"></ngx-shimmer-loading>
+        </div>
+        <div class="m-b-8">
+          <ngx-shimmer-loading width="100%" height="2.5rem" borderRadius="20px"></ngx-shimmer-loading>
+        </div>
+        <div class="m-b-8">
+          <ngx-shimmer-loading width="100%" height="2.5rem" borderRadius="20px"></ngx-shimmer-loading>
+        </div>
+      </mat-card-content>
+    </mat-card>
+</main>
+  
+  

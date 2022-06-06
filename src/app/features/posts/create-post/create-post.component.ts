@@ -117,7 +117,7 @@ export class CreatePostComponent implements OnInit {
                     if (resp) {
                         const postId = resp.id;
                         this.router.navigate(['/posts/view/', postId]);
-                        this.matSnackbar.open('Publicación creada con exito', 'OK', { duration: 2000 });
+                        this.matSnackbar.open('Publicación creada :)', 'OK', { duration: 2000 });
                     }
                     this.isLoading = false;
                 });

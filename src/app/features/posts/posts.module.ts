@@ -8,6 +8,7 @@ import { PostDetailCardShimmerComponent } from './components/post-detail-card-sh
 import { CreatePostComponent } from './create-post/create-post.component';
 import { UserPostsComponent } from './user-posts/user-posts.component';
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
+import { EditPostComponent } from './edit-post/edit-post.component';
 
 @NgModule({
     declarations: [
@@ -15,7 +16,8 @@ import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.
         PostDetailCardShimmerComponent,
         CreatePostComponent,
         UserPostsComponent,
-        DeleteDialogComponent
+        DeleteDialogComponent,
+        EditPostComponent
     ],
     imports: [
         CommonModule,

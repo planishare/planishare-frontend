@@ -83,9 +83,9 @@ export type PostForm = {
     user: number,
     title: string,
     description?: string,
-    image: string,
+    image?: string,
     academic_level: number,
     axis: number,
-    main_file: string,
-    suporting_material: string[]
+    main_file?: string,
+    suporting_material?: string[]
 }

@@ -148,7 +148,7 @@
                     </div>
                     
                     <div class="flex gap-05">
-                      <button mat-raised-button color="primary" class="flex_between_center">
+                      <button mat-raised-button color="primary" class="flex_between_center" [routerLink]="['/posts/edit', post.id]">
                           <mat-icon>edit</mat-icon>
                           <span *ngIf="!isMobile">Editar</span>
                       </button>
