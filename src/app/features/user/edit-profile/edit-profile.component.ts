@@ -26,6 +26,7 @@ export class EditProfileComponent implements OnInit {
     public regionsWithComunnes?: RegionWithCommunes[];
 
     public isInstitutionsLoading = true;
+    public isGetInstitutionsFirstReq = true;
     public isLocationsLoading = true;
     public searchInstitution: FormControl;
     public searchLocation: FormControl;
@@ -56,6 +57,13 @@ export class EditProfileComponent implements OnInit {
     public ngOnInit(): void {
         this.userProfile = this.authService.getUserProfile();
 
+        this.filteredInstitutions = this.searchInstitution.valueChanges.pipe(
+            tap(() => this.isInstitutionsLoading = true),
+            filter(value => !!value),
+            startWith(''),
+            switchMap((value: string) => this.getInstitutions(value))
+        );
+
         forkJoin([this.getEducations(), this.getRegionsWithCommunes()])
             .pipe(
                 catchError(error => {
@@ -72,12 +80,6 @@ export class EditProfileComponent implements OnInit {
                     institution: this.userProfile?.institution?.id,
                     commune: this.userProfile?.commune?.id
                 });
-                this.filteredInstitutions = this.searchInstitution.valueChanges.pipe(
-                    tap(() => this.isInstitutionsLoading = true),
-                    filter(value => !!value),
-                    startWith(''),
-                    switchMap((value: string) => this.getInstitutions(value))
-                );
                 this.isLoading = false;
             });
     }
@@ -125,6 +127,10 @@ export class EditProfileComponent implements OnInit {
             }),
             tap(resp => {
                 this.institutions = resp.results;
+                if (!!this.userProfile?.institution && this.isGetInstitutionsFirstReq) {
+                    this.institutions?.unshift(this.userProfile?.institution);
+                }
+                this.isGetInstitutionsFirstReq = false;
                 this.isInstitutionsLoading = false;
             }),
             map(data => data.results)
@@ -142,20 +148,6 @@ export class EditProfileComponent implements OnInit {
                 );
             })
         );
-    }
-
-    private namefilter(
-        searchValue: string,
-        optionList: (Institution)[]): (Institution)[] {
-        if (!!searchValue) {
-            searchValue = searchValue.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-            return optionList.filter(el => {
-                const textNormalized = el.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                return textNormalized.includes(searchValue);
-            });
-        } else {
-            return optionList;
-        }
     }
 
     private locationsFilter(
