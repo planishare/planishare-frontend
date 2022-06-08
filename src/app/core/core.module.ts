@@ -9,6 +9,7 @@ import { IsNotAuthGuard } from './guards/is-not-auth.guard';
 import { UsersService } from './services/users.service';
 import { ReactionsService } from './services/reactions.service';
 import { FirebaseStorageService } from './services/firebase-storage.service';
+import { FirebaseAuthService } from './services/firebase-auth.service';
 
 @NgModule({
     declarations: [],
@@ -24,6 +25,7 @@ import { FirebaseStorageService } from './services/firebase-storage.service';
         UsersService,
         ReactionsService,
         FirebaseStorageService,
+        FirebaseAuthService,
 
         // Guards
         IsAuthGuard,

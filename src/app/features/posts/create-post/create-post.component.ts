@@ -88,7 +88,7 @@ export class CreatePostComponent implements OnInit {
 
         // Validate all files uploaded
         if (this.documentsControl.length !== this.documentList.length) {
-            return this.matSnackbar.open('Espera a que se suban todos los archivos', 'OK', { duration: 2000 });
+            return this.matSnackbar.open('Espera a que se suban todos los archivos', 'Cerrar', { duration: 2000 });
         }
 
         const userId = this.authService.getUserProfile()?.id;
@@ -117,7 +117,7 @@ export class CreatePostComponent implements OnInit {
                     if (resp) {
                         const postId = resp.id;
                         this.router.navigate(['/posts/view/', postId]);
-                        this.matSnackbar.open('Publicación creada :)', 'OK', { duration: 2000 });
+                        this.matSnackbar.open('Publicación creada :)', 'Cerrar', { duration: 2000 });
                     }
                     this.isLoading = false;
                 });
@@ -132,12 +132,12 @@ export class CreatePostComponent implements OnInit {
                 if (file.size <= this.maxFileSize) {
                     this.uploadFile(file);
                 } else {
-                    this.matSnackbar.open(this.maxFileSizeMsg, 'OK', { duration: 3000 });
+                    this.matSnackbar.open(this.maxFileSizeMsg, 'Cerrar', { duration: 3000 });
                     this.documentsControl.setErrors({ maxSize: true });
                 }
             });
         } else {
-            this.matSnackbar.open(this.maxFilesMsg, 'OK', { duration: 3000  });
+            this.matSnackbar.open(this.maxFilesMsg, 'Cerrar', { duration: 3000  });
             if (this.documentList.length < 5 ) {
                 this.documentsControl.setErrors({ max: true });
             }
@@ -152,12 +152,12 @@ export class CreatePostComponent implements OnInit {
                 if (file.size <= this.maxFileSize) {
                     this.uploadFile(file);
                 } else {
-                    this.matSnackbar.open(this.maxFileSizeMsg, 'OK', { duration: 3000 });
+                    this.matSnackbar.open(this.maxFileSizeMsg, 'Cerrar', { duration: 3000 });
                     this.documentsControl.setErrors({ maxSize: true });
                 }
             });
         } else {
-            this.matSnackbar.open(this.maxFilesMsg, 'OK', { duration: 3000 });
+            this.matSnackbar.open(this.maxFilesMsg, 'Cerrar', { duration: 3000 });
             if (this.documentList.length < 5 ) {
                 this.documentsControl.setErrors({ max: true });
             }
@@ -266,7 +266,7 @@ export class CreatePostComponent implements OnInit {
     private isFirstFileTypeAllowed(control: AbstractControl): any {
         const firstFileType = this.getDocTypeFromFirebaseUrl(control.value[0] ?? '');
         if (firstFileType && !this.docTypes.find(type => type === firstFileType)) {
-            this.matSnackbar.open(this.firstDocTypeMsg, 'OK', { duration: 3000 });
+            this.matSnackbar.open(this.firstDocTypeMsg, 'Cerrar', { duration: 3000 });
             return { firstDocType: true };
         }
         return null;

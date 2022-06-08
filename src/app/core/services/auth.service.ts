@@ -19,14 +19,13 @@ import {
 import { UsersService } from './users.service';
 import { UserDetail } from '../types/users.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
+import { FirebaseAuthService } from './firebase-auth.service';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    // TODO: Loaders in login and register view if google sign
-    // TODO: Logout when catch error
-    // TODO: Redirect to homepage when logout
     public isAuth$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
     // Emits true when auth services finish loading
@@ -42,7 +41,9 @@ export class AuthService {
         private auth: Auth,
         private http: HttpClient,
         private userService: UsersService,
-        private commonSnackbarMsg: CommonSnackbarMsgService
+        private commonSnackbarMsg: CommonSnackbarMsgService,
+        private firebaseAuthService: FirebaseAuthService,
+        private router: Router
     ) {
         let isFirstAccess = true;
         onAuthStateChanged(auth, (user: any) => {
@@ -76,6 +77,7 @@ export class AuthService {
                             catchError(() => {
                                 this.commonSnackbarMsg.showErrorMessage();
                                 this.isCompleted$.next(false);
+                                this.logout();
                                 return of(null);
                             })
                         )
@@ -149,6 +151,9 @@ export class AuthService {
                 tap(resp => {
                     this.authServiceConsoleLog('registerWithEmailAndPassword', resp);
                 }),
+                tap(() => {
+                    this.firebaseAuthService.sendEmailVerification();
+                }),
                 switchMap(resp => {
                     return this.register(credentials);
                 })
@@ -167,9 +172,18 @@ export class AuthService {
     }
 
     public logout(): void {
-        this.authServiceConsoleLog('logout!');
+        this.isCompleted$.next(false);
         this.isRegistered$.next(false);
-        from(signOut(this.auth));
+        signOut(this.auth);
+        this.isAuth$.asObservable()
+            .pipe(
+                filter(val => !!!val),
+                take(1)
+            )
+            .subscribe(() => {
+                this.authServiceConsoleLog('logout!');
+                this.router.navigate(['/', 'auth', 'login']);
+            });
     }
 
     // Utils

@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
                         } else if (error.code === LoginErrorMessage.TOO_MANY_REQUESTS) {
                             this.matSnackbar.open(
                                 'Has hecho demasiados intentos, intenta más tarde :(',
-                                'OK'
+                                'Cerrar'
                             );
                         } else {
                             this.commonSnackbarMsg.showErrorMessage();
@@ -92,6 +92,7 @@ export class LoginComponent implements OnInit {
     }
 
     public loginWithGoogle(): void {
+        this.isLoading = true;
         this.authService.loginWithGoogle()
             .pipe(
                 catchError((error: FirebaseError) => {

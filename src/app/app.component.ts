@@ -17,12 +17,8 @@ export class AppComponent implements OnInit {
 
     public ngOnInit(): void {
         this.authService.isCompleted$.asObservable()
-            .pipe(
-                filter(isComplete => isComplete)
-                // delay(1000)
-            )
-            .subscribe(() => {
-                this.isAuthCompleted = true;
+            .subscribe((isAuthCompleted: boolean) => {
+                this.isAuthCompleted = isAuthCompleted;
             });
     }
 }

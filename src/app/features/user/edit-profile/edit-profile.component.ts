@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, filter, forkJoin, map, Observable, of, startWith, switchMap, tap } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { FirebaseAuthService } from 'src/app/core/services/firebase-auth.service';
 import { LocationsService } from 'src/app/core/services/locations.service';
 import { OccupationsService } from 'src/app/core/services/occupations.service';
 import { UsersService } from 'src/app/core/services/users.service';
@@ -17,6 +18,7 @@ import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackba
 })
 export class EditProfileComponent implements OnInit {
     public userProfile?: UserDetail;
+    public isVerificated?: boolean;
     public form: FormGroup;
     public isSaveLoading = false;
     public isLoading = true;
@@ -39,7 +41,8 @@ export class EditProfileComponent implements OnInit {
         private locationService: LocationsService,
         private userServices: UsersService,
         private commonSnackbarMsg: CommonSnackbarMsgService,
-        private matSnackBar: MatSnackBar
+        private matSnackBar: MatSnackBar,
+        private firebaseAuthService: FirebaseAuthService
     ) {
         this.form = new FormGroup({
             email: new FormControl(null),
@@ -56,6 +59,7 @@ export class EditProfileComponent implements OnInit {
 
     public ngOnInit(): void {
         this.userProfile = this.authService.getUserProfile();
+        this.isVerificated = this.authService.isAuth$.value?.emailVerified;
 
         this.filteredInstitutions = this.searchInstitution.valueChanges.pipe(
             tap(() => this.isInstitutionsLoading = true),
@@ -105,7 +109,7 @@ export class EditProfileComponent implements OnInit {
                     })
                 )
                 .subscribe(resp => {
-                    this.matSnackBar.open('Datos actualizados', 'OK', { duration: 2000 });
+                    this.matSnackBar.open('Datos actualizados :)', 'Cerrar', { duration: 2000 });
                     this.isSaveLoading = false;
                     this.form.setErrors({});
                     this.updateUserProfile();
@@ -190,5 +194,9 @@ export class EditProfileComponent implements OnInit {
                     this.authService.setUserProfile(resp);
                 }
             });
+    }
+
+    public resendEmail(): void {
+        this.firebaseAuthService.sendEmailVerification();
     }
 }

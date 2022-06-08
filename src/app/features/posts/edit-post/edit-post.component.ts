@@ -107,7 +107,7 @@ export class EditPostComponent implements OnInit {
                     if (resp) {
                         const postId = resp.id;
                         this.router.navigate(['/posts/view/', postId]);
-                        this.matSnackbar.open('Publicación editada :)', 'OK', { duration: 2000 });
+                        this.matSnackbar.open('Publicación editada :)', 'Cerrar', { duration: 2000 });
                     }
                     this.isLoadingSave = false;
                 });

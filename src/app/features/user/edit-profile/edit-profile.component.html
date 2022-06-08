@@ -108,11 +108,19 @@
         </div>
 
         <div class="info">
-            <div class="info-card">
+            <div class="info-card" *ngIf="isVerificated">
                 <h2>Cambiar contraseña</h2>
                 <p>Te enviaremos un correo al email asociado a tu cuenta</p>
                 <div class="flex_justify_end">
                     <button mat-raised-button>Cambiar contraseña</button>
+                </div>
+            </div>
+            <div class="info-card" *ngIf="!isVerificated">
+                <h2>Verificar cuenta</h2>
+                <p>Revisa tu email y valida tu cuenta para poder crear publicaciones y dar Me gusta.</p>
+                <div class="flex_between_center">
+                    <p class="m-0 p-0">¿No recibiste el correo?</p>
+                    <button mat-raised-button (click)="resendEmail()">Reenviar correo de verificación</button>
                 </div>
             </div>
             <div class="info-card">

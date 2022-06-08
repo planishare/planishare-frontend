@@ -91,6 +91,7 @@ export class RegisterComponent {
     }
 
     public loginWithGoogle(): void {
+        this.isLoading = true;
         this.authService.loginWithGoogle()
             .pipe(
                 catchError((error: FirebaseError) => {
