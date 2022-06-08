@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { RegionWithCommunes } from '../types/location.type';
-import { Education, Institution } from '../types/users.type';
+import { Education, Institution, InstitutionPageable } from '../types/users.type';
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +18,11 @@ export class OccupationsService {
         return this.http.get<Education[]>(environment.apiUrl + '/educations/');
     }
 
-    public getInstitutions(): Observable<Institution[]> {
-        return this.http.get<Institution[]>(environment.apiUrl + '/institutions/');
+    public getInstitutions(search: string): Observable<InstitutionPageable> {
+        return this.http.get<InstitutionPageable>(environment.apiUrl + '/institutions/', {
+            params: {
+                search
+            }
+        });
     }
 }

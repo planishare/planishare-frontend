@@ -1,4 +1,5 @@
 import { Commune } from "./location.type";
+import { Pageable } from "./pageable.type";
 
 export type UserSimpleDetail = {
     email: string,
@@ -40,6 +41,10 @@ export type Institution = {
     id: number,
     name: string,
     institution_type: InstitutionType
+}
+
+export type InstitutionPageable = Pageable & {
+    results: Institution[]
 }
 
 export type InstitutionType = {

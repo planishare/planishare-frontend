@@ -300,21 +300,26 @@ export class CreatePostComponent implements OnInit {
         optionList: SubjectWithAxis[]): SubjectWithAxis[] {
         if (!!searchValue) {
             searchValue = searchValue.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-            return optionList.filter(el => {
-                const subjectNameNormalized = el.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
-                const filteredAxis = el.axis.filter(axis => {
+            const results: SubjectWithAxis[] = [];
+            optionList.forEach(subject => {
+                const subjectNameNormalized = subject.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const filteredAxis: Axis[] = [];
+                subject.axis.forEach(axis => {
                     const axisNameNormalized = axis.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                    return axisNameNormalized.includes(searchValue);
+                    if (axisNameNormalized.includes(searchValue)) {
+                        filteredAxis.push(axis);
+                    }
                 });
 
-                // TODO_OPT: show filtered axis
-                // el.axis = filteredAxis;
-                // console.log(el);
-                // console.log(this.subjectWithAxisList);
-
-                return subjectNameNormalized.includes(searchValue) || !!filteredAxis.length;
+                if (subjectNameNormalized.includes(searchValue)) {
+                    results.push(subject);
+                } else if (filteredAxis.length) {
+                    results.push(
+                        { ...subject, axis: filteredAxis }
+                    );
+                }
             });
+            return results;
         } else {
             return optionList;
         }

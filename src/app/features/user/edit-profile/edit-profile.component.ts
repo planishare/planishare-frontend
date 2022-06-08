@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, forkJoin, map, Observable, of, startWith, tap } from 'rxjs';
+import { catchError, filter, forkJoin, map, Observable, of, startWith, switchMap, tap } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LocationsService } from 'src/app/core/services/locations.service';
 import { OccupationsService } from 'src/app/core/services/occupations.service';
 import { UsersService } from 'src/app/core/services/users.service';
-import { RegionWithCommunes } from 'src/app/core/types/location.type';
-import { Education, Institution, UserDetail, UserForm } from 'src/app/core/types/users.type';
+import { Commune, RegionWithCommunes } from 'src/app/core/types/location.type';
+import { Education, Institution, InstitutionPageable, UserDetail, UserForm } from 'src/app/core/types/users.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
 @Component({
@@ -56,7 +56,7 @@ export class EditProfileComponent implements OnInit {
     public ngOnInit(): void {
         this.userProfile = this.authService.getUserProfile();
 
-        forkJoin([this.getEducations(), this.getInstitutions(), this.getRegionsWithCommunes()])
+        forkJoin([this.getEducations(), this.getRegionsWithCommunes()])
             .pipe(
                 catchError(error => {
                     this.commonSnackbarMsg.showErrorMessage();
@@ -68,10 +68,16 @@ export class EditProfileComponent implements OnInit {
                     email: this.userProfile?.email,
                     firstName: this.userProfile?.first_name,
                     lastName: this.userProfile?.last_name,
-                    education: this.userProfile?.education.id,
-                    institution: this.userProfile?.institution.id,
-                    commune: this.userProfile?.commune.id
+                    education: this.userProfile?.education?.id,
+                    institution: this.userProfile?.institution?.id,
+                    commune: this.userProfile?.commune?.id
                 });
+                this.filteredInstitutions = this.searchInstitution.valueChanges.pipe(
+                    tap(() => this.isInstitutionsLoading = true),
+                    filter(value => !!value),
+                    startWith(''),
+                    switchMap((value: string) => this.getInstitutions(value))
+                );
                 this.isLoading = false;
             });
     }
@@ -111,16 +117,17 @@ export class EditProfileComponent implements OnInit {
         );
     }
 
-    public getInstitutions(): Observable<Institution[]> {
-        return this.occupationService.getInstitutions().pipe(
+    public getInstitutions(search: string): Observable<Institution[]> {
+        return this.occupationService.getInstitutions(search).pipe(
+            catchError(error => {
+                this.commonSnackbarMsg.showErrorMessage();
+                return of();
+            }),
             tap(resp => {
-                this.institutions = resp;
+                this.institutions = resp.results;
                 this.isInstitutionsLoading = false;
-                this.filteredInstitutions = this.searchInstitution.valueChanges.pipe(
-                    startWith(''),
-                    map(value => this.namefilter(value, this.institutions!))
-                );
-            })
+            }),
+            map(data => data.results)
         );
     }
 
@@ -156,19 +163,23 @@ export class EditProfileComponent implements OnInit {
         optionList: RegionWithCommunes[]): RegionWithCommunes[] {
         if (!!searchValue) {
             searchValue = searchValue.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-            return optionList.filter(el => {
-                const regionNameNormalized = el.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-                const filteredCommunes = el.communes.filter(commune => {
+            const results: RegionWithCommunes[] = [];
+            optionList.forEach(region => {
+                const communesFiltered: Commune[] = [];
+                region.communes.forEach(commune => {
                     const communeNameNormalized = commune.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                    return communeNameNormalized.includes(searchValue);
+                    if (communeNameNormalized.includes(searchValue)) {
+                        communesFiltered.push(commune);
+                    }
                 });
-
-                // TODO_OPT: show filtered communes
-                // el.communes = filteredCommunes;
-
-                return regionNameNormalized.includes(searchValue) || !!filteredCommunes.length;
+                if (communesFiltered.length) {
+                    results.push(
+                        { ...region, communes: communesFiltered }
+                    );
+                }
             });
+            return results;
         } else {
             return optionList;
         }
