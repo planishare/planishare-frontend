@@ -6,6 +6,7 @@ import {
 } from '@angular/fire/auth';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FirebaseError } from 'firebase/app';
+import { FirebaseAuthErrorCodes } from '../enums/auth.enum';
 
 @Injectable({
     providedIn: 'root'
@@ -37,8 +38,7 @@ export class FirebaseAuthService {
                 });
             })
             .catch((error: FirebaseError) => {
-                console.log(error.message);
-                if (error.message === 'Firebase: Error (auth/user-not-found).') {
+                if (error.code === FirebaseAuthErrorCodes.USER_NOT_FOUND) {
                     this.showErrorMessage('Emm... el email ingresado no está registrado 😅');
                 } else {
                     this.showErrorMessage();

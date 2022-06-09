@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FirebaseError } from 'firebase/app';
 import { catchError, of } from 'rxjs';
-import { LoginErrorMessage } from 'src/app/core/enums/auth.enum';
+import { FirebaseAuthErrorCodes } from 'src/app/core/enums/auth.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FirebaseAuthService } from 'src/app/core/services/firebase-auth.service';
 import { BasicCredentials } from 'src/app/core/types/auth.type';
@@ -69,13 +69,20 @@ export class LoginComponent implements OnInit {
                 .pipe(
                     catchError((error: FirebaseError) => {
                         if (
-                            error.code === LoginErrorMessage.EMAIL_NOT_FOUND ||
-                            error.code === LoginErrorMessage.INVALID_PASSWORD
+                            error.code === FirebaseAuthErrorCodes.EMAIL_NOT_FOUND ||
+                            error.code === FirebaseAuthErrorCodes.INVALID_PASSWORD
                         ) {
                             this.wrongCredentials = true;
-                        } else if (error.code === LoginErrorMessage.TOO_MANY_REQUESTS) {
+                        } else
+                        if (error.code === FirebaseAuthErrorCodes.TOO_MANY_REQUESTS) {
                             this.matSnackbar.open(
                                 'Has hecho demasiados intentos, intenta más tarde :(',
+                                'Cerrar'
+                            );
+                        } else
+                        if (error.code === FirebaseAuthErrorCodes.USER_DISABLED) {
+                            this.matSnackbar.open(
+                                'Tu cuenta está desactivada :(',
                                 'Cerrar'
                             );
                         } else {
@@ -101,7 +108,14 @@ export class LoginComponent implements OnInit {
         this.authService.loginWithGoogle()
             .pipe(
                 catchError((error: FirebaseError) => {
-                    this.commonSnackbarMsg.showErrorMessage();
+                    if (error.code === FirebaseAuthErrorCodes.USER_DISABLED) {
+                        this.matSnackbar.open(
+                            'Tu cuenta está desactivada :(',
+                            'Cerrar'
+                        );
+                    } else {
+                        this.commonSnackbarMsg.showErrorMessage();
+                    }
                     return of(null);
                 })
             )
