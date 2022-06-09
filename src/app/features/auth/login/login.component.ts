@@ -1,14 +1,17 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FirebaseError } from 'firebase/app';
 import { catchError, of } from 'rxjs';
 import { LoginErrorMessage } from 'src/app/core/enums/auth.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { FirebaseAuthService } from 'src/app/core/services/firebase-auth.service';
 import { BasicCredentials } from 'src/app/core/types/auth.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
+import { ForgotPasswordDialogComponent } from '../components/forgot-password-dialog/forgot-password-dialog.component';
 
 @Component({
     selector: 'app-login',
@@ -29,7 +32,9 @@ export class LoginComponent implements OnInit {
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private commonSnackbarMsg: CommonSnackbarMsgService,
-        private matSnackbar: MatSnackBar
+        private matSnackbar: MatSnackBar,
+        private firebaseAuthService: FirebaseAuthService,
+        private matDialog: MatDialog
     ) {
         this.form = new FormGroup(
             {
@@ -126,5 +131,11 @@ export class LoginComponent implements OnInit {
             return 'Ingresa una contraseña';
         }
         return !!this.passwordControl?.errors ? 'Contraseña no válida' : '';
+    }
+
+    public openForgotPasswordDialog(): void {
+        this.matDialog.open(ForgotPasswordDialogComponent, {
+            autoFocus: false
+        });
     }
 }

@@ -199,4 +199,8 @@ export class EditProfileComponent implements OnInit {
     public resendEmail(): void {
         this.firebaseAuthService.sendEmailVerification();
     }
+
+    public resetPassword(): void {
+        this.firebaseAuthService.sendPasswordResetEmail(this.userProfile?.email!);
+    }
 }

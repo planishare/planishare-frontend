@@ -174,6 +174,9 @@ export class AuthService {
     public logout(): void {
         this.isCompleted$.next(false);
         this.isRegistered$.next(false);
+        this.accessToken = undefined;
+        this.firebaseUID = undefined;
+        this.userProfile = undefined;
         signOut(this.auth);
         this.isAuth$.asObservable()
             .pipe(

@@ -112,7 +112,7 @@
                 <h2>Cambiar contraseña</h2>
                 <p>Te enviaremos un correo al email asociado a tu cuenta</p>
                 <div class="flex_justify_end">
-                    <button mat-raised-button>Cambiar contraseña</button>
+                    <button mat-raised-button (click)="resetPassword()">Cambiar contraseña</button>
                 </div>
             </div>
             <div class="info-card" *ngIf="!isVerificated">
