@@ -47,6 +47,7 @@ export class AuthService {
     ) {
         let isFirstAccess = true;
         onAuthStateChanged(auth, (user: any) => {
+            this.isCompleted$.next(false);
             if (!!user) {
                 if (user?.isAnonymous) {
                     this.authServiceConsoleLog('onAuthStateChanged (anonymous)', user);
