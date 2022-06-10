@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { catchError, debounceTime, forkJoin, map, merge, Observable, of, startWith, tap } from 'rxjs';
+import { catchError, debounceTime, forkJoin, map, merge, Observable, of, startWith, takeUntil, tap } from 'rxjs';
 import { OrderingType, OrderingTypeName } from 'src/app/core/enums/posts.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
@@ -12,6 +12,7 @@ import { UserDetail } from 'src/app/core/types/users.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 import { RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
 import { isMobile } from 'src/app/shared/utils';
+import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 import { DeleteDialogComponent } from '../components/delete-dialog/delete-dialog.component';
 
 @Component({
@@ -19,7 +20,7 @@ import { DeleteDialogComponent } from '../components/delete-dialog/delete-dialog
     templateUrl: './user-posts.component.html',
     styleUrls: ['./user-posts.component.scss']
 })
-export class UserPostsComponent implements OnInit {
+export class UserPostsComponent extends Unsubscriber implements OnInit {
     public isMobile = isMobile;
     public isLoading = true;
     public hasData = true;
@@ -66,11 +67,11 @@ export class UserPostsComponent implements OnInit {
     constructor(
         private postsService: PostsService,
         private authService: AuthService,
-        private router: Router,
         private commonSnackbarMsg: CommonSnackbarMsgService,
         public dialog: MatDialog,
         private userService: UsersService
     ) {
+        super();
         this.form = new FormGroup(
             {
                 search: new FormControl(),
@@ -83,9 +84,10 @@ export class UserPostsComponent implements OnInit {
     }
 
     public ngOnInit(): void {
-        this.updateUserProfile();
+        this.updateUserProfile(); // TODO: llamar esto solo cuando se haga un cambio
         forkJoin([this.getAcademicLevels(), this.getSubjects(), this.getAxes() ])
             .pipe(
+                takeUntil(this.ngUnsubscribe$),
                 catchError(error => {
                     this.commonSnackbarMsg.showErrorMessage();
                     return of(null);
@@ -139,6 +141,7 @@ export class UserPostsComponent implements OnInit {
     public getPosts(params: PostsQueryParams): void {
         this.postsService.getPosts(params)
             .pipe(
+                takeUntil(this.ngUnsubscribe$),
                 catchError(error => {
                     this.commonSnackbarMsg.showErrorMessage();
                     return of(null);

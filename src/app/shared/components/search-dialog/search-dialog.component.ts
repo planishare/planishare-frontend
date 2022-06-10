@@ -2,19 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, AbstractControlOptions, FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { forkJoin, map, Observable, tap } from 'rxjs';
+import { forkJoin, map, Observable, takeUntil, tap } from 'rxjs';
 import { OrderingType } from 'src/app/core/enums/posts.enum';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { PostsQueryParams } from 'src/app/core/types/posts.type';
 import { RoundedSelectSearchOption } from '../../types/rounded-select-search.type';
 import { isMobile } from '../../utils';
+import { Unsubscriber } from '../../utils/unsubscriber';
 
 @Component({
     selector: 'app-search-dialog',
     templateUrl: './search-dialog.component.html',
     styleUrls: ['./search-dialog.component.scss']
 })
-export class SearchDialogComponent implements OnInit {
+export class SearchDialogComponent extends Unsubscriber implements OnInit {
     public isMobile = isMobile;
 
     public form: FormGroup;
@@ -32,6 +33,7 @@ export class SearchDialogComponent implements OnInit {
         private router: Router,
         private dialogRef: MatDialogRef<SearchDialogComponent>
     ) {
+        super();
         this.form = new FormGroup(
             {
                 search: new FormControl(),
@@ -107,7 +109,8 @@ export class SearchDialogComponent implements OnInit {
                         } as RoundedSelectSearchOption;
                     });
                 }),
-                tap(resp => this.academicLevelsList = resp)
+                tap(resp => this.academicLevelsList = resp),
+                takeUntil(this.ngUnsubscribe$)
             )
             .subscribe(() => {
                 this.isAcademicLevelsLoading = false;
@@ -125,7 +128,8 @@ export class SearchDialogComponent implements OnInit {
                         } as RoundedSelectSearchOption;
                     });
                 }),
-                tap(resp => this.subjectList = resp)
+                tap(resp => this.subjectList = resp),
+                takeUntil(this.ngUnsubscribe$)
             )
             .subscribe(() => {
                 this.isSubjectsLoading = false;
@@ -143,7 +147,8 @@ export class SearchDialogComponent implements OnInit {
                         } as RoundedSelectSearchOption;
                     });
                 }),
-                tap(resp => this.axesList = resp)
+                tap(resp => this.axesList = resp),
+                takeUntil(this.ngUnsubscribe$)
             )
             .subscribe(() => {
                 this.isaxesLoading = false;

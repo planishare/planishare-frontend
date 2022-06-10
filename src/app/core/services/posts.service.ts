@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AcademicLevel, Axis, PostDetail, PostForm, PostPageable, PostsQueryParams, RealPostsQueryParams, Subject, SubjectWithAxis } from '../types/posts.type';
 import { AuthService } from './auth.service';
@@ -9,6 +9,11 @@ import { AuthService } from './auth.service';
     providedIn: 'root'
 })
 export class PostsService {
+    private academicLevels?: AcademicLevel[];
+    private subjects?: Subject[];
+    private axes?: Axis[];
+    private subjectWithAxes?: SubjectWithAxis[];
+
     constructor(
         private http: HttpClient
     ) { }
@@ -49,24 +54,44 @@ export class PostsService {
         return this.http.patch<PostDetail>(environment.apiUrl + `/posts/update/${postId}/`, postData);
     }
 
+    public createPost(postData: PostForm): Observable<any> {
+        return this.http.post(environment.apiUrl + '/posts/create/', postData);
+    }
+
     // Academic Level, Subjects and Axis
     public getAcademicLevels(): Observable<AcademicLevel[]> {
-        return this.http.get<AcademicLevel[]>(environment.apiUrl + '/academic-levels/');
+        if (!!!this.academicLevels) {
+            return this.http.get<AcademicLevel[]>(environment.apiUrl + '/academic-levels/').pipe(
+                tap(data => this.academicLevels = data)
+            );
+        }
+        return of(this.academicLevels);
     }
 
     public getSubjects(): Observable<Subject[]> {
-        return this.http.get<Subject[]>(environment.apiUrl + '/subjects/');
+        if (!!!this.subjects) {
+            return this.http.get<Subject[]>(environment.apiUrl + '/subjects/').pipe(
+                tap(data => this.subjects = data)
+            );
+        }
+        return of(this.subjects);
     }
 
     public getAxes(): Observable<Axis[]> {
-        return this.http.get<Axis[]>(environment.apiUrl + '/axis/');
+        if (!!!this.axes) {
+            return this.http.get<Axis[]>(environment.apiUrl + '/axis/').pipe(
+                tap(data => this.axes = data)
+            );
+        }
+        return of(this.axes);
     }
 
     public getSubjectWithAxis(): Observable<SubjectWithAxis[]> {
-        return this.http.get<SubjectWithAxis[]>(environment.apiUrl + '/subjects-with-axis/');
-    }
-
-    public createPost(postData: PostForm): Observable<any> {
-        return this.http.post(environment.apiUrl + '/posts/create/', postData);
+        if (!!!this.subjectWithAxes) {
+            return this.http.get<SubjectWithAxis[]>(environment.apiUrl + '/subjects-with-axis/').pipe(
+                tap(data => this.subjectWithAxes = data)
+            );
+        }
+        return of(this.subjectWithAxes);
     }
 }

@@ -2,18 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, forkJoin, map, Observable, of, startWith, tap } from 'rxjs';
+import { catchError, forkJoin, map, Observable, of, startWith, takeUntil, tap } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { AcademicLevel, Axis, PostDetail, PostForm, SubjectWithAxis } from 'src/app/core/types/posts.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
+import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 
 @Component({
     selector: 'app-edit-post',
     templateUrl: './edit-post.component.html',
     styleUrls: ['./edit-post.component.scss']
 })
-export class EditPostComponent implements OnInit {
+export class EditPostComponent extends Unsubscriber implements OnInit {
 
     public post!: PostDetail;
     public postId: number;
@@ -48,6 +49,7 @@ export class EditPostComponent implements OnInit {
         private matSnackbar: MatSnackBar,
         private route: ActivatedRoute
     ) {
+        super();
         this.postId = Number(this.route.snapshot.paramMap.get('id'));
 
         this.form = new FormGroup(
@@ -66,6 +68,7 @@ export class EditPostComponent implements OnInit {
     public ngOnInit(): void {
         forkJoin([this.getPostInfo(), this.getAcademicLevels(), this.getAxes() ])
             .pipe(
+                takeUntil(this.ngUnsubscribe$),
                 catchError(error => {
                     this.commonSnackbarMsg.showErrorMessage();
                     return of();

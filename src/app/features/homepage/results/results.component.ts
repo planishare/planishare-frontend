@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { catchError, debounceTime, delay, forkJoin, map, merge, Observable, of, race, tap, throttleTime } from 'rxjs';
+import { catchError, debounceTime, delay, forkJoin, map, merge, Observable, of, race, takeUntil, tap, throttleTime } from 'rxjs';
 import { OrderingType, OrderingTypeName } from 'src/app/core/enums/posts.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
@@ -11,13 +11,14 @@ import { PostDetail, PostPageable, PostsQueryParams } from 'src/app/core/types/p
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 import { RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
 import { isMobile } from 'src/app/shared/utils';
+import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 
 @Component({
     selector: 'app-results',
     templateUrl: './results.component.html',
     styleUrls: ['./results.component.scss']
 })
-export class ResultsComponent implements OnInit {
+export class ResultsComponent extends Unsubscriber implements OnInit {
     public isMobile = isMobile;
     public isLoading = true;
     public hasData = true;
@@ -74,6 +75,7 @@ export class ResultsComponent implements OnInit {
         private router: Router,
         private commonSnackbarMsg: CommonSnackbarMsgService
     ) {
+        super();
         this.form = new FormGroup(
             {
                 search: new FormControl(),
@@ -88,6 +90,7 @@ export class ResultsComponent implements OnInit {
     public ngOnInit(): void {
         forkJoin([this.getAcademicLevels(), this.getSubjects(), this.getAxes() ])
             .pipe(
+                takeUntil(this.ngUnsubscribe$),
                 catchError(error => {
                     this.commonSnackbarMsg.showErrorMessage();
                     return of(null);
@@ -138,6 +141,7 @@ export class ResultsComponent implements OnInit {
         this.isLoading = true;
         this.postsService.getPosts(params)
             .pipe(
+                takeUntil(this.ngUnsubscribe$),
                 catchError(error => {
                     this.commonSnackbarMsg.showErrorMessage();
                     return of(null);

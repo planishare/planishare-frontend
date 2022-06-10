@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { viewerType } from 'ngx-doc-viewer';
-import { catchError, of } from 'rxjs';
+import { catchError, of, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { ReactionsService } from 'src/app/core/services/reactions.service';
@@ -10,13 +10,14 @@ import { PostDetail, PostsQueryParams } from 'src/app/core/types/posts.type';
 import { UserDetail } from 'src/app/core/types/users.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 import { isMobile } from 'src/app/shared/utils';
+import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 
 @Component({
     selector: 'app-post-detail',
     templateUrl: './post-detail.component.html',
     styleUrls: ['./post-detail.component.scss']
 })
-export class PostDetailComponent implements OnInit {
+export class PostDetailComponent extends Unsubscriber implements OnInit {
     public isMobile = isMobile;
     public searchParams: Params | PostsQueryParams;
 
@@ -51,6 +52,7 @@ export class PostDetailComponent implements OnInit {
         private authService: AuthService,
         private reactionService: ReactionsService
     ) {
+        super();
         this.postId = Number(this.route.snapshot.paramMap.get('id'));
         this.searchParams = this.route.snapshot.queryParams;
         this.user = this.authService.getUserProfile() as UserDetail;
@@ -59,6 +61,7 @@ export class PostDetailComponent implements OnInit {
     public ngOnInit(): void {
         this.postsService.getPostById(this.postId)
             .pipe(
+                takeUntil(this.ngUnsubscribe$),
                 catchError(error => {
                     this.commonSnackbarMsg.showErrorMessage();
                     this.hasData = false;

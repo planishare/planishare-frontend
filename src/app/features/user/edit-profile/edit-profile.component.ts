@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, filter, forkJoin, map, Observable, of, startWith, switchMap, tap } from 'rxjs';
+import { catchError, filter, forkJoin, map, Observable, of, startWith, switchMap, takeUntil, tap } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FirebaseAuthService } from 'src/app/core/services/firebase-auth.service';
 import { LocationsService } from 'src/app/core/services/locations.service';
@@ -10,13 +10,14 @@ import { UsersService } from 'src/app/core/services/users.service';
 import { Commune, RegionWithCommunes } from 'src/app/core/types/location.type';
 import { Education, Institution, InstitutionPageable, UserDetail, UserForm } from 'src/app/core/types/users.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
+import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 
 @Component({
     selector: 'app-edit-profile',
     templateUrl: './edit-profile.component.html',
     styleUrls: ['./edit-profile.component.scss']
 })
-export class EditProfileComponent implements OnInit {
+export class EditProfileComponent extends Unsubscriber implements OnInit {
     public userProfile?: UserDetail;
     public isVerificated?: boolean;
     public form: FormGroup;
@@ -44,6 +45,7 @@ export class EditProfileComponent implements OnInit {
         private matSnackBar: MatSnackBar,
         private firebaseAuthService: FirebaseAuthService
     ) {
+        super();
         this.form = new FormGroup({
             email: new FormControl(null),
             firstName: new FormControl(null),
@@ -70,6 +72,7 @@ export class EditProfileComponent implements OnInit {
 
         forkJoin([this.getEducations(), this.getRegionsWithCommunes()])
             .pipe(
+                takeUntil(this.ngUnsubscribe$),
                 catchError(error => {
                     this.commonSnackbarMsg.showErrorMessage();
                     return of(null);

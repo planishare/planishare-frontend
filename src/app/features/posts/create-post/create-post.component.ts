@@ -5,12 +5,13 @@ import { FirebaseStorageService } from 'src/app/core/services/firebase-storage.s
 import { RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { catchError, forkJoin, map, Observable, of, startWith, tap } from 'rxjs';
+import { catchError, forkJoin, map, Observable, of, startWith, takeUntil, tap } from 'rxjs';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 import { AcademicLevel, Axis, PostForm, SubjectWithAxis } from 'src/app/core/types/posts.type';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 
 type fileUploadInformation = {
     name: string,
@@ -24,7 +25,7 @@ type fileUploadInformation = {
     templateUrl: './create-post.component.html',
     styleUrls: ['./create-post.component.scss']
 })
-export class CreatePostComponent implements OnInit {
+export class CreatePostComponent extends Unsubscriber implements OnInit {
     public form: FormGroup;
     public documentList: fileUploadInformation[] = [];
 
@@ -58,6 +59,7 @@ export class CreatePostComponent implements OnInit {
         private commonSnackbarMsg: CommonSnackbarMsgService,
         private matSnackbar: MatSnackBar
     ) {
+        super();
         this.form = new FormGroup(
             {
                 title: new FormControl('', Validators.required),
@@ -75,6 +77,7 @@ export class CreatePostComponent implements OnInit {
     public ngOnInit(): void {
         forkJoin([this.getAcademicLevels(), this.getAxes() ])
             .pipe(
+                takeUntil(this.ngUnsubscribe$),
                 catchError(error => {
                     this.commonSnackbarMsg.showErrorMessage();
                     return of();
