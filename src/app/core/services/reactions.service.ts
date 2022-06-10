@@ -28,7 +28,7 @@ export class ReactionsService {
 
     public registerView(postId: number): Observable<any> {
         const body = {
-            firebaseUserUUID: this.authService.getFirebaseUID(),
+            firebase_user_id: this.authService.getAccessToken(),
             post: postId
         };
         return this.http.post<any>(environment.apiUrl + '/views/create/', body);

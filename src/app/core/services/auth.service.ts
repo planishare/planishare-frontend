@@ -194,10 +194,6 @@ export class AuthService {
         return this.accessToken;
     }
 
-    public getFirebaseUID(): string | undefined {
-        return this.firebaseUID;
-    }
-
     public getUserProfile(): UserDetail | undefined {
         return this.userProfile;
     }
