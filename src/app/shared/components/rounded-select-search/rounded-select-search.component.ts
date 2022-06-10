@@ -63,10 +63,6 @@ export class RoundedSelectSearchComponent implements OnInit {
         select.toggle();
     }
 
-    public test(): void {
-        console.log('elimianr');
-    }
-
     private checkInputs(): void {
         if (!!!this.control) {
             throw 'No FormControl provided in rounded-select-search!';

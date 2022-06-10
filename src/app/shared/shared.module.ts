@@ -19,6 +19,7 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { GetDocType, GetDocName } from './pipes/posts.pipe';
 import { NgxShimmerLoadingModule } from 'ngx-shimmer-loading';
 import { DragAndDropFileDirective } from './directives/drag-and-drop-file.directive';
+import { RoundedSelectGroupSearchComponent } from './components/rounded-select-group-search/rounded-select-group-search.component';
 
 @NgModule({
     declarations: [
@@ -38,7 +39,8 @@ import { DragAndDropFileDirective } from './directives/drag-and-drop-file.direct
         GetDocName,
 
         // Directives
-        DragAndDropFileDirective
+        DragAndDropFileDirective,
+        RoundedSelectGroupSearchComponent
     ],
     imports: [
         CommonModule,
@@ -57,6 +59,7 @@ import { DragAndDropFileDirective } from './directives/drag-and-drop-file.direct
         RoundedSelectSearchComponent,
         BookLoaderComponent,
         SquareLoaderComponent,
+        RoundedSelectGroupSearchComponent,
 
         // Modules
         MaterialModule,

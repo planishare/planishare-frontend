@@ -1,0 +1,30 @@
+// TODO: fix this
+
+app-rounded-select-group-search {
+    display: flex;
+    flex-direction: column;
+    // border: 1px black solid;
+    position: relative;
+
+    mat-form-field {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        visibility: hidden;
+        height: 0;
+        width: 100%;
+
+        * {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+    }
+
+    .button-toggle-select {
+        display: block;
+        width: 100%;
+
+        border-radius: 10px;
+    }
+}
