@@ -99,7 +99,7 @@ export class CreatePostComponent implements OnInit {
                 user: userId,
                 title: this.titleControl.value,
                 description: this.descriptionControl.value,
-                image: 'https://image.slidesharecdn.com/ceciliaacosta-151125173652-lva1-app6892/85/planificacion-5-320.jpg?cb=1448473158', // TODO: Add upload img and add it here
+                // image: << image url here >>,
                 academic_level: this.academicLevelControl.value,
                 axis: this.axisControl.value,
                 main_file: this.documentsControl.value[0],
