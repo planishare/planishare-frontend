@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
+import { startWith } from 'rxjs';
 import { RoundedSelectSearchOption } from '../../types/rounded-select-search.type';
 
 @Component({
@@ -41,10 +42,12 @@ export class RoundedSelectSearchComponent implements OnInit {
             'color': this.textColor
         };
 
-        this.control.valueChanges.subscribe((value: RoundedSelectSearchOption) => {
-            this._buttonText = value?.text;
-            this.filteredList = this._list;
-        });
+        this.control.valueChanges
+            .pipe(startWith(this.control.value))
+            .subscribe((value: RoundedSelectSearchOption) => {
+                this._buttonText = value?.text;
+                this.filteredList = this._list;
+            });
 
         this.search.valueChanges.subscribe((value: string) => {
             if (!!value) {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -7,9 +7,9 @@ import { OrderingType, OrderingTypeName } from 'src/app/core/enums/posts.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { ReactionsService } from 'src/app/core/services/reactions.service';
-import { PostDetail, PostPageable, PostsQueryParams } from 'src/app/core/types/posts.type';
+import { Axis, PostDetail, PostPageable, PostsQueryParams } from 'src/app/core/types/posts.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
-import { RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
+import { RoundedSelectSearchGroup, RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
 import { isMobile } from 'src/app/shared/utils';
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 
@@ -34,7 +34,9 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
 
     public academicLevelsList: RoundedSelectSearchOption[] = [];
     public subjectList: RoundedSelectSearchOption[] = [];
-    public axesList: RoundedSelectSearchOption[] = [];
+    public subjectWithAxis: RoundedSelectSearchGroup[] = [];
+    public axisList: RoundedSelectSearchOption[] = [];
+
     public orderingList: RoundedSelectSearchOption[] = [
         {
             data: OrderingType.MOST_RECENT,
@@ -88,7 +90,7 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
     }
 
     public ngOnInit(): void {
-        forkJoin([this.getAcademicLevels(), this.getSubjects(), this.getAxes() ])
+        forkJoin([this.getAcademicLevels(), this.getSubjectsWithAxes()])
             .pipe(
                 takeUntil(this.ngUnsubscribe$),
                 catchError(error => {
@@ -99,7 +101,6 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
             .subscribe(resp => {
                 if (!!resp) {
                     this.getQueryParams();
-
                     merge(
                         this.academicLevelControl.valueChanges,
                         this.subjectControl.valueChanges,
@@ -190,15 +191,11 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
     private getQueryParams(): void {
         const params: Params | PostsQueryParams = this.activatedRoute.snapshot.queryParams;
         this.getPosts(params);
-        this.form.patchValue(
-            {
-                search: params.search,
-                academicLevel: this.academicLevelsList.find(el => el.data?.id === Number(params.academicLevel)),
-                subject: this.subjectList.find(el => el.data?.id === Number(params.subject)),
-                axis: this.axesList.find(el => el.data?.id === Number(params.axis)),
-                ordering: this.orderingList.find(el => el.data === params.ordering)
-            }
-        );
+        this.searchControl.setValue(params.search);
+        this.academicLevelControl.setValue(this.academicLevelsList.find(el => el.data?.id === Number(params.academicLevel)));
+        this.subjectControl.setValue(this.subjectList.find(el => el.data?.id === Number(params.subject)));
+        this.axisControl.setValue(this.axisList.find(el => el.data.id === Number(params.axis)));
+        this.orderingControl.setValue(this.orderingList.find(el => el.data === params.ordering));
     }
 
     public nextPage(): void {
@@ -326,35 +323,45 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
             );
     }
 
-    private getSubjects(): Observable<RoundedSelectSearchOption[]> {
-        return this.postsService.getSubjects()
+    private getSubjectsWithAxes(): Observable<any> {
+        return this.postsService.getSubjectWithAxis()
             .pipe(
-                map(resp => {
-                    return resp.map(el => {
-                        return {
-                            text: el.name,
-                            data: el
-                        } as RoundedSelectSearchOption;
-                    });
-                }),
-                tap(resp => this.subjectList = resp),
-                tap(() => this.isSubjectsLoading = false)
-            );
-    }
+                tap(resp => {
+                    if (!!resp) {
+                        let subjects: RoundedSelectSearchOption[] = [];
+                        let axisGroups: RoundedSelectSearchGroup[] = [];
+                        resp.forEach(subject => {
+                            let options: RoundedSelectSearchOption[] = [];
+                            // Add subject to list
+                            subjects.push({
+                                text: subject.name,
+                                data: subject
+                            });
 
-    private getAxes(): Observable<RoundedSelectSearchOption[]> {
-        return this.postsService.getAxes()
-            .pipe(
-                map(resp => {
-                    return resp.map(el => {
-                        return {
-                            text: el.name,
-                            data: el
-                        } as RoundedSelectSearchOption;
-                    });
+                            options = subject.axis.map(axis => {
+                                return {
+                                    text: axis.name,
+                                    data: { ...axis, subjectId: subject.id }
+                                };
+                            });
+                            this.axisList.push(...options);  // used to find axis by id
+
+                            axisGroups.push({
+                                groupName: subject.name,
+                                options
+                            });
+                        });
+                        this.subjectList = subjects;
+                        this.subjectWithAxis = axisGroups;
+                        this.isAxesLoading = false;
+                        this.isSubjectsLoading = false;
+                    }
                 }),
-                tap(resp => this.axesList = resp),
-                tap(() => this.isAxesLoading = false)
+                takeUntil(this.ngUnsubscribe$),
+                catchError(() => {
+                    this.commonSnackbarMsg.showErrorMessage();
+                    return of(null);
+                })
             );
     }
 }
