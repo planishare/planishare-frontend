@@ -6,9 +6,9 @@ import { ResultsComponent } from './results/results.component';
 const routes: Routes = [
     {
         path: '',
-        component: HomepageComponent
-        // redirectTo: 'results',
-        // pathMatch: 'full'
+        // component: HomepageComponent
+        redirectTo: 'results',
+        pathMatch: 'full'
     },
     {
         path: 'results',

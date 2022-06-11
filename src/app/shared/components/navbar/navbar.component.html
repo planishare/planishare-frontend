@@ -1,10 +1,6 @@
 <nav class="navbar" *ngIf="!isMobile">
     <button mat-raised-button class="logo" [routerLink]="['/']">
         <span class="logo-text">Planishare</span>
-        <button mat-raised-button class="logo-search-button" (click)="openSearchDialog(); $event.stopPropagation()">
-            <mat-icon>search</mat-icon>
-            <span>Buscar</span>
-        </button>
     </button>
     <ul>
         <li *ngIf="!isUserAuth">
@@ -29,6 +25,12 @@
             <button mat-raised-button [routerLink]="['/posts/create']" routerLinkActive="button-active">
                 <mat-icon>control_point</mat-icon>
                 Crear publicación
+            </button>
+        </li>
+        <li *ngIf="(buttonConfig|async)?.showSeachButton">
+            <button mat-raised-button class="search-button" (click)="openSearchDialog(); $event.stopPropagation()">
+                <mat-icon>search</mat-icon>
+                <span>Buscar</span>
             </button>
         </li>
         <li *ngIf="isUserAuth">
@@ -59,7 +61,7 @@
     <button mat-raised-button class="logo-mobile" [routerLink]="['/']">
         Planishare
     </button>
-    <button mat-raised-button class="simple-icon" (click)="openSearchDialog()">
+    <button [ngStyle]="{'visibility': !(buttonConfig|async)?.showSeachButton ? 'hidden' : 'visible'}" mat-raised-button class="simple-icon" (click)="openSearchDialog()">
         <mat-icon>search</mat-icon>
     </button>
 </nav>

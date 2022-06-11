@@ -1,1 +1,3 @@
-export type ButtonsConfig = {};
+export type ButtonsConfig = {
+    showSeachButton: boolean
+};

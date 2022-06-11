@@ -2,13 +2,14 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { catchError, debounceTime, delay, forkJoin, map, merge, Observable, of, race, takeUntil, tap, throttleTime } from 'rxjs';
+import { catchError, debounceTime, delay, forkJoin, map, merge, Observable, of, race, switchMap, takeUntil, tap, throttleTime } from 'rxjs';
 import { OrderingType, OrderingTypeName } from 'src/app/core/enums/posts.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { ReactionsService } from 'src/app/core/services/reactions.service';
 import { Axis, PostDetail, PostPageable, PostsQueryParams } from 'src/app/core/types/posts.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
+import { NavbarService } from 'src/app/shared/services/navbar.service';
 import { RoundedSelectSearchGroup, RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
 import { isMobile } from 'src/app/shared/utils';
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
@@ -74,9 +75,14 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
         private authService: AuthService,
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private commonSnackbarMsg: CommonSnackbarMsgService
+        private commonSnackbarMsg: CommonSnackbarMsgService,
+        private navbarService: NavbarService
     ) {
         super();
+
+        this.navbarService.setButtonConfig({ showSeachButton: false });
+        this.ngUnsubscribe$.asObservable().subscribe(() => this.navbarService.setButtonConfig({ showSeachButton: true }));
+
         this.form = new FormGroup(
             {
                 search: new FormControl(),

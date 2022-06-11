@@ -45,11 +45,10 @@
     .logo-text {
         margin-right: 1rem;
     }
+}
 
-    .logo-search-button {
-        border-radius: 5px;
-        line-height: 1.7rem;
-    }
+.search-button {
+    border-radius: 100px;
 }
 
 .logo-mobile {
@@ -80,7 +79,7 @@
     line-height: normal;
     min-width: auto;
     padding: 0.2em 0.5em;
-    border-radius: 10px;
+    border-radius: 100px;
 }
 
 .button-active {
