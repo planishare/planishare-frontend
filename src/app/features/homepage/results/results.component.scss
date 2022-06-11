@@ -198,13 +198,15 @@
 .tags {
     display: block;
     margin: 1rem 0;
+}
 
-    .small-tag {
-        min-height: max-content;
-        margin: 0 1px;
+.small-tag {
+    min-height: max-content;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin: 0 1px;
 
-        color: var(--light-text);
-    }
+    color: var(--dark-text);
 }
 
 .academic-level-tag, .subject-tag, .axis-tag{
@@ -225,17 +227,21 @@
 
 .pdf-tag {
     background-color: var(--warn-color);
+    color: var(--light-text);
 }
 .doc-tag {
     background-color: var(--primary-color);
+    color: var(--light-text);
 }
 .ppt-tag {
     // TODO: Find orange color
     background-color: var(--accent-color);
+    color: var(--light-text);
 }
 .xls-tag {
     // TODO: Find green light color
     background-color: var(--green-dark-color);
+    color: var(--light-text);
 }
 
 // No results
