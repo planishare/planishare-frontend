@@ -19,6 +19,67 @@
     place-items: center;
 
     button {
-        border-radius: 30px;
+        border-radius: 10px;
+        background-color: var(--green-dark-color);
+        color: var(--light-text);
+    }
+}
+
+.searchbar {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    align-content: center;
+
+    position: relative;
+
+    margin-bottom: 1rem;
+
+    input {
+        width: 100%;
+        height: 100%;
+
+        padding: 0.5em 1em 0.5em 2.5em;
+        border: 0.5px solid rgba($color: #000000, $alpha: 0.2);
+
+        border-radius: 10px;
+        font-weight: 600;
+    }
+
+    input:focus {
+        outline: none;
+    }
+    /* remove the ‘X’ from Chrome
+    *  from: https://medium.com/@rion.mrk/how-to-remove-x-icon-from-search-input-field-or-input-type-search-db3c808405fb
+    */
+    input[type="search"]::-webkit-search-decoration,
+    input[type="search"]::-webkit-search-cancel-button,
+    input[type="search"]::-webkit-search-results-button,
+    input[type="search"]::-webkit-search-results-decoration { display: none; }
+
+    button {
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        span {
+            height: 100%;
+            color: var(--dark-text);
+        }
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 0.5rem;
+        top: 0;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }

@@ -1,13 +1,23 @@
 <h1 mat-dialog-title>Buscar</h1>
 <div class="dialog-content">
   <form class="search-form">
-    <mat-form-field class="search-field" appearance="outline">
+    <!-- <mat-form-field class="search-field" appearance="outline">
       <mat-label>Busqueda</mat-label>
       <input matInput type="text" autocomplete="off" [formControl]="searchControl">
       <button *ngIf="searchControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchControl.setValue('')">
         <mat-icon>close</mat-icon>
       </button>
-    </mat-form-field>
+    </mat-form-field> -->
+
+    <div class="searchbar">
+      <div class="search-icon">
+        <mat-icon>search</mat-icon>
+      </div>
+      <input type="search" autocomplete="off" [formControl]="searchControl" placeholder="Buscar">
+      <button *ngIf="searchControl.value" mat-icon-button aria-label="Clear">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
     
     <div class="filters" [ngClass]="{'flex_column': isMobile}">
       <app-rounded-select-search
@@ -30,19 +40,19 @@
         textColor="var(--light-text)"
         placeholder="Buscar asignatura">
       </app-rounded-select-search>
-      <app-rounded-select-search
+      <app-rounded-select-group-search
         class="filter"
-        [list]="axesList"
+        [list]="subjectWithAxis"
         [control]="axisControl"
         [loading]="isaxesLoading"
         buttonText="Eje"
         bgColor="var(--purple-color)"
         textColor="var(--light-text)"
         placeholder="Buscar eje">
-      </app-rounded-select-search>
+      </app-rounded-select-group-search>
     </div>
     <div mat-dialog-actions class="actions-section">
-      <button mat-raised-button [disabled]="form.invalid" color="accent" (click)="makeSearch($event)">Ver resultados</button>
+      <button mat-raised-button [disabled]="form.invalid" (click)="makeSearch($event)">Ver resultados</button>
     </div>
   </form>
 </div>

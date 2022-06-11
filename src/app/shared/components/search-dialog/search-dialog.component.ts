@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, AbstractControlOptions, FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { forkJoin, map, Observable, takeUntil, tap } from 'rxjs';
+import { catchError, forkJoin, map, Observable, of, takeUntil, tap } from 'rxjs';
 import { OrderingType } from 'src/app/core/enums/posts.enum';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { PostsQueryParams } from 'src/app/core/types/posts.type';
-import { RoundedSelectSearchOption } from '../../types/rounded-select-search.type';
+import { CommonSnackbarMsgService } from '../../services/common-snackbar-msg.service';
+import { RoundedSelectSearchGroup, RoundedSelectSearchOption } from '../../types/rounded-select-search.type';
 import { isMobile } from '../../utils';
 import { Unsubscriber } from '../../utils/unsubscriber';
 
@@ -22,7 +23,7 @@ export class SearchDialogComponent extends Unsubscriber implements OnInit {
 
     public academicLevelsList: RoundedSelectSearchOption[] = [];
     public subjectList: RoundedSelectSearchOption[] = [];
-    public axesList: RoundedSelectSearchOption[] = [];
+    public subjectWithAxis: RoundedSelectSearchGroup[] = [];
 
     public isAcademicLevelsLoading = true;
     public isSubjectsLoading = true;
@@ -31,7 +32,8 @@ export class SearchDialogComponent extends Unsubscriber implements OnInit {
     constructor(
         private postsService: PostsService,
         private router: Router,
-        private dialogRef: MatDialogRef<SearchDialogComponent>
+        private dialogRef: MatDialogRef<SearchDialogComponent>,
+        private commonSnackbarMsg: CommonSnackbarMsgService
     ) {
         super();
         this.form = new FormGroup(
@@ -49,8 +51,22 @@ export class SearchDialogComponent extends Unsubscriber implements OnInit {
 
     public ngOnInit(): void {
         this.getAcademicLevels();
-        this.getSubjects();
-        this.getAxes();
+        this.getSubjectsWithAxes();
+
+        this.subjectControl.valueChanges.subscribe(value => {
+            const axis = this.axisControl.value;
+            if (axis?.data?.subjectId !== value.data.id) {
+                this.axisControl.setValue(undefined);
+            }
+        });
+        this.axisControl.valueChanges.subscribe(value => {
+            if (!!value) {
+                const subject = this.subjectList.find(el => el.data?.id === value.data.subjectId);
+                if (!!subject) {
+                    this.subjectControl.setValue(subject);
+                }
+            }
+        });
     }
 
     public makeSearch(event: Event): void {
@@ -117,41 +133,44 @@ export class SearchDialogComponent extends Unsubscriber implements OnInit {
             });
     }
 
-    private getSubjects(): void {
-        this.postsService.getSubjects()
+    private getSubjectsWithAxes(): void {
+        this.postsService.getSubjectWithAxis()
             .pipe(
-                map(resp => {
-                    return resp.map(el => {
-                        return {
-                            text: el.name,
-                            data: el
-                        } as RoundedSelectSearchOption;
-                    });
-                }),
-                tap(resp => this.subjectList = resp),
-                takeUntil(this.ngUnsubscribe$)
+                takeUntil(this.ngUnsubscribe$),
+                catchError(() => {
+                    this.commonSnackbarMsg.showErrorMessage();
+                    return of(null);
+                })
             )
-            .subscribe(() => {
-                this.isSubjectsLoading = false;
-            });
-    }
+            .subscribe(resp => {
+                if (!!resp) {
+                    let subjects: RoundedSelectSearchOption[] = [];
+                    let axisGroups: RoundedSelectSearchGroup[] = [];
 
-    private getAxes(): void {
-        this.postsService.getAxes()
-            .pipe(
-                map(resp => {
-                    return resp.map(el => {
-                        return {
-                            text: el.name,
-                            data: el
-                        } as RoundedSelectSearchOption;
+                    resp.forEach(subject => {
+                        // Add subject to list
+                        subjects.push({
+                            text: subject.name,
+                            data: subject
+                        });
+
+                        axisGroups.push({
+                            groupName: subject.name,
+                            options: subject.axis.map(axis => {
+                                return {
+                                    text: axis.name,
+                                    data: { ...axis, subjectId: subject.id }
+                                };
+                            })
+                        });
                     });
-                }),
-                tap(resp => this.axesList = resp),
-                takeUntil(this.ngUnsubscribe$)
-            )
-            .subscribe(() => {
-                this.isaxesLoading = false;
+
+                    this.subjectList = subjects;
+                    this.subjectWithAxis = axisGroups;
+
+                    this.isaxesLoading = false;
+                    this.isSubjectsLoading = false;
+                }
             });
     }
 }
