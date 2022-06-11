@@ -79,16 +79,16 @@
     display: flex;
     align-items: center;
     align-content: center;
-    justify-items: center;
     gap: 0.5rem;
     flex-wrap: wrap;
+    justify-content: flex-end;
 }
 
 .delete-button {
     border-radius: 10px;
-    background-color: var(--warn-color);
-    color: var(--light-text);
-    min-width: auto;
+    background-color: var(--light-background);
+    color: var(--dark-text);
+    // min-width: auto;
     padding: 0 0.75rem;
 }
 

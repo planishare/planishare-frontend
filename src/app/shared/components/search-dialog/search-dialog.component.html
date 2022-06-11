@@ -30,16 +30,6 @@
         textColor="var(--light-text)"
         placeholder="Buscar nivel académico">
       </app-rounded-select-search>
-      <app-rounded-select-search
-        class="filter"
-        [list]="subjectList"
-        [control]="subjectControl"
-        [loading]="isSubjectsLoading"
-        buttonText="Asignatura"
-        bgColor="var(--warn-color)"
-        textColor="var(--light-text)"
-        placeholder="Buscar asignatura">
-      </app-rounded-select-search>
       <app-rounded-select-group-search
         class="filter"
         [list]="subjectWithAxis"
@@ -50,6 +40,16 @@
         textColor="var(--light-text)"
         placeholder="Buscar eje">
       </app-rounded-select-group-search>
+      <app-rounded-select-search
+        class="filter"
+        [list]="subjectList"
+        [control]="subjectControl"
+        [loading]="isSubjectsLoading"
+        buttonText="Asignatura"
+        bgColor="var(--warn-color)"
+        textColor="var(--light-text)"
+        placeholder="Buscar asignatura">
+      </app-rounded-select-search>
     </div>
     <div mat-dialog-actions class="actions-section">
       <button mat-raised-button [disabled]="form.invalid" (click)="makeSearch($event)">Ver resultados</button>

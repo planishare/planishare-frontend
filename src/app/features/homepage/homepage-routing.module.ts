@@ -7,6 +7,8 @@ const routes: Routes = [
     {
         path: '',
         component: HomepageComponent
+        // redirectTo: 'results',
+        // pathMatch: 'full'
     },
     {
         path: 'results',
