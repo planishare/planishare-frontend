@@ -140,13 +140,13 @@
                 <span *ngIf="!isMobile">Nivel académico: {{ post.academic_level.name }}</span>
                 <span *ngIf="isMobile">{{ post.academic_level.name }}</span>
               </mat-chip>
-              <mat-chip class="subject-tag">
-                <span *ngIf="!isMobile">Asignatura: {{ post.axis.subject.name }}</span>
-                <span *ngIf="isMobile">{{ post.axis.subject.name }}</span>
-              </mat-chip>
               <mat-chip class="axis-tag">
                 <span *ngIf="!isMobile">Eje: {{ post.axis.name }}</span>
                 <span *ngIf="isMobile">{{ post.axis.name }}</span>
+              </mat-chip>
+              <mat-chip class="subject-tag">
+                <span *ngIf="!isMobile">Asignatura: {{ post.axis.subject.name }}</span>
+                <span *ngIf="isMobile">{{ post.axis.subject.name }}</span>
               </mat-chip>
             </mat-chip-list>
           </div>

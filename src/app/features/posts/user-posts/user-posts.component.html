@@ -133,9 +133,18 @@
                 </mat-card-content>
 
                 <mat-chip-list class="flex_start_center flex_wrap">
-                  <mat-chip class="academic-level-tag">{{ post.academic_level.name }}</mat-chip>
-                  <mat-chip class="subject-tag">{{ post.axis.subject.name }}</mat-chip>
-                  <mat-chip class="axis-tag">{{ post.axis.name }}</mat-chip>
+                    <mat-chip class="academic-level-tag">
+                        <span *ngIf="!isMobile">Nivel académico: {{ post.academic_level.name }}</span>
+                        <span *ngIf="isMobile">{{ post.academic_level.name }}</span>
+                    </mat-chip>
+                    <mat-chip class="axis-tag">
+                        <span *ngIf="!isMobile">Eje: {{ post.axis.name }}</span>
+                        <span *ngIf="isMobile">{{ post.axis.name }}</span>
+                    </mat-chip>
+                    <mat-chip class="subject-tag">
+                        <span *ngIf="!isMobile">Asignatura: {{ post.axis.subject.name }}</span>
+                        <span *ngIf="isMobile">{{ post.axis.subject.name }}</span>
+                    </mat-chip>
                 </mat-chip-list>
 
                 <div class="m-t-16 flex_between_center">
