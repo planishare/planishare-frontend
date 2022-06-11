@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { catchError, forkJoin, map, Observable, of, takeUntil, tap } from 'rxjs';
 import { PostsService } from 'src/app/core/services/posts.service';
-import { RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
+import { RoundedSelectSearchGroup, RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
 import { isMobile } from 'src/app/shared/utils';
 import { AcademicLevel, Axis, PostDetail, PostsQueryParams, Subject } from 'src/app/core/types/posts.type';
 import { Router } from '@angular/router';
@@ -23,7 +23,7 @@ export class HomepageComponent extends Unsubscriber implements OnInit {
     public popularPost: PostDetail[] = [];
     public academicLevelsList: RoundedSelectSearchOption[] = [];
     public subjectList: RoundedSelectSearchOption[] = [];
-    public axesList: RoundedSelectSearchOption[] = [];
+    public subjectWithAxis: RoundedSelectSearchGroup[] = [];
 
     public isTopLoading = true;
     public isAcademicLevelsLoading = true;
@@ -53,11 +53,24 @@ export class HomepageComponent extends Unsubscriber implements OnInit {
 
     public ngOnInit(): void {
         this.getAcademicLevels();
-        this.getSubjects();
-        this.getAxes();
+        this.getSubjectsWithAxes();
         this.getTopPosts();
 
         this.form.valueChanges.subscribe(() => this.showSearchButton = true);
+        this.subjectControl.valueChanges.subscribe(value => {
+            const axis = this.axisControl.value;
+            if (axis?.data?.subjectId !== value.data.id) {
+                this.axisControl.setValue(undefined);
+            }
+        });
+        this.axisControl.valueChanges.subscribe(value => {
+            if (!!value) {
+                const subject = this.subjectList.find(el => el.data?.id === value.data.subjectId);
+                if (!!subject) {
+                    this.subjectControl.setValue(subject);
+                }
+            }
+        });
     }
 
     public makeSearch(event: Event): void {
@@ -117,17 +130,9 @@ export class HomepageComponent extends Unsubscriber implements OnInit {
             });
     }
 
-    private getSubjects(): void {
-        this.postsService.getSubjects()
+    private getSubjectsWithAxes(): void {
+        this.postsService.getSubjectWithAxis()
             .pipe(
-                map(resp => {
-                    return resp.map(el => {
-                        return {
-                            text: el.name,
-                            data: el
-                        } as RoundedSelectSearchOption;
-                    });
-                }),
                 takeUntil(this.ngUnsubscribe$),
                 catchError(() => {
                     this.commonSnackbarMsg.showErrorMessage();
@@ -136,34 +141,33 @@ export class HomepageComponent extends Unsubscriber implements OnInit {
             )
             .subscribe(resp => {
                 if (!!resp) {
-                    this.subjectList = resp;
-                }
-                this.isSubjectsLoading = false;
-            });
-    }
+                    let subjects: RoundedSelectSearchOption[] = [];
+                    let axisGroups: RoundedSelectSearchGroup[] = [];
 
-    private getAxes(): void {
-        this.postsService.getAxes()
-            .pipe(
-                map(resp => {
-                    return resp.map(el => {
-                        return {
-                            text: el.name,
-                            data: el
-                        } as RoundedSelectSearchOption;
+                    resp.forEach(subject => {
+                        // Add subject to list
+                        subjects.push({
+                            text: subject.name,
+                            data: subject
+                        });
+
+                        axisGroups.push({
+                            groupName: subject.name,
+                            options: subject.axis.map(axis => {
+                                return {
+                                    text: axis.name,
+                                    data: { ...axis, subjectId: subject.id }
+                                };
+                            })
+                        });
                     });
-                }),
-                takeUntil(this.ngUnsubscribe$),
-                catchError(() => {
-                    this.commonSnackbarMsg.showErrorMessage();
-                    return of(null);
-                })
-            )
-            .subscribe(resp => {
-                if (!!resp) {
-                    this.axesList = resp;
+
+                    this.subjectList = subjects;
+                    this.subjectWithAxis = axisGroups;
+
+                    this.isaxesLoading = false;
+                    this.isSubjectsLoading = false;
                 }
-                this.isaxesLoading = false;
             });
     }
 

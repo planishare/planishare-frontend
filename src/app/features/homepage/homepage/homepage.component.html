@@ -25,6 +25,16 @@
         textColor="var(--light-text)"
         placeholder="Buscar nivel académico">
       </app-rounded-select-search>
+      <app-rounded-select-group-search
+        class="filter"
+        [list]="subjectWithAxis"
+        [control]="axisControl"
+        [loading]="isaxesLoading"
+        buttonText="Eje"
+        bgColor="var(--purple-color)"
+        textColor="var(--light-text)"
+        placeholder="Buscar eje">
+      </app-rounded-select-group-search>
       <app-rounded-select-search
         class="filter"
         [list]="subjectList"
@@ -34,16 +44,6 @@
         bgColor="var(--warn-color)"
         textColor="var(--light-text)"
         placeholder="Buscar asignatura">
-      </app-rounded-select-search>
-      <app-rounded-select-search
-        class="filter"
-        [list]="axesList"
-        [control]="axisControl"
-        [loading]="isaxesLoading"
-        buttonText="Eje"
-        bgColor="var(--purple-color)"
-        textColor="var(--light-text)"
-        placeholder="Buscar eje">
       </app-rounded-select-search>
     </div>  
   </div>

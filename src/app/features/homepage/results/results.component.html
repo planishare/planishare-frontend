@@ -64,7 +64,7 @@
   
   <!-- Top pagination -->
   <div class="pagination flex_justify_end" *ngIf="hasData">
-    <div class="pagination-text">
+    <div class="pagination-text" *ngIf="!isLoading">
       <span>{{ 10 * (searchParams.page! - 1) + 1 }} - {{ 10 * (searchParams.page! - 1) + posts.length }} de {{pageInfo?.count}}</span>
     </div>
     <button mat-raised-button class="pagination-button" (click)="previousPage()" [disabled]="!pageInfo?.previous || isLoading">
@@ -85,7 +85,7 @@
   <app-results-shimmer *ngIf="isLoading"></app-results-shimmer>
 
   <!-- No results card -->
-  <div class="no-results" *ngIf="!hasData">
+  <div class="no-results" *ngIf="!hasData && !isLoading">
     <mat-card class="card">
       <mat-icon class="icon">search</mat-icon>
       <span class="no-results__title">No se encontraron resultados</span>
@@ -175,7 +175,7 @@
   </div>
 
   <!-- Bottom pagination -->
-  <div class="pagination flex_justify_center" *ngIf="hasData">
+  <div class="pagination flex_justify_center" *ngIf="hasData && posts.length > 10">
     <button mat-raised-button class="pagination-button" (click)="previousPage()" [disabled]="!pageInfo?.previous || isLoading">
       <mat-icon>navigate_before</mat-icon>
     </button>
