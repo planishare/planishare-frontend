@@ -60,7 +60,6 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
     public isSubjectsLoading = true;
     public isAxesLoading = true;
 
-    // TODO: Show button when acces by url with filters
     public showDeleteButton = false;
 
     public docTypes = {
@@ -108,13 +107,11 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
                         this.orderingControl.valueChanges
                     )
                         .pipe(
-                            debounceTime(500)
+                            debounceTime(100)
                         )
-                        .subscribe(value => {
-                            if (!!value) {
-                                this.showDeleteButton = true;
-                            }
+                        .subscribe(() => {
                             this.doSearch(1);
+                            this.displayRemoveFiltersButton();
                         });
                 } else {
                     this.hasData = false;
@@ -196,6 +193,16 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
         this.subjectControl.setValue(this.subjectList.find(el => el.data?.id === Number(params.subject)));
         this.axisControl.setValue(this.axisList.find(el => el.data.id === Number(params.axis)));
         this.orderingControl.setValue(this.orderingList.find(el => el.data === params.ordering));
+
+        // Set search params to pass them to detail-post
+        this.searchParams.page = params.page ?? this.searchParams.page;
+        this.searchParams.search = params.search ?? this.searchParams.search;
+        this.searchParams.academicLevel = params.academicLevel ?? this.searchParams.academicLevel;
+        this.searchParams.subject = params.subject ?? this.searchParams.subject;
+        this.searchParams.axis = params.axis ?? this.searchParams.axis;
+        this.searchParams.ordering = params.ordering ?? this.searchParams.ordering;
+
+        this.displayRemoveFiltersButton();
     }
 
     public nextPage(): void {
@@ -288,16 +295,27 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
     }
 
     public clearFilterControls(): void {
-        this.form.setValue(
-            {
-                search: null,
-                academicLevel: null,
-                subject: null,
-                axis: null,
-                ordering: null
-            }
-        );
-        this.showDeleteButton = false;
+        this.form.setValue({
+            search: null,
+            academicLevel: null,
+            subject: null,
+            axis: null,
+            ordering: null
+        });
+    }
+
+    private displayRemoveFiltersButton(): void {
+        if (
+            !!this.searchParams.search ||
+            !!this.searchParams.academicLevel ||
+            !!this.searchParams.subject ||
+            !!this.searchParams.axis ||
+            !!this.searchParams.ordering
+        ) {
+            this.showDeleteButton = true;
+        } else {
+            this.showDeleteButton = false;
+        }
     }
 
     public navigateToDetail(postId: number): void {
