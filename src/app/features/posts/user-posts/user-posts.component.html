@@ -25,6 +25,16 @@
                     textColor="var(--light-text)"
                     placeholder="Buscar nivel académico">
                 </app-rounded-select-search>
+                <app-rounded-select-group-search
+                    class="filter"
+                    [list]="subjectWithAxis"
+                    [control]="axisControl"
+                    [loading]="isAxesLoading"
+                    buttonText="Eje"
+                    bgColor="var(--purple-color)"
+                    textColor="var(--light-text)"
+                    placeholder="Buscar eje">
+                </app-rounded-select-group-search>
                 <app-rounded-select-search
                     class="filter"
                     [list]="subjectList"
@@ -34,16 +44,6 @@
                     bgColor="var(--warn-color)"
                     textColor="var(--light-text)"
                     placeholder="Buscar asignatura">
-                </app-rounded-select-search>
-                <app-rounded-select-search
-                    class="filter"
-                    [list]="axesList"
-                    [control]="axisControl"
-                    [loading]="isAxesLoading"
-                    buttonText="Eje"
-                    bgColor="var(--purple-color)"
-                    textColor="var(--light-text)"
-                    placeholder="Buscar eje">
                 </app-rounded-select-search>
                 <app-rounded-select-search
                     class="filter"
@@ -82,7 +82,10 @@
                     <span class="stat-text">Vistas</span>
                 </div>
             </div>
-            <p class="stat-p">
+            <p class="stat-p" *ngIf="!!!user?.total_posts">
+                Anímante, crea un publicación y comparte con la comunidad! :)
+            </p>
+            <p class="stat-p" *ngIf="!!user?.total_posts">
                 En total, tus {{ user?.total_posts }} publicaciones han sido <span class="blue-icon">vistas {{ user?.total_views }} veces</span>
                 y han tenido <span class="red-icon">{{ user?.total_likes }} me gusta</span>, gracias por ayudar a la comunidad, sigue así!
             </p>
@@ -92,8 +95,8 @@
     <!-- Results -->
     <div class="right-side">
         <!-- Top pagination -->
-        <div class="pagination flex_justify_end" *ngIf="hasData">
-            <div *ngIf="!isLoading" class="pagination-text">
+        <div class="pagination flex_justify_end" *ngIf="hasData && !!user?.total_posts">
+            <div *ngIf="!isLoading && !!posts.length" class="pagination-text">
                 <span>{{ 10 * (searchParams.page! - 1) + 1 }} - {{ 10 * (searchParams.page! - 1) + posts.length }} de {{pageInfo?.count}}</span>
             </div>
             <button mat-raised-button class="pagination-button" (click)="previousPage()" [disabled]="!pageInfo?.previous || isLoading">
@@ -210,12 +213,22 @@
         </div>
 
         <!-- No results card -->
-        <div *ngIf="!hasData && !isLoading">
+        <div *ngIf="!hasData && !isLoading && !!user?.total_posts">
             <mat-card>
                 <div class="flex_column flex_center">
                     <mat-icon>search</mat-icon>
                     <p class="no-results-title">No se encontraron resultados</p>
                     <p>Prueba con algo diferente</p>
+                </div>
+            </mat-card>
+        </div>
+        
+        <div *ngIf="!!!user?.total_posts && !isLoading">
+            <mat-card>
+                <div class="flex_column flex_center">
+                    <mat-icon>search</mat-icon>
+                    <p class="no-results-title">Aún nada por aquí</p>
+                    <p>Tus publicaciones creadas se verán aquí</p>
                 </div>
             </mat-card>
         </div>

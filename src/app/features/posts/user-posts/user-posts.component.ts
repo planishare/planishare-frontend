@@ -8,9 +8,8 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { UsersService } from 'src/app/core/services/users.service';
 import { PostDetail, PostPageable, PostsQueryParams } from 'src/app/core/types/posts.type';
-import { UserDetail } from 'src/app/core/types/users.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
-import { RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
+import { RoundedSelectSearchGroup, RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
 import { isMobile } from 'src/app/shared/utils';
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 import { DeleteDialogComponent } from '../components/delete-dialog/delete-dialog.component';
@@ -38,7 +37,8 @@ export class UserPostsComponent extends Unsubscriber implements OnInit {
 
     public academicLevelsList: RoundedSelectSearchOption[] = [];
     public subjectList: RoundedSelectSearchOption[] = [];
-    public axesList: RoundedSelectSearchOption[] = [];
+    public subjectWithAxis: RoundedSelectSearchGroup[] = [];
+    public axisList: RoundedSelectSearchOption[] = [];
     public orderingList: RoundedSelectSearchOption[] = [
         {
             data: OrderingType.MOST_RECENT,
@@ -84,8 +84,7 @@ export class UserPostsComponent extends Unsubscriber implements OnInit {
     }
 
     public ngOnInit(): void {
-        this.updateUserProfile(); // TODO: llamar esto solo cuando se haga un cambio
-        forkJoin([this.getAcademicLevels(), this.getSubjects(), this.getAxes() ])
+        forkJoin([this.getAcademicLevels(), this.getSubjectsWithAxes() ])
             .pipe(
                 takeUntil(this.ngUnsubscribe$),
                 catchError(error => {
@@ -95,8 +94,13 @@ export class UserPostsComponent extends Unsubscriber implements OnInit {
             )
             .subscribe(resp => {
                 if (!!resp) {
-                    this.doSearch(1);
+                    if (!!this.user?.total_posts) {
+                        this.doSearch(1);
+                    } else {
+                        this.isLoading = false;
+                    }
                     this.onFormChange();
+                    this.handleAxisAndSubjectChanges();
                 } else {
                     this.hasData = false;
                 }
@@ -114,10 +118,8 @@ export class UserPostsComponent extends Unsubscriber implements OnInit {
                 debounceTime(500)
             )
             .subscribe(value => {
-                if (!!value) {
-                    this.showDeleteButton = true;
-                }
                 this.doSearch(1);
+                this.displayRemoveFiltersButton();
             });
     }
 
@@ -159,6 +161,23 @@ export class UserPostsComponent extends Unsubscriber implements OnInit {
                 }
                 this.isLoading = false;
             });
+    }
+
+    private handleAxisAndSubjectChanges(): void {
+        this.subjectControl.valueChanges.subscribe(value => {
+            const axis = this.axisControl.value;
+            if (axis?.data?.subjectId !== value.data.id) {
+                this.axisControl.setValue(undefined);
+            }
+        });
+        this.axisControl.valueChanges.subscribe(value => {
+            if (!!value) {
+                const subject = this.subjectList.find(el => el.data?.id === value.data.subjectId);
+                if (!!subject) {
+                    this.subjectControl.setValue(subject);
+                }
+            }
+        });
     }
 
     public nextPage(): void {
@@ -226,7 +245,6 @@ export class UserPostsComponent extends Unsubscriber implements OnInit {
                 ordering: null
             }
         );
-        this.showDeleteButton = false;
     }
 
     // Filters requests
@@ -246,35 +264,45 @@ export class UserPostsComponent extends Unsubscriber implements OnInit {
             );
     }
 
-    private getSubjects(): Observable<RoundedSelectSearchOption[]> {
-        return this.postsService.getSubjects()
+    private getSubjectsWithAxes(): Observable<any> {
+        return this.postsService.getSubjectWithAxis()
             .pipe(
-                map(resp => {
-                    return resp.map(el => {
-                        return {
-                            text: el.name,
-                            data: el
-                        } as RoundedSelectSearchOption;
-                    });
-                }),
-                tap(resp => this.subjectList = resp),
-                tap(() => this.isSubjectsLoading = false)
-            );
-    }
+                tap(resp => {
+                    if (!!resp) {
+                        let subjects: RoundedSelectSearchOption[] = [];
+                        let axisGroups: RoundedSelectSearchGroup[] = [];
+                        resp.forEach(subject => {
+                            let options: RoundedSelectSearchOption[] = [];
+                            // Add subject to list
+                            subjects.push({
+                                text: subject.name,
+                                data: subject
+                            });
 
-    private getAxes(): Observable<RoundedSelectSearchOption[]> {
-        return this.postsService.getAxes()
-            .pipe(
-                map(resp => {
-                    return resp.map(el => {
-                        return {
-                            text: el.name,
-                            data: el
-                        } as RoundedSelectSearchOption;
-                    });
+                            options = subject.axis.map(axis => {
+                                return {
+                                    text: axis.name,
+                                    data: { ...axis, subjectId: subject.id }
+                                };
+                            });
+                            this.axisList.push(...options);  // used to find axis by id
+
+                            axisGroups.push({
+                                groupName: subject.name,
+                                options
+                            });
+                        });
+                        this.subjectList = subjects;
+                        this.subjectWithAxis = axisGroups;
+                        this.isAxesLoading = false;
+                        this.isSubjectsLoading = false;
+                    }
                 }),
-                tap(resp => this.axesList = resp),
-                tap(() => this.isAxesLoading = false)
+                takeUntil(this.ngUnsubscribe$),
+                catchError(() => {
+                    this.commonSnackbarMsg.showErrorMessage();
+                    return of(null);
+                })
             );
     }
 
@@ -292,5 +320,19 @@ export class UserPostsComponent extends Unsubscriber implements OnInit {
                     this.authService.setUserProfile(resp);
                 }
             });
+    }
+
+    private displayRemoveFiltersButton(): void {
+        if (
+            !!this.searchParams.search ||
+            !!this.searchParams.academicLevel ||
+            !!this.searchParams.subject ||
+            !!this.searchParams.axis ||
+            !!this.searchParams.ordering
+        ) {
+            this.showDeleteButton = true;
+        } else {
+            this.showDeleteButton = false;
+        }
     }
 }

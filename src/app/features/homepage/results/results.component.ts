@@ -119,6 +119,7 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
                             this.doSearch(1);
                             this.displayRemoveFiltersButton();
                         });
+                    this.handleAxisAndSubjectChanges();
                 } else {
                     this.hasData = false;
                 }
@@ -327,6 +328,23 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
     public navigateToDetail(postId: number): void {
         this.router.navigate(['/posts/view/', postId], {
             queryParams: this.searchParams
+        });
+    }
+
+    private handleAxisAndSubjectChanges(): void {
+        this.subjectControl.valueChanges.subscribe(value => {
+            const axis = this.axisControl.value;
+            if (axis?.data?.subjectId !== value.data.id) {
+                this.axisControl.setValue(undefined);
+            }
+        });
+        this.axisControl.valueChanges.subscribe(value => {
+            if (!!value) {
+                const subject = this.subjectList.find(el => el.data?.id === value.data.subjectId);
+                if (!!subject) {
+                    this.subjectControl.setValue(subject);
+                }
+            }
         });
     }
 
