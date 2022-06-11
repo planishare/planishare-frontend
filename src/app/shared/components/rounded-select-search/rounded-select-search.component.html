@@ -11,7 +11,7 @@
 <mat-form-field>
   <mat-label>{{ _buttonText }}</mat-label>
   <mat-select [formControl]="control" disableOptionCentering #custom_select>
-      <mat-option>
+      <mat-option *ngIf="showSearch">
         <ngx-mat-select-search
           [formControl]="search"
           placeholderLabel="{{ placeholder }}"

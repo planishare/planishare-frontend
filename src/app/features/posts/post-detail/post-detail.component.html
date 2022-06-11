@@ -138,6 +138,7 @@
     ></ngx-doc-viewer>
 
     <!-- Shimmer -->
-    <!-- TODO: Fix width and height -->
-    <!-- <ngx-shimmer-loading height="90vh" width="100%" class="doc-shimmer" *ngIf="isLoading"></ngx-shimmer-loading> -->
+    <div class="doc-preview" *ngIf="isLoading">
+        <ngx-shimmer-loading height="100%" width="100%" class="doc-shimmer"></ngx-shimmer-loading>
+    </div>
 </main>
