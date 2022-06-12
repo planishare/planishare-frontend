@@ -2,6 +2,7 @@ import { Commune } from "./location.type";
 import { Pageable } from "./pageable.type";
 
 export type UserSimpleDetail = {
+    id: number,
     email: string,
     first_name: string,
     last_name: string,

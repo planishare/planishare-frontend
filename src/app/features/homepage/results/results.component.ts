@@ -1,13 +1,17 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { catchError, debounceTime, delay, forkJoin, map, merge, Observable, of, race, switchMap, takeUntil, tap, throttleTime } from 'rxjs';
 import { OrderingType, OrderingTypeName } from 'src/app/core/enums/posts.enum';
+import { ReportType } from 'src/app/core/enums/report.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { ReactionsService } from 'src/app/core/services/reactions.service';
 import { Axis, PostDetail, PostPageable, PostsQueryParams } from 'src/app/core/types/posts.type';
+import { Report } from 'src/app/core/types/report.type';
+import { ReportDialogComponent } from 'src/app/shared/components/report-dialog/report-dialog.component';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 import { NavbarService } from 'src/app/shared/services/navbar.service';
 import { RoundedSelectSearchGroup, RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
@@ -77,7 +81,8 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
         private activatedRoute: ActivatedRoute,
         private router: Router,
         private commonSnackbarMsg: CommonSnackbarMsgService,
-        private navbarService: NavbarService
+        private navbarService: NavbarService,
+        public dialog: MatDialog
     ) {
         super();
 
@@ -414,5 +419,45 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
                     return of(null);
                 })
             );
+    }
+
+    public reportPost(post: PostDetail): any {
+        const user = this.authService.getUserProfile();
+        if (!!!user) {
+            this.commonSnackbarMsg.showLoginMessage('crear un reporte');
+            return;
+        }
+
+        const reportData: Report = {
+            report_type: ReportType.POST_REPORT,
+            active: true,
+            description: '',
+            user: user.id,
+            post_reported: post.id
+        };
+
+        this.dialog.open(ReportDialogComponent, {
+            data: reportData
+        });
+    }
+
+    public reportUser(post: PostDetail): any {
+        const user = this.authService.getUserProfile();
+        if (!!!user) {
+            this.commonSnackbarMsg.showLoginMessage('crear un reporte');
+            return;
+        }
+
+        const reportData: Report = {
+            report_type: ReportType.USER_REPORT,
+            active: true,
+            description: '',
+            user: user.id,
+            user_reported: post.user.id
+        };
+
+        this.dialog.open(ReportDialogComponent, {
+            data: reportData
+        });
     }
 }

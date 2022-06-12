@@ -1,13 +1,17 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { viewerType } from 'ngx-doc-viewer';
 import { catchError, of, takeUntil } from 'rxjs';
+import { ReportType } from 'src/app/core/enums/report.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { ReactionsService } from 'src/app/core/services/reactions.service';
 import { PostDetail, PostsQueryParams } from 'src/app/core/types/posts.type';
+import { Report } from 'src/app/core/types/report.type';
 import { UserDetail } from 'src/app/core/types/users.type';
+import { ReportDialogComponent } from 'src/app/shared/components/report-dialog/report-dialog.component';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 import { isMobile } from 'src/app/shared/utils';
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
@@ -50,7 +54,8 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
         private commonSnackbarMsg: CommonSnackbarMsgService,
         private router: Router,
         private authService: AuthService,
-        private reactionService: ReactionsService
+        private reactionService: ReactionsService,
+        public dialog: MatDialog
     ) {
         super();
         this.postId = Number(this.route.snapshot.paramMap.get('id'));
@@ -193,5 +198,45 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
         } else {
             location.href = docUrl;
         }
+    }
+
+    public reportPost(post: PostDetail): any {
+        const user = this.authService.getUserProfile();
+        if (!!!user) {
+            this.commonSnackbarMsg.showLoginMessage('crear un reporte');
+            return;
+        }
+
+        const reportData: Report = {
+            report_type: ReportType.POST_REPORT,
+            active: true,
+            description: '',
+            user: user.id,
+            post_reported: post.id
+        };
+
+        this.dialog.open(ReportDialogComponent, {
+            data: reportData
+        });
+    }
+
+    public reportUser(post: PostDetail): any {
+        const user = this.authService.getUserProfile();
+        if (!!!user) {
+            this.commonSnackbarMsg.showLoginMessage('crear un reporte');
+            return;
+        }
+
+        const reportData: Report = {
+            report_type: ReportType.USER_REPORT,
+            active: true,
+            description: '',
+            user: user.id,
+            user_reported: post.user.id
+        };
+
+        this.dialog.open(ReportDialogComponent, {
+            data: reportData
+        });
     }
 }

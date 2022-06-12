@@ -35,7 +35,8 @@
                 </button>
             </li>
             <li *ngIf="(buttonConfig|async)?.showSeachButton">
-                <button mat-raised-button class="search-button" (click)="openSearchDialog(); $event.stopPropagation()">
+                <!-- <button mat-raised-button class="search-button" (click)="openSearchDialog(); $event.stopPropagation()"> -->
+                <button mat-raised-button class="search-button" [routerLink]="['/', 'results']">
                     <mat-icon>search</mat-icon>
                     <span>Buscar</span>
                 </button>
@@ -68,7 +69,8 @@
         <button mat-raised-button class="logo-mobile" [routerLink]="['/']">
             Planishare
         </button>
-        <button [ngStyle]="{'visibility': !(buttonConfig|async)?.showSeachButton ? 'hidden' : 'visible'}" mat-raised-button class="simple-icon" (click)="openSearchDialog()">
+        <!-- <button [ngStyle]="{'visibility': !(buttonConfig|async)?.showSeachButton ? 'hidden' : 'visible'}" mat-raised-button class="simple-icon" (click)="openSearchDialog()"> -->
+        <button [ngStyle]="{'visibility': !(buttonConfig|async)?.showSeachButton ? 'hidden' : 'visible'}" mat-raised-button class="simple-icon" [routerLink]="['/', 'results']">
             <mat-icon>search</mat-icon>
         </button>
     </nav>

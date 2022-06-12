@@ -1,0 +1,19 @@
+<h1>Reportar {{ reportTypeName }}</h1>
+<p>Puedes reportar {{ reportTypeName }}, solo dinos el motivo y lo revisaremos a la brevedad.</p>
+<div class="flex_column flex_center">
+    <mat-form-field class="description-textarea" appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput 
+          [formControl]="form"
+          cdkTextareaAutosize cdkAutosizeMinRows="3" cdkAutosizeMaxRows="20">
+        </textarea>
+    </mat-form-field>
+    <mat-error *ngIf="form?.invalid && form?.touched">Debes ingresar una descripción con menos de 1000 carácteres.</mat-error>
+    <app-square-loader *ngIf="isLoading"></app-square-loader>
+    <button
+        mat-raised-button
+        color="warn"
+        [disabled]="!form.valid"
+        (click)="createReport()"
+        *ngIf="!isLoading">Enviar reporte</button>
+</div>

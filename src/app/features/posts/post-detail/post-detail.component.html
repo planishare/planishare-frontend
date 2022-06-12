@@ -27,10 +27,16 @@
 <main class="main">
     <!-- Card -->
     <div class="left-section">
-        <button mat-raised-button (click)="goBack()">
-            <mat-icon>arrow_back</mat-icon>
-            <span>Volver a resultados</span>
-        </button>
+        <div class="flex_between_center">
+            <button mat-raised-button (click)="goBack()">
+                <mat-icon>arrow_back</mat-icon>
+                <span>Volver a resultados</span>
+            </button>
+            <button mat-raised-button *ngIf="!!post && !isLoading" (click)="toggleLike(post)">
+                <mat-icon *ngIf="!!post.already_liked">favorite</mat-icon>
+                <mat-icon *ngIf="!!!post.already_liked">favorite_outline</mat-icon>
+            </button>
+        </div>
 
         <mat-card class="card" *ngIf="!!post && !isLoading">
             <div class="flex_column gap-05">
@@ -51,10 +57,24 @@
                             </span>
                         </div>
                     </div>
-                    <button mat-icon-button (click)="toggleLike(post)">
-                        <mat-icon *ngIf="!!post.already_liked">favorite</mat-icon>
-                        <mat-icon *ngIf="!!!post.already_liked">favorite_outline</mat-icon>
+                    
+                    <!-- Options -->
+                    <button
+                        [matMenuTriggerFor]="menu"
+                        aria-label="Opciones de publicación"
+                        mat-icon-button>
+                        <mat-icon>more_vert</mat-icon>
                     </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="reportPost(post)">
+                        <mat-icon>report</mat-icon>
+                        <span>Reportar publicación</span>
+                        </button>
+                        <button mat-menu-item (click)="reportUser(post)">
+                        <mat-icon>report</mat-icon>
+                        <span>Reportar usuario</span>
+                        </button>
+                    </mat-menu>
                 </div>
         
                 <mat-card-title>{{ post.title }}</mat-card-title>

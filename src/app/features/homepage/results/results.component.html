@@ -114,7 +114,25 @@
               class="card-image-mobile"
               *ngIf="isMobile"
               (click)="navigateToDetail(post.id)"> -->
-            <mat-card-subtitle>{{ post.user|getUsername }} - {{ post.created_at|timeAgo }}</mat-card-subtitle>
+            <div class="flex_between_center">
+              <mat-card-subtitle>{{ post.user|getUsername }} - {{ post.created_at|timeAgo }}</mat-card-subtitle>
+              <button
+                [matMenuTriggerFor]="menu"
+                aria-label="Opciones de publicación"
+                mat-icon-button>
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="reportPost(post)">
+                  <mat-icon>report</mat-icon>
+                  <span>Reportar publicación</span>
+                </button>
+                <button mat-menu-item (click)="reportUser(post)">
+                  <mat-icon>report</mat-icon>
+                  <span>Reportar usuario</span>
+                </button>
+            </mat-menu>
+            </div>
             <mat-card-title (click)="navigateToDetail(post.id)">{{ post.title }}</mat-card-title>
   
             <div class="doc-types">
