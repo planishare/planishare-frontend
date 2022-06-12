@@ -10,7 +10,8 @@ export class NavbarService {
     constructor() { }
 
     public buttonsConfig$: BehaviorSubject<ButtonsConfig> = new BehaviorSubject<ButtonsConfig>({
-        showSeachButton: true
+        showSeachButton: true,
+        backgroundColor: 'var(--purple-light)'
     });
 
     public getButtonsConfig(): Observable<ButtonsConfig> {

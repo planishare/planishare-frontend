@@ -1,3 +1,4 @@
 export type ButtonsConfig = {
-    showSeachButton: boolean
+    showSeachButton?: boolean,
+    backgroundColor?: string
 };

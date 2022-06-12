@@ -1,74 +1,75 @@
-<nav class="navbar" *ngIf="!isMobile">
-    <button mat-raised-button class="logo" [routerLink]="['/']">
-        <span class="logo-text">Planishare</span>
-    </button>
-    <ul>
-        <li>
-            <button mat-raised-button [routerLink]="['/tops']" routerLinkActive="button-active-red">
-                <mat-icon>local_fire_department</mat-icon>
-                Tops
-            </button>
-        </li>
-        <li *ngIf="!isUserAuth">
-            <button mat-raised-button [routerLink]="['/auth/register']" routerLinkActive="button-active">
-                <mat-icon>person_add</mat-icon>
-                Registrarse
-            </button>
-        </li>
-        <li *ngIf="!isUserAuth">
-            <button mat-raised-button [routerLink]="['/auth/login']" routerLinkActive="button-active">
-                <mat-icon>login</mat-icon>
-                Iniciar Sesión
-            </button>
-        </li>
-        <li *ngIf="isUserAuth">
-            <button mat-raised-button [routerLink]="['/posts/user']" routerLinkActive="button-active">
-                <mat-icon>description</mat-icon>
-                Mis publicaciones
-            </button>
-        </li>
-        <li *ngIf="isUserAuth">
-            <button mat-raised-button [routerLink]="['/posts/create']" routerLinkActive="button-active">
-                <mat-icon>control_point</mat-icon>
-                Crear publicación
-            </button>
-        </li>
-        <li *ngIf="(buttonConfig|async)?.showSeachButton">
-            <button mat-raised-button class="search-button" (click)="openSearchDialog(); $event.stopPropagation()">
-                <mat-icon>search</mat-icon>
-                <span>Buscar</span>
-            </button>
-        </li>
-        <li *ngIf="isUserAuth">
-            <button mat-mini-fab
-            class="profile-button"
-            [matMenuTriggerFor]="menu"
-            aria-label="Menu de perfil">
-                <mat-icon>person</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-                <button mat-menu-item [routerLink]="['/user/edit-profile']">
-                  <mat-icon>person</mat-icon>
-                  <span>Mi perfil</span>
+<div [style.background-color]="(buttonConfig|async)?.backgroundColor">
+    <nav class="navbar" *ngIf="!isMobile">
+        <button mat-raised-button class="logo" [routerLink]="['/']">
+            <span class="logo-text">Planishare</span>
+        </button>
+        <ul>
+            <li>
+                <button mat-raised-button [routerLink]="['/tops']" routerLinkActive="button-active-red">
+                    <mat-icon>local_fire_department</mat-icon>
+                    Tops
                 </button>
-                <button mat-menu-item (click)="logout()">
-                  <mat-icon>logout</mat-icon>
-                  <span>Cerrar sesión</span>
+            </li>
+            <li *ngIf="!isUserAuth">
+                <button mat-raised-button [routerLink]="['/auth/register']" routerLinkActive="button-active">
+                    <mat-icon>person_add</mat-icon>
+                    Registrarse
                 </button>
-            </mat-menu>
-        </li>
-    </ul>
-</nav>
-
-<nav class="navbar" *ngIf="isMobile">
-    <button mat-icon-button (click)="openSidenav()">
-        <mat-icon class="menu-icon">menu</mat-icon>
-    </button>
-    <button mat-raised-button class="logo-mobile" [routerLink]="['/']">
-        Planishare
-    </button>
-    <button [ngStyle]="{'visibility': !(buttonConfig|async)?.showSeachButton ? 'hidden' : 'visible'}" mat-raised-button class="simple-icon" (click)="openSearchDialog()">
-        <mat-icon>search</mat-icon>
-    </button>
-</nav>
-
+            </li>
+            <li *ngIf="!isUserAuth">
+                <button mat-raised-button [routerLink]="['/auth/login']" routerLinkActive="button-active">
+                    <mat-icon>login</mat-icon>
+                    Iniciar Sesión
+                </button>
+            </li>
+            <li *ngIf="isUserAuth">
+                <button mat-raised-button [routerLink]="['/posts/user']" routerLinkActive="button-active">
+                    <mat-icon>description</mat-icon>
+                    Mis publicaciones
+                </button>
+            </li>
+            <li *ngIf="isUserAuth">
+                <button mat-raised-button [routerLink]="['/posts/create']" routerLinkActive="button-active">
+                    <mat-icon>control_point</mat-icon>
+                    Crear publicación
+                </button>
+            </li>
+            <li *ngIf="(buttonConfig|async)?.showSeachButton">
+                <button mat-raised-button class="search-button" (click)="openSearchDialog(); $event.stopPropagation()">
+                    <mat-icon>search</mat-icon>
+                    <span>Buscar</span>
+                </button>
+            </li>
+            <li *ngIf="isUserAuth">
+                <button mat-mini-fab
+                class="profile-button"
+                [matMenuTriggerFor]="menu"
+                aria-label="Menu de perfil">
+                    <mat-icon>person</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item [routerLink]="['/user/edit-profile']">
+                      <mat-icon>person</mat-icon>
+                      <span>Mi perfil</span>
+                    </button>
+                    <button mat-menu-item (click)="logout()">
+                      <mat-icon>logout</mat-icon>
+                      <span>Cerrar sesión</span>
+                    </button>
+                </mat-menu>
+            </li>
+        </ul>
+    </nav>
+    
+    <nav class="navbar" *ngIf="isMobile">
+        <button mat-icon-button (click)="openSidenav()">
+            <mat-icon class="menu-icon">menu</mat-icon>
+        </button>
+        <button mat-raised-button class="logo-mobile" [routerLink]="['/']">
+            Planishare
+        </button>
+        <button [ngStyle]="{'visibility': !(buttonConfig|async)?.showSeachButton ? 'hidden' : 'visible'}" mat-raised-button class="simple-icon" (click)="openSearchDialog()">
+            <mat-icon>search</mat-icon>
+        </button>
+    </nav>
+</div>    
