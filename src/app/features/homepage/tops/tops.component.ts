@@ -17,7 +17,7 @@ import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 export class TopsComponent extends Unsubscriber implements OnInit {
     public isMobile = isMobile;
 
-    public posts: PostDetail[] = [];
+    public mostPopular: PostDetail[] = [];
 
     public isLoading = true;
     public hasData = true;
@@ -50,7 +50,7 @@ export class TopsComponent extends Unsubscriber implements OnInit {
             )
             .subscribe(resp => {
                 if (!!resp) {
-                    this.posts = resp;
+                    this.mostPopular = resp;
                 } else {
                     this.hasData = false;
                 }
