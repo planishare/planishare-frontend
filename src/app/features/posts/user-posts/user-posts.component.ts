@@ -182,14 +182,14 @@ export class UserPostsComponent extends Unsubscriber implements OnInit {
 
     public nextPage(): void {
         if (this.pageInfo?.next) {
-            this.searchParams.page = (this.searchParams.page ?? 0) + 1;
+            this.searchParams.page = (Number(this.searchParams.page) ?? 0) + 1;
             this.doSearch();
         }
     }
 
     public previousPage(): void {
         if (this.pageInfo?.previous) {
-            this.searchParams.page = (this.searchParams.page ?? 0) - 1;
+            this.searchParams.page = (Number(this.searchParams.page) ?? 0) - 1;
             this.doSearch();
         }
     }

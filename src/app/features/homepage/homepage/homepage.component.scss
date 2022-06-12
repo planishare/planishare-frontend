@@ -13,7 +13,8 @@
 .header{
     display: grid;
     grid-template-columns: repeat(2, minmax(50%, 1fr));
-    align-content: center;
+    align-items: center;
+    justify-items: center;
 }
 
 .title {
@@ -32,6 +33,8 @@
 }
 
 .teachers-img {
+    max-height: 600px;
+    max-width: 610.737px;
     width: 100%;
 }
 

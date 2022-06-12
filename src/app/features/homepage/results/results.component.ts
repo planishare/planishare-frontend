@@ -210,7 +210,7 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
 
     private getQueryParams(): void {
         const params: Params | PostsQueryParams = this.activatedRoute.snapshot.queryParams;
-        this.getPosts({ ...params, ordering: OrderingType.MOST_RECENT });
+        this.getPosts({ ...params, ordering: params.ordering ?? OrderingType.MOST_RECENT });
         this.searchControl.setValue(params.search);
         this.academicLevelControl.setValue(this.academicLevelsList.find(el => el.data?.id === Number(params.academicLevel)));
         this.subjectControl.setValue(this.subjectList.find(el => el.data?.id === Number(params.subject)));
@@ -230,14 +230,14 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
 
     public nextPage(): void {
         if (this.pageInfo?.next) {
-            this.searchParams.page = (this.searchParams.page ?? 0) + 1;
+            this.searchParams.page = (Number(this.searchParams.page) ?? 0) + 1;
             this.doSearch();
         }
     }
 
     public previousPage(): void {
         if (this.pageInfo?.previous) {
-            this.searchParams.page = (this.searchParams.page ?? 0) - 1;
+            this.searchParams.page = (Number(this.searchParams.page) ?? 0) - 1;
             this.doSearch();
         }
     }
