@@ -7,7 +7,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { SidenavService } from 'src/app/core/services/sidenav.service';
 import { NavbarService } from '../../services/navbar.service';
 import { ButtonsConfig } from '../../types/navbar.type';
-import { isMobile } from '../../utils';
+import { isMobile, isTablet } from '../../utils';
 import { SearchDialogComponent } from '../search-dialog/search-dialog.component';
 
 @Component({
@@ -17,6 +17,7 @@ import { SearchDialogComponent } from '../search-dialog/search-dialog.component'
 })
 export class NavbarComponent implements OnInit {
     public isMobile = isMobile;
+    public isTablet = isTablet;
     public isUserAuth = false;
 
     public buttonConfig?: Observable<ButtonsConfig>;

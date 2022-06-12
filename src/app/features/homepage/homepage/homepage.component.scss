@@ -1,188 +1,49 @@
 :host {
-    display: block;
+    display: grid;
+    place-content: center;
 
     background-image: url('/assets/images/bg-desktop-light-purple.png');
     background-size: contain;
     background-attachment: fixed;
-    
-    padding: 4rem 0rem 1rem 0rem;
-    
-    min-height: calc(100vh - 4rem - 1rem); // 4rem = navbar height
+
+    padding: 4rem 4rem 1rem 4rem;
+    min-height: calc(100% - 4rem - 1rem); // 4rem = navbar height
 }
 
-.header {
-    min-height: calc(100vh - 4rem); // 4rem = navbar height
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-}
-
-.container-1 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.logo {
+.header{
     display: grid;
-    place-items: center;
-    margin-bottom: 1rem;
-    
-    > button {
-        background-color: var(--green-dark-color);
-
-        font-size: clamp(2rem, 0.0000rem + 4.1667vw, 5rem);
-        color: var(--light-text);
-        
-        padding: 0.5em 1em;
-        border-radius: 15px;
-        
-        box-shadow: 0px 1px 3px #303030;
-        font-weight: 500;
-    }
+    grid-template-columns: repeat(2, minmax(50%, 1fr));
+    align-content: center;
 }
 
-.search-button {
-    animation: animation1 1s;
-}
-@keyframes animation1 {
-    33% {
-      padding: 0.5em 1.1em;
-      transform: rotate(-5deg);
-    }
-    66% {
-      transform: rotate(5deg);
-    }
-  }
-
-.subtitle1 {
-    h2 {
-        padding: 0.7em 0;
-        background-color: rgba($color: #fafafa, $alpha: 0.3);
-        text-align: center;
-        font-weight: 500;
-    }
+.title {
+    position: relative;
+    line-height: clamp(1.8rem, 0.8308rem + 4.3077vw, 6rem);
+    font-size: clamp(2rem, 0.9615rem + 4.6154vw, 6.5rem);
 }
 
-.filters {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.5em;
-}
-
-.scroll-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    text-align: center;
-    font-weight: 700;
-}
-
-.subtitle2 {
-    margin: 0 1rem;
-    
-    h2 {
-        backdrop-filter: blur(2px);
-        background-color: rgba($color: #fafafa, $alpha: 0.3);
-        
-        padding: 0.5em;
-
-        font-size: 1rem;
-        line-height: 1.2;
-
-        text-align: center;
-        font-weight: 500;
-
-    }
-}
-
-.main {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 35rem));
-    justify-content: center;
-    gap: 1.5rem;
-    padding: 0 1.2rem 1.2rem 1.2rem;
-    margin-top: 4rem
-}
-
-.top-likes-header, .top-recent-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.7rem;
-
-    text-align: center;
+.results-button {
+    max-width: min-content;
+    font-size: 1rem;
+    background-color: var(--green-dark-color);
     color: var(--light-text);
+    padding: 0.2rem 1rem;
+    border-radius: 10px;
+}
 
-    border-radius: 5px;
-    box-shadow: 0px 1px 3px #303030;
+.teachers-img {
+    width: 100%;
+}
 
-    padding: 1rem 0;
-    margin-bottom: 0.5rem;
-
-    h4 {
-        font-size: 1rem;
-        font-weight: 500;
-
-        padding: 0;
-        margin: 0;
+@media (max-width: 48rem) {
+    :host {
+        padding: 4rem 1rem 1rem 1rem;
     }
-}
 
-.top-likes-header {
-    background-color: var(--warn-color);
-}
-
-.top-recent-header {
-    background-color: var(--primary-color);
-}
-
-.ranking {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.card-subtitle {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    > div {
+    .header {
+        min-height: auto;
         display: flex;
-        align-items: center;
-    }
-}
-
-.academic-level-tag, .subject-tag, .axis-tag{
-    color: var(--light-text);
-}
-
-.academic-level-tag {
-    background-color: var(--primary-color);
-}
-
-.subject-tag {
-    background-color: var(--warn-color);
-}
-
-.axis-tag {
-    background-color: var(--purple-color);
-}
-
-.reactions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    margin-top: 1rem;
-
-    > div {
-        display: flex;
-        align-items: center;
-        gap: 0.2rem;
+        flex-direction: column-reverse;
+        gap: 1rem;
     }
 }

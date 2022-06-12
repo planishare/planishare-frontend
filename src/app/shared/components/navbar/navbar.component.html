@@ -1,5 +1,5 @@
 <div [style.background-color]="(buttonConfig|async)?.backgroundColor">
-    <nav class="navbar" *ngIf="!isMobile">
+    <nav class="navbar" *ngIf="!isTablet">
         <button mat-raised-button class="logo" [routerLink]="['/']">
             <span class="logo-text">Planishare 📖</span>
         </button>
@@ -61,7 +61,7 @@
         </ul>
     </nav>
     
-    <nav class="navbar" *ngIf="isMobile">
+    <nav class="navbar" *ngIf="isTablet">
         <button mat-icon-button (click)="openSidenav()">
             <mat-icon class="menu-icon">menu</mat-icon>
         </button>
