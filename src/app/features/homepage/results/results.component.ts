@@ -334,13 +334,13 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
     private handleAxisAndSubjectChanges(): void {
         this.subjectControl.valueChanges.subscribe(value => {
             const axis = this.axisControl.value;
-            if (axis?.data?.subjectId !== value.data.id) {
+            if (axis?.data?.subjectId !== value?.data?.id) {
                 this.axisControl.setValue(undefined);
             }
         });
         this.axisControl.valueChanges.subscribe(value => {
             if (!!value) {
-                const subject = this.subjectList.find(el => el.data?.id === value.data.subjectId);
+                const subject = this.subjectList.find(el => el.data?.id === value?.data?.subjectId);
                 if (!!subject) {
                     this.subjectControl.setValue(subject);
                 }

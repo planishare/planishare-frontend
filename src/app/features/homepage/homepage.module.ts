@@ -6,12 +6,14 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ResultsComponent } from './results/results.component';
 import { ResultsShimmerComponent } from './components/results-shimmer/results-shimmer.component';
+import { TopsComponent } from './tops/tops.component';
 
 @NgModule({
     declarations: [
         HomepageComponent,
         ResultsComponent,
-        ResultsShimmerComponent
+        ResultsShimmerComponent,
+        TopsComponent
     ],
     imports: [
         CommonModule,

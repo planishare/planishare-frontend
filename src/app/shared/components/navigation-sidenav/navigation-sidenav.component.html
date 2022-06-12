@@ -59,6 +59,17 @@
     </li>
     <li>
         <button
+            mat-button
+            class="menu-button"
+            [routerLink]="['/tops']"
+            routerLinkActive="active"
+            (click)="hideSidenav()">
+                <mat-icon>local_fire_department</mat-icon>
+                <span>Tops</span>
+        </button>
+    </li>
+    <li>
+        <button
             *ngIf="isUserAuth"
             mat-button
             class="menu-button"

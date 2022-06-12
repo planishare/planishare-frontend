@@ -3,6 +3,12 @@
         <span class="logo-text">Planishare</span>
     </button>
     <ul>
+        <li>
+            <button mat-raised-button [routerLink]="['/tops']" routerLinkActive="button-active-red">
+                <mat-icon>local_fire_department</mat-icon>
+                Tops
+            </button>
+        </li>
         <li *ngIf="!isUserAuth">
             <button mat-raised-button [routerLink]="['/auth/register']" routerLinkActive="button-active">
                 <mat-icon>person_add</mat-icon>
