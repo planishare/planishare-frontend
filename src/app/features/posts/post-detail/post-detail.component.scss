@@ -21,7 +21,7 @@
 
 .doc-preview {
     flex-grow: 1;
-    min-width: 21rem;
+    min-width: 20rem;
     aspect-ratio: 2 / 2.5;
     // height: calc(100vh - 4rem - 1rem - 2rem);
 }
@@ -88,6 +88,10 @@
         > span {
             max-width: 21ch;
         }
+    }
+
+    .card {
+        max-width: 100%;
     }
 }
 
