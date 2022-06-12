@@ -42,6 +42,10 @@ export class PostsService {
         return this.http.get<PostDetail[]>(environment.apiUrl + '/posts/popular/');
     }
 
+    public getMostLikedPosts(): Observable<PostDetail[]> {
+        return this.http.get<PostDetail[]>(environment.apiUrl + '/posts/most-liked/');
+    }
+
     public getPostById(postId: number): Observable<PostDetail> {
         return this.http.get<PostDetail>(environment.apiUrl + `/posts/${postId}/`);
     }

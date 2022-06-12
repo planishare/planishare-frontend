@@ -131,6 +131,10 @@
     font-weight: 600;
 }
 
+mat-card-title {
+    cursor: pointer;
+}
+
 .card-subtitle {
     display: flex;
     justify-content: space-between;

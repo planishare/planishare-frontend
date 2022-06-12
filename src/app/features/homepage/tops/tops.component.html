@@ -1,100 +1,102 @@
 <main>
-    <div class="flex_justify_center">
-        <div class="top-likes-header">
-            <mat-icon>favorite</mat-icon>
-            <h4>Las más populares</h4>
-        </div>
+  <div class="flex_justify_center gap-05">
+    <div
+      matRipple
+      class="top-header"
+      [ngClass]="showList === 1 ? 'top-header-active' : ''"
+      (click)="showList = 1">
+      <mat-icon>local_fire_department</mat-icon>
+      <h4>Las más populares</h4>
     </div>
-
-    <!-- Shimmer -->
-    <app-results-shimmer *ngIf="isLoading"></app-results-shimmer>
-
-    <!-- No results card -->
-    <div class="no-results" *ngIf="!hasData && !isLoading">
-        <mat-card class="card">
-        <mat-icon class="icon">search</mat-icon>
-        <span class="no-results__title">No se encontraron resultados</span>
-        <span>Prueba con algo diferente</span>
-        </mat-card>
+    <div
+      matRipple
+      class="top-header"
+      [ngClass]="showList === 2 ? 'top-header-active' : ''"
+      (click)="showList = 2">
+      <mat-icon>favorite</mat-icon>
+      <h4>Las más gustadas</h4>
     </div>
+  </div>
 
-    <!-- Posts -->
-    <div class="posts" *ngIf="hasData && !isLoading">
-        <ng-container *ngFor="let post of mostPopular">
-          <mat-card class="card">
-            <div class="card-body">
-              <!-- <img
+  <!-- Shimmer -->
+  <app-results-shimmer *ngIf="showList === 1 ? isLoadingPopular : isLoadingMostLiked"></app-results-shimmer>
+
+  <!-- Posts -->
+  <div class="posts" *ngIf="showList === 1 ? !isLoadingPopular : !isLoadingMostLiked">
+    <ng-container *ngFor="let post of (showList === 1 ? popular : mostLiked)">
+      <mat-card class="card">
+        <div class="card-body">
+          <!-- <img
                 src="/assets/images/doc-test.jpg"
                 alt="document-image"
                 class="card-image-desktop"
                 *ngIf="!isMobile"
                 (click)="navigateToDetail(post.id)"> -->
-              <div class="card-content">
-                <!-- <img
+          <div class="card-content">
+            <!-- <img
                   src="/assets/images/doc-test.jpg"
                   alt="document-image"
                   class="card-image-mobile"
                   *ngIf="isMobile"
                   (click)="navigateToDetail(post.id)"> -->
-                <mat-card-subtitle>{{ post.user|getUsername }} - {{ post.created_at|timeAgo }}</mat-card-subtitle>
-                <mat-card-title (click)="navigateToDetail(post.id)">{{ post.title }}</mat-card-title>
-      
-                <div class="doc-types">
-                  <mat-chip-list class="tags">
-                    <mat-chip class="small-tag {{ post.main_file|getDocType:docTypes }}-tag">
-                      <span>.{{ post.main_file|getDocType:docTypes }}</span>
-                    </mat-chip>
-                    <mat-chip
-                      *ngFor="let doc of post.suporting_material"
-                      class="small-tag {{ doc|getDocType:docTypes }}-tag">
-                        <span>.{{ doc|getDocType:docTypes }}</span>
-                    </mat-chip>
-                  </mat-chip-list>
-      
-                  <div class="doc-types-text">
-                    <mat-icon>description</mat-icon>
-                    <span *ngIf="isMobile">{{ (post.suporting_material?.length ?? 0) + 1 }}</span>
-                    <span *ngIf="!isMobile">{{ (post.suporting_material?.length ?? 0) + 1 }} Documentos</span>
-                  </div>
-                </div>
-      
-                <div>{{ post.description }}</div>
-      
-                <mat-chip-list class="tags">
-                  <mat-chip class="academic-level-tag">
-                    <span *ngIf="!isMobile">Nivel académico: {{ post.academic_level.name }}</span>
-                    <span *ngIf="isMobile">{{ post.academic_level.name }}</span>
-                  </mat-chip>
-                  <mat-chip class="axis-tag">
-                    <span *ngIf="!isMobile">Eje: {{ post.axis.name }}</span>
-                    <span *ngIf="isMobile">{{ post.axis.name }}</span>
-                  </mat-chip>
-                  <mat-chip class="subject-tag">
-                    <span *ngIf="!isMobile">Asignatura: {{ post.axis.subject.name }}</span>
-                    <span *ngIf="isMobile">{{ post.axis.subject.name }}</span>
-                  </mat-chip>
-                </mat-chip-list>
+            <mat-card-subtitle>{{ post.user|getUsername }} - {{ post.created_at|timeAgo }}</mat-card-subtitle>
+            <mat-card-title (click)="navigateToDetail(post.id)">{{ post.title }}</mat-card-title>
+
+            <div class="doc-types">
+              <mat-chip-list class="tags">
+                <mat-chip class="small-tag {{ post.main_file|getDocType:docTypes }}-tag">
+                  <span>.{{ post.main_file|getDocType:docTypes }}</span>
+                </mat-chip>
+                <mat-chip *ngFor="let doc of post.suporting_material"
+                  class="small-tag {{ doc|getDocType:docTypes }}-tag">
+                  <span>.{{ doc|getDocType:docTypes }}</span>
+                </mat-chip>
+              </mat-chip-list>
+
+              <div class="doc-types-text">
+                <mat-icon>description</mat-icon>
+                <span *ngIf="isMobile">{{ (post.suporting_material?.length ?? 0) + 1 }}</span>
+                <span *ngIf="!isMobile">{{ (post.suporting_material?.length ?? 0) + 1 }} Documentos</span>
               </div>
             </div>
-      
-            <div class="card-footer">
-              <div class="reaction-info">
-                <div>
-                  <mat-icon>favorite</mat-icon>
-                  <span>{{ post.likes }} Me gusta</span>
-                </div>
-                <div>
-                  <mat-icon>visibility</mat-icon>
-                  <span>{{ post.views }} Visitas</span>
-                </div>
-              </div>
-    
-              <button mat-icon-button (click)="toggleLike(post)">
-                <mat-icon *ngIf="!!post.already_liked">favorite</mat-icon>
-                <mat-icon *ngIf="!!!post.already_liked">favorite_outline</mat-icon>
-              </button>
+
+            <div>{{ post.description }}</div>
+
+            <mat-chip-list class="tags">
+              <mat-chip class="academic-level-tag">
+                <span *ngIf="!isMobile">Nivel académico: {{ post.academic_level.name }}</span>
+                <span *ngIf="isMobile">{{ post.academic_level.name }}</span>
+              </mat-chip>
+              <mat-chip class="axis-tag">
+                <span *ngIf="!isMobile">Eje: {{ post.axis.name }}</span>
+                <span *ngIf="isMobile">{{ post.axis.name }}</span>
+              </mat-chip>
+              <mat-chip class="subject-tag">
+                <span *ngIf="!isMobile">Asignatura: {{ post.axis.subject.name }}</span>
+                <span *ngIf="isMobile">{{ post.axis.subject.name }}</span>
+              </mat-chip>
+            </mat-chip-list>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="reaction-info">
+            <div>
+              <mat-icon>favorite</mat-icon>
+              <span>{{ post.likes }} Me gusta</span>
             </div>
-          </mat-card>
-        </ng-container>
-      </div>
+            <div>
+              <mat-icon>visibility</mat-icon>
+              <span>{{ post.views }} Visitas</span>
+            </div>
+          </div>
+
+          <button mat-icon-button (click)="toggleLike(post)">
+            <mat-icon *ngIf="!!post.already_liked">favorite</mat-icon>
+            <mat-icon *ngIf="!!!post.already_liked">favorite_outline</mat-icon>
+          </button>
+        </div>
+      </mat-card>
+    </ng-container>
+  </div>
 </main>

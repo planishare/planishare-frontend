@@ -17,10 +17,15 @@ import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 export class TopsComponent extends Unsubscriber implements OnInit {
     public isMobile = isMobile;
 
-    public mostPopular: PostDetail[] = [];
+    public popular: PostDetail[] = [];
+    public mostLiked: PostDetail[] = [];
 
-    public isLoading = true;
-    public hasData = true;
+    public isLoadingPopular = true;
+    public isLoadingMostLiked = true;
+
+    // 1: Most popular
+    // 2: Most liked
+    public showList = 1;
 
     public docTypes = {
         doc: ['doc','docm','docx','txt'],
@@ -39,22 +44,36 @@ export class TopsComponent extends Unsubscriber implements OnInit {
     }
 
     public ngOnInit(): void {
+        // Get most popular
         this.postsService.getPopularPosts()
             .pipe(
                 takeUntil(this.ngUnsubscribe$),
                 catchError(() => {
                     this.commonSnackbarMsg.showErrorMessage();
-                    this.hasData = false;
-                    return of(null);
+                    return of();
                 })
             )
             .subscribe(resp => {
                 if (!!resp) {
-                    this.mostPopular = resp;
-                } else {
-                    this.hasData = false;
+                    this.popular = resp;
+                    this.isLoadingPopular = false;
                 }
-                this.isLoading = false;
+            });
+
+        // Get most liked
+        this.postsService.getMostLikedPosts()
+            .pipe(
+                takeUntil(this.ngUnsubscribe$),
+                catchError(() => {
+                    this.commonSnackbarMsg.showErrorMessage();
+                    return of();
+                })
+            )
+            .subscribe(resp => {
+                if (!!resp) {
+                    this.mostLiked = resp;
+                    this.isLoadingMostLiked = false;
+                }
             });
     }
 
