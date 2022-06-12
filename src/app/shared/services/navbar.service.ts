@@ -9,10 +9,12 @@ export class NavbarService {
 
     constructor() { }
 
-    public buttonsConfig$: BehaviorSubject<ButtonsConfig> = new BehaviorSubject<ButtonsConfig>({
+    private defaultConfig: ButtonsConfig = {
         showSeachButton: true,
         backgroundColor: 'var(--purple-light)'
-    });
+    };
+
+    public buttonsConfig$: BehaviorSubject<ButtonsConfig> = new BehaviorSubject<ButtonsConfig>(this.defaultConfig);
 
     public getButtonsConfig(): Observable<ButtonsConfig> {
         return this.buttonsConfig$.asObservable();
@@ -23,5 +25,9 @@ export class NavbarService {
             ...this.buttonsConfig$.value,
             ...config
         });
+    }
+
+    public resetConfig(): void {
+        this.buttonsConfig$.next(this.defaultConfig);
     }
 }

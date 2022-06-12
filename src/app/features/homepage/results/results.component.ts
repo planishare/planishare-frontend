@@ -80,12 +80,8 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
     ) {
         super();
 
-        this.navbarService.setButtonConfig({
-            showSeachButton: false
-        });
-        this.ngUnsubscribe$.asObservable().subscribe(() => this.navbarService.setButtonConfig({
-            showSeachButton: true
-        }));
+        this.navbarService.setButtonConfig({ showSeachButton: false });
+        this.ngUnsubscribe$.asObservable().subscribe(() => this.navbarService.resetConfig());
 
         this.form = new FormGroup(
             {
