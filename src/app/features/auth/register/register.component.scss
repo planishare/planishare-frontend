@@ -5,7 +5,7 @@
     min-height: 100%;
 
     // background-color: var(--warn-color);
-    background-image: url('/assets/images/bg-desktop-purple.png');
+    background-image: url('/assets/images/bg-desktop-pink.png');
     // background-size: cover;
     background-size: contain;
 }
@@ -27,12 +27,12 @@
     margin-bottom: 1rem;
     
     > button {
-        background-color: var(--purple-dark-color);
+        background-color: var(--purple-color);
 
-        font-size: clamp(2rem, -0.2500rem + 10vw, 5rem);
+        font-size: clamp(2rem, 0.0000rem + 4.1667vw, 5rem);
         color: var(--light-text);
         
-        padding: 0.4em 0.7em;
+        padding: 0.5em 1em;
         border-radius: 15px;
         
         box-shadow: 0px 1px 3px #303030;
