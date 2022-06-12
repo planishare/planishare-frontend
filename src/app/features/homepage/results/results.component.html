@@ -123,11 +123,11 @@
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="reportPost(post)">
+                <button [disabled]="post.user.id === user?.id" mat-menu-item (click)="reportPost(post)">
                   <mat-icon>report</mat-icon>
                   <span>Reportar publicación</span>
                 </button>
-                <button mat-menu-item (click)="reportUser(post)">
+                <button [disabled]="post.user.id === user?.id" mat-menu-item (click)="reportUser(post)">
                   <mat-icon>report</mat-icon>
                   <span>Reportar usuario</span>
                 </button>

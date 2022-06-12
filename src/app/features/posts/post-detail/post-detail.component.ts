@@ -201,8 +201,7 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
     }
 
     public reportPost(post: PostDetail): any {
-        const user = this.authService.getUserProfile();
-        if (!!!user) {
+        if (!!!this.user) {
             this.commonSnackbarMsg.showLoginMessage('crear un reporte');
             return;
         }
@@ -211,7 +210,7 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
             report_type: ReportType.POST_REPORT,
             active: true,
             description: '',
-            user: user.id,
+            user: this.user.id,
             post_reported: post.id
         };
 
@@ -221,8 +220,7 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
     }
 
     public reportUser(post: PostDetail): any {
-        const user = this.authService.getUserProfile();
-        if (!!!user) {
+        if (!!!this.user) {
             this.commonSnackbarMsg.showLoginMessage('crear un reporte');
             return;
         }
@@ -231,7 +229,7 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
             report_type: ReportType.USER_REPORT,
             active: true,
             description: '',
-            user: user.id,
+            user: this.user.id,
             user_reported: post.user.id
         };
 

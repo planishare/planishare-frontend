@@ -11,6 +11,7 @@ import { PostsService } from 'src/app/core/services/posts.service';
 import { ReactionsService } from 'src/app/core/services/reactions.service';
 import { Axis, PostDetail, PostPageable, PostsQueryParams } from 'src/app/core/types/posts.type';
 import { Report } from 'src/app/core/types/report.type';
+import { UserDetail } from 'src/app/core/types/users.type';
 import { ReportDialogComponent } from 'src/app/shared/components/report-dialog/report-dialog.component';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 import { NavbarService } from 'src/app/shared/services/navbar.service';
@@ -34,6 +35,8 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
         ordering: OrderingType.MOST_RECENT
     };
     public maxPage = 1;
+
+    public user: UserDetail | null;
 
     public posts: PostDetail[] = [];
     public form: FormGroup;
@@ -103,6 +106,8 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
                 )
             }
         );
+
+        this.user = this.authService.getUserProfile() ?? null;
     }
 
     public ngOnInit(): void {
@@ -238,8 +243,7 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
     }
 
     public toggleLike(post: PostDetail): any {
-        const user = this.authService.getUserProfile();
-        if (!!!user) {
+        if (!!!this.user) {
             this.commonSnackbarMsg.showLoginMessage('dar Me gusta');
             return;
         }
@@ -268,7 +272,7 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
             post.likes++;
 
             // Request
-            this.reactionService.createLike(user.id, post.id)
+            this.reactionService.createLike(this.user.id, post.id)
                 .pipe(
                     catchError(() => {
                         post.already_liked = null;
@@ -422,8 +426,7 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
     }
 
     public reportPost(post: PostDetail): any {
-        const user = this.authService.getUserProfile();
-        if (!!!user) {
+        if (!!!this.user) {
             this.commonSnackbarMsg.showLoginMessage('crear un reporte');
             return;
         }
@@ -432,7 +435,7 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
             report_type: ReportType.POST_REPORT,
             active: true,
             description: '',
-            user: user.id,
+            user: this.user.id,
             post_reported: post.id
         };
 
@@ -442,8 +445,7 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
     }
 
     public reportUser(post: PostDetail): any {
-        const user = this.authService.getUserProfile();
-        if (!!!user) {
+        if (!!!this.user) {
             this.commonSnackbarMsg.showLoginMessage('crear un reporte');
             return;
         }
@@ -452,7 +454,7 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
             report_type: ReportType.USER_REPORT,
             active: true,
             description: '',
-            user: user.id,
+            user: this.user.id,
             user_reported: post.user.id
         };
 
