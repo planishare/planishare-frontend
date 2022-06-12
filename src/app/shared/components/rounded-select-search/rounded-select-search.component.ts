@@ -12,6 +12,7 @@ import { RoundedSelectSearchOption } from '../../types/rounded-select-search.typ
 })
 export class RoundedSelectSearchComponent implements OnInit {
     @Input() public showSearch: boolean = true;
+    @Input() public showReset: boolean = true;
     @Input() public buttonText!: string;
     @Input() public placeholder: string = 'Buscar';
     @Input() public bgColor?: string;

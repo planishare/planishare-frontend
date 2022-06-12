@@ -19,8 +19,8 @@
           noEntriesFoundLabel="No se encontraron resultados">
         </ngx-mat-select-search>
       </mat-option>
-      <mat-option *ngIf="!!control.value" [value]="null">Borrar</mat-option>
-      <mat-divider></mat-divider>
+      <mat-option *ngIf="!!control.value && showReset" [value]="null">Borrar</mat-option>
+      <mat-divider *ngIf="showReset"></mat-divider>
       <mat-option [value]="option" *ngFor="let option of filteredList">{{ option.text }}</mat-option>
   </mat-select>
 </mat-form-field>

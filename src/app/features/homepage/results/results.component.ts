@@ -26,7 +26,8 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
 
     public pageInfo?: PostPageable;
     public searchParams: PostsQueryParams = {
-        page: 1
+        page: 1,
+        ordering: OrderingType.MOST_RECENT
     };
     public maxPage = 1;
 
@@ -89,7 +90,12 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
                 academicLevel: new FormControl(),
                 subject: new FormControl(),
                 axis: new FormControl(),
-                ordering: new FormControl()
+                ordering: new FormControl(
+                    {
+                        data: OrderingType.MOST_RECENT,
+                        text: OrderingTypeName.MOST_RECENT
+                    }
+                )
             }
         );
     }
@@ -194,12 +200,12 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
 
     private getQueryParams(): void {
         const params: Params | PostsQueryParams = this.activatedRoute.snapshot.queryParams;
-        this.getPosts(params);
+        this.getPosts({ ...params, ordering: OrderingType.MOST_RECENT });
         this.searchControl.setValue(params.search);
         this.academicLevelControl.setValue(this.academicLevelsList.find(el => el.data?.id === Number(params.academicLevel)));
         this.subjectControl.setValue(this.subjectList.find(el => el.data?.id === Number(params.subject)));
         this.axisControl.setValue(this.axisList.find(el => el.data.id === Number(params.axis)));
-        this.orderingControl.setValue(this.orderingList.find(el => el.data === params.ordering));
+        this.orderingControl.setValue(this.orderingList.find(el => el.data === params.ordering) ?? this.orderingControl.value);
 
         // Set search params to pass them to detail-post
         this.searchParams.page = params.page ?? this.searchParams.page;
@@ -307,7 +313,10 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
             academicLevel: null,
             subject: null,
             axis: null,
-            ordering: null
+            ordering: {
+                data: OrderingType.MOST_RECENT,
+                text: OrderingTypeName.MOST_RECENT
+            }
         });
     }
 
@@ -316,8 +325,8 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
             !!this.searchParams.search ||
             !!this.searchParams.academicLevel ||
             !!this.searchParams.subject ||
-            !!this.searchParams.axis ||
-            !!this.searchParams.ordering
+            !!this.searchParams.axis
+            // !!this.searchParams.ordering
         ) {
             this.showDeleteButton = true;
         } else {

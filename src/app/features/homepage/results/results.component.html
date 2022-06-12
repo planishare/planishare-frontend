@@ -47,6 +47,7 @@
       [list]="orderingList"
       [control]="orderingControl"
       [showSearch]="false"
+      [showReset]="false"
       buttonText="Ordenar por"
       bgColor="var(--green-dark-color)"
       textColor="var(--light-text)"
@@ -177,7 +178,7 @@
   </div>
 
   <!-- Bottom pagination -->
-  <div class="pagination flex_justify_center" *ngIf="hasData && posts.length > 10">
+  <div class="pagination flex_justify_center" *ngIf="hasData && !isLoading && (!!pageInfo?.next || !!pageInfo?.previous)">
     <button mat-raised-button class="pagination-button" (click)="previousPage()" [disabled]="!pageInfo?.previous || isLoading">
       <mat-icon>navigate_before</mat-icon>
     </button>
