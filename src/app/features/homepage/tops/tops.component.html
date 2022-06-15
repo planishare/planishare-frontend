@@ -3,18 +3,18 @@
     <div
       matRipple
       class="top-header"
-      [ngClass]="showList === 1 ? 'top-header-active' : ''"
-      (click)="showList = 1">
-      <mat-icon>local_fire_department</mat-icon>
-      <h4>Las más populares</h4>
-    </div>
-    <div
-      matRipple
-      class="top-header"
       [ngClass]="showList === 2 ? 'top-header-active' : ''"
       (click)="showList = 2">
       <mat-icon>favorite</mat-icon>
       <h4>Las más gustadas</h4>
+    </div>
+    <div
+      matRipple
+      class="top-header"
+      [ngClass]="showList === 1 ? 'top-header-active' : ''"
+      (click)="showList = 1">
+      <mat-icon>local_fire_department</mat-icon>
+      <h4>Las más populares</h4>
     </div>
   </div>
 
@@ -83,18 +83,18 @@
           <div class="reaction-info">
             <div>
               <mat-icon>favorite</mat-icon>
-              <span>{{ post.likes }} Me gusta</span>
+              <span>{{ post.total_likes }} Me gusta</span>
             </div>
             <div>
               <mat-icon>visibility</mat-icon>
-              <span>{{ post.views }} Visitas</span>
+              <span>{{ post.total_views }} Visitas</span>
             </div>
           </div>
 
-          <button mat-icon-button (click)="toggleLike(post)">
+          <!-- <button mat-icon-button (click)="toggleLike(post)">
             <mat-icon *ngIf="!!post.already_liked">favorite</mat-icon>
             <mat-icon *ngIf="!!!post.already_liked">favorite_outline</mat-icon>
-          </button>
+          </button> -->
         </div>
       </mat-card>
     </ng-container>

@@ -124,7 +124,7 @@
                   </div>
                   <div class="flex_between_center">
                     <mat-icon>description</mat-icon>
-                    <span>{{ post.suporting_material?.length ?? 0 + 1 }}</span>
+                    <span>{{ (post.suporting_material?.length ?? 0) + 1 }}</span>
                   </div>
                 </mat-card-subtitle>
 
@@ -153,11 +153,11 @@
                     <div class="flex gap-05">
                         <div class="flex_center gap-05">
                             <mat-icon>favorite</mat-icon>
-                            <span>{{ post.likes }}</span>
+                            <span>{{ post.total_likes }}</span>
                         </div>
                         <div class="flex_center gap-05">
                             <mat-icon>visibility</mat-icon>
-                            <span>{{ post.views }}</span>
+                            <span>{{ post.total_views }}</span>
                         </div>
                     </div>
                     

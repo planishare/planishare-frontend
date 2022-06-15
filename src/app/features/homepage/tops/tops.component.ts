@@ -25,7 +25,7 @@ export class TopsComponent extends Unsubscriber implements OnInit {
 
     // 1: Most popular
     // 2: Most liked
-    public showList = 1;
+    public showList = 2;
 
     public docTypes = {
         doc: ['doc','docm','docx','txt'],
@@ -44,22 +44,6 @@ export class TopsComponent extends Unsubscriber implements OnInit {
     }
 
     public ngOnInit(): void {
-        // Get most popular
-        this.postsService.getPopularPosts()
-            .pipe(
-                takeUntil(this.ngUnsubscribe$),
-                catchError(() => {
-                    this.commonSnackbarMsg.showErrorMessage();
-                    return of();
-                })
-            )
-            .subscribe(resp => {
-                if (!!resp) {
-                    this.popular = resp;
-                    this.isLoadingPopular = false;
-                }
-            });
-
         // Get most liked
         this.postsService.getMostLikedPosts()
             .pipe(
@@ -73,6 +57,22 @@ export class TopsComponent extends Unsubscriber implements OnInit {
                 if (!!resp) {
                     this.mostLiked = resp;
                     this.isLoadingMostLiked = false;
+                }
+            });
+
+        // Get most popular
+        this.postsService.getPopularPosts()
+            .pipe(
+                takeUntil(this.ngUnsubscribe$),
+                catchError(() => {
+                    this.commonSnackbarMsg.showErrorMessage();
+                    return of();
+                })
+            )
+            .subscribe(resp => {
+                if (!!resp) {
+                    this.popular = resp;
+                    this.isLoadingPopular = false;
                 }
             });
     }
@@ -91,14 +91,14 @@ export class TopsComponent extends Unsubscriber implements OnInit {
             // Visual efect
             const likeId = post.already_liked;
             post.already_liked = null;
-            post.likes--;
+            post.total_likes--;
 
             // Request
             this.reactionService.deleteLike(likeId)
                 .pipe(
                     catchError(() => {
                         post.already_liked = likeId;
-                        post.likes++;
+                        post.total_likes++;
                         this.commonSnackbarMsg.showErrorMessage();
                         return of(null);
                     })
@@ -109,14 +109,14 @@ export class TopsComponent extends Unsubscriber implements OnInit {
         } else {
             // Visual efect
             post.already_liked = 1;
-            post.likes++;
+            post.total_likes++;
 
             // Request
             this.reactionService.createLike(user.id, post.id)
                 .pipe(
                     catchError(() => {
                         post.already_liked = null;
-                        post.likes--;
+                        post.total_likes--;
                         this.commonSnackbarMsg.showErrorMessage();
                         return of(null);
                     })

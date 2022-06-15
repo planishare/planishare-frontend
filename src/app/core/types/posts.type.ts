@@ -24,8 +24,8 @@ export type PostDetail = {
     suporting_material: string[],
     created_at: string | Date,
     updated_at: string | Date,
-    likes: number,
-    views: number,
+    total_likes: number,
+    total_views: number,
     already_liked: number | null, // Contains like id if is already liked by auth user
     // already_viewed
 }

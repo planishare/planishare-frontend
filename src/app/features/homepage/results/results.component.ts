@@ -251,14 +251,14 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
             // Visual efect
             const likeId = post.already_liked;
             post.already_liked = null;
-            post.likes--;
+            post.total_likes--;
 
             // Request
             this.reactionService.deleteLike(likeId)
                 .pipe(
                     catchError(() => {
                         post.already_liked = likeId;
-                        post.likes++;
+                        post.total_likes++;
                         this.commonSnackbarMsg.showErrorMessage();
                         return of(null);
                     })
@@ -269,14 +269,14 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
         } else {
             // Visual efect
             post.already_liked = 1;
-            post.likes++;
+            post.total_likes++;
 
             // Request
             this.reactionService.createLike(this.user.id, post.id)
                 .pipe(
                     catchError(() => {
                         post.already_liked = null;
-                        post.likes--;
+                        post.total_likes--;
                         this.commonSnackbarMsg.showErrorMessage();
                         return of(null);
                     })
@@ -436,7 +436,8 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
             active: true,
             description: '',
             user: this.user.id,
-            post_reported: post.id
+            post_reported: post.id,
+            user_reported: post.user.id
         };
 
         this.dialog.open(ReportDialogComponent, {

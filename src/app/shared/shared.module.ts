@@ -24,14 +24,6 @@ import { ReportDialogComponent } from './components/report-dialog/report-dialog.
 
 @NgModule({
     declarations: [
-        NavbarComponent,
-        SearchButtonComponent,
-        SearchDialogComponent,
-        NavigationSidenavComponent,
-        RoundedSelectSearchComponent,
-        BookLoaderComponent,
-        SquareLoaderComponent,
-
         // Pipes
         GetUsernamePipe,
         TimeAgoPipe,
@@ -42,7 +34,16 @@ import { ReportDialogComponent } from './components/report-dialog/report-dialog.
         // Directives
         DragAndDropFileDirective,
         RoundedSelectGroupSearchComponent,
-        ReportDialogComponent
+
+        // Components
+        ReportDialogComponent,
+        NavbarComponent,
+        SearchButtonComponent,
+        SearchDialogComponent,
+        NavigationSidenavComponent,
+        RoundedSelectSearchComponent,
+        BookLoaderComponent,
+        SquareLoaderComponent
     ],
     imports: [
         CommonModule,
