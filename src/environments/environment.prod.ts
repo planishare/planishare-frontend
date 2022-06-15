@@ -1,4 +1,4 @@
-// Deploy prod: ng build; firebase deploy
+// Deploy prod: ng build; firebase deploy -P prod
 
 export const environment = {
     firebase: {
