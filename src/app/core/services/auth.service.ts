@@ -190,6 +190,16 @@ export class AuthService {
             });
     }
 
+    public refreshUserProfile(): Observable<UserDetail> {
+        // this.authServiceConsoleLog('REFRESH', this.userProfile);
+        if (this.userProfile?.id) {
+            return this.userService.getUserById(this.userProfile.id).pipe(
+                tap(resp => this.setUserProfile(resp))
+            );
+        }
+        return of();
+    }
+
     // Utils
     public getAccessToken(): string | undefined {
         return this.accessToken;

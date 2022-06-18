@@ -87,9 +87,12 @@
             <p class="stat-p" *ngIf="!!!user?.total_posts">
                 Anímante, crea un publicación y comparte con la comunidad! :)
             </p>
-            <p class="stat-p" *ngIf="!!user?.total_posts">
+            <p class="stat-p" *ngIf="!!user?.total_views">
                 En total, tus {{ user?.total_posts }} publicaciones han sido <span class="blue-icon">vistas {{ user?.total_views }} veces</span>
-                y han tenido <span class="red-icon">{{ user?.total_likes }} me gusta</span>, gracias por ayudar a la comunidad, sigue así!
+                <span *ngIf="!!user?.total_likes">
+                    y han tenido <span class="red-icon">{{ user?.total_likes }} me gusta</span>
+                </span>
+                , gracias por ayudar a la comunidad, sigue así!
             </p>
         </div>
     </mat-card>

@@ -15,6 +15,7 @@ import { ReportDialogComponent } from 'src/app/shared/components/report-dialog/r
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 import { isMobile } from 'src/app/shared/utils';
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
+import { DeleteDialogComponent } from '../components/delete-dialog/delete-dialog.component';
 
 @Component({
     selector: 'app-post-detail',
@@ -168,22 +169,37 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
         }
     }
 
+    public deletePost(post: PostDetail): void {
+        const dialogRef = this.dialog.open(DeleteDialogComponent, {
+            data: {
+                post
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(refresh => {
+            if (refresh) {
+                this.router.navigate(['/', 'results']);
+            }
+        });
+    }
+
     private registerView(post: PostDetail): void {
         const isAuth = !!this.authService.isAuth$.value;
         const isOwner = post.user.email === this.user?.email;
 
-        if ((isAuth && !isOwner) || !isAuth) {
-            this.reactionService.registerView(this.postId)
-                .pipe(
-                    catchError(error => of(null))
-                )
-                .subscribe();
-        }
+        // if ((isAuth && !isOwner) || !isAuth) {}
+        this.reactionService.registerView(this.postId)
+            .pipe(
+                catchError(error => of())
+            )
+            .subscribe(() => {
+                this.post!.total_views += 1;
+            });
     }
 
     // Utils
-    public scroll(el: HTMLElement) {
-        el.scrollIntoView({ behavior: 'smooth' });
+    public scroll(el: HTMLElement): any {
+        return this.isMobile ? el.scrollIntoView({ behavior: 'smooth' }) : null;
     }
 
     public goBack(): void {

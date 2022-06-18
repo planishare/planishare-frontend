@@ -60,7 +60,6 @@ export class EditProfileComponent extends Unsubscriber implements OnInit {
     }
 
     public ngOnInit(): void {
-        this.userProfile = this.authService.getUserProfile();
         this.isVerificated = this.authService.isAuth$.value?.emailVerified;
 
         this.filteredInstitutions = this.searchInstitution.valueChanges.pipe(
@@ -70,7 +69,7 @@ export class EditProfileComponent extends Unsubscriber implements OnInit {
             switchMap((value: string) => this.getInstitutions(value))
         );
 
-        forkJoin([this.getEducations(), this.getRegionsWithCommunes()])
+        forkJoin([this.getEducations(), this.getRegionsWithCommunes(), this.getUserProfile()])
             .pipe(
                 takeUntil(this.ngUnsubscribe$),
                 catchError(error => {
@@ -115,7 +114,12 @@ export class EditProfileComponent extends Unsubscriber implements OnInit {
                     this.matSnackBar.open('Datos actualizados :)', 'Cerrar', { duration: 2000 });
                     this.isSaveLoading = false;
                     this.form.setErrors({});
-                    this.updateUserProfile();
+
+                    const currentUserProfile = this.authService.getUserProfile();
+                    this.authService.setUserProfile({
+                        ...currentUserProfile,
+                        ...resp
+                    });
                 });
         }
     }
@@ -157,6 +161,12 @@ export class EditProfileComponent extends Unsubscriber implements OnInit {
         );
     }
 
+    public getUserProfile(): Observable<UserDetail> {
+        return this.authService.refreshUserProfile().pipe(
+            tap(resp => this.userProfile = resp)
+        );
+    }
+
     private locationsFilter(
         searchValue: string,
         optionList: RegionWithCommunes[]): RegionWithCommunes[] {
@@ -182,21 +192,6 @@ export class EditProfileComponent extends Unsubscriber implements OnInit {
         } else {
             return optionList;
         }
-    }
-
-    private updateUserProfile(): void {
-        this.userServices.getUserProfileByEmail(this.userProfile!.email)
-            .pipe(
-                catchError(error => {
-                    this.commonSnackbarMsg.showErrorMessage();
-                    return of(null);
-                })
-            )
-            .subscribe(resp => {
-                if (!!resp) {
-                    this.authService.setUserProfile(resp);
-                }
-            });
     }
 
     public resendEmail(): void {

@@ -1,5 +1,5 @@
 <main class="main">
-    <div class="flex-grow-1">
+    <div class="flex-grow-3">
       <button mat-raised-button [routerLink]="['/posts/user']" class="back-button">
         <mat-icon>arrow_back</mat-icon>
         <span>Volver a publicaciones propias</span>
@@ -89,6 +89,10 @@
             formControlName="description"
               cdkTextareaAutosize cdkAutosizeMinRows="3" cdkAutosizeMaxRows="20">
             </textarea>
+            <div class="flex_end_center">
+              <mat-hint *ngIf="this.descriptionControl.valid">{{ this.descriptionControl.value.length }}/1000</mat-hint>
+              <mat-error *ngIf="this.descriptionControl?.hasError('maxlength')">{{ this.descriptionControl.value.length }}/1000</mat-error>
+            </div>
           </mat-form-field>
   
           <div class="flex_justify_end">
@@ -133,7 +137,7 @@
       </mat-card>
     </div>
     <!-- Documents -->
-    <mat-card class="card" *ngIf="!isLoading">
+    <mat-card class="card card-right flex-grow-2" *ngIf="!isLoading">
       <div class="flex_start_center gap-05">
         <mat-card-title>{{ (post.suporting_material?.length ?? 0) + 1 }} Documentos</mat-card-title>
         <mat-icon>description</mat-icon>

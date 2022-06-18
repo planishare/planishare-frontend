@@ -55,7 +55,7 @@ export class EditPostComponent extends Unsubscriber implements OnInit {
         this.form = new FormGroup(
             {
                 title: new FormControl('', Validators.required),
-                description: new FormControl(''),
+                description: new FormControl('', Validators.maxLength(1000)),
                 academicLevel: new FormControl(null, Validators.required),
                 axis: new FormControl(null, Validators.required)
             }

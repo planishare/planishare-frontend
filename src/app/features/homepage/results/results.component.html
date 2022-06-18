@@ -123,15 +123,23 @@
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <button [disabled]="post.user.id === user?.id" mat-menu-item (click)="reportPost(post)">
-                  <mat-icon>report</mat-icon>
-                  <span>Reportar publicación</span>
+                <button mat-menu-item *ngIf="post.user.id === user?.id" [routerLink]="['/posts/edit', post.id]">
+                    <mat-icon>edit</mat-icon>
+                    <span>Editar publicación</span>
                 </button>
-                <button [disabled]="post.user.id === user?.id" mat-menu-item (click)="reportUser(post)">
-                  <mat-icon>report</mat-icon>
-                  <span>Reportar usuario</span>
+                <button mat-menu-item *ngIf="post.user.id === user?.id" (click)="deletePost(post)">
+                    <mat-icon>delete</mat-icon>
+                    <span>Eliminar publicación</span>
                 </button>
-            </mat-menu>
+                <button mat-menu-item *ngIf="post.user.id !== user?.id" (click)="reportPost(post)">
+                    <mat-icon>report</mat-icon>
+                    <span>Reportar publicación</span>
+                </button>
+                <button mat-menu-item *ngIf="post.user.id !== user?.id" (click)="reportUser(post)">
+                    <mat-icon>report</mat-icon>
+                    <span>Reportar usuario</span>
+                </button>
+              </mat-menu>
             </div>
             <mat-card-title (click)="navigateToDetail(post.id)">{{ post.title }}</mat-card-title>
   

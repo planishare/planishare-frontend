@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { UsersService } from 'src/app/core/services/users.service';
 import { PostDetail, PostPageable, PostsQueryParams } from 'src/app/core/types/posts.type';
+import { UserDetail } from 'src/app/core/types/users.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 import { RoundedSelectSearchGroup, RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
 import { isMobile } from 'src/app/shared/utils';
@@ -84,7 +85,7 @@ export class UserPostsComponent extends Unsubscriber implements OnInit {
     }
 
     public ngOnInit(): void {
-        forkJoin([this.getAcademicLevels(), this.getSubjectsWithAxes() ])
+        forkJoin([this.getAcademicLevels(), this.getSubjectsWithAxes(), this.getUserStats() ])
             .pipe(
                 takeUntil(this.ngUnsubscribe$),
                 catchError(error => {
@@ -204,7 +205,15 @@ export class UserPostsComponent extends Unsubscriber implements OnInit {
         dialogRef.afterClosed().subscribe(refresh => {
             if (refresh) {
                 this.doSearch(1);
-                this.updateUserProfile();
+
+                const currentUserData = this.authService.getUserProfile();
+                this.user = {
+                    ...currentUserData!,
+                    total_posts: currentUserData!.total_posts - 1,
+                    total_likes: currentUserData!.total_likes - post.total_likes,
+                    total_views: currentUserData!.total_views - post.total_views
+                };
+                this.authService.setUserProfile(this.user);
             }
         });
     }
@@ -306,20 +315,10 @@ export class UserPostsComponent extends Unsubscriber implements OnInit {
             );
     }
 
-    private updateUserProfile(): void {
-        this.userService.getUserProfileByEmail(this.user?.email!)
-            .pipe(
-                catchError(error => {
-                    this.commonSnackbarMsg.showErrorMessage();
-                    return of(null);
-                })
-            )
-            .subscribe(resp => {
-                if (!!resp) {
-                    this.user = resp;
-                    this.authService.setUserProfile(resp);
-                }
-            });
+    public getUserStats(): Observable<UserDetail> {
+        return this.authService.refreshUserProfile().pipe(
+            tap(resp => this.user = resp)
+        );
     }
 
     private displayRemoveFiltersButton(): void {

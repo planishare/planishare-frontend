@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UserDetail, UserForm } from '../types/users.type';
 
@@ -14,6 +14,10 @@ export class UsersService {
 
     public isEmailAvailable(email: string): Observable<any> {
         return this.http.get(`${environment.apiUrl}/users/is-email-available/${email}/`);
+    }
+
+    public getUserById(id: number): Observable<UserDetail> {
+        return this.http.get<UserDetail>(`${environment.apiUrl}/users/${id}/`);
     }
 
     public getUserProfileByEmail(email: string): Observable<UserDetail> {

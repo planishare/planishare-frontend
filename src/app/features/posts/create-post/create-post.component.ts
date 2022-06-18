@@ -63,7 +63,7 @@ export class CreatePostComponent extends Unsubscriber implements OnInit {
         this.form = new FormGroup(
             {
                 title: new FormControl('', Validators.required),
-                description: new FormControl(''),
+                description: new FormControl('', Validators.maxLength(1000)),
                 academicLevel: new FormControl(null, Validators.required),
                 axis: new FormControl(null, Validators.required),
                 documents: new FormArray([], [Validators.required, Validators.maxLength(5), this.isFirstFileTypeAllowed.bind(this)])

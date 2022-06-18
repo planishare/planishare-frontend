@@ -18,6 +18,7 @@ import { NavbarService } from 'src/app/shared/services/navbar.service';
 import { RoundedSelectSearchGroup, RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
 import { isMobile } from 'src/app/shared/utils';
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
+import { DeleteDialogComponent } from '../../posts/components/delete-dialog/delete-dialog.component';
 
 @Component({
     selector: 'app-results',
@@ -461,6 +462,20 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
 
         this.dialog.open(ReportDialogComponent, {
             data: reportData
+        });
+    }
+
+    public deletePost(post: PostDetail): void {
+        const dialogRef = this.dialog.open(DeleteDialogComponent, {
+            data: {
+                post
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(refresh => {
+            if (refresh) {
+                this.router.navigate(['/', 'results']);
+            }
         });
     }
 }

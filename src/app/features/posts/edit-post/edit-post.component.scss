@@ -26,6 +26,10 @@
     }
 }
 
+.card-right {
+    max-width: 30rem;
+}
+
 .back-button {
     margin-bottom: 0.5rem;
 }
@@ -100,7 +104,9 @@
 }
 
 .documents-shimmer {
-    flex-grow: 0.6;
+    flex-grow: 1;
+    max-width: 30rem;
+    width: 100%;
 }
 
 // Tablet and mobile
