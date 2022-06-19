@@ -81,52 +81,52 @@ export class TopsComponent extends Unsubscriber implements OnInit {
         this.router.navigate(['/posts/view/', postId]);
     }
 
-    public toggleLike(post: PostDetail): any {
-        const user = this.authService.getUserProfile();
-        if (!!!user) {
-            this.commonSnackbarMsg.showLoginMessage('dar Me gusta');
-            return;
-        }
-        if (!!post.already_liked) {
-            // Visual efect
-            const likeId = post.already_liked;
-            post.already_liked = null;
-            post.total_likes--;
+    // public toggleLike(post: PostDetail): any {
+    //     const user = this.authService.getUserProfile();
+    //     if (!!!user) {
+    //         this.commonSnackbarMsg.showLoginMessage('dar Me gusta');
+    //         return;
+    //     }
+    //     if (!!post.already_liked) {
+    //         // Visual efect
+    //         const likeId = post.already_liked;
+    //         post.already_liked = null;
+    //         post.total_likes--;
 
-            // Request
-            this.reactionService.deleteLike(likeId)
-                .pipe(
-                    catchError(() => {
-                        post.already_liked = likeId;
-                        post.total_likes++;
-                        this.commonSnackbarMsg.showErrorMessage();
-                        return of(null);
-                    })
-                )
-                .subscribe(() => {
-                    console.log('Delete like!');
-                });
-        } else {
-            // Visual efect
-            post.already_liked = 1;
-            post.total_likes++;
+    //         // Request
+    //         this.reactionService.deleteLike(likeId)
+    //             .pipe(
+    //                 catchError(() => {
+    //                     post.already_liked = likeId;
+    //                     post.total_likes++;
+    //                     this.commonSnackbarMsg.showErrorMessage();
+    //                     return of(null);
+    //                 })
+    //             )
+    //             .subscribe(() => {
+    //                 console.log('Delete like!');
+    //             });
+    //     } else {
+    //         // Visual efect
+    //         post.already_liked = 1;
+    //         post.total_likes++;
 
-            // Request
-            this.reactionService.createLike(user.id, post.id)
-                .pipe(
-                    catchError(() => {
-                        post.already_liked = null;
-                        post.total_likes--;
-                        this.commonSnackbarMsg.showErrorMessage();
-                        return of(null);
-                    })
-                )
-                .subscribe(like => {
-                    if (!!like) {
-                        post.already_liked = like.id;
-                        console.log('Like!');
-                    }
-                });
-        }
-    }
+    //         // Request
+    //         this.reactionService.createLike(user.id, post.id)
+    //             .pipe(
+    //                 catchError(() => {
+    //                     post.already_liked = null;
+    //                     post.total_likes--;
+    //                     this.commonSnackbarMsg.showErrorMessage();
+    //                     return of(null);
+    //                 })
+    //             )
+    //             .subscribe(like => {
+    //                 if (!!like) {
+    //                     post.already_liked = like.id;
+    //                     console.log('Like!');
+    //                 }
+    //             });
+    //     }
+    // }
 }

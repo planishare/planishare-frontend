@@ -21,8 +21,9 @@ export class EditProfileComponent extends Unsubscriber implements OnInit {
     public userProfile?: UserDetail;
     public isVerificated?: boolean;
     public form: FormGroup;
-    public isSaveLoading = false;
+    public isSaving = false;
     public isLoading = true;
+    public isAlreadySaved = true;
 
     public educations: Education[] = [];
     public institutions?: Institution[];
@@ -57,6 +58,7 @@ export class EditProfileComponent extends Unsubscriber implements OnInit {
         this.form.get('email')?.disable();
         this.searchInstitution = new FormControl();
         this.searchLocation = new FormControl();
+        this.form.valueChanges.subscribe(() => this.isAlreadySaved = false);
     }
 
     public ngOnInit(): void {
@@ -87,6 +89,7 @@ export class EditProfileComponent extends Unsubscriber implements OnInit {
                     commune: this.userProfile?.commune?.id
                 });
                 this.isLoading = false;
+                this.isAlreadySaved = true;
             });
     }
 
@@ -102,7 +105,7 @@ export class EditProfileComponent extends Unsubscriber implements OnInit {
                 commune: this.form.get('commune')?.value
             };
 
-            this.isSaveLoading = true;
+            this.isSaving = true;
             this.userServices.updateUserProfile(this.userProfile!.id, body)
                 .pipe(
                     catchError(error => {
@@ -112,7 +115,8 @@ export class EditProfileComponent extends Unsubscriber implements OnInit {
                 )
                 .subscribe(resp => {
                     this.matSnackBar.open('Datos actualizados :)', 'Cerrar', { duration: 2000 });
-                    this.isSaveLoading = false;
+                    this.isSaving = false;
+                    this.isAlreadySaved = true;
                     this.form.setErrors({});
 
                     const currentUserProfile = this.authService.getUserProfile();

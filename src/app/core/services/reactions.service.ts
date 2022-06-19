@@ -26,6 +26,13 @@ export class ReactionsService {
         return this.http.delete(environment.apiUrl + `/likes/delete/${likeId}/`);
     }
 
+    public toggleLike(userId: number, postId: number): Observable<{id: number|null}> {
+        return this.http.post<{id: number|null}>(environment.apiUrl + `/likes/toggle/`, {
+            user: userId,
+            post: postId
+        });
+    }
+
     public registerView(postId: number): Observable<any> {
         const body = {
             firebase_user_id: this.authService.getAccessToken(),

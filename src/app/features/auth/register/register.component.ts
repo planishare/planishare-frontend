@@ -153,6 +153,12 @@ export class RegisterComponent {
         if (this.passwordControl?.hasError('required')) {
             return 'Ingresa una contraseña';
         }
+        if (this.passwordControl?.hasError('minlength')) {
+            return 'Debe tener al menos 8 carácteres';
+        }
+        if (this.passwordControl?.hasError('pattern')) {
+            return 'Debe tener al menos una letra y un número';
+        }
         return !!this.passwordControl?.errors ? 'Contraseña no válida' : '';
     }
     public getRepeatPasswordErrorMessage() {
