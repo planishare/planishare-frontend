@@ -45,10 +45,10 @@ export class CreatePostComponent extends Unsubscriber implements OnInit {
     public maxFileSize = 3000000; // 4Mb
     public maxFilesMsg = 'Puedes subir máximo 5 archivos';
     public maxFileSizeMsg = `No puedes subir archivos que pesen más de ${this.maxFileSize / 1000000}MB`;
-    public firstDocTypeMsg = 'El primer archivo debe ser pdf, doc, ppt o xls';
+    public firstDocTypeMsg = 'El primer archivo debe ser PDF o Microsoft Doc (Word)';
 
     // Allowed ext for main file
-    public docTypes = ['pdf', 'doc','docm','docx','txt', 'csv','xlam','xls','xlsx','xml','ppt','pptx'];
+    public docTypes = ['pdf', 'doc','docm','docx'];
 
     constructor(
         private storage: Storage,
@@ -66,7 +66,7 @@ export class CreatePostComponent extends Unsubscriber implements OnInit {
                 description: new FormControl('', Validators.maxLength(1000)),
                 academicLevel: new FormControl(null, Validators.required),
                 axis: new FormControl(null, Validators.required),
-                documents: new FormArray([], [Validators.required, Validators.maxLength(5), this.isFirstFileTypeAllowed.bind(this)])
+                documents: new FormArray([], [Validators.required, Validators.maxLength(5), this.validateFirstFileTypeAllowed.bind(this)])
             }
         );
 
@@ -129,77 +129,89 @@ export class CreatePostComponent extends Unsubscriber implements OnInit {
 
     public onFileSelected(event: Event): any {
         const files = Array.from((event.target as HTMLInputElement).files ?? []);
-
-        if (!!files?.length && this.documentList?.length + files?.length <= 5) {
-            files.forEach(file => {
-                if (file.size <= this.maxFileSize) {
-                    this.uploadFile(file);
-                } else {
-                    this.matSnackbar.open(this.maxFileSizeMsg, 'Cerrar', { duration: 3000 });
-                    this.documentsControl.setErrors({ maxSize: true });
-                }
-            });
-        } else {
-            this.matSnackbar.open(this.maxFilesMsg, 'Cerrar', { duration: 3000  });
-            if (this.documentList.length < 5 ) {
-                this.documentsControl.setErrors({ max: true });
-            }
-        }
+        this.handleFiles(files);
     }
 
     public onFileDroped(event: FileList): void {
         const files = Array.from(event);
+        this.handleFiles(files);
+    }
 
-        if (!!files?.length && this.documentList?.length + files?.length <= 5) {
-            files.forEach(file => {
-                if (file.size <= this.maxFileSize) {
-                    this.uploadFile(file);
-                } else {
-                    this.matSnackbar.open(this.maxFileSizeMsg, 'Cerrar', { duration: 3000 });
-                    this.documentsControl.setErrors({ maxSize: true });
-                }
-            });
-        } else {
-            this.matSnackbar.open(this.maxFilesMsg, 'Cerrar', { duration: 3000 });
-            if (this.documentList.length < 5 ) {
-                this.documentsControl.setErrors({ max: true });
-            }
+    private async handleFiles(files: File[]): Promise<any> {
+        console.log(files);
+        if (!!!files?.length) {
+            return false;
         }
+
+        if (this.documentList?.length + files?.length > 5) {
+            this.matSnackbar.open(this.maxFilesMsg, 'Cerrar', { duration: 3000  });
+            return false;
+        }
+
+        if ((!!this.documentList?.length && !this.isFirstFileTypeAllowed(this.documentList)) || (!!!this.documentList?.length && !this.isFirstFileTypeAllowed(files))) {
+            this.matSnackbar.open(this.firstDocTypeMsg, 'Cerrar', { duration: 3000  });
+            return false;
+        }
+
+        // Add file in documentList
+        files = files.filter((file: File) => {
+            if (file.size > this.maxFileSize) {
+                this.matSnackbar.open(this.maxFileSizeMsg, 'Cerrar', { duration: 3000 });
+                return false;
+            }
+            const alreadyAdded = this.documentList.find(doc => doc.name === file.name);
+            if (alreadyAdded) {
+                // this.matSnackbar.open(this.maxFileSizeMsg, 'Cerrar', { duration: 3000 });
+                return false;
+            }
+
+            const doc = {
+                name: file.name,
+                ext: file!.name.split('.').pop() ?? '',
+                url: '',
+                progress: 0,
+                isUploadComplete: false
+            };
+            this.documentList.push(doc);
+            return true;
+        });
+
+        const uploadedFiles = await Promise.all(files.map((file, i) => this.uploadFile(file)));
+        uploadedFiles.forEach(fileUrl => this.documentsControl.push(new FormControl(fileUrl)));
+
+        // console.log(files);
+        // console.log(this.documentList);
+        // console.log(this.documentsControl.value);
+        return true;
     }
 
     // Upload file
-    private async uploadFile(file: File): Promise<void> {
+    private async uploadFile(file: File): Promise<string> {
         const ext = file!.name.split('.').pop();
         const name = file!.name.split('.')[0];
         const date = new Date().getTime();
         const fileName = `${name}___${file.size}___${date}.${ext}`;
         const storageRef = ref(this.storage, fileName);
 
-        // Add file in documentList
-        this.documentList.push({
-            name: file.name,
-            ext: ext ?? '',
-            url: '',
-            progress: 0,
-            isUploadComplete: false
-        });
-
         await uploadBytesResumable(storageRef, file);
 
         const url = await getDownloadURL(storageRef);
-        const doc = this.documentList.find(doc => doc.name === file.name);
+
+        // Show already uploaded
+        const doc = this.documentList.find(el => el.name === file.name);
         if (!!doc && !!url) {
             doc.url = url;
             doc.progress = 100;
             doc.isUploadComplete = true;
-            this.documentsControl.push(new FormControl(doc.url));
         }
-        // console.log(`${file.name}: ${url}`, this.documentList);
+
+        return url;
     }
 
     public removeFile(index: number): void {
         this.documentList.splice(index, 1);
         this.documentsControl.removeAt(index);
+        this.form.updateValueAndValidity();
         // TODO: Delete file from firebase
     }
 
@@ -266,13 +278,21 @@ export class CreatePostComponent extends Unsubscriber implements OnInit {
     }
 
     // Validates first doc have an allowed type
-    private isFirstFileTypeAllowed(control: AbstractControl): any {
+    private validateFirstFileTypeAllowed(control: AbstractControl): any {
         const firstFileType = this.getDocTypeFromFirebaseUrl(control.value[0] ?? '');
         if (firstFileType && !this.docTypes.find(type => type === firstFileType)) {
             this.matSnackbar.open(this.firstDocTypeMsg, 'Cerrar', { duration: 3000 });
             return { firstDocType: true };
         }
         return null;
+    }
+
+    private isFirstFileTypeAllowed(documentList: fileUploadInformation[] | File[]): any {
+        const firstFileType = documentList[0]?.name.split('.').pop();
+        if (firstFileType && this.docTypes.find(type => type === firstFileType)) {
+            return true;
+        }
+        return false;
     }
 
     // Utils
