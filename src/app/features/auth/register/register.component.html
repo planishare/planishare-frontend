@@ -24,7 +24,7 @@
                       <mat-error *ngIf="emailControl?.invalid">{{ getEmailErrorMessage() }}</mat-error>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline">
+                    <mat-form-field appearance="outline" [ngClass]="passwordControl?.invalid? 'm-b-8': 'm-b-0'">
                       <mat-label>Contraseña</mat-label>
                       <input [type]="hidePassword? 'password' : 'text'" matInput formControlName="password">
                       <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
