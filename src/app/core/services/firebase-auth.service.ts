@@ -21,7 +21,7 @@ export class FirebaseAuthService {
     public sendEmailVerification(): void {
         sendEmailVerification(this.auth.currentUser!)
             .then(() => {
-                this.matSnackbar.open('Revisa tu email para validar tu cuenta :)', 'Cerrar', {
+                this.matSnackbar.open('Te enviamos un email para validar tu cuenta (revisa spam).', 'Cerrar', {
                     duration: 4000
                 });
             })

@@ -1,7 +1,10 @@
 <header class="header">
   <div class="flex_column" [ngClass]="isMobile ? 'flex_center' : ''">
     <h1 class="title">Busca y comparte planificaciones de enseñanza básica</h1>
-    <button mat-raised-button class="results-button" [routerLink]="['/', 'results']">Ver planificaciones</button>
+    <button mat-raised-button class="results-button" [routerLink]="['/', 'results']">
+      Ver planificaciones
+      <mat-icon>arrow_forward</mat-icon>
+    </button>
   </div>
   <img class="teachers-img" src="../../../../assets/images/homepage-teachers.png" alt="Ilustraciones de profesores">
 </header>

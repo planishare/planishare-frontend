@@ -44,6 +44,11 @@
                       <mat-error *ngIf="repeatPasswordControl?.invalid">{{ getRepeatPasswordErrorMessage() }}</mat-error>
                     </mat-form-field>
         
+                    <div class="flex_center_center gap-05 m-b-8">
+                      <mat-icon>info</mat-icon>
+                      <span>Tip: Si te registras con Google no tendrás que verificar tu cuenta.</span>
+                    </div>
+
                     <div class="buttons">
                         <button mat-raised-button class="register-button" type="submit" *ngIf="!isLoading">
                             <mat-icon>person_add</mat-icon>
