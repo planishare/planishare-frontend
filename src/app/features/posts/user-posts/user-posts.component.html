@@ -71,14 +71,14 @@
             <div class="flex_justify_center flex_center gap-1 m-y-32">
                 <div>
                     <div class="stat-number">
-                        <span>{{ user?.total_likes }}</span>
+                        <span>{{ user?.total_likes ?? 0 }}</span>
                         <mat-icon class="red-icon">favorite</mat-icon>
                     </div>
                     <span class="stat-text">Me gusta</span>
                 </div>
                 <div>
                     <div class="stat-number">
-                        <span>{{ user?.total_views }}</span>
+                        <span>{{ user?.total_views ?? 0 }}</span>
                         <mat-icon class="blue-icon">visibility</mat-icon>
                     </div>
                     <span class="stat-text">Vistas</span>
