@@ -42,6 +42,12 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
         ppt: ['ppt','pptx']
     };
 
+    public donwloadInSameTab = [
+        'doc','docm','docx',
+        'csv','xlam','xls','xlsx','xml',
+        'ppt','pptx'
+    ];
+
     // DELETE_THIS: Dev porposes
     public pdf = 'https://firebasestorage.googleapis.com/v0/b/planishare.appspot.com/o/ER_Directorio_Oficial_EE_WEB.pdf?alt=media&token=a1c252ec-766a-4844-8d80-de913b7d09bc';
     public docx = 'https://firebasestorage.googleapis.com/v0/b/planishare.appspot.com/o/Formulario-Inscripci%C3%B3n-de-Tesis.docx?alt=media&token=ca6883f2-e4ef-46d4-88f2-d251adb177c3';
@@ -184,10 +190,10 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
     }
 
     public download(docUrl: string): void {
-        if (this.getDocType(docUrl) === 'pdf') {
-            window.open(docUrl, '_blank');
-        } else {
+        if (this.donwloadInSameTab.find(el => el === this.getDocType(docUrl))) {
             location.href = docUrl;
+        } else {
+            window.open(docUrl, '_blank');
         }
     }
 
