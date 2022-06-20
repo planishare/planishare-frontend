@@ -29,7 +29,7 @@ export class EditProfileComponent extends Unsubscriber implements OnInit {
     public institutions?: Institution[];
     public regionsWithComunnes?: RegionWithCommunes[];
 
-    public isInstitutionsLoading = true;
+    public isInstitutionsLoading = false;
     public isGetInstitutionsFirstReq = true;
     public isLocationsLoading = true;
     public searchInstitution: FormControl;
@@ -65,8 +65,8 @@ export class EditProfileComponent extends Unsubscriber implements OnInit {
         this.isVerificated = this.authService.isAuth$.value?.emailVerified;
 
         this.filteredInstitutions = this.searchInstitution.valueChanges.pipe(
-            tap(() => this.isInstitutionsLoading = true),
             filter(value => !!value),
+            tap(() => this.isInstitutionsLoading = true),
             startWith(''),
             switchMap((value: string) => this.getInstitutions(value))
         );

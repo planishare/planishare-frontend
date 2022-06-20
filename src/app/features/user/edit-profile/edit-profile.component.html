@@ -21,28 +21,11 @@
             </mat-form-field>
             
             <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Educación</mat-label>
+                <mat-label>Ocupación</mat-label>
                 <mat-select formControlName="education" disableOptionCentering>
                   <mat-option *ngFor="let option of educations" [value]="option.id">
                     {{ option.name }}
                   </mat-option>
-                </mat-select>
-            </mat-form-field>
-            
-            <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Institución</mat-label>
-                <mat-select formControlName="institution" disableOptionCentering>
-                    <mat-option>
-                        <ngx-mat-select-search
-                          [searching]="isInstitutionsLoading"
-                          [formControl]="searchInstitution"
-                          placeholderLabel="Buscar institución"
-                          noEntriesFoundLabel="No se encontraron resultados">
-                        </ngx-mat-select-search>
-                    </mat-option>
-                    <mat-option *ngFor="let institution of filteredInstitutions|async" [value]="institution.id">
-                    {{ institution.name }}
-                    </mat-option>
                 </mat-select>
             </mat-form-field>
             
@@ -63,6 +46,29 @@
                             </mat-option>
                         </mat-optgroup>
                 </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Institución</mat-label>
+                <mat-select formControlName="institution" disableOptionCentering>
+                    <mat-option>
+                        <ngx-mat-select-search
+                          [searching]="isInstitutionsLoading"
+                          [formControl]="searchInstitution"
+                          placeholderLabel="Escribe para cargar más instituciones"
+                          [noEntriesFoundLabel]="!isInstitutionsLoading ? 'No se encontraron resultados' : 'Cargando...'">
+                        </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option
+                        *ngIf="!isInstitutionsLoading && !!form.get('institution')?.value && !!(filteredInstitutions|async)?.length"
+                        [value]="null">
+                        Borrar
+                    </mat-option>
+                    <mat-option *ngFor="let institution of filteredInstitutions|async" [value]="institution.id">
+                        {{ institution.name }}
+                    </mat-option>
+                </mat-select>
+                <mat-hint>Pronto agregaremos más instituciones.</mat-hint>
             </mat-form-field>
 
             <div class="flex_justify_end">
