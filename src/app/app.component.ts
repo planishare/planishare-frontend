@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { delay, filter, pipe } from 'rxjs';
 import { AuthService } from './core/services/auth.service';
 
@@ -9,16 +10,22 @@ import { AuthService } from './core/services/auth.service';
 })
 export class AppComponent implements OnInit {
     public title = 'planishare';
+    public inMaintenance = false;
     public isAuthCompleted = false;
 
     constructor (
-        private authService: AuthService
+        private authService: AuthService,
+        private matSnackBar: MatSnackBar
     ) {}
 
     public ngOnInit(): void {
         this.authService.isCompleted$.asObservable()
             .subscribe((isAuthCompleted: boolean) => {
-                this.isAuthCompleted = isAuthCompleted;
+                this.isAuthCompleted = isAuthCompleted && !this.inMaintenance;
             });
+
+        if (this.inMaintenance) {
+            this.matSnackBar.open('Estamos trabajando en actualizaciones, te recomendamos volver más tarde. 🔧');
+        }
     }
 }
