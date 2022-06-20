@@ -84,7 +84,8 @@ export class AuthService {
                         )
                         .subscribe((userProfile: UserDetail | null) => {
                             if (!!userProfile) {
-                                this.userProfile = userProfile;
+                                // this.userProfile = userProfile;
+                                this.setUserProfile(userProfile);
                                 this.isCompleted$.next(true);
                             }
                         });
@@ -98,7 +99,8 @@ export class AuthService {
     }
 
     public loginAnonymously(): Observable<UserCredential | null> {
-        this.userProfile = undefined;
+        // this.userProfile = undefined;
+        this.setUserProfile(undefined);
         return from(signInAnonymously(this.auth))
             .pipe(
                 tap(resp => {
@@ -177,7 +179,8 @@ export class AuthService {
         this.isRegistered$.next(false);
         this.accessToken = undefined;
         this.firebaseUID = undefined;
-        this.userProfile = undefined;
+        // this.userProfile = undefined;
+        this.setUserProfile(undefined);
         signOut(this.auth);
         this.isAuth$.asObservable()
             .pipe(
@@ -209,15 +212,18 @@ export class AuthService {
         return this.userProfile;
     }
 
-    public setUserProfile(data: UserDetail): void {
+    public setUserProfile(data: UserDetail | undefined): void {
         this.userProfile = data;
+        localStorage.setItem('userProfile', JSON.stringify(data ?? {}));
     }
 
     private authServiceConsoleLog(...data: any[]): void {
-        console.log(
-            `%c (AUTH-SERVICE): ${data[0]}`,
-            'background: #222; color: #bada55',
-            ...data.splice(1,1)
-        );
+        if (!environment.production) {
+            console.log(
+                `%c (AUTH-SERVICE): ${data[0]}`,
+                'background: #222; color: #bada55',
+                ...data.splice(1,1)
+            );
+        }
     }
 }

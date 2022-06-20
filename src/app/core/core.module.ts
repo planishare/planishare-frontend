@@ -8,8 +8,8 @@ import { IsAuthGuard } from './guards/is-auth.guard';
 import { IsNotAuthGuard } from './guards/is-not-auth.guard';
 import { UsersService } from './services/users.service';
 import { ReactionsService } from './services/reactions.service';
-import { FirebaseStorageService } from './services/firebase-storage.service';
 import { FirebaseAuthService } from './services/firebase-auth.service';
+import { RollbarErrorHandlerService } from './services/rollbar-error-handler.service';
 
 @NgModule({
     declarations: [],
@@ -24,8 +24,8 @@ import { FirebaseAuthService } from './services/firebase-auth.service';
         AuthService,
         UsersService,
         ReactionsService,
-        FirebaseStorageService,
         FirebaseAuthService,
+        RollbarErrorHandlerService,
 
         // Guards
         IsAuthGuard,

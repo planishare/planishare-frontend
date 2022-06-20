@@ -27,6 +27,7 @@
     "ngx-mat-select-search": "^4.1.1",
     "ngx-shimmer-loading": "0.0.5",
     "normalize.css": "^8.0.1",
+    "rollbar": "^2.25.0",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

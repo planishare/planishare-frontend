@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { getDownloadURL, ref, Storage, uploadBytesResumable, UploadTask, UploadTaskSnapshot } from '@angular/fire/storage';
-import { FirebaseStorageService } from 'src/app/core/services/firebase-storage.service';
-import { RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
+import { getDownloadURL, ref, Storage, uploadBytesResumable } from '@angular/fire/storage';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { catchError, forkJoin, map, Observable, of, startWith, takeUntil, tap } from 'rxjs';
