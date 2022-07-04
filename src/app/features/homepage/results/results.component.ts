@@ -172,7 +172,7 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
             .subscribe(resp => {
                 if (!!resp) {
                     this.pageInfo = resp;
-                    this.maxPage = ((this.pageInfo.count - this.pageInfo.count % 10) / 10) + 1;
+                    this.maxPage = this.pageInfo.count <= 10 ? 1 : ((this.pageInfo.count - this.pageInfo.count % 10) / 10) + 1;
                     this.posts = resp.results;
                     this.hasData = !!this.posts.length;
                     console.log(this.pageInfo);
