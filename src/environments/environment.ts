@@ -16,7 +16,7 @@ export const environment = {
     },
     production: false,
 
-    apiUrl: 'https://planishare-backend-dev.azurewebsites.net/api'
+    apiUrl: 'https://planishare-backend-dev.onrender.com/api'
 };
 
 /*
