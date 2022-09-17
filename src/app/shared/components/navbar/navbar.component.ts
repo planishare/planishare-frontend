@@ -8,7 +8,6 @@ import { SidenavService } from 'src/app/core/services/sidenav.service';
 import { NavbarService } from '../../services/navbar.service';
 import { ButtonsConfig } from '../../types/navbar.type';
 import { isMobile, isTablet } from '../../utils';
-import { SearchDialogComponent } from '../search-dialog/search-dialog.component';
 
 @Component({
     selector: 'app-navbar',
@@ -44,11 +43,5 @@ export class NavbarComponent implements OnInit {
 
     public logout(): void {
         this.authService.logout();
-    }
-
-    public openSearchDialog() {
-        this.dialog.open(SearchDialogComponent, {
-            autoFocus: false
-        });
     }
 }

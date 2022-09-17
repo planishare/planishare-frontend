@@ -2,7 +2,8 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-// Deploy dev: ng build --configuration development; firebase deploy -P dev
+// Build dev: ng build --configuration development
+// Deploy to Firebase dev: firebase deploy -P dev
 
 export const environment = {
     firebase: {

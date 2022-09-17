@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { MaterialModule } from './material/material.module';
-import { SearchButtonComponent } from './components/search-button/search-button.component';
-import { SearchDialogComponent } from './components/search-dialog/search-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavigationSidenavComponent } from './components/navigation-sidenav/navigation-sidenav.component';
 import { RouterModule } from '@angular/router';
@@ -38,8 +36,6 @@ import { ReportDialogComponent } from './components/report-dialog/report-dialog.
         // Components
         ReportDialogComponent,
         NavbarComponent,
-        SearchButtonComponent,
-        SearchDialogComponent,
         NavigationSidenavComponent,
         RoundedSelectSearchComponent,
         BookLoaderComponent,

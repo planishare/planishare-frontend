@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
     public ngOnInit(): void {
         this.authService.isCompleted$.asObservable()
             .subscribe((isAuthCompleted: boolean) => {
-                this.isAuthCompleted = isAuthCompleted && !this.inMaintenance;
+                this.isAuthCompleted = isAuthCompleted;
             });
 
         if (this.inMaintenance) {

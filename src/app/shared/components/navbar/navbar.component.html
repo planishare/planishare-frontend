@@ -35,7 +35,6 @@
                 </button>
             </li>
             <li *ngIf="(buttonConfig|async)?.showSeachButton">
-                <!-- <button mat-raised-button class="search-button" (click)="openSearchDialog(); $event.stopPropagation()"> -->
                 <button mat-raised-button class="search-button" [routerLink]="['/', 'results']">
                     <mat-icon>search</mat-icon>
                     <span>Buscar</span>
