@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { catchError, debounceTime, delay, forkJoin, map, merge, Observable, of, race, switchMap, takeUntil, tap, throttleTime } from 'rxjs';
 import { OrderingType, OrderingTypeName } from 'src/app/core/enums/posts.enum';
-import { ReportType } from 'src/app/core/enums/report.enum';
+import { ReportType } from 'src/app/shared/enums/report.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { ReactionsService } from 'src/app/core/services/reactions.service';

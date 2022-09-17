@@ -3,7 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, of } from 'rxjs';
-import { ReportType, ReportTypeName } from 'src/app/core/enums/report.enum';
+import { ReportType, ReportTypeName } from 'src/app/shared/enums/report.enum';
 import { ReportService } from 'src/app/core/services/report.service';
 import { Report } from 'src/app/core/types/report.type';
 import { CommonSnackbarMsgService } from '../../services/common-snackbar-msg.service';

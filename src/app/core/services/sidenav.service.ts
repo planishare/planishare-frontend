@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { SidenavComponent } from '../enums/sidenav.enum';
+import { SidenavComponent } from '../../shared/enums/sidenav.enum';
 
 @Injectable({
     providedIn: 'root'

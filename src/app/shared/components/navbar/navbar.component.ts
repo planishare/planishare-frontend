@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { SidenavComponent } from 'src/app/core/enums/sidenav.enum';
+import { SidenavComponent } from 'src/app/shared/enums/sidenav.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { SidenavService } from 'src/app/core/services/sidenav.service';
 import { NavbarService } from '../../services/navbar.service';

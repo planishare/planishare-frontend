@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { viewerType } from 'ngx-doc-viewer';
 import { catchError, of, takeUntil } from 'rxjs';
-import { ReportType } from 'src/app/core/enums/report.enum';
+import { ReportType } from 'src/app/shared/enums/report.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { ReactionsService } from 'src/app/core/services/reactions.service';

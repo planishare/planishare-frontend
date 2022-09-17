@@ -1,4 +1,4 @@
-import { ReportType } from "../enums/report.enum";
+import { ReportType } from "../../shared/enums/report.enum";
 
 export type Report = {
     report_type: ReportType,

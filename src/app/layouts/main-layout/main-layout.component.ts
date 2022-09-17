@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SidenavComponent } from 'src/app/core/enums/sidenav.enum';
+import { SidenavComponent } from 'src/app/shared/enums/sidenav.enum';
 import { SidenavService } from 'src/app/core/services/sidenav.service';
 
 @Component({
