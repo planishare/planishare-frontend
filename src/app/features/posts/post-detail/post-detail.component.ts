@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -13,7 +12,7 @@ import { Report } from 'src/app/core/types/report.type';
 import { UserDetail } from 'src/app/core/types/users.type';
 import { ReportDialogComponent } from 'src/app/shared/components/report-dialog/report-dialog.component';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
-import { isMobile } from 'src/app/shared/utils';
+import { isMobile } from 'src/app/shared/utils/window-width';
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 import { DeleteDialogComponent } from '../components/delete-dialog/delete-dialog.component';
 

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { isMobile } from 'src/app/shared/utils';
+import { Component } from '@angular/core';
+import { isMobile } from 'src/app/shared/utils/window-width';
 
 @Component({
     selector: 'app-results-shimmer',

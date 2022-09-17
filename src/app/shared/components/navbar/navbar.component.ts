@@ -7,7 +7,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { SidenavService } from 'src/app/core/services/sidenav.service';
 import { NavbarService } from '../../services/navbar.service';
 import { ButtonsConfig } from '../../types/navbar.type';
-import { isMobile, isTablet } from '../../utils';
+import { isMobile, isTablet } from '../../utils/window-width';
 
 @Component({
     selector: 'app-navbar',

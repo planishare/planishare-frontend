@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, Observable, of, takeUntil, tap } from 'rxjs';
+import { catchError, of, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { ReactionsService } from 'src/app/core/services/reactions.service';
 import { PostDetail } from 'src/app/core/types/posts.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
-import { isMobile } from 'src/app/shared/utils';
+import { isMobile } from 'src/app/shared/utils/window-width';
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 
 @Component({

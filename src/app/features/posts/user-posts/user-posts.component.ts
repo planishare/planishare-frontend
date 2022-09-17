@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { catchError, debounceTime, forkJoin, map, merge, Observable, of, startWith, takeUntil, tap } from 'rxjs';
 import { OrderingType, OrderingTypeName } from 'src/app/core/enums/posts.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -11,7 +10,7 @@ import { PostDetail, PostPageable, PostsQueryParams } from 'src/app/core/types/p
 import { UserDetail } from 'src/app/core/types/users.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 import { RoundedSelectSearchGroup, RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
-import { isMobile } from 'src/app/shared/utils';
+import { isMobile } from 'src/app/shared/utils/window-width';
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 import { DeleteDialogComponent } from '../components/delete-dialog/delete-dialog.component';
 

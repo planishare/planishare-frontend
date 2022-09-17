@@ -1,7 +1,6 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { catchError, debounceTime, delay, forkJoin, map, merge, Observable, of, race, switchMap, takeUntil, tap, throttleTime } from 'rxjs';
 import { OrderingType, OrderingTypeName } from 'src/app/core/enums/posts.enum';
@@ -9,14 +8,14 @@ import { ReportType } from 'src/app/core/enums/report.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { ReactionsService } from 'src/app/core/services/reactions.service';
-import { Axis, PostDetail, PostPageable, PostsQueryParams } from 'src/app/core/types/posts.type';
+import { PostDetail, PostPageable, PostsQueryParams } from 'src/app/core/types/posts.type';
 import { Report } from 'src/app/core/types/report.type';
 import { UserDetail } from 'src/app/core/types/users.type';
 import { ReportDialogComponent } from 'src/app/shared/components/report-dialog/report-dialog.component';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 import { NavbarService } from 'src/app/shared/services/navbar.service';
 import { RoundedSelectSearchGroup, RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
-import { isMobile } from 'src/app/shared/utils';
+import { isMobile } from 'src/app/shared/utils/window-width';
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 import { DeleteDialogComponent } from '../../posts/components/delete-dialog/delete-dialog.component';
 
