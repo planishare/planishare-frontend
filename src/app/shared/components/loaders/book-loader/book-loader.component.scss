@@ -1,58 +1,57 @@
 // Loader from https://cssloaders.github.io/
 
-// Replace 1 for change size
-
 :host {
     display: flex;
+    --size: 1;
 }
 
 .loader {
-    width: calc(200px * 1);
-    height: calc(140px * 1);
+    width: calc(200px * var(--size));
+    height: calc(140px * var(--size));
     background: #979794;
     box-sizing: border-box;
     position: relative;
-    border-radius: calc(8px * 1);
-    perspective: calc(1000px * 1);
+    border-radius: calc(8px * var(--size));
+    perspective: calc(1000px * var(--size));
 }
 
 .loader:before {
     content: '';
     position: absolute;
-    left: calc(10px * 1);
-    right: calc(10px * 1);
-    top: calc(10px * 1);
-    bottom: calc(10px * 1);
-    border-radius: calc(8px * 1);
+    left: calc(10px * var(--size));
+    right: calc(10px * var(--size));
+    top: calc(10px * var(--size));
+    bottom: calc(10px * var(--size));
+    border-radius: calc(8px * var(--size));
     background: #fff no-repeat;
-    background-size: calc(60px * 1) calc(10px * 1);
-    background-image: linear-gradient(#ddd calc(100px * 1), transparent 0),
-        linear-gradient(#ddd calc(100px * 1), transparent 0),
-        linear-gradient(#ddd calc(100px * 1), transparent 0),
-        linear-gradient(#ddd calc(100px * 1), transparent 0),
-        linear-gradient(#ddd calc(100px * 1), transparent 0),
-        linear-gradient(#ddd calc(100px * 1), transparent 0);
+    background-size: calc(60px * var(--size)) calc(10px * var(--size));
+    background-image: linear-gradient(#ddd calc(100px * var(--size)), transparent 0),
+        linear-gradient(#ddd calc(100px * var(--size)), transparent 0),
+        linear-gradient(#ddd calc(100px * var(--size)), transparent 0),
+        linear-gradient(#ddd calc(100px * var(--size)), transparent 0),
+        linear-gradient(#ddd calc(100px * var(--size)), transparent 0),
+        linear-gradient(#ddd calc(100px * var(--size)), transparent 0);
 
-    background-position: calc(15px * 1) calc(30px * 1), calc(15px * 1) calc(60px * 1), calc(15px * 1) calc(90px * 1),
-        calc(105px * 1) calc(30px * 1), calc(105px * 1) calc(60px * 1), calc(105px * 1) calc(90px * 1);
-    box-shadow: 0 0 calc(10px * 1) rgba(0, 0, 0, 0.25);
+    background-position: calc(15px * var(--size)) calc(30px * var(--size)), calc(15px * var(--size)) calc(60px * var(--size)), calc(15px * var(--size)) calc(90px * var(--size)),
+        calc(105px * var(--size)) calc(30px * var(--size)), calc(105px * var(--size)) calc(60px * var(--size)), calc(105px * var(--size)) calc(90px * var(--size));
+    box-shadow: 0 0 calc(10px * var(--size)) rgba(0, 0, 0, 0.25);
 }
 
 .loader:after {
     content: '';
     position: absolute;
-    width: calc(50% - calc(10px * 1));
-    right: calc(10px * 1);
-    top: calc(10px * 1);
-    bottom: calc(10px * 1);
-    border-radius: calc(8px * 1);
+    width: calc(50% - calc(10px * var(--size)));
+    right: calc(10px * var(--size));
+    top: calc(10px * var(--size));
+    bottom: calc(10px * var(--size));
+    border-radius: calc(8px * var(--size));
     background: #fff no-repeat;
-    background-size: calc(60px * 1) calc(10px * 1);
+    background-size: calc(60px * var(--size)) calc(10px * var(--size));
     background-image:
-        linear-gradient(#ddd calc(100px * 1), transparent 0),
-        linear-gradient(#ddd calc(100px * 1), transparent 0),
-        linear-gradient(#ddd calc(100px * 1), transparent 0);
-    background-position: 50% calc(30px * 1), 50% calc(60px * 1), 50% calc(90px * 1);
+        linear-gradient(#ddd calc(100px * var(--size)), transparent 0),
+        linear-gradient(#ddd calc(100px * var(--size)), transparent 0),
+        linear-gradient(#ddd calc(100px * var(--size)), transparent 0);
+    background-position: 50% calc(30px * var(--size)), 50% calc(60px * var(--size)), 50% calc(90px * var(--size));
     transform: rotateY(0deg);
     transform-origin: left center;
     animation: paging 1s linear infinite;
