@@ -1,0 +1,20 @@
+.rounded-button {
+    // Button and link reset
+    border: none;
+    text-decoration: none;
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5em;
+    border-radius: 100px;
+
+    color: var(--text-color, hsl(var(--clr-white)));
+    background-color: var(--bg-color, hsl(var(--clr-blue-dark)));
+    padding-inline: var(--pd-inline, 1.5em);
+    padding-block: var(--pd-block, .75em);
+}
+
+.rounded-button > .mat-icon {
+    height: 100%;
+}

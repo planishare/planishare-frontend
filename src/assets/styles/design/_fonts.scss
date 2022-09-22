@@ -1,0 +1,15 @@
+:root {
+    --fs-small: .875rem; // 14px
+    --fs-regular: 1rem; // 16px
+    --fs-medium: 1.25rem; // 20px
+    --fs-large: 1.5rem; // 24px
+    --fs-x-large: 2rem; // 32px
+    --fs-xx-large: 4.5rem; // 72px
+}
+
+.fs-small { font-size: var(--fs-small); }
+.fs-regular { font-size: var(--fs-regular); }
+.fs-medium { font-size: var(--fs-medium); }
+.fs-large { font-size: var(--fs-large); }
+.fs-x-large { font-size: var(--fs-x-large); }
+.fs-xx-large { font-size: var(--fs-xx-large); }
