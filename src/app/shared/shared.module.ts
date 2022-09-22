@@ -47,7 +47,7 @@ import { ReportDialogComponent } from './components/report-dialog/report-dialog.
         RouterModule,
         NgxMatSelectSearchModule,
         ReactiveFormsModule,
-        NgxDocViewerModule,
+        NgxDocViewerModule
     ],
     exports: [
         // Components
