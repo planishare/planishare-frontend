@@ -15,7 +15,6 @@ import { BookLoaderComponent } from './components/loaders/book-loader/book-loade
 import { SquareLoaderComponent } from './components/loaders/square-loader/square-loader.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { GetDocType, GetDocName } from './pipes/posts.pipe';
-import { NgxShimmerLoadingModule } from 'ngx-shimmer-loading';
 import { DragAndDropFileDirective } from './directives/drag-and-drop-file.directive';
 import { RoundedSelectGroupSearchComponent } from './components/rounded-select-group-search/rounded-select-group-search.component';
 import { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
@@ -49,7 +48,6 @@ import { ReportDialogComponent } from './components/report-dialog/report-dialog.
         NgxMatSelectSearchModule,
         ReactiveFormsModule,
         NgxDocViewerModule,
-        NgxShimmerLoadingModule
     ],
     exports: [
         // Components
@@ -66,7 +64,6 @@ import { ReportDialogComponent } from './components/report-dialog/report-dialog.
         NgxMatSelectSearchModule,
         ReactiveFormsModule,
         NgxDocViewerModule,
-        NgxShimmerLoadingModule,
 
         // Pipes
         GetUsernamePipe,

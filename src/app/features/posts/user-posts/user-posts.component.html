@@ -178,54 +178,6 @@
               </mat-card>
         </div>
 
-        <!-- Posts shimmer -->
-        <div class="flex_column gap-05" *ngIf="isLoading">
-            <mat-card *ngFor="let item of [].constructor(3)">
-                <mat-card-subtitle>
-                    <ngx-shimmer-loading width="30%" height="1rem"></ngx-shimmer-loading>
-                </mat-card-subtitle>
-                
-                <mat-card-title>
-                    <ngx-shimmer-loading width="35%" height="2rem"></ngx-shimmer-loading>
-                </mat-card-title>
-                
-                <mat-card-content class="">
-                    <ngx-shimmer-loading width="80%" height="1rem"></ngx-shimmer-loading>
-                    <ngx-shimmer-loading width="70%" height="1rem"></ngx-shimmer-loading>
-                    
-                    <div class="flex-start">
-                        <ngx-shimmer-loading class="m-r-8" width="25%" height="2rem" borderRadius="20px"></ngx-shimmer-loading>
-                        <ngx-shimmer-loading class="m-r-8 m-l-8" width="15%" height="2rem" borderRadius="20px"></ngx-shimmer-loading>
-                        <ngx-shimmer-loading class="m-l-8" width="20%" height="2rem" borderRadius="20px"></ngx-shimmer-loading>
-                    </div>
-
-                    <div class="flex_between">
-                        <div class="flex gap-05">
-                            <div class="flex_center gap-05">
-                                <mat-icon class="shimmer-icon">favorite</mat-icon>
-                                <ngx-shimmer-loading width="4ch" height="1rem"></ngx-shimmer-loading>
-                            </div>
-                            <div class="flex_center gap-05">
-                                <mat-icon class="shimmer-icon">visibility</mat-icon>
-                                <ngx-shimmer-loading width="4ch" height="1rem"></ngx-shimmer-loading>
-                            </div>
-                        </div>
-                        
-                        <div class="flex gap-05">
-                          <button mat-raised-button color="primary" class="flex_between_center" disabled>
-                              <mat-icon>edit</mat-icon>
-                              <span *ngIf="!isMobile">Editar</span>
-                          </button>
-                          <button mat-raised-button color="warn" class="flex_between_center" disabled>
-                              <mat-icon>delete</mat-icon>
-                              <span *ngIf="!isMobile">Eliminar</span>
-                          </button>
-                        </div>
-                    </div>
-                </mat-card-content>
-            </mat-card>
-        </div>
-
         <!-- No results card -->
         <div *ngIf="!hasData && !isLoading && !!user?.total_posts">
             <mat-card>
