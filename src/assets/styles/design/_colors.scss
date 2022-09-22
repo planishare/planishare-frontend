@@ -1,33 +1,32 @@
 :root {
-    // Colors
-    --primary-color: #7c4dff;
-    // --accent-color: #FFD171;
-    --accent-color: #ffd080;
-    --warn-color: #ff5252;
-    
-    --purple-color: #AF63FF;
-    --purple-dark-color: #563F97;
-    --green-dark-color: #1B5E20;
-    --yellow-light: #faebd7;
-    --purple-light:   #F2EAFF;
-    --pink-light: #F5E2DB;
-    --blue-light: #E4EEFB;
+    // Use colors variables like
+    // background-color: hsl(var(--clr-blue-dark), .5);
 
-    // Buttons
-    --button-light-text: #fff;
-    --button-dark-text: rgba(0, 0, 0, 0.87);
-    --button-light-background: #fff;
-    --button-dark-background: #424242;
+    // Base colors
+    --clr-blue: 211, 89%, 58%; //#3590F3
+    --clr-blue-dark: 250, 100%, 15%; //#0D004D
 
-    --button-text: var(--button-dark-text);
-    --button-background: var(--button-light-background);
+    --clr-red: 0, 65%, 51%; //#D32F2F
 
-    // Text and background
-    --light-text: #fafafa;
-    --dark-text: #2c2c2c;
-    --light-background: #fafafa;
-    --dark-background: #2c2c2c;
+    --clr-green: 123, 46%, 34%; //#2E7D32
 
-    --text-color: var(--dark-text);
-    --background-color: var(--light-background)
+    --clr-orange: 27, 100%, 47%; //#EF6C00
+
+    --clr-pink: 0, 55%, 91%; //#F5DDDD
+    --clr-pink-light: 349, 100%, 96%; //#FFEAEE
+
+    --clr-purple-light: 242, 70%, 91%; //#D9D8F8
+    --clr-yellow-light: 44, 67%, 86%; //#F3E6C3
+
+    --clr-white: 0, 0%, 100%; //#FFFFFF
+    --clr-black: 0, 0%, 13%; //#222222
+
+    // Variable colors
+    --clr-primary: var(--clr-blue-dark);
+    --clr-accent: var(--clr-accent);
+    --clr-warn: var(--clr-warn);
+
+    --clr-academic-level: var(--clr-yellow-light);
+    --clr-axis: var(--clr-pink);
+    --clr-subject: var(--clr-purple-light);
 }
