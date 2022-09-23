@@ -1,19 +1,19 @@
-mat-sidenav-container{
+.mat-sidenav-container{
     height: 100%;
 }
 
-mat-sidenav {
+.mat-sidenav {
     width: 60%;
 }
 
-.navbar {
-    position: fixed;
-    z-index: 2;
-    width: calc(100% - 1rem - 1px);
+.mat-sidenav-content {
+    background-image: url('/assets/images/bg1-425x756.jpg');
+    background-size: cover;
+    background-position: bottom center;
 }
 
-@media (max-width: 48rem) {
-    .navbar {
-        width: 100%;
+@media (min-width: 48rem) {
+    .mat-sidenav-content {
+        background-image: url('/assets/images/bg1-1920x1080.jpg');
     }
 }

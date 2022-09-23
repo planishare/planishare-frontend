@@ -18,3 +18,10 @@
 .rounded-button > .mat-icon {
     height: 100%;
 }
+
+@media (max-width: calc(48rem - 1px)) {
+    .rounded-button {
+        padding-inline: var(--pd-inline, 1em);
+        padding-block: var(--pd-block, .7em);
+    }
+}

@@ -1,6 +1,11 @@
+.outline, .outline > * {
+    outline: 1px solid mediumturquoise;
+}
+
 .container {
     max-width: 80rem;
     padding-inline: min(5%, 2rem);
+    margin-inline: auto;
 }
 
 .uppercase { text-transform: uppercase; }
