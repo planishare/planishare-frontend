@@ -11,8 +11,8 @@
 
     color: var(--text-color, hsl(var(--clr-white)));
     background-color: var(--bg-color, hsl(var(--clr-blue-dark)));
-    padding-inline: var(--pd-inline, 1.5em);
-    padding-block: var(--pd-block, .75em);
+    padding-inline: var(--p-x, 1.5em);
+    padding-block: var(--p-y, .75em);
 }
 
 .rounded-button > .mat-icon {
@@ -22,8 +22,8 @@
 
 @media (max-width: calc(48rem - 1px)) {
     .rounded-button {
-        padding-inline: var(--pd-inline, 1em);
-        padding-block: var(--pd-block, .7em);
+        padding-inline: var(--p-x, 1em);
+        padding-block: var(--p-y, .7em);
     }
 }
 

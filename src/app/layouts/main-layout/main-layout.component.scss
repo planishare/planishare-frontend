@@ -18,6 +18,8 @@
 .mat-sidenav {
     width: 100%;
     max-width: 224px;
+
+    background-color: hsl(var(--clr-blue-dark), .7);
 }
 
 @media (min-width: 48rem) {

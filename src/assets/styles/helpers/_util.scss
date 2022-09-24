@@ -3,9 +3,13 @@
 }
 
 .container {
-    max-width: 80rem;
-    padding-inline: min(5%, 2rem);
+    max-width: 90rem;
+    padding-inline: min(5vw, 2rem);
     margin-inline: auto;
+}
+
+.p-l-container {
+    padding-left: min(5vw, 2rem);
 }
 
 .uppercase { text-transform: uppercase; }

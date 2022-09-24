@@ -5,8 +5,7 @@ import { SidenavService } from 'src/app/core/services/sidenav.service';
 @Component({
     selector: 'app-navigation-sidenav',
     templateUrl: './navigation-sidenav.component.html',
-    styleUrls: ['./navigation-sidenav.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    styleUrls: ['./navigation-sidenav.component.scss']
 })
 export class NavigationSidenavComponent implements OnInit {
     public isUserAuth = false;

@@ -3,14 +3,14 @@
         <mat-icon>menu</mat-icon>
     </button>
 
-    <a class="logo" [routerLink]="['/']">
+    <a class="logo text-blue-dark" [routerLink]="['/']">
         <span>📖</span>
         <span>Plansihare</span>
     </a>
 
-    <button mat-icon-button (click)="openSidenav()" *ngIf="!isDesktop">
+    <a mat-icon-button *ngIf="!isDesktop" [routerLink]="['/user/edit-profile']">
         <mat-icon>person</mat-icon>
-    </button>
+    </a>
 
     <!-- Desktop navbar -->
     <nav class="navbar" *ngIf="isDesktop">

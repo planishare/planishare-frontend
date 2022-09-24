@@ -30,9 +30,11 @@ export class NavbarComponent extends Unsubscriber implements OnInit {
     }
 
     public ngOnInit(): void {
-        this.authService.isAuth$.subscribe(isAuth => {
-            this.isUserAuth = !!isAuth;
-        });
+        this.authService.isAuth$
+            .pipe(takeUntil(this.ngUnsubscribe$))
+            .subscribe(isAuth => {
+                this.isUserAuth = !!isAuth;
+            });
     }
 
     public openSidenav(): void {

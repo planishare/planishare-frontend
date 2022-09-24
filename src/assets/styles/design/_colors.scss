@@ -38,4 +38,7 @@
 .text-green { color: hsl(var(--clr-green)); }
 .text-orange { color: hsl(var(--clr-orange)); }
 .text-white { color: hsl(var(--clr-white)); }
-.text-black { color: hsl(var(--clr-black)); }
+
+// Background color
+.bg-blue { background-color: hsl(var(--clr-blue)); }
+.bg-blue-dark { background-color: hsl(var(--clr-blue-dark)); }

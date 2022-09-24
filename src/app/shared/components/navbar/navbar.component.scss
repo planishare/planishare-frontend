@@ -2,11 +2,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    // Override .container class regarding icons width
+    max-width: calc(90rem - 16px);
+    padding-inline: calc(min(5%, 2rem) - 16px);
 }
 
 .logo {
     text-decoration: none;
-    color: hsl(var(--clr-blue-dark));
     display: flex;
     align-items: center;
     font-size: var(--fs-large);
@@ -24,6 +27,6 @@
 .rounded-button {
     --bg-color: hsl(var(--clr-pink-light));
     --text-color: hsl(var(--clr-blue-dark));
-    --pd-inline: 1.35em;
-    --pd-block: .45em;
+    --p-x: 1.35em;
+    --p-y: .45em;
 }
