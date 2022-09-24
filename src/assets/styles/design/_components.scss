@@ -17,6 +17,7 @@
 
 .rounded-button > .mat-icon {
     height: 100%;
+    font-weight: 300;
 }
 
 @media (max-width: calc(48rem - 1px)) {
@@ -24,4 +25,28 @@
         padding-inline: var(--pd-inline, 1em);
         padding-block: var(--pd-block, .7em);
     }
+}
+
+.circle-button {
+    // Button and link reset
+    border: none;
+    text-decoration: none;
+    margin: 0;
+    padding: var(--padding, .5em);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5em;
+
+    border-radius: 100px;
+    aspect-ratio: 1;
+
+    color: var(--text-color, hsl(var(--clr-white)));
+    background-color: var(--bg-color, hsl(var(--clr-blue-dark)));
+}
+
+.circle-button > .mat-icon {
+    height: 100%;
+    font-weight: 300;
 }
