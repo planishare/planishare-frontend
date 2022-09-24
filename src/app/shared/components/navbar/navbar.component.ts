@@ -1,34 +1,32 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { SidenavComponent } from 'src/app/shared/enums/sidenav.enum';
+import { takeUntil } from 'rxjs';
+
 import { AuthService } from 'src/app/core/services/auth.service';
 import { SidenavService } from 'src/app/core/services/sidenav.service';
-import { NavbarService } from '../../services/navbar.service';
-import { ButtonsConfig } from '../../types/navbar.type';
-import { isMobile, isTablet } from '../../utils/window-width';
+import { WindowResizeService } from '../../services/window-resize.service';
+
+import { SidenavComponent } from 'src/app/shared/enums/sidenav.enum';
+
+import { Unsubscriber } from '../../utils/unsubscriber';
 
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit {
-    public isMobile = isMobile;
-    public isTablet = isTablet;
+export class NavbarComponent extends Unsubscriber implements OnInit {
     public isUserAuth = false;
-
-    public buttonConfig?: Observable<ButtonsConfig>;
+    public isDesktop = false;
 
     constructor(
         private sidenav: SidenavService,
         private authService: AuthService,
-        private dialog: MatDialog,
-        private activatedRoute: ActivatedRoute,
-        private navbarService: NavbarService
+        private windowResize: WindowResizeService
     ) {
-        this.buttonConfig = this.navbarService.getButtonsConfig();
+        super();
+        this.windowResize.isDesktop$
+            .pipe(takeUntil(this.ngUnsubscribe$))
+            .subscribe(value => this.isDesktop = value);
     }
 
     public ngOnInit(): void {
