@@ -2,18 +2,30 @@
     height: 100%;
 }
 
-.mat-sidenav {
-    width: 60%;
-}
-
 .mat-sidenav-content {
     background-image: url('/assets/images/bg1-425x756.jpg');
     background-size: cover;
     background-position: bottom center;
+
+    display: flex;
+    flex-direction: column;
+}
+
+#main-content {
+    flex-grow: 1;
+}
+
+.mat-sidenav {
+    width: 100%;
+    max-width: 224px;
 }
 
 @media (min-width: 48rem) {
     .mat-sidenav-content {
         background-image: url('/assets/images/bg1-1920x1080.jpg');
+    }
+
+    .mat-sidenav {
+        max-width: 256px;
     }
 }
