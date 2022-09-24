@@ -30,3 +30,12 @@
     --clr-axis: var(--clr-pink);
     --clr-subject: var(--clr-purple-light);
 }
+
+// Text color
+.text-blue { color: hsl(var(--clr-blue)); }
+.text-blue-dark { color: hsl(var(--clr-blue-dark)); }
+.text-red { color: hsl(var(--clr-red)); }
+.text-green { color: hsl(var(--clr-green)); }
+.text-orange { color: hsl(var(--clr-orange)); }
+.text-white { color: hsl(var(--clr-white)); }
+.text-black { color: hsl(var(--clr-black)); }

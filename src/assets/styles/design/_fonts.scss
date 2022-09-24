@@ -1,15 +1,46 @@
+// Font sizes calculated with: https://xgkft.csb.app/
+// --fs-example: clamp(min size (mobile), 0.6818rem + 5.9659vw, max size (desktop));
+
 :root {
-    --fs-small: .875rem; // 14px
-    --fs-regular: 1rem; // 16px
-    --fs-medium: 1.25rem; // 20px
-    --fs-large: 1.5rem; // 24px
-    --fs-x-large: 2rem; // 32px
-    --fs-xx-large: 4.5rem; // 72px
+    --fs-small: 14px;
+    // --fs-regular: 16px;
+    // --fs-medium: 20px;
+    --fs-large: clamp(1rem, 0.8571rem + 0.7143vw, 1.5rem); // [16px, 24px]
+    // --fs-x-large: 32px;
+    --fs-xx-large: clamp(1.875rem, 1.1250rem + 3.7500vw, 4.5rem);
+
+    --lh-xx-large: clamp(2.1875rem, 1.1250rem + 3.7500vw, 5rem);
 }
 
-.fs-small { font-size: var(--fs-small); }
-.fs-regular { font-size: var(--fs-regular); }
-.fs-medium { font-size: var(--fs-medium); }
-.fs-large { font-size: var(--fs-large); }
-.fs-x-large { font-size: var(--fs-x-large); }
-.fs-xx-large { font-size: var(--fs-xx-large); }
+// Font sizes
+.fs-small { 
+    font-size: var(--fs-small);
+    line-height: var(--lh-small, auto);
+}
+.fs-regular { 
+    font-size: var(--fs-regular);
+    line-height: var(--lh-regular, auto);
+}
+.fs-medium { 
+    font-size: var(--fs-medium);
+    line-height: var(--lh-medium, auto);
+}
+.fs-large { 
+    font-size: var(--fs-large);
+    line-height: var(--lh-large, auto);
+}
+.fs-x-large { 
+    font-size: var(--fs-x-large);
+    line-height: var(--lh-x-large, auto);
+}
+.fs-xx-large { 
+    font-size: var(--fs-xx-large);
+    line-height: var(--lh-xx-large, auto);
+}
+
+// Font weight
+.fw-400 { font-weight: 400; }
+.fw-500 { font-weight: 500; }
+.fw-600 { font-weight: 600; }
+.fw-700 { font-weight: 700; }
+.fw-700 { font-weight: 800; }
