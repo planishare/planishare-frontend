@@ -9,7 +9,7 @@ import { ReportType } from 'src/app/shared/enums/report.enum';
 import { PostDetail, PostPageable, PostsQueryParams } from 'src/app/core/types/posts.type';
 import { ReportForm } from 'src/app/core/types/report.type';
 import { UserDetail } from 'src/app/core/types/users.type';
-import { RoundedSelectSearchGroup, RoundedSelectSearchOption } from 'src/app/shared/types/rounded-select-search.type';
+import { RoundedSelectOption, RoundedSelectGroup } from 'src/app/shared/types/rounded-select.type';
 import { DOCUMENT_TYPES } from 'src/app/core/constants/documents.constants';
 
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -49,11 +49,11 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
 
     public form: FormGroup;
 
-    public academicLevelsList: RoundedSelectSearchOption[] = [];
-    public subjectWithAxis: RoundedSelectSearchGroup[] = [];
-    public axisList: RoundedSelectSearchOption[] = [];
-    public subjectList: RoundedSelectSearchOption[] = [];
-    public orderingList: RoundedSelectSearchOption[] = [
+    public academicLevelsList: RoundedSelectOption[] = [];
+    public subjectWithAxis: RoundedSelectGroup[] = [];
+    public axisList: RoundedSelectOption[] = [];
+    public subjectList: RoundedSelectOption[] = [];
+    public orderingList: RoundedSelectOption[] = [
         {
             data: OrderingType.MOST_RECENT,
             text: OrderingTypeName.MOST_RECENT
@@ -306,7 +306,7 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
         });
     }
 
-    private getAcademicLevels(): Observable<RoundedSelectSearchOption[]> {
+    private getAcademicLevels(): Observable<RoundedSelectOption[]> {
         return this.postsService.getAcademicLevels()
             .pipe(
                 map(resp => {
@@ -314,7 +314,7 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
                         return {
                             text: el.name,
                             data: el
-                        } as RoundedSelectSearchOption;
+                        } as RoundedSelectOption;
                     });
                 }),
                 tap(resp => this.academicLevelsList = resp),
@@ -343,7 +343,7 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
                             this.axisList.push(...options);
 
                             this.subjectWithAxis.push({
-                                groupName: subject.name,
+                                text: subject.name,
                                 options
                             });
                         });

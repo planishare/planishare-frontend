@@ -18,6 +18,7 @@ import { GetDocType, GetDocName } from './pipes/posts.pipe';
 import { DragAndDropFileDirective } from './directives/drag-and-drop-file.directive';
 import { RoundedSelectGroupSearchComponent } from './components/rounded-select-group-search/rounded-select-group-search.component';
 import { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
+import { RoundedSelectComponent } from './components/rounded-select/rounded-select.component';
 
 @NgModule({
     declarations: [
@@ -38,7 +39,8 @@ import { ReportDialogComponent } from './components/report-dialog/report-dialog.
         NavigationSidenavComponent,
         RoundedSelectSearchComponent,
         BookLoaderComponent,
-        SquareLoaderComponent
+        SquareLoaderComponent,
+        RoundedSelectComponent
     ],
     imports: [
         CommonModule,
@@ -57,6 +59,7 @@ import { ReportDialogComponent } from './components/report-dialog/report-dialog.
         BookLoaderComponent,
         SquareLoaderComponent,
         RoundedSelectGroupSearchComponent,
+        RoundedSelectComponent,
         ReportDialogComponent,
 
         // Modules
