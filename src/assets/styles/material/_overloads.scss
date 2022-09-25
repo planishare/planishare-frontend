@@ -1,15 +1,15 @@
 // Rounded select mobile and tablet
-@media (max-width: calc(64rem - 1px)) {
-    .rounded-select-panel.mat-select-panel {
-        max-width: 80vw;
-    }
+// @media (max-width: calc(64rem - 1px)) {
+//     .rounded-select-panel.mat-select-panel {
+//         max-width: 80vw;
+//     }
     
-    // To center vertical and horizontal
-    .cdk-overlay-pane {
-        position: static;
-    }
-    .cdk-overlay-connected-position-bounding-box {
-        align-items: center;
-        justify-content: center;
-    }   
-}
+//     // To center vertical and horizontal
+//     .cdk-overlay-pane {
+//         position: static;
+//     }
+//     .cdk-overlay-connected-position-bounding-box {
+//         align-items: center;
+//         justify-content: center;
+//     }   
+// }
