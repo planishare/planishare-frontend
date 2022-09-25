@@ -84,7 +84,7 @@ export class TopsComponent extends Unsubscriber implements OnInit {
     // public toggleLike(post: PostDetail): any {
     //     const user = this.authService.getUserProfile();
     //     if (!!!user) {
-    //         this.commonSnackbarMsg.showLoginMessage('dar Me gusta');
+    //         this.commonSnackbarMsg.showLoginRequiredMessage('dar Me gusta');
     //         return;
     //     }
     //     if (!!post.already_liked) {

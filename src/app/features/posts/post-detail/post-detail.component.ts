@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { ReactionsService } from 'src/app/core/services/reactions.service';
 import { PostDetail, PostsQueryParams } from 'src/app/core/types/posts.type';
-import { Report } from 'src/app/core/types/report.type';
+import { ReportForm } from 'src/app/core/types/report.type';
 import { UserDetail } from 'src/app/core/types/users.type';
 import { ReportDialogComponent } from 'src/app/shared/components/report-dialog/report-dialog.component';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
@@ -128,18 +128,18 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
 
     public toggleLike(post: PostDetail): any {
         if (!!!this.user) {
-            this.commonSnackbarMsg.showLoginMessage('dar Me gusta');
+            this.commonSnackbarMsg.showLoginRequiredMessage('dar Me gusta');
             return;
         }
 
         post.total_likes = !!post.already_liked ? post.total_likes - 1 : post.total_likes + 1;
-        post.already_liked = !!post.already_liked ? null : -1;
+        post.already_liked = post.already_liked ?? -1;
 
         this.reactionService.toggleLike(this.user.id, post.id)
             .pipe(
                 catchError(() => {
                     post.total_likes = !!post.already_liked ? post.total_likes - 1 : post.total_likes + 1;
-                    post.already_liked = !!post.already_liked ? null : -1;
+                    post.already_liked = post.already_liked ?? -1;
                     this.commonSnackbarMsg.showErrorMessage();
                     return of(null);
                 })
@@ -198,11 +198,11 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
 
     public reportPost(post: PostDetail): any {
         if (!!!this.user) {
-            this.commonSnackbarMsg.showLoginMessage('crear un reporte');
+            this.commonSnackbarMsg.showLoginRequiredMessage('crear un reporte');
             return;
         }
 
-        const reportData: Report = {
+        const reportData: ReportForm = {
             report_type: ReportType.POST_REPORT,
             active: true,
             description: '',
@@ -218,11 +218,11 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
 
     public reportUser(post: PostDetail): any {
         if (!!!this.user) {
-            this.commonSnackbarMsg.showLoginMessage('crear un reporte');
+            this.commonSnackbarMsg.showLoginRequiredMessage('crear un reporte');
             return;
         }
 
-        const reportData: Report = {
+        const reportData: ReportForm = {
             report_type: ReportType.USER_REPORT,
             active: true,
             description: '',

@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, of } from 'rxjs';
 import { ReportType, ReportTypeName } from 'src/app/shared/enums/report.enum';
 import { ReportService } from 'src/app/core/services/report.service';
-import { Report } from 'src/app/core/types/report.type';
+import { ReportForm } from 'src/app/core/types/report.type';
 import { CommonSnackbarMsgService } from '../../services/common-snackbar-msg.service';
 
 @Component({
@@ -16,17 +16,16 @@ import { CommonSnackbarMsgService } from '../../services/common-snackbar-msg.ser
 export class ReportDialogComponent {
 
     public form: FormControl;
-    public reportTypeName: ReportTypeName;
+    public reportTypeName?: ReportTypeName;
     public isLoading = false;
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) public data: Report,
+        @Inject(MAT_DIALOG_DATA) public data: ReportForm,
         public dialogRef: MatDialogRef<ReportDialogComponent>,
         private reportService: ReportService,
         private matSnackBar: MatSnackBar,
         private commonSnackbarMsg: CommonSnackbarMsgService
     ) {
-        // console.log(data);
         this.form = new FormControl(null, [Validators.required, Validators.maxLength(1000)]);
         switch (this.data.report_type) {
             case ReportType.USER_REPORT:
@@ -41,7 +40,7 @@ export class ReportDialogComponent {
     public createReport(): void {
         this.isLoading = true;
         if (this.form.valid) {
-            const reportData: Report = {
+            const reportData: ReportForm = {
                 ...this.data,
                 description: this.form.value
             };

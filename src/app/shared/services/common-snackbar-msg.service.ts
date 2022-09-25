@@ -14,7 +14,7 @@ export class CommonSnackbarMsgService {
         private firebaseAuthService: FirebaseAuthService
     ) { }
 
-    public showLoginMessage(actionMsg: string): void {
+    public showLoginRequiredMessage(actionMsg: string): void {
         const msg = `Debes iniciar sesión para ${actionMsg} :(`;
         const action = 'Iniciar sesión';
         this.matSnackbar.open(msg, action, {

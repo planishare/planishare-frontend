@@ -26,7 +26,7 @@ export type PostDetail = {
     updated_at: string | Date,
     total_likes: number,
     total_views: number,
-    already_liked: number | null, // Contains like id if is already liked by auth user
+    already_liked?: number, // Contains like id if is already liked by auth user
     // already_viewed
 }
 
