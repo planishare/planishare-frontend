@@ -9,33 +9,33 @@
   <div class="filters__selects">
     <app-rounded-select
       baseText="Nivel Académico"
-      [formControl]="academicLevelControl"
+      [control]="academicLevelControl"
       [options]="academicLevelsList"
       [resetButton]="true"
       [loading]="isAcademicLevelsLoading">
     </app-rounded-select>
     <app-rounded-select
       baseText="Eje"
-      [formControl]="axisControl"
+      [control]="axisControl"
       [hasGroups]="true"
       [options]="subjectWithAxis"
       [searchInput]="true"
-      placeholder="Busca un eje o asignatura"
+      searchPlaceholder="Busca un eje o asignatura"
       [resetButton]="true"
       [loading]="isAxesLoading">
     </app-rounded-select>
     <app-rounded-select
       baseText="Asignatura"
-      [formControl]="subjectControl"
+      [control]="subjectControl"
       [options]="subjectList"
       [searchInput]="true"
-      placeholder="Busca una asignatura"
+      searchPlaceholder="Busca una asignatura"
       [resetButton]="true"
       [loading]="isSubjectsLoading">
     </app-rounded-select>
     <app-rounded-select
       baseText="Ordenar por"
-      [formControl]="orderingControl"
+      [control]="orderingControl"
       [options]="orderingList">
     </app-rounded-select>
 

@@ -1,36 +1,33 @@
-<button class="rounded-button" [disabled]="disabled" (click)="toggleSelect(custom_select)">
+<button class="rounded-button" [disabled]="disabled" (click)="toggleSelect(custom_select)" aria-hidden="true">
   <span>{{ textValue ?? baseText }}</span>
   <mat-icon>expand_more</mat-icon>
 </button>
 
 <mat-form-field class="sr-only">
   <mat-label>{{ textValue }}</mat-label>
-  <mat-select [formControl]="formControl!" disableOptionCentering #custom_select>
-      <mat-option *ngIf="searchInput">
-        <ngx-mat-select-search
-          [formControl]="search"
-          placeholderLabel="{{ placeholder }}"
-          [searching]="loading"
-          noEntriesFoundLabel="No se encontraron resultados">
-        </ngx-mat-select-search>
+  <mat-select [formControl]="control!" disableOptionCentering #custom_select>
+    <mat-option *ngIf="searchInput">
+      <ngx-mat-select-search [formControl]="search" placeholderLabel="{{ searchPlaceholder }}" [searching]="loading"
+        noEntriesFoundLabel="No se encontraron resultados">
+      </ngx-mat-select-search>
+    </mat-option>
+
+    <mat-option *ngIf="!!control!.value && resetButton" [value]="null">Borrar</mat-option>
+    <mat-divider *ngIf="!!control!.value && resetButton"></mat-divider>
+
+    <ng-container *ngIf="!hasGroups">
+      <mat-option [value]="option" *ngFor="let option of filteredOptions">
+        {{ option.text}}
       </mat-option>
+    </ng-container>
 
-      <mat-option *ngIf="!!formControl!.value && resetButton" [value]="null">Borrar</mat-option>
-      <mat-divider *ngIf="!!formControl!.value && resetButton"></mat-divider>
-
-      <ng-container *ngIf="!hasGroups">
-        <mat-option [value]="option" *ngFor="let option of filteredOptions">
-          {{ option.text}}
+    <ng-container *ngIf="hasGroups">
+      <mat-optgroup *ngFor="let group of filteredOptions" [label]="group.text">
+        <!-- Workaround: https://angular.io/guide/template-typecheck#disabling-type-checking-using-any -->
+        <mat-option *ngFor="let option of $any(group).options" [value]="option">
+          {{ option.text }}
         </mat-option>
-      </ng-container>
-
-      <ng-container *ngIf="hasGroups">
-        <mat-optgroup *ngFor="let group of filteredOptions" [label]="group.text">
-          <!-- Workaround: https://angular.io/guide/template-typecheck#disabling-type-checking-using-any -->
-          <mat-option *ngFor="let option of $any(group).options" [value]="option">
-            {{ option.text }}
-          </mat-option>
-        </mat-optgroup>
-      </ng-container>
+      </mat-optgroup>
+    </ng-container>
   </mat-select>
 </mat-form-field>

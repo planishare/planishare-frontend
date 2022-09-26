@@ -12,7 +12,7 @@ import { MatSelect } from '@angular/material/select';
 export class RoundedSelectComponent implements OnInit {
     // Base input data
     @Input() public baseText = 'Base text';
-    @Input() public formControl!: FormControl;
+    @Input() public control!: FormControl;
     @Input() public set options(value: RoundedSelectOption[] | RoundedSelectGroup[]) {
         this.checkInput(value, 'Options');
         this._options = value;
@@ -22,7 +22,7 @@ export class RoundedSelectComponent implements OnInit {
     // Configuration
     @Input() public hasGroups = false;
     @Input() public searchInput = false;
-    @Input() public placeholder = 'Buscar';
+    @Input() public searchPlaceholder = 'Buscar';
     @Input() public resetButton = false;
 
     // Behavior config
@@ -38,7 +38,8 @@ export class RoundedSelectComponent implements OnInit {
     constructor() {}
 
     public ngOnInit(): void {
-        this.formControl.valueChanges.pipe(startWith(this.formControl.value))
+        this.checkInput(this.control, 'Control');
+        this.control.valueChanges.pipe(startWith(this.control.value))
             .subscribe((data: RoundedSelectOption) => {
                 this.textValue = data?.text;
                 this.filteredOptions = this._options;
