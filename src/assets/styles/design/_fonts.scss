@@ -1,15 +1,15 @@
-// Font sizes calculated with: https://xgkft.csb.app/ [320px, 1440px]
-// --fs-example: clamp(min size (mobile), 0.6818rem + 5.9659vw, max size (desktop));
-
+// Variables
 :root {
-    // --fs-small: 14px;
-    // --fs-regular: 16px;
-    --fs-medium: clamp(1rem, 0.9286rem + 0.3571vw, 1.25rem); // [16px, 20px]
-    --fs-large: clamp(1.125rem, 1.0179rem + 0.5357vw, 1.5rem); // [18px, 24px]
-    // --fs-x-large: 32px;
-    --fs-xx-large: clamp(1.875rem, 1.1250rem + 3.7500vw, 4.5rem);
+    // Sizes: calc([min-fs]px + ([max-fs - min-fs]) * ((100vw - [min-vw]px) / ([max-vw - min-vw])));
+    --fs-small: 12px;
+    --fs-regular: clamp(14px, calc(14px + (15 - 14) * ((100vw - 320px) / (1440 - 320))), 15px);
+    --fs-medium: clamp(16px, calc(16px + (22 - 16) * ((100vw - 320px) / (1440 - 320))), 22px);
+    --fs-large: clamp(18px, calc(18px + (24 - 18) * ((100vw - 320px) / (1440 - 320))), 24px);
+    --fs-x-large: 32px;
+    --fs-xx-large: clamp(30px, calc(30px + (68 - 30) * ((100vw - 320px) / (1440 - 320))), 68px);
 
-    --lh-xx-large: clamp(2.1875rem, 1.1250rem + 3.7500vw, 5rem);
+    // Line height
+    --lh-xx-large: clamp(35px, calc(35px + (76 - 35) * ((100vw - 320px) / (1440 - 320))), 76px);
 }
 
 // Font sizes

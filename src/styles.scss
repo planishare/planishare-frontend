@@ -1,6 +1,9 @@
 // Material custom theme
 @import './assets/styles/material/material-theme';
-
-body { margin: 0; font-family: 'Manrope', sans-serif; }
-
 @import './assets/styles/index';
+
+body {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-size: var(--fs-regular);
+}

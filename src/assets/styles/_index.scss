@@ -1,10 +1,8 @@
 @import './design/reset';
-
 @import './design/fonts';
-@import './design/colors';
-
 @import './design/components';
 @import './helpers/util';
 @import './helpers/misc';
-
+@import './helpers/display';
 @import './material/overloads';
+@import './design/colors';

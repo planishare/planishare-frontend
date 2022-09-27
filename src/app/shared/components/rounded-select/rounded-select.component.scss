@@ -1,10 +1,11 @@
 :host {
     display: flex;
     flex-direction: column;
+    border-radius: 100px;
 }
 
 .rounded-button {
     justify-content: space-between;
-    --p-y: .35em;
+    --p-y: .7em;
     --p-x: 1em;
 }
