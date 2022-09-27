@@ -13,3 +13,9 @@
 //         justify-content: center;
 //     }   
 // }
+
+.small-icon.mat-icon {
+    width: var(--fs-medium);
+    height: var(--fs-medium);
+    font-size: var(--fs-medium);
+}

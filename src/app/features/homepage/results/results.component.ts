@@ -103,7 +103,7 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
 
         this.windowResize.isDesktop$
             .pipe(takeUntil(this.ngUnsubscribe$))
-            .subscribe(value => this.isDesktop);
+            .subscribe(value => this.isDesktop = value);
     }
 
     public ngOnInit(): void {

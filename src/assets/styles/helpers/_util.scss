@@ -4,12 +4,12 @@
 
 .container {
     max-width: 90rem;
-    padding-inline: min(5vw, 2rem);
+    padding-inline: clamp(2px, 2px + 1.5vw, 2rem);
     margin-inline: auto;
 }
 
 .p-l-container {
-    padding-left: min(5vw, 2rem);
+    padding-left: min(5vw, 2rem); // TODO: remove this class
 }
 
 .uppercase { text-transform: uppercase; }

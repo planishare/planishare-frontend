@@ -1,4 +1,9 @@
-.rounded-button {
+// Buttons
+.rounded-button,
+.rounded-button-slim,
+.rounded-button-academic-level,
+.rounded-button-axis,
+.rounded-button-subject {
     // Button and link reset
     border: none;
     text-decoration: none;
@@ -13,11 +18,11 @@
     background-color: var(--bg-color, hsl(var(--clr-blue-dark)));
     padding-inline: var(--p-x, 1.5em);
     padding-block: var(--p-y, .75em);
-}
 
-.rounded-button > .mat-icon {
-    height: 100%;
-    font-weight: 300;
+    > .mat-icon {
+        height: 100%;
+        font-weight: 300;
+    }
 }
 
 @media (max-width: calc(48rem - 1px)) {
@@ -25,6 +30,30 @@
         padding-inline: var(--p-x, 1em);
         padding-block: var(--p-y, .7em);
     }
+}
+
+// Rounded button slim variations
+.rounded-button-slim,
+.rounded-button-academic-level,
+.rounded-button-axis,
+.rounded-button-subject {
+    padding: .35em 1em;
+    font-weight: 600;
+}
+
+.rounded-button-academic-level {
+    background-color: hsl(var(--clr-academic-level));
+    color: hsl(var(--clr-black));
+}
+
+.rounded-button-axis {
+    background-color: hsl(var(--clr-axis));
+    color: hsl(var(--clr-black));
+}
+
+.rounded-button-subject {
+    background-color: hsl(var(--clr-subject));
+    color: hsl(var(--clr-black));
 }
 
 .circle-button {
@@ -44,9 +73,86 @@
 
     color: var(--text-color, hsl(var(--clr-white)));
     background-color: var(--bg-color, hsl(var(--clr-blue-dark)));
+
+    > .mat-icon {
+        height: 100%;
+        font-weight: 300;
+    }
+
+    > span {
+        padding-inline: .5ch;
+    }
 }
 
-.circle-button > .mat-icon {
-    height: 100%;
-    font-weight: 300;
+// Inputs
+.rounded-search-bar {
+    background-color: hsl(var(--clr-white));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-radius: 100px;
+    padding-inline: 1em;
+
+    input {
+        border: 0;
+        width: 100%;
+        outline: none;
+    }
+
+    // Remove native "x"
+    input::-webkit-search-decoration,
+    input::-webkit-search-cancel-button,
+    input::-webkit-search-results-button,
+    input::-webkit-search-results-decoration {
+        display: none;
+    }
+}
+
+// Cards
+.rounded-card {
+    background-color: hsl(var(--clr-white));
+    border-radius: 30px;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, .2);
+    padding: 1.2rem;
+}
+
+@media (max-width: calc(48rem - 1px)) {
+    .rounded-card {
+        border-radius: 25px;
+        padding: 1rem;
+    }
+}
+
+// Basic tags
+.small-border-tag-red,
+.small-border-tag-blue,
+.small-border-tag-green,
+.small-border-tag-orange {
+    border: 2px solid transparent;
+    border-radius: 30px;
+    padding-inline: .5em;
+    font-size: var(--fs-small);
+    font-weight: 700;
+    line-height: var(--fs-small);
+}
+
+.small-border-tag-red {
+    border-color: hsl(var(--clr-red));
+    color: hsl(var(--clr-red));
+}
+
+.small-border-tag-blue {
+    border-color: hsl(var(--clr-blue));
+    color: hsl(var(--clr-blue));
+}
+
+.small-border-tag-green {
+    border-color: hsl(var(--clr-green));
+    color: hsl(var(--clr-green));
+}
+
+.small-border-tag-orange {
+    border-color: hsl(var(--clr-orange));
+    color: hsl(var(--clr-orange));
 }

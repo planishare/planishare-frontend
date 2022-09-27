@@ -1,0 +1,57 @@
+// Flex
+.flex,
+.flex-center-center,
+.flex-space_between-center,
+.flex-start-center,
+.flex-end-center,
+.flex-column,
+.flex-wrap
+{
+    display: flex;
+}
+
+.flex-center-center {
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-start-center {
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.flex-end-center {
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.flex-space_between-center {
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+// Gap
+.gap-025 {
+    gap: .25rem;
+}
+
+.gap-05 {
+    gap: .5rem;
+}
+
+.gap-1 {
+    gap: 1rem;
+}
+
+// Other display
+.block {
+    display: block;
+}
