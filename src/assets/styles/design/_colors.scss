@@ -42,3 +42,21 @@
 // Background color
 .bg-blue { background-color: hsl(var(--clr-blue)); }
 .bg-blue-dark { background-color: hsl(var(--clr-blue-dark)); }
+
+// Others
+.bg-text-academic-level, .bg-text-academic-level > button {
+    color: hsl(var(--clr-black));
+    background-color: hsl(var(--clr-academic-level));
+}
+.bg-text-axis, .bg-text-axis > button {
+    color: hsl(var(--clr-black));
+    background-color: hsl(var(--clr-axis));
+}
+.bg-text-subject, .bg-text-subject > button {
+    color: hsl(var(--clr-black));
+    background-color: hsl(var(--clr-subject));
+}
+.bg-text-blue-white, .bg-text-blue-white > button {
+    color: hsl(var(--clr-white));
+    background-color: hsl(var(--clr-blue));
+}

@@ -3,6 +3,8 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: 1rem;
+
+    padding-bottom: 1.5rem;
 }
 
 .filters-card {
@@ -40,6 +42,16 @@
 
     .mat-icon {
         color: hsl(var(--clr-white));
+    }
+}
+
+.filter-tags {
+    flex-grow: 1;
+}
+
+@media (min-width: 48rem) {
+    .filter-tags {
+        justify-content: start;
     }
 }
 

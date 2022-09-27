@@ -1,9 +1,6 @@
 // Buttons
 .rounded-button,
-.rounded-button-slim,
-.rounded-button-academic-level,
-.rounded-button-axis,
-.rounded-button-subject {
+.rounded-button-slim {
     // Button and link reset
     border: none;
     text-decoration: none;
@@ -32,28 +29,9 @@
     }
 }
 
-// Rounded button slim variations
-.rounded-button-slim,
-.rounded-button-academic-level,
-.rounded-button-axis,
-.rounded-button-subject {
+.rounded-button-slim {
     padding: .35em 1em;
     font-weight: 600;
-}
-
-.rounded-button-academic-level {
-    background-color: hsl(var(--clr-academic-level));
-    color: hsl(var(--clr-black));
-}
-
-.rounded-button-axis {
-    background-color: hsl(var(--clr-axis));
-    color: hsl(var(--clr-black));
-}
-
-.rounded-button-subject {
-    background-color: hsl(var(--clr-subject));
-    color: hsl(var(--clr-black));
 }
 
 .circle-button {

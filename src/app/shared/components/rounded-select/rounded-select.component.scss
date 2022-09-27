@@ -8,4 +8,13 @@
     justify-content: space-between;
     --p-y: .7em;
     --p-x: 1em;
+    
+    > span {
+        white-space: nowrap;
+        overflow-x: hidden;
+    }
+
+    > .mat-icon {
+        min-width: fit-content;
+    }
 }

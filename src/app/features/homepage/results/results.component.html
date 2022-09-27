@@ -16,7 +16,7 @@
     <!-- Desktop filters -->
     <div class="filters__selects">
       <app-rounded-select
-        class="box-shadow-2"
+        class="bg-text-academic-level box-shadow-2"
         baseText="Nivel Académico"
         [control]="academicLevelControl"
         [options]="academicLevelsList"
@@ -24,7 +24,7 @@
         [loading]="isAcademicLevelsLoading">
       </app-rounded-select>
       <app-rounded-select
-        class="box-shadow-2"
+        class="bg-text-axis box-shadow-2"
         baseText="Eje"
         [control]="axisControl"
         [hasGroups]="true"
@@ -35,7 +35,7 @@
         [loading]="isAxesLoading">
       </app-rounded-select>
       <app-rounded-select
-        class="box-shadow-2"
+        class="bg-text-subject box-shadow-2"
         baseText="Asignatura"
         [control]="subjectControl"
         [options]="subjectList"
@@ -45,7 +45,7 @@
         [loading]="isSubjectsLoading">
       </app-rounded-select>
       <app-rounded-select
-        class="box-shadow-2"
+        class="bg-text-blue-white box-shadow-2"
         baseText="Ordenar por"
         [control]="orderingControl"
         [options]="orderingList">
@@ -59,30 +59,30 @@
   </aside>
   
   <div>
-    <div class="fs-small flex-space_between-center flex-wrap gap-025">
+    <div class="fs-small flex-end-center flex-wrap gap-05">
       <!-- Filter tags -->
-      <div class="flex-start-center gap-05 flex-wrap">
-        <button class="rounded-button-academic-level box-shadow-1">
+      <div class="filter-tags flex-center-center gap-05 flex-wrap">
+        <button class="rounded-button-slim bg-text-academic-level box-shadow-1">
           <span>6to Básico</span>
           <mat-icon class="small-icon">close</mat-icon>
         </button>
-        <button class="rounded-button-axis box-shadow-1">
+        <button class="rounded-button-slim bg-text-axis box-shadow-1">
           <span>Lectura</span>
           <mat-icon class="small-icon">close</mat-icon>
         </button>
-        <button class="rounded-button-subject box-shadow-1">
+        <button class="rounded-button-slim bg-text-subject box-shadow-1">
           <span>Lenguaje y comunicación</span>
           <mat-icon class="small-icon">close</mat-icon>
         </button>
-        <button class="rounded-button-slim box-shadow-1">
+        <button class="rounded-button-slim bg-text-blue-white box-shadow-1">
           <span>Más recientes</span>
           <mat-icon class="small-icon">close</mat-icon>
         </button>
       </div>
     
       <!-- Paginations -->
-      <div class="pagination flex-space_between-center gap-05">
-        <span class="fw-700">1 - 10 de 24</span>
+      <div class="pagination flex-center-center gap-05">
+        <span class="fw-700 fs-regular">1 - 10 de 24</span>
         <div class="flex-center-center gap-025">
           <button class="circle-button">
             <mat-icon class="small-icon">navigate_before</mat-icon>
@@ -125,9 +125,9 @@
         </div>
   
         <div class="flex-wrap gap-025">
-          <span class="rounded-button-academic-level">Nivel académico: 6to básico</span>
-          <span class="rounded-button-axis">Eje: Lectura</span>
-          <span class="rounded-button-subject">Asignatura: Lenguaje y comunicación</span>
+          <span class="rounded-button-slim bg-text-academic-level">Nivel académico: 6to básico</span>
+          <span class="rounded-button-slim bg-text-axis">Eje: Lectura</span>
+          <span class="rounded-button-slim bg-text-subject">Asignatura: Lenguaje y comunicación</span>
         </div>
   
         <div class="flex-space_between-center">
