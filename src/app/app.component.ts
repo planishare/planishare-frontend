@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { delay, filter, pipe } from 'rxjs';
+
 import { AuthService } from './core/services/auth.service';
 import { WindowResizeService } from './shared/services/window-resize.service';
+import { WindowScrollService } from './shared/services/window-scroll.service';
 
 @Component({
     selector: 'app-root',
@@ -16,9 +17,11 @@ export class AppComponent implements OnInit {
     constructor (
         private authService: AuthService,
         private matSnackBar: MatSnackBar,
-        private windowResize: WindowResizeService
+        private windowResize: WindowResizeService,
+        private windowScroll: WindowScrollService
     ) {
         this.windowResize.startListening();
+        this.windowScroll.startListening();
     }
 
     public ngOnInit(): void {
