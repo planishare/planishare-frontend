@@ -1,34 +1,25 @@
 import { Injectable } from '@angular/core';
-import { debounceTime, fromEvent, map, startWith, Observable, throttleTime } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class WindowResizeService {
-    // TODO: update performance https://www.cocomore.com/blog/dont-use-window-onresize
-
-    // Config
-    private delay = 100;
+    private desktopMql: MediaQueryList = window.matchMedia('(min-width: 1024px)'); // 64rem
+    // private mobileMql: MediaQueryList = window.matchMedia('(max-width: 767px)'); // 48rem - 1px
 
     constructor() {}
 
-    // Observables
-    public isMobile$: Observable<boolean> = fromEvent(window, 'resize').pipe(
-        throttleTime(this.delay),
-        debounceTime(this.delay),
-        startWith(null),
-        map(() => {
-            return window.innerWidth < 768; // 48rem
-        })
-    );
+    public isDesktop$: BehaviorSubject<boolean> = new BehaviorSubject(this.desktopMql.matches);
+    // public isMobile$: BehaviorSubject<boolean> = new BehaviorSubject(this.mobileMql.matches);
 
-    public isDesktop$: Observable<boolean> = fromEvent(window, 'resize').pipe(
-        throttleTime(this.delay),
-        debounceTime(this.delay),
-        startWith(null),
-        map(() => {
-            console.log(window.innerWidth);
-            return window.innerWidth >= 1024; // 64rem
-        })
-    );
+    // Call this only one time in app.component.ts
+    public startListening(): void {
+        this.desktopMql.addEventListener('change', (event: MediaQueryListEvent) => {
+            this.isDesktop$.next(event.matches);
+        });
+        // this.mobileMql.addEventListener('change', (event: MediaQueryListEvent) => {
+        //     this.isMobile$.next(event.matches);
+        // });
+    }
 }
