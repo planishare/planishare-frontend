@@ -25,5 +25,4 @@ export class MainLayoutComponent extends Unsubscriber {
                 this.component = value;
             });
     }
-
 }

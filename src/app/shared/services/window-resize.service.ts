@@ -5,10 +5,12 @@ import { debounceTime, fromEvent, map, startWith, Observable, throttleTime } fro
     providedIn: 'root'
 })
 export class WindowResizeService {
+    // TODO: update performance https://www.cocomore.com/blog/dont-use-window-onresize
+
     // Config
     private delay = 100;
 
-    constructor() { }
+    constructor() {}
 
     // Observables
     public isMobile$: Observable<boolean> = fromEvent(window, 'resize').pipe(

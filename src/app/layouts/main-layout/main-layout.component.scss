@@ -1,18 +1,28 @@
-.mat-sidenav-container{
-    height: 100%;
+.mat-sidenav-container, .mat-sidenav-content{
+    overflow: unset; // To allow navbar sticky
 }
 
 .mat-sidenav-content {
     background-image: url('/assets/images/bg1-425x756.jpg');
     background-size: cover;
+    background-attachment: fixed;
     background-position: bottom center;
 
     display: flex;
     flex-direction: column;
+
+    min-height: 100vh;
+}
+
+#navbar {
+    position: sticky;
+    top: 0;
+    justify-self: flex-start;
 }
 
 #main-content {
     flex-grow: 1;
+    display: flex;
 }
 
 .mat-sidenav {

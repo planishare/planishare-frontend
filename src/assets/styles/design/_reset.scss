@@ -26,7 +26,8 @@ ol[role='list'] {
 }
 
 /* Set core root defaults */
-html, body {  height: 100%;}
+// html {  height: 100%;}
+// body {  height: 100%;}
 
 html:focus-within {
   scroll-behavior: smooth;

@@ -27,5 +27,9 @@ export class AppComponent implements OnInit {
         if (this.inMaintenance) {
             this.matSnackBar.open('Estamos trabajando en actualizaciones, te recomendamos volver más tarde. 🔧');
         }
+
+        window.addEventListener("scroll", () => {
+            console.log('scroll!');
+        });
     }
 }
