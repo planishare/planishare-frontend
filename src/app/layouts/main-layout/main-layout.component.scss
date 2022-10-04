@@ -10,6 +10,7 @@
 
     display: flex;
     flex-direction: column;
+    gap: .25rem;
 
     min-height: 100vh;
 }
@@ -23,6 +24,7 @@
 #main-content {
     flex-grow: 1;
     display: flex;
+    margin-inline: auto;
 }
 
 .mat-sidenav {
@@ -35,6 +37,7 @@
 @media (min-width: 48rem) {
     .mat-sidenav-content {
         background-image: url('/assets/images/bg1-1920x1080.jpg');
+        gap: 1;
     }
 
     .mat-sidenav {

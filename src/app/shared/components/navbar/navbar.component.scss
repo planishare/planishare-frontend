@@ -1,9 +1,14 @@
 .header {
+    transition-property: background-color;
+    transition-duration: .15s;
+    transition-timing-function: ease-out;
+}
+
+.container {
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    // Override .container class regarding icons width
     max-width: calc(90rem - 16px);
     padding-inline: calc(min(5%, 2rem) - 16px);
 }
@@ -25,7 +30,7 @@
     display: flex;
     list-style: none;
     margin: 0;
-    padding: 1rem 0;
+    padding: .5rem 0;
     gap: .5rem;
 }
 
@@ -34,4 +39,16 @@
     --text-color: hsl(var(--clr-blue-dark));
     --p-x: 1.35em;
     --p-y: .45em;
+}
+
+.header_on-scroll {
+    background-color: hsl(var(--clr-white-98));
+
+    .rounded-button {
+        --bg-color: hsl(var(--clr-white-98));
+        --text-color: hsl(var(--clr-blue-dark));
+        --p-x: calc(1.35em - 2px);
+        --p-y: calc(.45em - 2px);
+        border: 2px solid hsl(var(--clr-blue-dark));
+    }
 }
