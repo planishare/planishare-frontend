@@ -60,8 +60,13 @@
   
   <div>
     <div class="fs-small flex-end-center flex-wrap gap-05">
+      <button class="filters-button rounded-button-slim box-shadow-1" *ngIf="!this.isDesktop">
+        <span>Filtros y búsqueda</span>
+        <mat-icon class="small-icon">filter_alt</mat-icon>
+      </button>
+
       <!-- Filter tags -->
-      <div class="filter-tags flex-center-center gap-05 flex-wrap">
+      <div class="filter-tags flex-center-center gap-025 flex-wrap">
         <button class="rounded-button-slim bg-text-academic-level box-shadow-1">
           <span>6to Básico</span>
           <mat-icon class="small-icon">close</mat-icon>
