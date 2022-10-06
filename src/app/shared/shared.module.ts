@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { MaterialModule } from './material/material.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { NgxDocViewerModule } from 'ngx-doc-viewer';
 
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { NavigationSidenavComponent } from './components/navigation-sidenav/navigation-sidenav.component';
@@ -44,11 +43,9 @@ import { DragAndDropFileDirective } from './directives/drag-and-drop-file.direct
     imports: [
         CommonModule,
         MaterialModule,
-        FormsModule,
-        RouterModule,
         NgxMatSelectSearchModule,
         ReactiveFormsModule,
-        NgxDocViewerModule
+        RouterModule
     ],
     exports: [
         // Components
@@ -58,12 +55,6 @@ import { DragAndDropFileDirective } from './directives/drag-and-drop-file.direct
         SquareLoaderComponent,
         RoundedSelectComponent,
         ReportDialogComponent,
-
-        // Modules
-        MaterialModule,
-        NgxMatSelectSearchModule,
-        ReactiveFormsModule,
-        NgxDocViewerModule,
 
         // Pipes
         GetUsernamePipe,

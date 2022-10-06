@@ -18,9 +18,6 @@
     </div>
   </div>
 
-  <!-- Shimmer -->
-  <app-results-shimmer *ngIf="showList === 1 ? isLoadingPopular : isLoadingMostLiked"></app-results-shimmer>
-
   <!-- Posts -->
   <div class="posts" *ngIf="showList === 1 ? !isLoadingPopular : !isLoadingMostLiked">
     <ng-container *ngFor="let post of (showList === 1 ? popular : mostLiked)">

@@ -19,7 +19,7 @@ import { ReactionsService } from 'src/app/core/services/reactions.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
 import { ReportDialogComponent } from 'src/app/shared/components/report-dialog/report-dialog.component';
-import { DeleteDialogComponent } from '../../posts/components/delete-dialog/delete-dialog.component';
+import { DeleteDialogComponent } from 'src/app/features/posts/components/delete-dialog/delete-dialog.component';
 
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 import { WindowResizeService } from 'src/app/shared/services/window-resize.service';

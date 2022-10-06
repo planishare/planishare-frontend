@@ -9,6 +9,10 @@ import { CreatePostComponent } from './create-post/create-post.component';
 import { UserPostsComponent } from './user-posts/user-posts.component';
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 import { EditPostComponent } from './edit-post/edit-post.component';
+import { MaterialModule } from 'src/app/shared/material/material.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @NgModule({
     declarations: [
@@ -22,7 +26,11 @@ import { EditPostComponent } from './edit-post/edit-post.component';
     imports: [
         CommonModule,
         PostsRoutingModule,
-        SharedModule
+        SharedModule,
+        MaterialModule,
+        ReactiveFormsModule,
+        NgxDocViewerModule,
+        NgxMatSelectSearchModule
     ]
 })
 export class PostsModule { }

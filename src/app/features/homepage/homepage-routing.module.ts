@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomepageComponent } from './homepage/homepage.component';
-import { ResultsComponent } from './results/results.component';
 import { TopsComponent } from './tops/tops.component';
 
 const routes: Routes = [
@@ -13,7 +12,7 @@ const routes: Routes = [
     },
     {
         path: 'results',
-        component: ResultsComponent
+        component: HomepageComponent
     },
     {
         path: 'tops',
