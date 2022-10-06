@@ -2,15 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, debounceTime, filter, forkJoin, map, merge, Observable, of, pipe, takeUntil, tap } from 'rxjs';
+import { catchError, debounceTime, filter, forkJoin, map, merge, Observable, of, takeUntil, tap } from 'rxjs';
 
+import { IPageable } from 'src/app/core/models/pageable.model';
+import { IPostDetail, PostDetail } from 'src/app/core/models/post.model';
 import { OrderingType, OrderingTypeName } from 'src/app/core/enums/posts.enum';
 import { ReportType } from 'src/app/shared/enums/report.enum';
-import { PostDetail, PostPageable, PostsQueryParams } from 'src/app/core/types/posts.type';
+import { PostsQueryParams } from 'src/app/core/types/posts.type';
 import { ReportForm } from 'src/app/core/types/report.type';
 import { UserDetail } from 'src/app/core/types/users.type';
 import { RoundedSelectOption, RoundedSelectGroup } from 'src/app/shared/types/rounded-select.type';
-import { DOCUMENT_TYPES } from 'src/app/core/constants/documents.constants';
 
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
@@ -36,7 +37,7 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
     public isAxesLoading = true;
     public showRemoveFilters = false;
 
-    public pageInfo?: PostPageable;
+    public pageInfo?: IPageable<IPostDetail>;
     public maxPage = 1;
 
     public searchParams: PostsQueryParams = {
@@ -73,7 +74,6 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
     ];
 
     public isDesktop = false;
-    public docTypes = DOCUMENT_TYPES;
     public reportType = ReportType;
 
     constructor(
@@ -202,7 +202,7 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
             .subscribe(resp => {
                 this.pageInfo = resp!;
                 this.maxPage = this.pageInfo.count <= 10 ? 1 : ((this.pageInfo.count - this.pageInfo.count % 10) / 10) + 1;
-                this.posts = resp!.results;
+                this.posts = resp!.results.map(post => new PostDetail(post));
                 this.hasData = !!this.posts.length;
                 this.isLoading = false;
             });
@@ -242,21 +242,21 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
             return;
         }
 
-        post.total_likes = !!post.already_liked ? post.total_likes - 1 : post.total_likes + 1;
-        post.already_liked = post.already_liked ?? -1;
+        post.totalLikes = !!post.alreadyLiked ? post.totalLikes - 1 : post.totalLikes + 1;
+        post.alreadyLiked = post.alreadyLiked ?? -1;
 
         this.reactionService.toggleLike(this.user.id, post.id)
             .pipe(
                 catchError(() => {
-                    post.total_likes = !!post.already_liked ? post.total_likes - 1 : post.total_likes + 1;
-                    post.already_liked = post.already_liked ?? -1;
+                    post.totalLikes = !!post.alreadyLiked ? post.totalLikes - 1 : post.totalLikes + 1;
+                    post.alreadyLiked = post.alreadyLiked ?? -1;
                     this.commonSnackbarMsg.showErrorMessage();
                     return of(null);
                 }),
                 takeUntil(this.ngUnsubscribe$)
             )
             .subscribe(resp => {
-                post.already_liked = resp?.id;
+                post.alreadyLiked = resp?.id;
             });
     }
 

@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { IPageable } from '../models/pageable.model';
+import { IPostDetail } from '../models/post.model';
 import { AcademicLevel, Axis, PostDetail, PostForm, PostPageable, PostsQueryParams, RealPostsQueryParams, Subject, SubjectWithAxis } from '../types/posts.type';
 import { AuthService } from './auth.service';
 
@@ -18,7 +20,7 @@ export class PostsService {
         private http: HttpClient
     ) { }
 
-    public getPosts(queryParams: PostsQueryParams): Observable<PostPageable> {
+    public getPosts(queryParams: PostsQueryParams): Observable<IPageable<IPostDetail>> {
         const params: RealPostsQueryParams = {
             page: queryParams.page ?? 1,
             search: queryParams.search ?? '',

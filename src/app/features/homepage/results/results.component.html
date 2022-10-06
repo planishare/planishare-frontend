@@ -104,51 +104,52 @@
 
     <!-- Post grid -->
     <section class="posts-grid">
-      <div class="rounded-card flex-column gap-1" *ngFor="let el of [1,1,1,1,1]">
+      <div class="rounded-card flex-column gap-1" *ngFor="let post of posts">
         <div class="flex-space_between-center">
-          <p>Macarena pia torres gamboa - hace 2 meses</p>
+          <p>{{ post.user.fullName }} - {{ post.createdAt|timeAgo }}</p>
           <mat-icon class="text-blue-dark">more_vert</mat-icon>
         </div>
   
         <div>
-          <h2>Radioteatro (Narrador y personaje)</h2>
-          <p>Analizar relatos de terror en radioteatro e identificar la voz de los personajes. Se adjunta clase pdf y guión de radioteatro Dr. Mortis "Un loco anda suelto" Escuchar en youtube https://www.youtube.com/watch?v=ctR5p4XOoAw La guerra de los mundos radioteatro</p>
+          <h2>{{ post.title }}</h2>
+          <p>{{ post.shortDescription }}</p>
         </div>
   
         <div class="flex-space_between-center flex-wrap gap-025">
           <div class="flex-center-center gap-025">
             <mat-icon class="text-blue-dark">description</mat-icon>
-            <span class="fw-600">4 Documentos</span>
+            <span class="fw-600">{{ post.totalFiles }} Documentos</span>
           </div>
   
           <div class="flex-wrap gap-025">
-            <span class="small-border-tag-red">.pdf</span>
-            <span class="small-border-tag-blue">.doc</span>
-            <span class="small-border-tag-green">.xls</span>
-            <span class="small-border-tag-orange">.ppt</span>
+            <span class="small-border-tag-{{ post.mainFile.tagColor }}">{{ post.mainFile.ext }}</span>
+            <ng-container *ngFor="let file of post.suportingMaterial">
+              <span class="small-border-tag-{{ file.tagColor }}">{{ file.ext }}</span>
+            </ng-container>
           </div>
         </div>
   
         <div class="flex-wrap gap-025">
-          <span class="rounded-button-slim bg-text-academic-level">Nivel académico: 6to básico</span>
-          <span class="rounded-button-slim bg-text-axis">Eje: Lectura</span>
-          <span class="rounded-button-slim bg-text-subject">Asignatura: Lenguaje y comunicación</span>
+          <span class="rounded-button-slim bg-text-academic-level">Nivel académico: {{ post.academicLevel.name }}</span>
+          <span class="rounded-button-slim bg-text-axis">Eje: {{ post.axis.name }}</span>
+          <span class="rounded-button-slim bg-text-subject">Asignatura: {{ post.axis.subject.name }}</span>
         </div>
   
         <div class="flex-space_between-center">
           <div class="flex-center-center gap-1">
             <div class="flex-center-center gap-025">
               <mat-icon class="small-icon text-blue-dark">favorite_outline</mat-icon>
-              <span class="fw-600">3 Me gusta</span>
+              <span class="fw-600">{{ post.totalLikes }} Me gusta</span>
             </div>
             <div class="flex-center-center gap-025">
               <mat-icon class="small-icon text-blue-dark">visibility</mat-icon>
-              <span class="fw-600">3 Visualizaciones</span>
+              <span class="fw-600">{{ post.totalLikes }} Visualizaciones</span>
             </div>
           </div>
   
-          <mat-icon class="text-red">favorite_outline</mat-icon>
-          <!-- <mat-icon class="text-red">favorite</mat-icon> -->
+          <mat-icon class="text-red">
+            {{ post.alreadyLiked ? 'favorite' : 'favorite_outline' }}
+          </mat-icon>
         </div>
       </div>
     </section>
