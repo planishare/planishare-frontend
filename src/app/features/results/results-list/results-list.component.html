@@ -3,10 +3,10 @@
     <!-- Desktop searchbar -->
     <div class="rounded-search-bar box-shadow-2">
       <input type="search" [formControl]="searchControl" placeholder="Buscar" (keyup.enter)="doSearch(1)">
-      <button *ngIf="searchControl.value" mat-icon-button (click)="clearSearchControl()">
+      <button *ngIf="!!searchParams.search && searchParams.search === searchControl.value" mat-icon-button (click)="clearSearchControl()">
         <mat-icon>close</mat-icon>
       </button>
-      <button *ngIf="!searchControl.value" mat-icon-button (click)="doSearch(1)">
+      <button *ngIf="!!!searchParams.search || searchParams.search !== searchControl.value" mat-icon-button (click)="doSearch(1)">
         <mat-icon>search</mat-icon>
       </button>
     </div>
@@ -87,15 +87,24 @@
     
       <!-- Paginations -->
       <div class="pagination flex-center-center gap-05">
-        <span class="fw-700 fs-regular">1 - 10 de 24</span>
+        <span class="fw-700 fs-regular">
+          {{ (pageInfo?.maxPage ?? 0) * (searchParams.page! - 1) + 1 }}
+           - {{ (pageInfo?.maxPage ?? 0) * (searchParams.page! - 1) + posts.length }}
+          de {{ pageInfo?.count }}
+        </span>
         <div class="flex-center-center gap-025">
-          <button class="circle-button">
+          <button class="circle-button" (click)="previousPage()" [disabled]="!pageInfo?.previous || isLoading">
             <mat-icon class="small-icon">navigate_before</mat-icon>
           </button>
-          <button class="circle-button">
-            <span class="fs-small fw-700">12</span>
+          <button class="circle-button" [matMenuTriggerFor]="pagesMenu">
+            <span class="fs-small fw-700">{{ searchParams.page }}</span>
           </button>
-          <button class="circle-button">
+          <mat-menu #pagesMenu>
+            <button mat-menu-item *ngFor="let page of (pageInfo?.maxPage ?? 1)|fillArray" (click)="doSearch(page)">
+              {{ page }}
+            </button>
+          </mat-menu>
+          <button class="circle-button" (click)="nextPage()" [disabled]="!pageInfo?.next || isLoading">
             <mat-icon class="small-icon">navigate_next</mat-icon>
           </button>
         </div>

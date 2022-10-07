@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, debounceTime, filter, forkJoin, map, merge, Observable, of, takeUntil, tap } from 'rxjs';
 
-import { IPageable } from 'src/app/core/models/pageable.model';
+import { Pageable } from 'src/app/core/models/pageable.model';
 import { IPostDetail, PostDetail } from 'src/app/core/models/post.model';
 import { OrderingType, OrderingTypeName } from 'src/app/core/enums/posts.enum';
 import { ReportType } from 'src/app/shared/enums/report.enum';
@@ -25,11 +25,11 @@ import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 import { WindowResizeService } from 'src/app/shared/services/window-resize.service';
 
 @Component({
-    selector: 'app-results',
-    templateUrl: './results.component.html',
-    styleUrls: ['./results.component.scss']
+    selector: 'app-results-list',
+    templateUrl: './results-list.component.html',
+    styleUrls: ['./results-list.component.scss']
 })
-export class ResultsComponent extends Unsubscriber implements OnInit {
+export class ResultsListComponent extends Unsubscriber implements OnInit {
     public isLoading = true;
     public hasData = true;
     public isAcademicLevelsLoading = true;
@@ -37,8 +37,7 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
     public isAxesLoading = true;
     public showRemoveFilters = false;
 
-    public pageInfo?: IPageable<IPostDetail>;
-    public maxPage = 1;
+    public pageInfo?: Pageable<IPostDetail>;
 
     public searchParams: PostsQueryParams = {
         page: 1,
@@ -144,7 +143,7 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
         });
 
         // Save search params
-        this.searchParams.page = Number(params.page) ?? this.searchParams.page;
+        this.searchParams.page = Number(params.page) || this.searchParams.page;
         this.searchParams.search = params.search;
         this.searchParams.academicLevel = Number(params.academicLevel);
         this.searchParams.subject = Number(params.subject);
@@ -200,8 +199,7 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
                 takeUntil(this.ngUnsubscribe$)
             )
             .subscribe(resp => {
-                this.pageInfo = resp!;
-                this.maxPage = this.pageInfo.count <= 10 ? 1 : ((this.pageInfo.count - this.pageInfo.count % 10) / 10) + 1;
+                this.pageInfo = new Pageable(resp!);
                 this.posts = resp!.results.map(post => new PostDetail(post));
                 this.hasData = !!this.posts.length;
                 this.isLoading = false;
@@ -258,6 +256,13 @@ export class ResultsComponent extends Unsubscriber implements OnInit {
             .subscribe(resp => {
                 post.alreadyLiked = resp?.id;
             });
+    }
+
+    public changePage(newPage: number): void {
+        if (newPage !== this.searchParams.page) {
+            this.searchParams.page = newPage;
+            this.doSearch();
+        }
     }
 
     public nextPage(): void {

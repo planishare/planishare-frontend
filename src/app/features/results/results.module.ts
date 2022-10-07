@@ -2,19 +2,21 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ResultsRoutingModule } from './results-routing.module';
-import { ResultsComponent } from './results/results.component';
+import { ResultsListComponent } from './results-list/results-list.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MaterialModule } from 'src/app/shared/material/material.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
-        ResultsComponent
+        ResultsListComponent
     ],
     imports: [
         CommonModule,
         ResultsRoutingModule,
         SharedModule,
-        MaterialModule
+        MaterialModule,
+        ReactiveFormsModule
     ]
 })
 export class ResultsModule { }

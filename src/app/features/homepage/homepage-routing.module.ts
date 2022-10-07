@@ -11,10 +11,6 @@ const routes: Routes = [
         // pathMatch: 'full'
     },
     {
-        path: 'results',
-        component: HomepageComponent
-    },
-    {
         path: 'tops',
         component: TopsComponent
     }

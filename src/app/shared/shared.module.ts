@@ -17,6 +17,7 @@ import { GetUsernamePipe } from './pipes/get-username.pipe';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { StringToArrayPipe } from './pipes/string-to-array.pipe';
 import { GetDocType, GetDocName } from './pipes/posts.pipe';
+import { FillArrayPipe } from './pipes/fill-array.pipe';
 
 import { DragAndDropFileDirective } from './directives/drag-and-drop-file.directive';
 
@@ -38,7 +39,8 @@ import { DragAndDropFileDirective } from './directives/drag-and-drop-file.direct
         NavigationSidenavComponent,
         BookLoaderComponent,
         SquareLoaderComponent,
-        RoundedSelectComponent
+        RoundedSelectComponent,
+        FillArrayPipe
     ],
     imports: [
         CommonModule,
@@ -62,6 +64,7 @@ import { DragAndDropFileDirective } from './directives/drag-and-drop-file.direct
         StringToArrayPipe,
         GetDocType,
         GetDocName,
+        FillArrayPipe,
 
         // Directives
         DragAndDropFileDirective
