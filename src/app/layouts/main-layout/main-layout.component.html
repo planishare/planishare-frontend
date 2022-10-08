@@ -1,9 +1,9 @@
 <mat-sidenav-container>
     <mat-sidenav-content>
         <app-navbar id="navbar"></app-navbar>
-        <main>
+        <div>
             <router-outlet></router-outlet>
-        </main>
+        </div>
     </mat-sidenav-content>
     <mat-sidenav mode="over" [(opened)]="isOpened" [autoFocus]="false">
         <ng-container [ngSwitch]="component">
