@@ -110,14 +110,11 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
         super();
 
         this.form = new FormGroup({
-            search: new FormControl(),
-            academicLevel: new FormControl(),
-            subject: new FormControl(),
-            axis: new FormControl(),
-            ordering: new FormControl({
-                data: OrderingType.MOST_RECENT,
-                text: OrderingTypeName.MOST_RECENT
-            })
+            search: new FormControl<string | undefined>(undefined),
+            academicLevel: new FormControl<RoundedSelectOption<IAcademicLevel> | undefined>(undefined),
+            subject: new FormControl<RoundedSelectOption<ISubject> | undefined>(undefined),
+            axis: new FormControl<RoundedSelectOption<IAxis> | undefined>(undefined),
+            ordering: new FormControl<RoundedSelectOption<IOrdering>>(this.orderingList[0])
         });
 
         this.searchControl = this.form.controls['search'] as FormControl;
@@ -231,6 +228,8 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
 
     private setQueryParams(): void {
         const queryParams = this.postFilters.formatForQueryParams();
+        queryParams.ordering =
+            queryParams.ordering !== this.orderingType.MOST_RECENT ? queryParams.ordering : undefined;
         this.router.navigate([], { relativeTo: this.activatedRoute, queryParams });
     }
 
@@ -309,17 +308,18 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
             !!this.postFilters.axis;
     }
 
-    public clearFilterControls(): void {
+    public removeFilters(): void {
         this.form.setValue({
             search: null,
             academicLevel: null,
             subject: null,
             axis: null,
-            ordering: {
-                data: OrderingType.MOST_RECENT,
-                text: OrderingTypeName.MOST_RECENT
-            }
+            ordering: this.orderingList[0]
         });
+    }
+
+    public removeFilter(filter: string): void {
+        this.form.get(filter)?.setValue(undefined);
     }
 
     public navigateToDetail(postId: number): void {

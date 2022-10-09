@@ -51,7 +51,7 @@
         [options]="orderingList">
       </app-rounded-select>
   
-      <button class="reset-filters-button" *ngIf="hasFilters" (click)="clearFilterControls()">
+      <button class="reset-filters-button" *ngIf="hasFilters" (click)="removeFilters()">
         <mat-icon class="small-icon">delete</mat-icon>
         <span class="fw-600">Borrar filtros</span>
       </button>
@@ -71,21 +71,33 @@
 
       <!-- Filter tags -->
       <div class="filter-tags flex-center-center gap-025 flex-wrap">
-        <button *ngIf="!!postFilters.academicLevel" class="rounded-button-slim bg-text-academic-level box-shadow-1">
-          <span>{{ postFilters.academicLevel.name }}</span>
-          <mat-icon class="small-icon">close</mat-icon>
+        <button
+          *ngIf="!!academicLevelControl.value"
+          (click)="removeFilter('academicLevel')"
+          class="rounded-button-slim bg-text-academic-level box-shadow-1">
+            <span>{{ academicLevelControl.value.data.name }}</span>
+            <mat-icon class="small-icon">close</mat-icon>
         </button>
-        <button *ngIf="!!postFilters.axis" class="rounded-button-slim bg-text-axis box-shadow-1">
-          <span>{{ postFilters.axis.name }}</span>
-          <mat-icon class="small-icon">close</mat-icon>
+        <button
+          *ngIf="!!axisControl.value"
+          (click)="removeFilter('axis')"
+          class="rounded-button-slim bg-text-axis box-shadow-1">
+            <span>{{ axisControl.value.data.name }}</span>
+            <mat-icon class="small-icon">close</mat-icon>
         </button>
-        <button *ngIf="!!postFilters.subject" class="rounded-button-slim bg-text-subject box-shadow-1">
-          <span>{{ postFilters.subject.name }}</span>
-          <mat-icon class="small-icon">close</mat-icon>
+        <button
+          *ngIf="!!subjectControl.value"
+          (click)="removeFilter('subject')"
+          class="rounded-button-slim bg-text-subject box-shadow-1">
+            <span>{{ subjectControl.value.data.name }}</span>
+            <mat-icon class="small-icon">close</mat-icon>
         </button>
-        <button *ngIf="postFilters.ordering && postFilters.ordering.id !== orderingType.MOST_RECENT" class="rounded-button-slim bg-text-blue-white box-shadow-1">
-          <span>{{ postFilters.ordering.name }}</span>
-          <mat-icon class="small-icon">close</mat-icon>
+        <button
+          *ngIf="!!orderingControl.value && orderingControl.value.data.id !== orderingType.MOST_RECENT"
+          (click)="removeFilter('ordering')"
+          class="rounded-button-slim bg-text-blue-white box-shadow-1">
+            <span>{{ orderingControl.value.data.name }}</span>
+            <mat-icon class="small-icon">close</mat-icon>
         </button>
       </div>
     
