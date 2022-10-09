@@ -93,6 +93,7 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
     ];
 
     public isDesktop = false;
+    public showFilterCardContent = false;
     public reportType = ReportType;
     public orderingType = OrderingType;
     public orderingTypeName = OrderingTypeName;
@@ -125,9 +126,11 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
 
         this.user = this.authService.getUserProfile() ?? null;
 
-        this.windowResize.isDesktop$
-            .pipe(takeUntil(this.ngUnsubscribe$))
-            .subscribe(value => this.isDesktop = value);
+        this.windowResize.isDesktop$.pipe(takeUntil(this.ngUnsubscribe$))
+            .subscribe(value => {
+                this.isDesktop = value;
+                this.showFilterCardContent = value;
+            });
     }
 
     public ngOnInit(): void {
