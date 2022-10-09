@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IPageable } from '../models/pageable.model';
+import { APIPostsQueryParams } from '../models/post-filter.model';
 import { IPostDetail } from '../models/post.model';
-import { AcademicLevel, Axis, PostDetail, PostForm, PostPageable, PostsQueryParams, RealPostsQueryParams, Subject, SubjectWithAxis } from '../types/posts.type';
-import { AuthService } from './auth.service';
+import { AcademicLevel, Axis, PostDetail, PostForm, PostPageable, RealPostsQueryParams, Subject, SubjectWithAxis } from '../types/posts.type';
 
 @Injectable({
     providedIn: 'root'
@@ -20,19 +20,9 @@ export class PostsService {
         private http: HttpClient
     ) { }
 
-    public getPosts(queryParams: PostsQueryParams): Observable<IPageable<IPostDetail>> {
-        const params: RealPostsQueryParams = {
-            page: queryParams.page ?? 1,
-            search: queryParams.search ?? '',
-            user__id: queryParams.userId ?? '',
-            academic_level__id: queryParams.academicLevel ?? '',
-            axis__subject__id: queryParams.subject ?? '',
-            axis__id: queryParams.axis ?? '',
-            ordering: queryParams.ordering ?? ''
-        };
-
+    public getPosts(queryParams: APIPostsQueryParams): Observable<IPageable<IPostDetail>> {
         return this.http.get<PostPageable>(environment.apiUrl + '/posts/', {
-            params
+            params: queryParams
         });
     }
 

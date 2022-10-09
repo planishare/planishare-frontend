@@ -13,7 +13,7 @@ export class RoundedSelectComponent implements OnInit {
     // Base input data
     @Input() public baseText = 'Base text';
     @Input() public control!: FormControl;
-    @Input() public set options(value: RoundedSelectOption[] | RoundedSelectGroup[]) {
+    @Input() public set options(value: RoundedSelectOption<any>[] | RoundedSelectGroup<any>[]) {
         this.checkInput(value, 'Options');
         this._options = value;
         this.filteredOptions = value;
@@ -30,8 +30,8 @@ export class RoundedSelectComponent implements OnInit {
     @Input() public loading: boolean = false;
 
     // Internal variables
-    public _options: (RoundedSelectOption | RoundedSelectGroup)[] = [];
-    public filteredOptions: (RoundedSelectOption | RoundedSelectGroup)[] = [];
+    public _options: (RoundedSelectOption<any> | RoundedSelectGroup<any>)[] = [];
+    public filteredOptions: (RoundedSelectOption<any> | RoundedSelectGroup<any>)[] = [];
     public textValue?: string;
     public search: FormControl = new FormControl();
 
@@ -40,7 +40,7 @@ export class RoundedSelectComponent implements OnInit {
     public ngOnInit(): void {
         this.checkInput(this.control, 'Control');
         this.control.valueChanges.pipe(startWith(this.control.value))
-            .subscribe((data: RoundedSelectOption) => {
+            .subscribe((data: RoundedSelectOption<any>) => {
                 this.textValue = data?.text;
                 this.filteredOptions = this._options;
             });
@@ -48,9 +48,9 @@ export class RoundedSelectComponent implements OnInit {
         this.search.valueChanges.subscribe((inputText: string) => {
             if (!!inputText) {
                 if (!this.hasGroups) {
-                    this.filteredOptions = this.simpleFilter(inputText, this._options as RoundedSelectOption[]);
+                    this.filteredOptions = this.simpleFilter(inputText, this._options as RoundedSelectOption<any>[]);
                 } else {
-                    this.filteredOptions = this.groupFilter(inputText, this._options as RoundedSelectGroup[]);
+                    this.filteredOptions = this.groupFilter(inputText, this._options as RoundedSelectGroup<any>[]);
                 }
             } else {
                 this.filteredOptions = this._options;
@@ -59,8 +59,8 @@ export class RoundedSelectComponent implements OnInit {
     }
 
     private simpleFilter(
-        inputText: string, simpleOptions: RoundedSelectOption[]
-    ): RoundedSelectOption[] {
+        inputText: string, simpleOptions: RoundedSelectOption<any>[]
+    ): RoundedSelectOption<any>[] {
         inputText = this.normilizeText(inputText);
         return simpleOptions.filter(option => {
             const textNormalized = this.normilizeText(option.text);
@@ -69,13 +69,13 @@ export class RoundedSelectComponent implements OnInit {
     }
 
     private groupFilter(
-        inputText: string, optionGroups: RoundedSelectGroup[]
-    ): RoundedSelectGroup[] {
-        const results: RoundedSelectGroup[] = [];
+        inputText: string, optionGroups: RoundedSelectGroup<any>[]
+    ): RoundedSelectGroup<any>[] {
+        const results: RoundedSelectGroup<any>[] = [];
         inputText = this.normilizeText(inputText);
         optionGroups.forEach(el => {
             const groupTextNormalized = this.normilizeText(el.text);
-            const filteredOptions: RoundedSelectOption[] = [];
+            const filteredOptions: RoundedSelectOption<any>[] = [];
             el.options.forEach(option => {
                 const optionTextNormalized = this.normilizeText(option.text);
                 if (optionTextNormalized.includes(inputText)) {
@@ -95,7 +95,7 @@ export class RoundedSelectComponent implements OnInit {
     }
 
     private checkInput(
-        value: FormControl | RoundedSelectOption[] | RoundedSelectGroup[],
+        value: FormControl | RoundedSelectOption<any>[] | RoundedSelectGroup<any>[],
         attribute: string
     ): void {
         if (!value) {

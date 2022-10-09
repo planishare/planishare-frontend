@@ -5,10 +5,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, debounceTime, filter, forkJoin, map, merge, Observable, of, takeUntil, tap } from 'rxjs';
 
 import { Pageable } from 'src/app/core/models/pageable.model';
-import { IPostDetail, PostDetail } from 'src/app/core/models/post.model';
+import { IOrdering, PostFilters, PostsQueryParams } from 'src/app/core/models/post-filter.model';
+import { IAcademicLevel, IAxis, IPostDetail, ISubject, PostDetail } from 'src/app/core/models/post.model';
 import { OrderingType, OrderingTypeName } from 'src/app/core/enums/posts.enum';
 import { ReportType } from 'src/app/shared/enums/report.enum';
-import { PostsQueryParams } from 'src/app/core/types/posts.type';
 import { ReportForm } from 'src/app/core/types/report.type';
 import { UserDetail } from 'src/app/core/types/users.type';
 import { RoundedSelectOption, RoundedSelectGroup } from 'src/app/shared/types/rounded-select.type';
@@ -35,45 +35,67 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
     public isAcademicLevelsLoading = true;
     public isSubjectsLoading = true;
     public isAxesLoading = true;
-    public showRemoveFilters = false;
+    public hasFilters = false;
 
     public pageInfo?: Pageable<IPostDetail>;
 
-    public searchParams: PostsQueryParams = {
+    public postFilters = new PostFilters({
         page: 1,
-        ordering: OrderingType.MOST_RECENT
-    };
+        ordering: {
+            id: OrderingType.MOST_RECENT,
+            name: OrderingTypeName.MOST_RECENT
+        }
+    });
 
     public user: UserDetail | null;
     public posts: PostDetail[] = [];
 
     public form: FormGroup;
+    public searchControl: FormControl;
+    public academicLevelControl: FormControl;
+    public subjectControl: FormControl;
+    public axisControl: FormControl;
+    public orderingControl: FormControl;
 
-    public academicLevelsList: RoundedSelectOption[] = [];
-    public subjectWithAxis: RoundedSelectGroup[] = [];
-    public axisList: RoundedSelectOption[] = [];
-    public subjectList: RoundedSelectOption[] = [];
-    public orderingList: RoundedSelectOption[] = [
+    public academicLevelsList: RoundedSelectOption<IAcademicLevel>[] = [];
+    public subjectWithAxis: RoundedSelectGroup<IAxis>[] = [];
+    public axisList: RoundedSelectOption<IAxis>[] = [];
+    public subjectList: RoundedSelectOption<ISubject>[] = [];
+    public orderingList: RoundedSelectOption<IOrdering>[] = [
         {
-            data: OrderingType.MOST_RECENT,
+            data: {
+                id: OrderingType.MOST_RECENT,
+                name: OrderingTypeName.MOST_RECENT
+            },
             text: OrderingTypeName.MOST_RECENT
         },
         {
-            data: OrderingType.LESS_RECENT,
+            data: {
+                id: OrderingType.LESS_RECENT,
+                name: OrderingTypeName.LESS_RECENT
+            },
             text: OrderingTypeName.LESS_RECENT
         },
         {
-            data: OrderingType.MOST_LIKED,
+            data: {
+                id: OrderingType.MOST_LIKED,
+                name: OrderingTypeName.MOST_LIKED
+            },
             text: OrderingTypeName.MOST_LIKED
         },
         {
-            data: OrderingType.MOST_VIEWED,
+            data: {
+                id: OrderingType.MOST_VIEWED,
+                name: OrderingTypeName.MOST_VIEWED
+            },
             text: OrderingTypeName.MOST_VIEWED
         }
     ];
 
     public isDesktop = false;
     public reportType = ReportType;
+    public orderingType = OrderingType;
+    public orderingTypeName = OrderingTypeName;
 
     constructor(
         private postsService: PostsService,
@@ -97,6 +119,12 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
                 text: OrderingTypeName.MOST_RECENT
             })
         });
+
+        this.searchControl = this.form.controls['search'] as FormControl;
+        this.academicLevelControl = this.form.controls['academicLevel'] as FormControl;
+        this.subjectControl = this.form.controls['subject'] as FormControl;
+        this.axisControl = this.form.controls['axis'] as FormControl;
+        this.orderingControl = this.form.controls['ordering'] as FormControl;
 
         this.user = this.authService.getUserProfile() ?? null;
 
@@ -127,7 +155,7 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
                 );
                 filtersListener.pipe(debounceTime(100)).subscribe(() => {
                     this.doSearch(1);
-                    this.changeRemoveFiltersVisibility();
+                    this.updateHasFilters();
                 });
 
                 this.handleAxisAndSubjectChanges();
@@ -137,57 +165,52 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
     // Make first request based on query params
     private getQueryParams(): void {
         const params: PostsQueryParams = this.activatedRoute.snapshot.queryParams;
-        this.getPosts({
-            ...params,
-            ordering: params.ordering ?? this.orderingControl.value.data
-        });
 
-        // Save search params
-        this.searchParams.page = Number(params.page) || this.searchParams.page;
-        this.searchParams.search = params.search;
-        this.searchParams.academicLevel = Number(params.academicLevel);
-        this.searchParams.subject = Number(params.subject);
-        this.searchParams.axis = Number(params.axis);
-        this.searchParams.ordering = params.ordering ?? this.searchParams.ordering;
-
-        // Set search and filters control values
-        this.searchControl.setValue(this.searchParams.search);
+        this.searchControl.setValue(params.search);
         this.academicLevelControl.setValue(
-            this.academicLevelsList.find(el => el.data?.id === this.searchParams.academicLevel)
+            this.academicLevelsList.find(el => el.data?.id === Number(params.academicLevel))
         );
         this.subjectControl.setValue(
-            this.subjectList.find(el => el.data?.id === this.searchParams.subject)
+            this.subjectList.find(el => el.data?.id === Number(params.subject))
         );
         this.axisControl.setValue(
-            this.axisList.find(el => el.data.id === this.searchParams.axis)
+            this.axisList.find(el => el.data?.id === Number(params.axis))
         );
         this.orderingControl.setValue(
-            this.orderingList.find(el => el.data === this.searchParams.ordering) ?? this.orderingControl.value
+            this.orderingList.find(el => el.data?.id === params.ordering) ?? this.orderingList[0]
         );
 
-        this.changeRemoveFiltersVisibility();
+        this.postFilters.page = Number(params.page) || this.postFilters.page;
+        this.postFilters.search = this.searchControl.value;
+        this.postFilters.academicLevel = this.academicLevelControl.value?.data;
+        this.postFilters.subject = this.subjectControl.value?.data;
+        this.postFilters.axis = this.axisControl.value?.data;
+        this.postFilters.ordering = this.orderingControl.value?.data;
+
+        this.updateHasFilters();
+        this.getPosts(this.postFilters);
     }
 
     // Make request based on filters changes
     public doSearch(page?: number): void {
         if (!!page) {
-            this.searchParams.page = page;
+            this.postFilters.page = page;
         }
-        this.searchParams.search = this.searchControl.value;
-        this.searchParams.academicLevel = this.academicLevelControl.value?.data.id;
-        this.searchParams.subject = this.subjectControl.value?.data.id;
-        this.searchParams.axis = this.axisControl.value?.data.id;
-        this.searchParams.ordering = this.orderingControl.value?.data;
+        this.postFilters.search = this.searchControl.value;
+        this.postFilters.academicLevel = this.academicLevelControl.value?.data;
+        this.postFilters.subject = this.subjectControl.value?.data;
+        this.postFilters.axis = this.axisControl.value?.data;
+        this.postFilters.ordering = this.orderingControl.value?.data;
 
         if (this.form.valid) {
-            this.getPosts(this.searchParams);
+            this.getPosts(this.postFilters);
             this.setQueryParams();
         }
     }
 
-    public getPosts(params: PostsQueryParams): void {
+    public getPosts(filters: PostFilters): void {
         this.isLoading = true;
-        this.postsService.getPosts(params)
+        this.postsService.getPosts(filters.formatForAPI())
             .pipe(
                 catchError(() => {
                     this.hasData = false;
@@ -207,13 +230,7 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
     }
 
     private setQueryParams(): void {
-        const queryParams: PostsQueryParams = {
-            search: this.searchControl?.value ?? undefined,
-            academicLevel: this.academicLevelControl.value?.data.id ?? undefined,
-            subject: this.subjectControl.value?.data.id ?? undefined,
-            axis: this.axisControl.value?.data.id ?? undefined,
-            ordering: this.orderingControl?.value?.data ?? undefined
-        };
+        const queryParams = this.postFilters.formatForQueryParams();
         this.router.navigate([], { relativeTo: this.activatedRoute, queryParams });
     }
 
@@ -259,22 +276,22 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
     }
 
     public changePage(newPage: number): void {
-        if (newPage !== this.searchParams.page) {
-            this.searchParams.page = newPage;
+        if (newPage !== this.postFilters.page) {
+            this.postFilters.page = newPage;
             this.doSearch();
         }
     }
 
     public nextPage(): void {
         if (this.pageInfo?.next) {
-            this.searchParams.page = (this.searchParams.page ?? 0) + 1;
+            this.postFilters.page = (this.postFilters.page ?? 0) + 1;
             this.doSearch();
         }
     }
 
     public previousPage(): void {
         if (this.pageInfo?.previous) {
-            this.searchParams.page = (this.searchParams.page ?? 0) - 1;
+            this.postFilters.page = (this.postFilters.page ?? 0) - 1;
             this.doSearch();
         }
     }
@@ -284,12 +301,12 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
         this.doSearch(1);
     }
 
-    private changeRemoveFiltersVisibility(): void {
-        this.showRemoveFilters =
-            !!this.searchParams.search ||
-            !!this.searchParams.academicLevel ||
-            !!this.searchParams.subject ||
-            !!this.searchParams.axis;
+    private updateHasFilters(): void {
+        this.hasFilters =
+            !!this.postFilters.search ||
+            !!this.postFilters.academicLevel ||
+            !!this.postFilters.subject ||
+            !!this.postFilters.axis;
     }
 
     public clearFilterControls(): void {
@@ -307,11 +324,11 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
 
     public navigateToDetail(postId: number): void {
         this.router.navigate(['/posts/view/', postId], {
-            queryParams: this.searchParams
+            queryParams: this.postFilters
         });
     }
 
-    private getAcademicLevels(): Observable<RoundedSelectOption[]> {
+    private getAcademicLevels(): Observable<RoundedSelectOption<IAcademicLevel>[]> {
         return this.postsService.getAcademicLevels()
             .pipe(
                 map(resp => {
@@ -319,7 +336,7 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
                         return {
                             text: el.name,
                             data: el
-                        } as RoundedSelectOption;
+                        } as RoundedSelectOption<IAcademicLevel>;
                     });
                 }),
                 tap(resp => this.academicLevelsList = resp),
@@ -336,13 +353,13 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
                             this.subjectList.push({
                                 text: subject.name,
                                 data: subject
-                            });
+                            } as RoundedSelectOption<ISubject>);
 
                             const options = subject.axis.map(axis => {
                                 return {
                                     text: axis.name,
                                     data: { ...axis, subjectId: subject.id }
-                                };
+                                } as RoundedSelectOption<IAxis>;
                             });
 
                             this.axisList.push(...options);
@@ -350,7 +367,7 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
                             this.subjectWithAxis.push({
                                 text: subject.name,
                                 options
-                            });
+                            } as RoundedSelectGroup<IAxis>);
                         });
                         this.isAxesLoading = false;
                         this.isSubjectsLoading = false;
@@ -395,22 +412,5 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
                 this.router.navigate(['/', 'results']);
             }
         });
-    }
-
-    // Form stuff
-    public get searchControl() {
-        return this.form.get('search') as FormControl;
-    }
-    public get academicLevelControl() {
-        return this.form.get('academicLevel') as FormControl;
-    }
-    public get subjectControl() {
-        return this.form.get('subject') as FormControl;
-    }
-    public get axisControl() {
-        return this.form.get('axis') as FormControl;
-    }
-    public get orderingControl() {
-        return this.form.get('ordering') as FormControl;
     }
 }

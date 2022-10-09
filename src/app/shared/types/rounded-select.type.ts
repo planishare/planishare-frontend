@@ -1,9 +1,9 @@
-export type RoundedSelectOption = {
+export type RoundedSelectOption<Type> = {
     text: string;
-    data?: any;
+    data: Type;
 }
 
-export type RoundedSelectGroup = {
+export type RoundedSelectGroup<Type> = {
     text: string;
-    options: RoundedSelectOption[];
+    options: RoundedSelectOption<Type>[];
 }

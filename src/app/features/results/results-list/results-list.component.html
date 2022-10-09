@@ -1,12 +1,12 @@
 <main class="container">
-  <aside class="filters-card rounded-card" *ngIf="isDesktop">
+  <div class="filters-card rounded-card" *ngIf="isDesktop">
     <!-- Desktop searchbar -->
     <div class="rounded-search-bar box-shadow-2">
       <input type="search" [formControl]="searchControl" placeholder="Buscar" (keyup.enter)="doSearch(1)">
-      <button *ngIf="!!searchParams.search && searchParams.search === searchControl.value" mat-icon-button (click)="clearSearchControl()">
+      <button *ngIf="!!postFilters.search && postFilters.search === searchControl.value" mat-icon-button (click)="clearSearchControl()">
         <mat-icon>close</mat-icon>
       </button>
-      <button *ngIf="!!!searchParams.search || searchParams.search !== searchControl.value" mat-icon-button (click)="doSearch(1)">
+      <button *ngIf="!!!postFilters.search || postFilters.search !== searchControl.value" mat-icon-button (click)="doSearch(1)">
         <mat-icon>search</mat-icon>
       </button>
     </div>
@@ -51,15 +51,19 @@
         [options]="orderingList">
       </app-rounded-select>
   
-      <button class="reset-filters-button" *ngIf="showRemoveFilters" (click)="clearFilterControls()">
+      <button class="reset-filters-button" *ngIf="hasFilters" (click)="clearFilterControls()">
         <mat-icon class="small-icon">delete</mat-icon>
         <span class="fw-600">Borrar filtros</span>
       </button>
     </div>
-  </aside>
+  </div>
   
   <div class="main-content">
+
+    <!-- Filter tags and mobile button -->
     <div class="fs-small flex-end-center flex-wrap gap-05">
+
+      <!-- Filter mobile button -->
       <button class="filters-button rounded-button-slim box-shadow-1" *ngIf="!this.isDesktop">
         <span>Filtros y búsqueda</span>
         <mat-icon class="small-icon">filter_alt</mat-icon>
@@ -67,20 +71,20 @@
 
       <!-- Filter tags -->
       <div class="filter-tags flex-center-center gap-025 flex-wrap">
-        <button class="rounded-button-slim bg-text-academic-level box-shadow-1">
-          <span>6to Básico</span>
+        <button *ngIf="!!postFilters.academicLevel" class="rounded-button-slim bg-text-academic-level box-shadow-1">
+          <span>{{ postFilters.academicLevel.name }}</span>
           <mat-icon class="small-icon">close</mat-icon>
         </button>
-        <button class="rounded-button-slim bg-text-axis box-shadow-1">
-          <span>Lectura</span>
+        <button *ngIf="!!postFilters.axis" class="rounded-button-slim bg-text-axis box-shadow-1">
+          <span>{{ postFilters.axis.name }}</span>
           <mat-icon class="small-icon">close</mat-icon>
         </button>
-        <button class="rounded-button-slim bg-text-subject box-shadow-1">
-          <span>Lenguaje y comunicación</span>
+        <button *ngIf="!!postFilters.subject" class="rounded-button-slim bg-text-subject box-shadow-1">
+          <span>{{ postFilters.subject.name }}</span>
           <mat-icon class="small-icon">close</mat-icon>
         </button>
-        <button class="rounded-button-slim bg-text-blue-white box-shadow-1">
-          <span>Más recientes</span>
+        <button *ngIf="postFilters.ordering && postFilters.ordering.id !== orderingType.MOST_RECENT" class="rounded-button-slim bg-text-blue-white box-shadow-1">
+          <span>{{ postFilters.ordering.name }}</span>
           <mat-icon class="small-icon">close</mat-icon>
         </button>
       </div>
@@ -88,8 +92,8 @@
       <!-- Paginations -->
       <div class="pagination flex-center-center gap-05">
         <span class="fw-700 fs-regular">
-          {{ (pageInfo?.maxPage ?? 0) * (searchParams.page! - 1) + 1 }}
-           - {{ (pageInfo?.maxPage ?? 0) * (searchParams.page! - 1) + posts.length }}
+          {{ (pageInfo?.maxPage ?? 0) * (postFilters.page! - 1) + 1 }}
+           - {{ (pageInfo?.maxPage ?? 0) * (postFilters.page! - 1) + posts.length }}
           de {{ pageInfo?.count }}
         </span>
         <div class="flex-center-center gap-025">
@@ -97,7 +101,7 @@
             <mat-icon class="small-icon">navigate_before</mat-icon>
           </button>
           <button class="circle-button" [matMenuTriggerFor]="pagesMenu">
-            <span class="fs-small fw-700">{{ searchParams.page }}</span>
+            <span class="fs-small fw-700">{{ postFilters.page }}</span>
           </button>
           <mat-menu #pagesMenu>
             <button mat-menu-item *ngFor="let page of (pageInfo?.maxPage ?? 1)|fillArray" (click)="doSearch(page)">
@@ -113,7 +117,7 @@
 
     <!-- Post grid -->
     <section class="posts-grid">
-      <div class="rounded-card flex-column gap-1" *ngFor="let post of posts">
+      <div class="rounded-card flex-column flex-space_between gap-1" *ngFor="let post of posts">
         <div class="flex-space_between-center">
           <p>{{ post.user.fullName }} - {{ post.createdAt|timeAgo }}</p>
           <mat-icon class="text-blue-dark">more_vert</mat-icon>

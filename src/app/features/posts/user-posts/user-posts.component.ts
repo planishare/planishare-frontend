@@ -141,26 +141,26 @@ export class UserPostsComponent extends Unsubscriber implements OnInit {
     }
 
     public getPosts(params: PostsQueryParams): void {
-        this.postsService.getPosts(params)
-            .pipe(
-                takeUntil(this.ngUnsubscribe$),
-                catchError(error => {
-                    this.commonSnackbarMsg.showErrorMessage();
-                    return of(null);
-                })
-            )
-            .subscribe(resp => {
-                if (!!resp) {
-                    this.pageInfo = resp;
-                    this.maxPage = this.pageInfo.count <= 10 ? 1 : ((this.pageInfo.count - this.pageInfo.count % 10) / 10) + 1;
-                    this.posts = resp.results;
-                    this.hasData = !!this.posts.length;
-                    console.log(this.pageInfo);
-                } else {
-                    this.hasData;
-                }
-                this.isLoading = false;
-            });
+        // this.postsService.getPosts(params)
+        //     .pipe(
+        //         takeUntil(this.ngUnsubscribe$),
+        //         catchError(error => {
+        //             this.commonSnackbarMsg.showErrorMessage();
+        //             return of(null);
+        //         })
+        //     )
+        //     .subscribe(resp => {
+        //         if (!!resp) {
+        //             this.pageInfo = resp;
+        //             this.maxPage = this.pageInfo.count <= 10 ? 1 : ((this.pageInfo.count - this.pageInfo.count % 10) / 10) + 1;
+        //             this.posts = resp.results;
+        //             this.hasData = !!this.posts.length;
+        //             console.log(this.pageInfo);
+        //         } else {
+        //             this.hasData;
+        //         }
+        //         this.isLoading = false;
+        //     });
     }
 
     private handleAxisAndSubjectChanges(): void {
