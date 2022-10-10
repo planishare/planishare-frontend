@@ -98,6 +98,7 @@
           *ngIf="!!orderingControl.value && orderingControl.value.data.id !== orderingType.MOST_RECENT"
           (click)="removeFilter('ordering')"
           class="rounded-button-slim bg-text-blue-white box-shadow-1">
+            <mat-icon class="small-icon">sort</mat-icon>
             <span>{{ orderingControl.value.data.name }}</span>
             <mat-icon class="small-icon">close</mat-icon>
         </button>

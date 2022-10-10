@@ -238,9 +238,11 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
 
     private handleAxisAndSubjectChanges(): void {
         this.subjectControl.valueChanges.subscribe(value => {
-            const axis = this.axisControl.value;
-            if (axis?.data?.subjectId !== value?.data?.id) {
-                this.axisControl.setValue(undefined);
+            if (!!value) {
+                const axis = this.axisControl.value;
+                if (axis?.data?.subjectId !== value?.data?.id) {
+                    this.axisControl.setValue(undefined);
+                }
             }
         });
         this.axisControl.valueChanges.subscribe(value => {
@@ -322,7 +324,11 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
     }
 
     public removeFilter(filter: string): void {
-        this.form.get(filter)?.setValue(undefined);
+        if (filter === 'ordering') {
+            this.form.get(filter)?.setValue(this.orderingList[0]);
+        } else {
+            this.form.get(filter)?.setValue(undefined);
+        }
     }
 
     public navigateToDetail(postId: number): void {
