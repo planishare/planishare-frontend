@@ -135,7 +135,16 @@
       <div class="rounded-card flex-column flex-space_between gap-1" *ngFor="let post of posts">
         <div class="flex-space_between-center">
           <p>{{ post.user.fullName }} - {{ post.createdAt|timeAgo }}</p>
-          <mat-icon class="text-blue-dark">more_vert</mat-icon>
+
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Opciones de post">
+            <mat-icon class="text-blue-dark">more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="report(post)">
+              <mat-icon>report</mat-icon>
+              <span>Reportar</span>
+            </button>
+          </mat-menu>
         </div>
   
         <div>

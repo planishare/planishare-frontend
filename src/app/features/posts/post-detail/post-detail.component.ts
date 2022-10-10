@@ -8,7 +8,6 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { ReactionsService } from 'src/app/core/services/reactions.service';
 import { PostDetail, PostsQueryParams } from 'src/app/core/types/posts.type';
-import { ReportForm } from 'src/app/core/types/report.type';
 import { UserDetail } from 'src/app/core/types/users.type';
 import { ReportDialogComponent } from 'src/app/shared/components/report-dialog/report-dialog.component';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
@@ -202,18 +201,18 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
             return;
         }
 
-        const reportData: ReportForm = {
-            report_type: ReportType.POST_REPORT,
-            active: true,
-            description: '',
-            user: this.user.id,
-            post_reported: post.id,
-            user_reported: post.user.id
-        };
+        // const reportData: ReportForm = {
+        //     report_type: ReportType.POST,
+        //     active: true,
+        //     description: '',
+        //     user: this.user.id,
+        //     post_reported: post.id,
+        //     user_reported: post.user.id
+        // };
 
-        this.dialog.open(ReportDialogComponent, {
-            data: reportData
-        });
+        // this.dialog.open(ReportDialogComponent, {
+        //     data: reportData
+        // });
     }
 
     public reportUser(post: PostDetail): any {
@@ -222,16 +221,16 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
             return;
         }
 
-        const reportData: ReportForm = {
-            report_type: ReportType.USER_REPORT,
-            active: true,
-            description: '',
-            user: this.user.id,
-            user_reported: post.user.id
-        };
+        // const reportData: ReportForm = {
+        //     report_type: ReportType.USER,
+        //     active: true,
+        //     description: '',
+        //     user: this.user.id,
+        //     user_reported: post.user.id
+        // };
 
-        this.dialog.open(ReportDialogComponent, {
-            data: reportData
-        });
+        // this.dialog.open(ReportDialogComponent, {
+        //     data: reportData
+        // });
     }
 }

@@ -1,11 +1,13 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { Component, Inject } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, of } from 'rxjs';
-import { ReportType, ReportTypeName } from 'src/app/shared/enums/report.enum';
+import { catchError, filter, of } from 'rxjs';
+
+import { ReportType } from 'src/app/shared/enums/report.enum';
+import { APIReportBody, ReportInput } from 'src/app/core/types/report.type';
+
 import { ReportService } from 'src/app/core/services/report.service';
-import { ReportForm } from 'src/app/core/types/report.type';
 import { CommonSnackbarMsgService } from '../../services/common-snackbar-msg.service';
 
 @Component({
@@ -14,47 +16,50 @@ import { CommonSnackbarMsgService } from '../../services/common-snackbar-msg.ser
     styleUrls: ['./report-dialog.component.scss']
 })
 export class ReportDialogComponent {
+    public form = new FormGroup({
+        type: new FormControl<ReportType>(ReportType.POST, [Validators.required]),
+        description: new FormControl<string | undefined>(undefined, [
+            Validators.required,
+            Validators.maxLength(1000),
+            Validators.minLength(3)
+        ])
+    });
 
-    public form: FormControl;
-    public reportTypeName?: ReportTypeName;
     public isLoading = false;
+    public reportType = ReportType;
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) public data: ReportForm,
+        @Inject(MAT_DIALOG_DATA) public data: ReportInput,
         public dialogRef: MatDialogRef<ReportDialogComponent>,
         private reportService: ReportService,
         private matSnackBar: MatSnackBar,
         private commonSnackbarMsg: CommonSnackbarMsgService
-    ) {
-        this.form = new FormControl(null, [Validators.required, Validators.maxLength(1000)]);
-        switch (this.data.report_type) {
-            case ReportType.USER_REPORT:
-                this.reportTypeName = ReportTypeName.USER_REPORT;
-                break;
-            case ReportType.POST_REPORT:
-                this.reportTypeName = ReportTypeName.POST_REPORT;
-                break;
-        }
-    }
+    ) {}
 
-    public createReport(): void {
-        this.isLoading = true;
+    public createReport(event: Event): void {
+        event.preventDefault();
         if (this.form.valid) {
-            const reportData: ReportForm = {
-                ...this.data,
-                description: this.form.value
+            this.isLoading = true;
+            const reportData: APIReportBody = {
+                report_type: this.form.controls.type.value!,
+                user: this.data.userId,
+                description: this.form.controls.description.value!,
+                active: true,
+                user_reported: this.data.post.user.id,
+                post_reported: this.data.post.id
             };
             this.reportService.createReport(reportData)
                 .pipe(
                     catchError(error => {
                         this.commonSnackbarMsg.showErrorMessage();
+                        this.isLoading = false;
                         return of(null);
-                    })
+                    }),
+                    filter(value => !!value)
                 )
-                .subscribe(resp => {
-                    if (!!resp) {
-                        this.matSnackBar.open('Reporte enviado, gracias! :)', 'Cerrar', { duration: 2000 });
-                    }
+                .subscribe(() => {
+                    this.matSnackBar.open('Reporte enviado 👀', 'Cerrar', { duration: 2000 });
+                    this.isLoading = false;
                     this.dialogRef.close();
                 });
         }

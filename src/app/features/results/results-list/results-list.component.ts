@@ -8,8 +8,6 @@ import { Pageable } from 'src/app/core/models/pageable.model';
 import { IOrdering, PostFilters, PostsQueryParams } from 'src/app/core/models/post-filter.model';
 import { IAcademicLevel, IAxis, IPostDetail, ISubject, PostDetail } from 'src/app/core/models/post.model';
 import { OrderingType, OrderingTypeName } from 'src/app/core/enums/posts.enum';
-import { ReportType } from 'src/app/shared/enums/report.enum';
-import { ReportForm } from 'src/app/core/types/report.type';
 import { UserDetail } from 'src/app/core/types/users.type';
 import { RoundedSelectOption, RoundedSelectGroup } from 'src/app/shared/types/rounded-select.type';
 
@@ -94,7 +92,6 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
 
     public isDesktop = false;
     public showFilterCardContent = false;
-    public reportType = ReportType;
     public orderingType = OrderingType;
     public orderingTypeName = OrderingTypeName;
 
@@ -389,23 +386,18 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
             );
     }
 
-    public report(post: PostDetail, type: ReportType): any {
+    public report(post: PostDetail): any {
         if (!!!this.user) {
             this.commonSnackbarMsg.showLoginRequiredMessage('crear un reporte');
             return;
         }
 
-        const reportData: ReportForm = {
-            report_type: type,
-            active: true,
-            description: '',
-            user: this.user.id,
-            post_reported: post.id,
-            user_reported: post.user.id
-        };
-
         this.dialog.open(ReportDialogComponent, {
-            data: reportData
+            data: {
+                post,
+                userId: this.user.id
+            },
+            autoFocus: false
         });
     }
 

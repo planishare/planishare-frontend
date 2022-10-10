@@ -19,3 +19,15 @@
     height: var(--fs-medium);
     font-size: var(--fs-medium);
 }
+
+button.mat-menu-item > .mat-icon {
+    height: 100%;
+}
+
+.mat-stroked-button, .mat-flat-button, .mat-raised-button {
+    border-radius: 100px !important;
+
+    .mat-icon {
+        height: 100%;
+    }
+}
