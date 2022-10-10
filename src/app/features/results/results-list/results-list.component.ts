@@ -48,13 +48,6 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
     public user: UserDetail | null;
     public posts: PostDetail[] = [];
 
-    public form: FormGroup;
-    public searchControl: FormControl;
-    public academicLevelControl: FormControl;
-    public subjectControl: FormControl;
-    public axisControl: FormControl;
-    public orderingControl: FormControl;
-
     public academicLevelsList: RoundedSelectOption<IAcademicLevel>[] = [];
     public subjectWithAxis: RoundedSelectGroup<IAxis>[] = [];
     public axisList: RoundedSelectOption<IAxis>[] = [];
@@ -90,6 +83,19 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
         }
     ];
 
+    public form = new FormGroup({
+        search: new FormControl<string | undefined>(undefined),
+        academicLevel: new FormControl<RoundedSelectOption<IAcademicLevel> | undefined>(undefined),
+        subject: new FormControl<RoundedSelectOption<ISubject> | undefined>(undefined),
+        axis: new FormControl<RoundedSelectOption<IAxis> | undefined>(undefined),
+        ordering: new FormControl<RoundedSelectOption<IOrdering>>(this.orderingList[0])
+    });
+    public searchControl = this.form.controls.search as FormControl;
+    public academicLevelControl = this.form.controls.academicLevel as FormControl;
+    public subjectControl = this.form.controls.subject as FormControl;
+    public axisControl = this.form.controls.axis as FormControl;
+    public orderingControl = this.form.controls.ordering as FormControl;
+
     public isDesktop = false;
     public showFilterCardContent = false;
     public orderingType = OrderingType;
@@ -106,23 +112,7 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
         private windowResize: WindowResizeService
     ) {
         super();
-
-        this.form = new FormGroup({
-            search: new FormControl<string | undefined>(undefined),
-            academicLevel: new FormControl<RoundedSelectOption<IAcademicLevel> | undefined>(undefined),
-            subject: new FormControl<RoundedSelectOption<ISubject> | undefined>(undefined),
-            axis: new FormControl<RoundedSelectOption<IAxis> | undefined>(undefined),
-            ordering: new FormControl<RoundedSelectOption<IOrdering>>(this.orderingList[0])
-        });
-
-        this.searchControl = this.form.controls['search'] as FormControl;
-        this.academicLevelControl = this.form.controls['academicLevel'] as FormControl;
-        this.subjectControl = this.form.controls['subject'] as FormControl;
-        this.axisControl = this.form.controls['axis'] as FormControl;
-        this.orderingControl = this.form.controls['ordering'] as FormControl;
-
         this.user = this.authService.getUserProfile() ?? null;
-
         this.windowResize.isDesktop$.pipe(takeUntil(this.ngUnsubscribe$))
             .subscribe(value => {
                 this.isDesktop = value;
