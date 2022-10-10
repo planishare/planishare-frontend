@@ -56,15 +56,21 @@
     width: fit-content;
     align-self: flex-end;
     color: hsl(var(--clr-white));
+    margin-top: .5rem;
 
     .mat-icon {
         color: hsl(var(--clr-white));
     }
 }
 
-@media (min-width: 48rem) {
-    .filters-card__content {
-        margin-block: 1rem 1.25rem;
+@media (min-width: 48rem) and (max-width: calc(64rem - 1px)) {
+    .filters__selects {
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        > * {
+            width: calc(50% - .35rem);
+        }
     }
 }
 
