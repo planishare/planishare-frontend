@@ -1,29 +1,38 @@
-// Rounded select mobile and tablet
-// @media (max-width: calc(64rem - 1px)) {
-//     .rounded-select-panel.mat-select-panel {
-//         max-width: 80vw;
-//     }
-    
-//     // To center vertical and horizontal
-//     .cdk-overlay-pane {
-//         position: static;
-//     }
-//     .cdk-overlay-connected-position-bounding-box {
-//         align-items: center;
-//         justify-content: center;
-//     }   
-// }
+// ngx-mat-select-search tablet and mobile fix
+@media (max-width: calc(48rem - 1px)) {
+    .mat-select-search-input {
+        padding: 0 0 0 16px !important;
+    }
+    .mat-select-search-inner {
+        width: 100%;
+    }
+    .mat-select-panel {
+        max-width: 80vw !important;
+    }
+}
 
+@media (max-height: 32rem) and (max-width: calc(64rem - 1px)) {
+    .cdk-overlay-pane {
+        position: static;
+    }
+    .cdk-overlay-connected-position-bounding-box {
+        align-items: center;
+        justify-content: space-around;
+    }
+}
+
+// Material icons
 .small-icon.mat-icon {
     width: var(--fs-medium);
     height: var(--fs-medium);
     font-size: var(--fs-medium);
 }
 
-button.mat-menu-item > .mat-icon {
+.mat-menu-item > .mat-icon {
     height: 100%;
 }
 
+// Material buttons
 .mat-stroked-button, .mat-flat-button, .mat-raised-button {
     border-radius: 100px !important;
 
