@@ -5,7 +5,7 @@
             <mat-icon>menu</mat-icon>
         </button>
     
-        <a class="logo text-blue-dark" [routerLink]="['/']">
+        <a class="logo text-blue-dark" matRipple [routerLink]="['/']">
             <img src="/assets/images/main-icon.png" alt="Ícono de Planishare">
             <span>Plansihare</span>
         </a>
@@ -18,43 +18,43 @@
         <nav *ngIf="isDesktop">
             <ul class="navbar__list fs-regular fw-700">
                 <li>
-                    <a class="rounded-button box-shadow-2" [routerLink]="['/tops']">
+                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/tops']">
                         <mat-icon>local_fire_department</mat-icon>
                         <span>Tops</span>
                     </a>
                 </li>
                 <li *ngIf="!isUserAuth">
-                    <a class="rounded-button box-shadow-2" [routerLink]="['/auth/register']">
+                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/auth/register']">
                         <mat-icon>person_add</mat-icon>
                         <span>Registrarse</span>
                     </a>
                 </li>
                 <li *ngIf="!isUserAuth">
-                    <a class="rounded-button box-shadow-2" [routerLink]="['/auth/login']">
+                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/auth/login']">
                         <mat-icon>login</mat-icon>
                         <span>Iniciar Sesión</span>
                     </a>
                 </li>
                 <li *ngIf="isUserAuth">
-                    <a class="rounded-button box-shadow-2" [routerLink]="['/posts/user']">
+                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/posts/user']">
                         <mat-icon>description</mat-icon>
                         <span>Mis publicaciones</span>
                     </a>
                 </li>
                 <li *ngIf="isUserAuth">
-                    <a class="rounded-button box-shadow-2" [routerLink]="['/posts/create']">
+                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/posts/create']">
                         <mat-icon>control_point</mat-icon>
                         <span>Crear publicación</span>
                     </a>
                 </li>
                 <li>
-                    <a class="rounded-button box-shadow-2" [routerLink]="['/results']">
+                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/results']">
                         <mat-icon>search</mat-icon>
                         <span>Buscar</span>
                     </a>
                 </li>
                 <li *ngIf="isUserAuth">
-                    <button class="circle-button box-shadow-2"
+                    <button class="circle-button box-shadow-1" matRipple
                         [matMenuTriggerFor]="menu"
                         aria-label="Menu de perfil">
                             <mat-icon>person</mat-icon>

@@ -40,3 +40,14 @@
         height: 100%;
     }
 }
+
+// Material dialogs
+.mat-dialog-container {
+    border-radius: 15px !important;
+}
+
+@media (min-width: 48rem) {
+    .mat-dialog-container {
+        border-radius: 25px !important;
+    }
+}

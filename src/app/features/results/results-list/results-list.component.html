@@ -10,12 +10,12 @@
     </button>
     <div class="filters-card__content" *ngIf="showFilterCardContent">
       <!-- Searchbar -->
-      <div class="rounded-search-bar box-shadow-2">
+      <div class="rounded-search-bar">
         <input type="search" [formControl]="searchControl" placeholder="Buscar" (keyup.enter)="doSearch(1)">
-        <button *ngIf="!!postFilters.search && postFilters.search === searchControl.value" mat-icon-button (click)="clearSearchControl()">
+        <button *ngIf="!!postFilters.search && postFilters.search === searchControl.value" mat-icon-button (click)="clearSearchControl()" matTooltip="Borrar">
           <mat-icon>close</mat-icon>
         </button>
-        <button *ngIf="!!!postFilters.search || postFilters.search !== searchControl.value" mat-icon-button (click)="doSearch(1)">
+        <button *ngIf="!!!postFilters.search || postFilters.search !== searchControl.value" mat-icon-button (click)="doSearch(1)" matTooltip="Buscar">
           <mat-icon>search</mat-icon>
         </button>
       </div>
@@ -25,7 +25,7 @@
       <!-- Filters -->
       <div class="filters__selects">
         <app-rounded-select
-          class="bg-text-academic-level box-shadow-2"
+          class="bg-text-academic-level"
           baseText="Nivel Académico"
           [control]="academicLevelControl"
           [options]="academicLevelsList"
@@ -33,7 +33,7 @@
           [loading]="isAcademicLevelsLoading">
         </app-rounded-select>
         <app-rounded-select
-          class="bg-text-axis box-shadow-2"
+          class="bg-text-axis"
           baseText="Eje"
           [control]="axisControl"
           [hasGroups]="true"
@@ -44,7 +44,7 @@
           [loading]="isAxesLoading">
         </app-rounded-select>
         <app-rounded-select
-          class="bg-text-subject box-shadow-2"
+          class="bg-text-subject"
           baseText="Asignatura"
           [control]="subjectControl"
           [options]="subjectList"
@@ -54,7 +54,7 @@
           [loading]="isSubjectsLoading">
         </app-rounded-select>
         <app-rounded-select
-          class="bg-text-blue-white box-shadow-2"
+          class="bg-text-blue-white"
           baseText="Ordenar por"
           [control]="orderingControl"
           [options]="orderingList">
@@ -76,31 +76,31 @@
         <button
           *ngIf="!!academicLevelControl.value"
           (click)="removeFilter('academicLevel')"
-          class="rounded-button-slim bg-text-academic-level box-shadow-1">
+          class="rounded-button-slim bg-text-academic-level">
             <span>{{ academicLevelControl.value.data.name }}</span>
-            <mat-icon class="small-icon">close</mat-icon>
+            <mat-icon class="small-icon" matTooltip="Remover">close</mat-icon>
         </button>
         <button
           *ngIf="!!axisControl.value"
           (click)="removeFilter('axis')"
-          class="rounded-button-slim bg-text-axis box-shadow-1">
+          class="rounded-button-slim bg-text-axis">
             <span>{{ axisControl.value.data.name }}</span>
-            <mat-icon class="small-icon">close</mat-icon>
+            <mat-icon class="small-icon" matTooltip="Remover">close</mat-icon>
         </button>
         <button
           *ngIf="!!subjectControl.value"
           (click)="removeFilter('subject')"
-          class="rounded-button-slim bg-text-subject box-shadow-1">
+          class="rounded-button-slim bg-text-subject">
             <span>{{ subjectControl.value.data.name }}</span>
-            <mat-icon class="small-icon">close</mat-icon>
+            <mat-icon class="small-icon" matTooltip="Remover">close</mat-icon>
         </button>
         <button
           *ngIf="!!orderingControl.value && orderingControl.value.data.id !== orderingType.MOST_RECENT"
           (click)="removeFilter('ordering')"
-          class="rounded-button-slim bg-text-blue-white box-shadow-1">
+          class="rounded-button-slim bg-text-blue-white">
             <mat-icon class="small-icon">sort</mat-icon>
             <span>{{ orderingControl.value.data.name }}</span>
-            <mat-icon class="small-icon">close</mat-icon>
+            <mat-icon class="small-icon" matTooltip="Remover">close</mat-icon>
         </button>
       </div>
     
@@ -112,10 +112,10 @@
           de {{ pageInfo?.count }}
         </span>
         <div class="flex-center-center gap-025">
-          <button class="circle-button" (click)="previousPage()" [disabled]="!pageInfo?.previous || isLoading">
+          <button class="circle-button" (click)="previousPage()" [disabled]="!pageInfo?.previous || isLoading" aria-label="Pág. Anterior" matTooltip="Pág. Anterior" matRipple>
             <mat-icon class="small-icon">navigate_before</mat-icon>
           </button>
-          <button class="circle-button" [matMenuTriggerFor]="pagesMenu">
+          <button class="circle-button" [matMenuTriggerFor]="pagesMenu" aria-label="Seleccionar página" matTooltip="Seleccionar página" matRipple>
             <span class="fs-small fw-700">{{ postFilters.page }}</span>
           </button>
           <mat-menu #pagesMenu>
@@ -123,7 +123,7 @@
               {{ page }}
             </button>
           </mat-menu>
-          <button class="circle-button" (click)="nextPage()" [disabled]="!pageInfo?.next || isLoading">
+          <button class="circle-button" (click)="nextPage()" [disabled]="!pageInfo?.next || isLoading" aria-label="Pág. Siguiente" matTooltip="Pág. Siguiente" matRipple>
             <mat-icon class="small-icon">navigate_next</mat-icon>
           </button>
         </div>
@@ -136,7 +136,7 @@
         <div class="flex-space_between-center">
           <p>{{ post.user.fullName }} - {{ post.createdAt|timeAgo }}</p>
 
-          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Opciones de post">
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Opciones" matTooltip="Opciones">
             <mat-icon class="text-blue-dark">more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
