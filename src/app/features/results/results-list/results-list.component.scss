@@ -52,12 +52,12 @@
     justify-content: center;
     gap: .5em;
     background-color: transparent;
-    padding: 0;
+    padding: .5rem;
     border: 0;
     width: fit-content;
     align-self: flex-end;
     color: hsl(var(--clr-white));
-    margin-top: .5rem;
+    border-radius: 100px;
 
     .mat-icon {
         color: hsl(var(--clr-white));

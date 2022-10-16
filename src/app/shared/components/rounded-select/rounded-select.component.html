@@ -28,7 +28,7 @@
   </mat-select>
 </mat-form-field>
 
-<button class="rounded-button" [disabled]="disabled" (click)="toggleSelect(custom_select)" aria-hidden="true">
+<button class="rounded-button" [disabled]="disabled" (click)="toggleSelect(custom_select)" aria-hidden="true" matRipple>
   <span>{{ textValue ?? baseText }}</span>
   <mat-icon>expand_more</mat-icon>
 </button>
