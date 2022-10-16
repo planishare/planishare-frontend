@@ -37,7 +37,7 @@
 }
 
 .rounded-button {
-    --bg-color: hsl(var(--clr-pink-light));
+    --bg-color: hsl(var(--clr-white));
     --text-color: hsl(var(--clr-blue-dark));
     --p-x: 1.35em;
     --p-y: .45em;
@@ -45,12 +45,18 @@
 
 .header_on-scroll {
     background-color: hsl(var(--clr-white-98));
+    box-shadow: 0 3px 4px rgba(0, 0, 0, .2);
 
-    .rounded-button {
+    .rounded-button:not(.active) {
         --bg-color: hsl(var(--clr-white-98));
-        --text-color: hsl(var(--clr-blue-dark));
+        --text-color: hsl(var(--clr-blue));
         --p-x: calc(1.35em - 2px);
         --p-y: calc(.45em - 2px);
-        border: 2px solid hsl(var(--clr-blue-dark));
+        border: 2px solid hsl(var(--clr-blue));
     }
+}
+
+.active {
+    --bg-color: hsl(var(--clr-blue));
+    --text-color: hsl(var(--clr-white));
 }

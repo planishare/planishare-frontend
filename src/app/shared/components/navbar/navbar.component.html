@@ -18,37 +18,37 @@
         <nav *ngIf="isDesktop">
             <ul class="navbar__list fs-regular fw-700">
                 <li>
-                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/tops']">
+                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/tops']" routerLinkActive="active">
                         <mat-icon>local_fire_department</mat-icon>
                         <span>Tops</span>
                     </a>
                 </li>
                 <li *ngIf="!isUserAuth">
-                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/auth/register']">
+                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/auth/register']" routerLinkActive="active">
                         <mat-icon>person_add</mat-icon>
                         <span>Registrarse</span>
                     </a>
                 </li>
                 <li *ngIf="!isUserAuth">
-                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/auth/login']">
+                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/auth/login']" routerLinkActive="active">
                         <mat-icon>login</mat-icon>
                         <span>Iniciar Sesión</span>
                     </a>
                 </li>
                 <li *ngIf="isUserAuth">
-                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/posts/user']">
+                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/posts/user']" routerLinkActive="active">
                         <mat-icon>description</mat-icon>
                         <span>Mis publicaciones</span>
                     </a>
                 </li>
                 <li *ngIf="isUserAuth">
-                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/posts/create']">
+                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/posts/create']" routerLinkActive="active">
                         <mat-icon>control_point</mat-icon>
                         <span>Crear publicación</span>
                     </a>
                 </li>
                 <li>
-                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/results']">
+                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/results']" routerLinkActive="active">
                         <mat-icon>search</mat-icon>
                         <span>Buscar</span>
                     </a>
