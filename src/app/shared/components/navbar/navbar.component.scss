@@ -44,7 +44,8 @@
 }
 
 .header_on-scroll {
-    background-color: hsl(var(--clr-white-98));
+    background-color: hsl(var(--clr-white-98), .95);
+    backdrop-filter: blur(5px);
     box-shadow: 0 3px 4px rgba(0, 0, 0, .2);
 
     .rounded-button:not(.active) {

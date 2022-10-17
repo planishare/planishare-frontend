@@ -30,6 +30,7 @@
     max-width: 224px;
 
     background-color: hsl(var(--clr-blue-dark), .7);
+    backdrop-filter: blur(5px);
 }
 
 @media (min-width: 48rem) {
