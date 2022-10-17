@@ -21,13 +21,13 @@ import { DeleteDialogComponent } from 'src/app/features/posts/components/delete-
 
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 import { WindowResizeService } from 'src/app/shared/services/window-resize.service';
-import { inOutLeftAnimation, inOutRightAnimation, inOutYAnimation } from 'src/app/shared/animations/animations';
+import { fadeInOutAnimation, inOutLeftAnimation, inOutRightAnimation, inOutYAnimation } from 'src/app/shared/animations/animations';
 
 @Component({
     selector: 'app-results-list',
     templateUrl: './results-list.component.html',
     styleUrls: ['./results-list.component.scss'],
-    animations: [ inOutYAnimation, inOutLeftAnimation, inOutRightAnimation ]
+    animations: [ inOutYAnimation, inOutLeftAnimation, inOutRightAnimation, fadeInOutAnimation ]
 })
 export class ResultsListComponent extends Unsubscriber implements OnInit {
     public isLoading = true;

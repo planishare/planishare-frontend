@@ -60,7 +60,7 @@
           [options]="orderingList">
         </app-rounded-select>
       </div>
-      <button class="reset-filters-button" *ngIf="hasFilters" (click)="removeFilters()" matRipple @inOutRight>
+      <button class="reset-filters-button" *ngIf="hasFilters" (click)="removeFilters()" matRipple @inOutY>
         <mat-icon class="small-icon">delete</mat-icon>
         <span class="fw-600">Borrar filtros</span>
       </button>
@@ -134,8 +134,8 @@
     </div>
 
     <!-- Post grid -->
-    <section class="posts-grid">
-      <div class="rounded-card flex-column flex-space_between gap-07" *ngFor="let post of posts" @inOutY>
+    <section class="posts-grid" *ngIf="!isLoading && hasData">
+      <div class="rounded-card flex-column flex-space_between gap-07" *ngFor="let post of posts" @fadeInOut>
         <div class="flex-space_between-center">
           <p>{{ post.user.fullName }} - {{ post.createdAt|timeAgo }}</p>
 
@@ -193,5 +193,55 @@
         </div>
       </div>
     </section>
+
+    <!-- Post shimmer grid -->
+    <div class="posts-grid" *ngIf="isLoading">
+      <!-- Post card shimmer -->
+      <div class="rounded-card flex-column flex-space_between gap-07" *ngFor="let post of 4|fillArray" @fadeInOut>
+        <div class="flex-space_between-center">
+          <div class="shimmer-text-regular grow-1"></div>
+          <mat-icon class="shimmer-text-color">more_vert</mat-icon>
+        </div>
+
+        <div>
+          <div class="shimmer-text-large"></div>
+          <div class="shimmer-text-regular"></div>
+          <div class="shimmer-text-regular w-40"></div>
+        </div>
+
+        <div class="flex-space_between-center">
+          <div class="flex-start-center gap-025 w-50">
+            <mat-icon class="shimmer-text-color">description</mat-icon>
+            <div class="shimmer-text-regular grow-1"></div>
+          </div>
+
+          <div class="flex-end-center gap-025 w-50">
+            <div class="shimmer-text-regular w-20"></div>
+            <div class="shimmer-text-regular w-20"></div>
+          </div>
+        </div>
+
+        <div class="flex-space_between-center gap-025 w-100">
+          <div class="shimmer-text-large w-30"></div>
+          <div class="shimmer-text-large w-30"></div>
+          <div class="shimmer-text-large w-30"></div>
+        </div>
+
+        <div class="flex-space_between-center gap-1">
+          <div class="flex-center-center gap-1 grow-1">
+            <div class="flex-center-center gap-025 w-100">
+              <mat-icon class="small-icon shimmer-text-color">favorite_outline</mat-icon>
+              <div class="shimmer-text-regular grow-1"></div>
+            </div>
+            <div class="flex-center-center gap-025 w-100">
+              <mat-icon class="small-icon shimmer-text-color">visibility</mat-icon>
+              <div class="shimmer-text-regular grow-1"></div>
+            </div>
+          </div>
+
+          <mat-icon class="shimmer-text-color">favorite</mat-icon>
+        </div>
+      </div>
+    </div>
   </div>
 </main>
