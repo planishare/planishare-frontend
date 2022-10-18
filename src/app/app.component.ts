@@ -2,13 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AuthService } from './core/services/auth.service';
+import { inOutYAnimation } from './shared/animations/animations';
 import { WindowResizeService } from './shared/services/window-resize.service';
 import { WindowScrollService } from './shared/services/window-scroll.service';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+    styleUrls: ['./app.component.scss'],
+    animations: [inOutYAnimation]
 })
 export class AppComponent implements OnInit {
     public inMaintenance = false;

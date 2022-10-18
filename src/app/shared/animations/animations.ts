@@ -1,12 +1,12 @@
 import { animate, style, transition, trigger } from "@angular/animations";
 
 // States
-const fromYState = style({ height: 0, opacity: 0, transform: 'translateY(100vh)' });
+const fromYState = style({ height: 0, opacity: 0, transform: 'translateY(-100%)' });
 const toYState = style({ height: '*', opacity: .8, transform: 'translateY(0)' });
 
-const fromLeftState = style({ width: '80%', opacity: 0, transform: 'translateX(-100vw)', overflowX: 'hidden', whiteSpace: 'nowrap' });
-const fromRightState = style({ width: '80%', opacity: 0, transform: 'translateX(100vw)', overflowX: 'hidden', whiteSpace: 'nowrap' });
-const toXState = style({ width: '*', opacity: .8, transform: 'translateX(0)', overflowX: 'hidden', whiteSpace: 'nowrap' });
+const fromLeftState = style({ width: '0', opacity: 0, transform: 'translateX(-100px)', overflowX: 'hidden', whiteSpace: 'nowrap' });
+const fromRightState = style({ width: '0', opacity: 0, transform: 'translateX(100px)', overflowX: 'hidden', whiteSpace: 'nowrap' });
+const toXState = style({ width: '*', opacity: 1, transform: 'translateX(0)', overflowX: 'hidden', whiteSpace: 'nowrap' });
 
 // Animations
 export const fadeInOutAnimation = trigger(

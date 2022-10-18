@@ -4,14 +4,14 @@
     display: grid;
     place-items: center;
 
-    // background-image: url('/assets/images/bg1-425x756.jpg');
-    // background-size: cover;
-    // background-attachment: fixed;
-    // background-position: bottom center;
+    background-image: url('/assets/images/bg1-425x756.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: bottom center;
 }
 
-// @media (min-width: 48rem) {
-//     .loader {
-//         background-image: url('/assets/images/bg1-1920x1080.jpg');
-//     }
-// }
+@media (min-width: 48rem) {
+    .loader {
+        background-image: url('/assets/images/bg1-1920x1080.jpg');
+    }
+}
