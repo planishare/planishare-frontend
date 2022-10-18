@@ -27,7 +27,12 @@ import { fadeInOutAnimation, inOutLeftAnimation, inOutRightAnimation, inOutYAnim
     selector: 'app-results-list',
     templateUrl: './results-list.component.html',
     styleUrls: ['./results-list.component.scss'],
-    animations: [ inOutYAnimation, inOutLeftAnimation, inOutRightAnimation, fadeInOutAnimation ]
+    animations: [
+        inOutYAnimation,
+        inOutLeftAnimation,
+        inOutRightAnimation,
+        fadeInOutAnimation
+    ]
 })
 export class ResultsListComponent extends Unsubscriber implements OnInit {
     public isLoading = true;

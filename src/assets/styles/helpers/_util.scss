@@ -9,10 +9,15 @@
 }
 
 .p-l-container {
-    padding-left: min(5vw, 2rem); // TODO: remove this class
+    padding-left: min(5vw, 2rem);
 }
 
 .uppercase { text-transform: uppercase; }
+
+.reset-link-style {
+    text-decoration: inherit;
+    color: inherit;
+}
 
 .sr-only {
     position: absolute;

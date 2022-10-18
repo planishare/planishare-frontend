@@ -43,6 +43,11 @@
     --p-y: .45em;
 }
 
+.rounded-button:hover,
+.circle-button:hover {
+    transform: scale(1.025);
+}
+
 .header_on-scroll {
     background-color: hsl(var(--clr-white-98), .95);
     backdrop-filter: blur(5px);

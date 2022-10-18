@@ -33,12 +33,20 @@
 }
 
 // Material buttons
-.mat-stroked-button, .mat-flat-button, .mat-raised-button {
+.mat-stroked-button,
+.mat-flat-button,
+.mat-raised-button {
     border-radius: 100px !important;
 
     .mat-icon {
         height: 100%;
     }
+}
+
+.mat-stroked-button:hover,
+.mat-flat-button:hover,
+.mat-raised-button:hover {
+    opacity: .9;
 }
 
 // Material dialogs

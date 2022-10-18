@@ -118,7 +118,7 @@
           <button class="circle-button" (click)="previousPage()" [disabled]="!pageInfo?.previous || isLoading" aria-label="Pág. Anterior" matTooltip="Pág. Anterior" matRipple>
             <mat-icon class="small-icon">navigate_before</mat-icon>
           </button>
-          <button class="circle-button fs-medium" [matMenuTriggerFor]="pagesMenu" aria-label="Seleccionar página" matTooltip="Seleccionar página" matRipple>
+          <button class="circle-button fs-medium" [matMenuTriggerFor]="pagesMenu" aria-label="Seleccionar página" matTooltip="Seleccionar página" matRipple [disabled]="isLoading">
             <span class="fs-small fw-700">{{ postFilters.page }}</span>
           </button>
           <mat-menu #pagesMenu>
@@ -151,8 +151,12 @@
         </div>
   
         <div>
-          <h2>{{ post.title }}</h2>
-          <p>{{ post.shortDescription }}</p>
+          <h2><a [routerLink]="['/posts/view', post.id]" class="reset-link-style">
+            {{ post.title }}
+          </a></h2>
+          <p><a [routerLink]="['/posts/view', post.id]" class="reset-link-style">
+            {{ post.shortDescription }}
+          </a></p>
         </div>
   
         <div class="flex-space_between-center flex-wrap gap-025">
@@ -197,7 +201,7 @@
     <!-- Post shimmer grid -->
     <div class="posts-grid" *ngIf="isLoading">
       <!-- Post card shimmer -->
-      <div class="rounded-card flex-column flex-space_between gap-07" *ngFor="let post of 4|fillArray" @fadeInOut>
+      <div class="rounded-card flex-column flex-space_between gap-07" *ngFor="let post of 6|fillArray" @fadeInOut>
         <div class="flex-space_between-center">
           <div class="shimmer-text-regular grow-1"></div>
           <mat-icon class="shimmer-text-color">more_vert</mat-icon>

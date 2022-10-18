@@ -28,6 +28,11 @@
     font-weight: 600;
 }
 
+.rounded-button:hover,
+.rounded-button-slim:hover {
+    opacity: .9;
+}
+
 @media (min-width: 48rem) {
     .rounded-button {
         padding-inline: var(--p-x, 1.5em);
@@ -66,6 +71,14 @@
     > span {
         padding-inline: .5ch;
     }
+}
+
+.circle-button:hover:not(:disabled) {
+    opacity: .9;
+}
+
+.circle-button:disabled {
+    background-color: #efefef;
 }
 
 // Inputs
