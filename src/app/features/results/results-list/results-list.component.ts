@@ -299,7 +299,7 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
         this.doSearch(1);
     }
 
-    private updateHasFilters(): void {
+    public updateHasFilters(): void {
         this.hasFilters =
             !!this.postFilters.search ||
             !!this.postFilters.academicLevel ||
@@ -317,12 +317,17 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
         });
     }
 
-    public removeFilter(filter: string): void {
+    public removeFilter(filter: string): any {
         if (filter === 'ordering') {
-            this.form.get(filter)?.setValue(this.orderingList[0]);
-        } else {
-            this.form.get(filter)?.setValue(undefined);
+            return this.form.get(filter)?.setValue(this.orderingList[0]);
         }
+        if (filter === 'search') {
+            this.form.get(filter)?.setValue(undefined);
+            this.doSearch(1);
+            this.updateHasFilters();
+            return;
+        }
+        return this.form.get(filter)?.setValue(undefined);
     }
 
     public navigateToDetail(postId: number): void {

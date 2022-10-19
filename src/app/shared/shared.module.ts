@@ -18,6 +18,7 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { StringToArrayPipe } from './pipes/string-to-array.pipe';
 import { GetDocType, GetDocName } from './pipes/posts.pipe';
 import { FillArrayPipe } from './pipes/fill-array.pipe';
+import { TruncatePipe } from './pipes/truncate.pipe';
 
 import { DragAndDropFileDirective } from './directives/drag-and-drop-file.directive';
 
@@ -29,6 +30,7 @@ import { DragAndDropFileDirective } from './directives/drag-and-drop-file.direct
         StringToArrayPipe,
         GetDocType,
         GetDocName,
+        TruncatePipe,
 
         // Directives
         DragAndDropFileDirective,
@@ -65,6 +67,7 @@ import { DragAndDropFileDirective } from './directives/drag-and-drop-file.direct
         GetDocType,
         GetDocName,
         FillArrayPipe,
+        TruncatePipe,
 
         // Directives
         DragAndDropFileDirective
