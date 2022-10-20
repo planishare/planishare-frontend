@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { IPageable } from '../models/pageable.model';
 import { APIPostsQueryParams } from '../models/post-filter.model';
 import { IPostDetail } from '../models/post.model';
-import { AcademicLevel, Axis, PostDetail, PostForm, PostPageable, RealPostsQueryParams, Subject, SubjectWithAxis } from '../types/posts.type';
+import { AcademicLevel, Axis, PostForm, Subject, SubjectWithAxis } from '../types/posts.type';
 
 @Injectable({
     providedIn: 'root'
@@ -21,33 +21,33 @@ export class PostsService {
     ) { }
 
     public getPosts(queryParams: APIPostsQueryParams): Observable<IPageable<IPostDetail>> {
-        return this.http.get<PostPageable>(environment.apiUrl + '/posts/', {
+        return this.http.get<IPageable<IPostDetail>>(environment.apiUrl + '/posts/', {
             params: queryParams
         });
     }
 
-    public getLatestPosts(): Observable<PostDetail[]> {
-        return this.http.get<PostDetail[]>(environment.apiUrl + '/posts/latest/');
+    public getLatestPosts(): Observable<IPostDetail[]> {
+        return this.http.get<IPostDetail[]>(environment.apiUrl + '/posts/latest/');
     }
 
-    public getPopularPosts(): Observable<PostDetail[]> {
-        return this.http.get<PostDetail[]>(environment.apiUrl + '/posts/popular/');
+    public getPopularPosts(): Observable<IPostDetail[]> {
+        return this.http.get<IPostDetail[]>(environment.apiUrl + '/posts/popular/');
     }
 
-    public getMostLikedPosts(): Observable<PostDetail[]> {
-        return this.http.get<PostDetail[]>(environment.apiUrl + '/posts/most-liked/');
+    public getMostLikedPosts(): Observable<IPostDetail[]> {
+        return this.http.get<IPostDetail[]>(environment.apiUrl + '/posts/most-liked/');
     }
 
-    public getPostById(postId: number): Observable<PostDetail> {
-        return this.http.get<PostDetail>(environment.apiUrl + `/posts/${postId}/`);
+    public getPostById(postId: number): Observable<IPostDetail> {
+        return this.http.get<IPostDetail>(environment.apiUrl + `/posts/${postId}/`);
     }
 
-    public deletePostById(postId: number): Observable<PostDetail> {
-        return this.http.delete<PostDetail>(environment.apiUrl + `/posts/delete/${postId}/`);
+    public deletePostById(postId: number): Observable<IPostDetail> {
+        return this.http.delete<IPostDetail>(environment.apiUrl + `/posts/delete/${postId}/`);
     }
 
-    public updatePostById(postId: number, postData: PostForm): Observable<PostDetail> {
-        return this.http.patch<PostDetail>(environment.apiUrl + `/posts/update/${postId}/`, postData);
+    public updatePostById(postId: number, postData: PostForm): Observable<IPostDetail> {
+        return this.http.patch<IPostDetail>(environment.apiUrl + `/posts/update/${postId}/`, postData);
     }
 
     public createPost(postData: PostForm): Observable<any> {

@@ -131,11 +131,9 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
         forkJoin([this.getAcademicLevels(), this.getSubjectsWithAxes()])
             .pipe(
                 catchError(() => {
-                    this.hasData = false;
                     this.commonSnackbarMsg.showErrorMessage();
                     return of(null);
                 }),
-                filter(value => !!value),
                 takeUntil(this.ngUnsubscribe$)
             )
             .subscribe(() => {
@@ -210,9 +208,8 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
                     this.hasData = false;
                     this.isLoading = false;
                     this.commonSnackbarMsg.showErrorMessage();
-                    return of(null);
+                    return of();
                 }),
-                filter(resp => !!resp),
                 takeUntil(this.ngUnsubscribe$)
             )
             .subscribe(resp => {
@@ -247,30 +244,6 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
                 }
             }
         });
-    }
-
-    public toggleLike(post: PostDetail): any {
-        if (!!!this.user) {
-            this.commonSnackbarMsg.showLoginRequiredMessage('dar Me gusta');
-            return;
-        }
-
-        post.totalLikes = !!post.alreadyLiked ? post.totalLikes - 1 : post.totalLikes + 1;
-        post.alreadyLiked = post.alreadyLiked ?? -1;
-
-        this.reactionService.toggleLike(this.user.id, post.id)
-            .pipe(
-                catchError(() => {
-                    post.totalLikes = !!post.alreadyLiked ? post.totalLikes - 1 : post.totalLikes + 1;
-                    post.alreadyLiked = post.alreadyLiked ?? -1;
-                    this.commonSnackbarMsg.showErrorMessage();
-                    return of(null);
-                }),
-                takeUntil(this.ngUnsubscribe$)
-            )
-            .subscribe(resp => {
-                post.alreadyLiked = resp?.id;
-            });
     }
 
     public changePage(newPage: number): void {
@@ -380,10 +353,6 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
                         this.isAxesLoading = false;
                         this.isSubjectsLoading = false;
                     }
-                }),
-                catchError(() => {
-                    this.commonSnackbarMsg.showErrorMessage();
-                    return of(null);
                 })
             );
     }
@@ -406,14 +375,12 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
 
     public deletePost(post: PostDetail): void {
         const dialogRef = this.dialog.open(DeleteDialogComponent, {
-            data: {
-                post
-            }
+            data: { post }
         });
 
         dialogRef.afterClosed().subscribe(refresh => {
             if (refresh) {
-                this.router.navigate(['/', 'results']);
+                this.doSearch(1);
             }
         });
     }

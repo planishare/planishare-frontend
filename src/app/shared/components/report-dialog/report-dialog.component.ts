@@ -53,9 +53,8 @@ export class ReportDialogComponent {
                     catchError(error => {
                         this.commonSnackbarMsg.showErrorMessage();
                         this.isLoading = false;
-                        return of(null);
-                    }),
-                    filter(value => !!value)
+                        return of();
+                    })
                 )
                 .subscribe(() => {
                     this.matSnackBar.open('Reporte enviado 👀', 'Cerrar', { duration: 2000 });

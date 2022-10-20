@@ -1,6 +1,6 @@
 <h1 class="fs-large">Crear un reporte 🕵️</h1>
-<p class="m-y-1">Completa los siguientes datos explicando el motivo de tu reporte y lo revisaremos a la brevedad.</p>
 <div mat-dialog-content>
+  <p class="m-y-1">Completa los siguientes datos explicando el motivo de tu reporte y lo revisaremos a la brevedad.</p>
   <form [formGroup]="form" (ngSubmit)="createReport($event)">
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>¿Qué quieres reportar?</mat-label>
@@ -22,13 +22,13 @@
     </mat-form-field>
   </form>
 </div>
-<div class="flex-end-center flex-wrap-reverse gap-05 m-t-1">
+<div mat-dialog-actions class="flex-end-center">
   <button mat-flat-button type="button" mat-dialog-close>
     Cancelar
   </button>
 
-  <button mat-raised-button [color]="form.valid ? 'primary' : 'warn'" [disabled]="isLoading" type="submit">
-    <span>Enviar reporte</span>
+  <button mat-raised-button color="primary" [disabled]="isLoading || form.invalid" type="submit">
+    <span>Enviar</span>
     <mat-icon class="fs-regular">send</mat-icon>
   </button>
 </div>
