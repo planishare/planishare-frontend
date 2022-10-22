@@ -1,19 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { viewerType } from 'ngx-doc-viewer';
-import { catchError, of, takeUntil } from 'rxjs';
-import { ReportType } from 'src/app/shared/enums/report.enum';
+import { ActivatedRoute, Router } from '@angular/router';
+import { catchError, of, takeUntil, filter } from 'rxjs';
+
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { ReactionsService } from 'src/app/core/services/reactions.service';
-import { PostDetail, PostsQueryParams } from 'src/app/core/types/posts.type';
-import { UserDetail } from 'src/app/core/types/users.type';
-import { ReportDialogComponent } from 'src/app/shared/components/report-dialog/report-dialog.component';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
-import { isMobile } from 'src/app/shared/utils/window-width';
+
+import { PostsQueryParams } from 'src/app/core/models/post-filter.model';
+import { UserDetail } from 'src/app/core/types/users.type';
+
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
+
+import { viewerType } from 'ngx-doc-viewer';
 import { DeleteDialogComponent } from '../components/delete-dialog/delete-dialog.component';
+import { PostDetail } from 'src/app/core/models/post.model';
 
 @Component({
     selector: 'app-post-detail',
@@ -21,13 +23,12 @@ import { DeleteDialogComponent } from '../components/delete-dialog/delete-dialog
     styleUrls: ['./post-detail.component.scss']
 })
 export class PostDetailComponent extends Unsubscriber implements OnInit {
-    public isMobile = isMobile;
-    public searchParams: Params | PostsQueryParams;
+    public searchParams: PostsQueryParams;
 
-    public user: UserDetail;
-
+    public user: UserDetail | null;
     public postId: number;
     public post?: PostDetail;
+
     public currentDocUrl: string = '';
     public currentViewer: viewerType = 'google';
 
@@ -65,28 +66,25 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
         super();
         this.postId = Number(this.route.snapshot.paramMap.get('id'));
         this.searchParams = this.route.snapshot.queryParams;
-        this.user = this.authService.getUserProfile() as UserDetail;
+        this.user = this.authService.getUserProfile() ?? null;
     }
 
     public ngOnInit(): void {
         this.postsService.getPostById(this.postId)
             .pipe(
-                takeUntil(this.ngUnsubscribe$),
                 catchError(error => {
                     this.commonSnackbarMsg.showErrorMessage();
                     this.hasData = false;
-                    return of(null);
-                })
+                    this.isLoading = false;
+                    return of();
+                }),
+                takeUntil(this.ngUnsubscribe$)
             )
             .subscribe(post => {
-                if (!!post) {
-                    this.post = post;
-                    console.log(this.post);
-                    this.viewDocument(post.main_file);
-                    this.isLoading = false;
-
-                    this.registerView(this.post!);
-                }
+                this.post = new PostDetail(post!);
+                this.viewDocument(this.post.mainFile.url);
+                this.isLoading = false;
+                this.hasData = true;
             });
     }
 
@@ -100,7 +98,7 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
                 this.currentDocUrl = docUrl;
             }
         } else {
-            this.download(docUrl);
+            // this.download(docUrl);
         }
     }
 
@@ -110,9 +108,9 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
     }
 
     public getViewer(docType: string): string | viewerType {
-        if (docType === 'pdf') {
-            return this.isMobile ? 'google' : 'pdf'; // TODO: add safari support
-        }
+        // if (docType === 'pdf') {
+        //     return this.isMobile ? 'google' : 'pdf'; // TODO: add safari support
+        // }
         if (this.docTypes.doc.find(ext => ext === docType)) {
             return 'office';
         }
@@ -131,20 +129,20 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
             return;
         }
 
-        post.total_likes = !!post.already_liked ? post.total_likes - 1 : post.total_likes + 1;
-        post.already_liked = post.already_liked ?? -1;
+        post.totalLikes = !!post.alreadyLiked ? post.totalLikes - 1 : post.totalLikes + 1;
+        post.alreadyLiked = post.alreadyLiked ?? -1;
 
         this.reactionService.toggleLike(this.user.id, post.id)
             .pipe(
                 catchError(() => {
-                    post.total_likes = !!post.already_liked ? post.total_likes - 1 : post.total_likes + 1;
-                    post.already_liked = post.already_liked ?? -1;
+                    post.totalLikes = !!post.alreadyLiked ? post.totalLikes - 1 : post.totalLikes + 1;
+                    post.alreadyLiked = post.alreadyLiked ?? -1;
                     this.commonSnackbarMsg.showErrorMessage();
                     return of(null);
                 })
             )
             .subscribe(resp => {
-                post.already_liked = resp?.id!;
+                post.alreadyLiked = resp?.id!;
             });
     }
 
@@ -162,75 +160,35 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
         });
     }
 
-    private registerView(post: PostDetail): void {
-        const isAuth = !!this.authService.isAuth$.value;
-        const isOwner = post.user.email === this.user?.email;
+    // private registerView(post: PostDetail): void {
+    //     const isAuth = !!this.authService.isAuth$.value;
+    //     const isOwner = post.user.email === this.user?.email;
 
-        // if ((isAuth && !isOwner) || !isAuth) {}
-        this.reactionService.registerView(this.postId)
-            .pipe(
-                catchError(error => of())
-            )
-            .subscribe(() => {
-                this.post!.total_views += 1;
-            });
-    }
+    //     // if ((isAuth && !isOwner) || !isAuth) {}
+    //     this.reactionService.registerView(this.postId)
+    //         .pipe(
+    //             catchError(error => of())
+    //         )
+    //         .subscribe(() => {
+    //             this.post!.total_views += 1;
+    //         });
+    // }
 
-    // Utils
-    public scroll(el: HTMLElement): any {
-        return this.isMobile ? el.scrollIntoView({ behavior: 'smooth' }) : null;
-    }
+    // public scroll(el: HTMLElement): any {
+    //     return this.isMobile ? el.scrollIntoView({ behavior: 'smooth' }) : null;
+    // }
 
-    public goBack(): void {
-        this.router.navigate(['/results'], {
-            queryParams: this.searchParams
-        });
-    }
+    // public goBack(): void {
+    //     this.router.navigate(['/results'], {
+    //         queryParams: this.searchParams
+    //     });
+    // }
 
-    public download(docUrl: string): void {
-        if (this.donwloadInSameTab.find(el => el === this.getDocType(docUrl))) {
-            location.href = docUrl;
-        } else {
-            window.open(docUrl, '_blank');
-        }
-    }
-
-    public reportPost(post: PostDetail): any {
-        if (!!!this.user) {
-            this.commonSnackbarMsg.showLoginRequiredMessage('crear un reporte');
-            return;
-        }
-
-        // const reportData: ReportForm = {
-        //     report_type: ReportType.POST,
-        //     active: true,
-        //     description: '',
-        //     user: this.user.id,
-        //     post_reported: post.id,
-        //     user_reported: post.user.id
-        // };
-
-        // this.dialog.open(ReportDialogComponent, {
-        //     data: reportData
-        // });
-    }
-
-    public reportUser(post: PostDetail): any {
-        if (!!!this.user) {
-            this.commonSnackbarMsg.showLoginRequiredMessage('crear un reporte');
-            return;
-        }
-
-        // const reportData: ReportForm = {
-        //     report_type: ReportType.USER,
-        //     active: true,
-        //     description: '',
-        //     user: this.user.id,
-        //     user_reported: post.user.id
-        // };
-
-        // this.dialog.open(ReportDialogComponent, {
-        //     data: reportData
-        // });
-    }
+    // public download(docUrl: string): void {
+    //     if (this.donwloadInSameTab.find(el => el === this.getDocType(docUrl))) {
+    //         location.href = docUrl;
+    //     } else {
+    //         window.open(docUrl, '_blank');
+    //     }
+    // }
 }

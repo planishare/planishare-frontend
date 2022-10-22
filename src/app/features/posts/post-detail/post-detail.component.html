@@ -1,167 +1,98 @@
-<!--
-    pdf
-    url: !mobile
-    * pdf: !safari (google) !mobile (google)
-    google: slow
- -->
+<main class="container">
+  <!-- Post card -->
+  <div class="rounded-card post-info-card flex-column flex-space_between gap-07 w-100" *ngIf="post">
+    <div class="flex-space_between-center">
+      <p>{{ post.user.fullName }} - {{ post.createdAt|timeAgo }}</p>
 
-<!-- 
-    docx
-    url: download
-    google: :)
-    * office: :) mobile(not responsive)
- -->
-
-<!-- 
-    pptx
-    google: :)
-    * office: :)
- -->
-
-<!-- 
-    xlsx
-    google: show like img
-    * office: 
- -->
-
-<main class="main">
-    <!-- Card -->
-    <div class="left-section">
-        <div class="flex_between_center">
-            <button mat-raised-button (click)="goBack()">
-                <mat-icon>arrow_back</mat-icon>
-                <span>Volver a resultados</span>
-            </button>
-            <button mat-raised-button *ngIf="!!post && !isLoading" (click)="toggleLike(post)">
-                <mat-icon *ngIf="!!post.already_liked">favorite</mat-icon>
-                <mat-icon *ngIf="!!!post.already_liked">favorite_outline</mat-icon>
-            </button>
-        </div>
-
-        <mat-card class="card" *ngIf="!!post && !isLoading">
-            <div class="flex_column gap-05">
-                <div class="flex_between_center">
-                    <div>
-                        <div class="flex_start_center gap-05 time-data">
-                            <mat-icon>schedule</mat-icon>
-                            <span>
-                                Hace {{ post.created_at|timeAgo }} por
-                                {{ post.user|getUsername }}
-                                <br>
-                                <span>
-                                    {{ post.user.education?.name }}
-                                </span>
-                                <span *ngIf="post.user.education?.name && post.user.institution?.name">
-                                    en {{ post.user.institution?.name }}
-                                </span>
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <!-- Options -->
-                    <button
-                        [matMenuTriggerFor]="menu"
-                        aria-label="Opciones de publicación"
-                        mat-icon-button>
-                        <mat-icon>more_vert</mat-icon>
-                    </button>
-                    <mat-menu #menu="matMenu">
-                        <button mat-menu-item *ngIf="post.user.id === user?.id" [routerLink]="['/posts/edit', post.id]">
-                            <mat-icon>edit</mat-icon>
-                            <span>Editar publicación</span>
-                        </button>
-                        <button mat-menu-item *ngIf="post.user.id === user?.id" (click)="deletePost(post)">
-                            <mat-icon>delete</mat-icon>
-                            <span>Eliminar publicación</span>
-                        </button>
-                        <button mat-menu-item *ngIf="post.user.id !== user?.id" (click)="reportPost(post)">
-                            <mat-icon>report</mat-icon>
-                            <span>Reportar publicación</span>
-                        </button>
-                        <button mat-menu-item *ngIf="post.user.id !== user?.id" (click)="reportUser(post)">
-                            <mat-icon>report</mat-icon>
-                            <span>Reportar usuario</span>
-                        </button>
-                    </mat-menu>
-                </div>
-        
-                <mat-card-title>{{ post.title }}</mat-card-title>
-                <div>{{ post.description }}</div>
-        
-                <mat-chip-list class="flex_start_center flex_wrap">
-                    <mat-chip class="academic-level-tag">
-                        <span>Nivel académico: {{ post.academic_level.name }}</span>
-                    </mat-chip>
-                    <mat-chip class="axis-tag">
-                        <span>Eje: {{ post.axis.name }}</span>
-                    </mat-chip>
-                    <mat-chip class="subject-tag">
-                        <span>Asignatura: {{ post.axis.subject.name }}</span>
-                    </mat-chip>
-                </mat-chip-list>
-        
-                <div class="flex_start_center gap-05">
-                    <mat-icon>description</mat-icon>
-                    <span>{{ (post.suporting_material?.length ?? 0) + 1 }} Documentos</span>
-                </div>
-                <div class="flex_column gap-05">
-                    <div
-                        class="document"
-                        (click)="viewDocument(post.main_file); scroll(viewerEl)"
-                        matRipple
-                        [ngClass]="post.main_file === currentDocUrl ? (post.main_file|getDocType:docTypes)+'-style' : ''">
-                        <span>{{ post.main_file|getDocName }}</span>
-
-                        <button
-                            (click)="download(post.main_file)"
-                            mat-flat-button
-                            class="download-button {{ post.main_file|getDocType:docTypes }}-style">
-                                <span>.{{ post.main_file|getDocType:docTypes }}</span>
-                                <mat-icon>download</mat-icon>
-                        </button>
-                    </div>
-                    <div
-                        class="document"
-                        *ngFor="let doc of post.suporting_material"
-                        (click)="viewDocument(doc); scroll(viewerEl)"
-                        matRipple
-                        [ngClass]="doc === currentDocUrl ? (doc|getDocType:docTypes)+'-style' : ''">
-                        <span>{{ doc|getDocName }}</span>
-
-                        <button
-                            (click)="download(doc)"
-                            mat-flat-button
-                            class="download-button {{ doc|getDocType:docTypes }}-style">
-                                <span>.{{ doc|getDocType:docTypes }}</span>
-                                <mat-icon>download</mat-icon>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="flex_between_center">
-                    <div class="flex_start_center gap-05">
-                        <mat-icon>favorite</mat-icon>
-                        <span>{{ post.total_likes }} Me gusta</span>
-                    </div>
-                    <div class="flex_start_center gap-05">
-                        <mat-icon>visibility</mat-icon>
-                        <span>{{ post.total_views }} Visitas</span>
-                    </div>
-                </div>
-            </div>
-        </mat-card>
-
-        <!-- Shimmer -->
-        <app-post-detail-card-shimmer *ngIf="isLoading"></app-post-detail-card-shimmer>
-
-        <div #viewerEl></div>
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Opciones" matTooltip="Opciones">
+        <mat-icon class="text-blue-dark">more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item *ngIf="post.user.id !== user?.id">
+          <mat-icon>report</mat-icon>
+          <span>Reportar</span>
+        </button>
+        <button mat-menu-item (click)="deletePost(post)" *ngIf="post.user.id === user?.id">
+          <mat-icon>delete</mat-icon>
+          <span>Eliminar</span>
+        </button>
+      </mat-menu>
     </div>
 
-    <!-- Doc preview -->
-    <ngx-doc-viewer
-        *ngIf="!isLoading"
-        class="doc-preview"
-        [url]="currentDocUrl"
-        [viewer]="currentViewer"
-    ></ngx-doc-viewer>
+    <div class="flex-column gap-05">
+      <h2><a [routerLink]="['/posts/view', post.id]" class="reset-link-style">
+          {{ post.title }}
+        </a></h2>
+      <p><a [routerLink]="['/posts/view', post.id]" class="reset-link-style">
+          {{ post.description }}
+        </a></p>
+    </div>
+
+    <div>
+      <div class="flex-start-center gap-025">
+        <mat-icon class="text-blue-dark">description</mat-icon>
+        <span class="fw-600">{{ post.totalFiles }} Documentos</span>
+      </div>
+
+      <div class="flex-space_between-center m-l-05">
+        <div class="border-tag-{{ post.mainFile.tagColor }}">
+          <span class="text-ellipsis">{{ post.mainFile.name }}</span>
+          <span>{{ post.mainFile.ext }}</span>
+        </div>
+        <div class="flex-center-center">
+          <button mat-icon-button>
+            <mat-icon class="text-blue-dark">file_download</mat-icon>
+          </button>
+          <button class="rounded-button-slim fs-small">
+            Ver
+          </button>
+        </div>
+      </div>
+
+      <div class="flex-space_between-center m-l-05" *ngFor="let file of post.supportingMaterial">
+        <div class="border-tag-{{ file.tagColor }}">
+          <span class="text-ellipsis">{{ file.name }}</span>
+          <span>{{ file.ext }}</span>
+        </div>
+        <div class="flex-center-center">
+          <button mat-icon-button>
+            <mat-icon class="text-blue-dark">file_download</mat-icon>
+          </button>
+          <button class="rounded-button-slim fs-small">
+            Ver
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex-wrap gap-025">
+      <span class="rounded-button-slim bg-text-academic-level">Nivel académico: {{ post.academicLevel.name }}</span>
+      <span class="rounded-button-slim bg-text-axis">Eje: {{ post.axis.name }}</span>
+      <span class="rounded-button-slim bg-text-subject">Asignatura: {{ post.axis.subject.name }}</span>
+    </div>
+
+    <div class="flex-space_between-center">
+      <div class="flex-center-center gap-05 flex-wrap fs-small">
+        <div class="flex-center-center gap-025">
+          <mat-icon class="small-icon text-blue-dark">favorite_outline</mat-icon>
+          <span class="fw-600">{{ post.totalLikes }} Me gusta</span>
+        </div>
+        <div class="flex-center-center gap-025">
+          <mat-icon class="small-icon text-blue-dark">visibility</mat-icon>
+          <span class="fw-600">{{ post.totalLikes }} Visualizaciones</span>
+        </div>
+      </div>
+
+      <button mat-icon-button>
+        <mat-icon class="text-red">
+          {{ post.alreadyLiked ? 'favorite' : 'favorite_outline' }}
+        </mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- File preview -->
+  <div class="doc-viewer" *ngIf="!isLoading">
+    <ngx-doc-viewer [url]="currentDocUrl" [viewer]="currentViewer"></ngx-doc-viewer>
+  </div>
 </main>

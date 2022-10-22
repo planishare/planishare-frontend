@@ -28,7 +28,7 @@ export class PostDetail {
     public academicLevel: IAcademicLevel;
     public axis: IAxis;
     public mainFile: IPostFile;
-    public suportingMaterial: IPostFile[];
+    public supportingMaterial: IPostFile[];
     public totalFiles: number;
     public createdAt: string | Date;
     public updatedAt: string | Date;
@@ -46,7 +46,7 @@ export class PostDetail {
         this.academicLevel = post.academic_level;
         this.axis = post.axis;
         this.mainFile = this.setFileInfo(post.main_file);
-        this.suportingMaterial = post.suporting_material.map(this.setFileInfo);
+        this.supportingMaterial = post.suporting_material.map(this.setFileInfo);
         this.totalFiles = post.suporting_material.length + 1;
         this.createdAt = post.created_at;
         this.updatedAt = post.updated_at;
