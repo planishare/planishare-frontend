@@ -119,9 +119,7 @@
       <!-- Pagination -->
       <div class="pagination flex-center-center gap-05">
         <span class="fw-700 fs-regular" *ngIf="!isLoading && hasData" @inOutRight>
-          {{ (pageInfo?.maxPage ?? 0) * (postFilters.page! - 1) + 1 }}
-           - {{ (pageInfo?.maxPage ?? 0) * (postFilters.page! - 1) + posts.length }}
-          de {{ pageInfo?.count }}
+          {{ pageInfo?.count }} resultados
         </span>
         <div class="flex-center-center gap-025">
           <button class="circle-button" (click)="previousPage()" [disabled]="!pageInfo?.previous || isLoading" aria-label="Pág. Anterior" matTooltip="Pág. Anterior" matRipple>
