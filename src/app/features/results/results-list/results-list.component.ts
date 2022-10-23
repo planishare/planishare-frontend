@@ -42,6 +42,7 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
     public isAxesLoading = true;
     public hasFilters = false;
 
+    public filterQueryParams: PostsQueryParams = {};
     public pageInfo?: Pageable<IPostDetail>;
 
     public postFilters = new PostFilters({
@@ -110,7 +111,6 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
 
     constructor(
         private postsService: PostsService,
-        private reactionService: ReactionsService,
         private authService: AuthService,
         private activatedRoute: ActivatedRoute,
         private router: Router,
@@ -156,23 +156,23 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
 
     // Make first request based on query params
     private getQueryParams(): void {
-        const params: PostsQueryParams = this.activatedRoute.snapshot.queryParams;
+        this.filterQueryParams = this.activatedRoute.snapshot.queryParams;
 
-        this.searchControl.setValue(params.search);
+        this.searchControl.setValue(this.filterQueryParams.search);
         this.academicLevelControl.setValue(
-            this.academicLevelsList.find(el => el.data?.id === Number(params.academicLevel))
+            this.academicLevelsList.find(el => el.data?.id === Number(this.filterQueryParams.academicLevel))
         );
         this.subjectControl.setValue(
-            this.subjectList.find(el => el.data?.id === Number(params.subject))
+            this.subjectList.find(el => el.data?.id === Number(this.filterQueryParams.subject))
         );
         this.axisControl.setValue(
-            this.axisList.find(el => el.data?.id === Number(params.axis))
+            this.axisList.find(el => el.data?.id === Number(this.filterQueryParams.axis))
         );
         this.orderingControl.setValue(
-            this.orderingList.find(el => el.data?.id === params.ordering) ?? this.orderingList[0]
+            this.orderingList.find(el => el.data?.id === this.filterQueryParams.ordering) ?? this.orderingList[0]
         );
 
-        this.postFilters.page = Number(params.page) || this.postFilters.page;
+        this.postFilters.page = Number(this.filterQueryParams.page) || this.postFilters.page;
         this.postFilters.search = this.searchControl.value;
         this.postFilters.academicLevel = this.academicLevelControl.value?.data;
         this.postFilters.subject = this.subjectControl.value?.data;
@@ -205,7 +205,6 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
         this.postsService.getPosts(filters.formatForAPI())
             .pipe(
                 catchError(() => {
-                    this.hasData = false;
                     this.isLoading = false;
                     this.commonSnackbarMsg.showErrorMessage();
                     return of();
@@ -221,10 +220,10 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
     }
 
     private setQueryParams(): void {
-        const queryParams = this.postFilters.formatForQueryParams();
-        queryParams.ordering =
-            queryParams.ordering !== this.orderingType.MOST_RECENT ? queryParams.ordering : undefined;
-        this.router.navigate([], { relativeTo: this.activatedRoute, queryParams });
+        this.filterQueryParams = this.postFilters.formatForQueryParams();
+        this.filterQueryParams.ordering =
+            this.filterQueryParams.ordering !== this.orderingType.MOST_RECENT ? this.filterQueryParams.ordering : undefined;
+        this.router.navigate([], { relativeTo: this.activatedRoute, queryParams: this.filterQueryParams });
     }
 
     private handleAxisAndSubjectChanges(): void {
@@ -366,7 +365,7 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
         this.dialog.open(ReportDialogComponent, {
             data: {
                 post,
-                userId: this.user.id
+                userId: this.user?.id
             },
             autoFocus: false,
             maxWidth: '95%'

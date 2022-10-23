@@ -1,5 +1,6 @@
 import { IUserSimpleDetail, UserSimpleDetail } from "./user.model";
-import { FILE_TAG_COLOR } from "../constants/files.constants";
+import { DOCUMENT_VIEWER, FILE_TAG_COLOR } from "../../shared/constants/files.constants";
+import { viewerType } from "ngx-doc-viewer";
 
 export interface IPostDetail {
     id: number,
@@ -15,7 +16,7 @@ export interface IPostDetail {
     updated_at: string | Date,
     total_likes: number,
     total_views: number,
-    already_liked?: number
+    already_liked: number | null
 }
 
 export class PostDetail {
@@ -34,7 +35,7 @@ export class PostDetail {
     public updatedAt: string | Date;
     public totalLikes: number;
     public totalViews: number;
-    public alreadyLiked?: number;
+    public alreadyLiked: number | null;
 
     constructor(post: IPostDetail) {
         this.id = post.id;
@@ -56,15 +57,17 @@ export class PostDetail {
     }
 
     private setFileInfo(url: string): IPostFile {
-        const fileTypes = FILE_TAG_COLOR;
+        const fileTypeColors = FILE_TAG_COLOR;
         const name = decodeURIComponent(url.split('/o/')[1].split('?')[0]).split('___')[0];
         const ext = url.match(/\.[a-z]+\?/g)?.at(0)?.slice(0, -1) ?? 'nd';
-        const tagColor = fileTypes[ext.slice(1) as keyof typeof fileTypes];
+        const tagColor = fileTypeColors[ext.slice(1) as keyof typeof fileTypeColors];
         return {
             url,
             name,
+            fullName: name + ext,
             ext,
-            tagColor
+            tagColor,
+            ngxDocViewer: DOCUMENT_VIEWER[ext.replace('.','')] ?? null
         };
     }
 
@@ -95,6 +98,8 @@ export interface IAxis {
 export interface IPostFile {
     url: string,
     name: string,
+    fullName: string,
     ext: string,
-    tagColor: string
+    tagColor: string,
+    ngxDocViewer: viewerType | null
 }

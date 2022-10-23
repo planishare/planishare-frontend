@@ -67,6 +67,16 @@
     flex-grow: 1;
 }
 
+// Grid
+.grid,
+.grid-center-center {
+    display: grid;
+}
+
+.grid-center-center {
+    place-content: center;
+}
+
 // Other display
 .block {
     display: block;

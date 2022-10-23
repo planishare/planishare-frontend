@@ -12,21 +12,39 @@
         flex-wrap: nowrap;
     }
 
-    .post-info-card {
-        max-width: 320px;
+    .left-card {
+        min-width: 350px;
+        max-width: 350px;
+    }
+
+    .rounded-card {
+        gap: 1rem;
     }
 }
 
-.doc-viewer {
+.rounded-button-slim.fs-small {
+    font-weight: 700;
+}
+
+.active {
+    background-color: hsl(var(--clr-blue));
+    color: hsl(var(--clr-white));
+}
+
+.right-card {
     width: 100%;
-    height: 85vh;
+    height: 90vh;
     border-radius: 10px;
     background-color: hsl(var(--clr-white));
-    padding: 0.25rem;
+    padding: .4rem .4rem .5rem .4rem;
     resize: vertical;
     overflow: auto;
 }
 
-ngx-doc-viewer {
-    height: 99%;
+.doc-viewer {
+    height: 100%;
+
+    ngx-doc-viewer {
+        height: 100%;
+    }
 }

@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, of, takeUntil, filter } from 'rxjs';
+import { catchError, of, takeUntil } from 'rxjs';
 
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
@@ -10,12 +10,14 @@ import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackba
 
 import { PostsQueryParams } from 'src/app/core/models/post-filter.model';
 import { UserDetail } from 'src/app/core/types/users.type';
+import { IPostFile, PostDetail } from 'src/app/core/models/post.model';
+import { viewerType } from 'ngx-doc-viewer';
 
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
+import { WindowResizeService } from 'src/app/shared/services/window-resize.service';
 
-import { viewerType } from 'ngx-doc-viewer';
 import { DeleteDialogComponent } from '../components/delete-dialog/delete-dialog.component';
-import { PostDetail } from 'src/app/core/models/post.model';
+import { ReportDialogComponent } from 'src/app/shared/components/report-dialog/report-dialog.component';
 
 @Component({
     selector: 'app-post-detail',
@@ -29,30 +31,10 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
     public postId: number;
     public post?: PostDetail;
 
-    public currentDocUrl: string = '';
-    public currentViewer: viewerType = 'google';
+    public currentFile?: IPostFile;
+    public currentViewer: viewerType | null = null;
 
-    public isLoading = true;
-    public hasData = true;
-
-    public docTypes = {
-        doc: ['doc','docm','docx','txt'],
-        xls: ['csv','xlam','xls','xlsx','xml'],
-        ppt: ['ppt','pptx']
-    };
-
-    public donwloadInSameTab = [
-        'doc','docm','docx',
-        'csv','xlam','xls','xlsx','xml',
-        'ppt','pptx'
-    ];
-
-    // DELETE_THIS: Dev porposes
-    public pdf = 'https://firebasestorage.googleapis.com/v0/b/planishare.appspot.com/o/ER_Directorio_Oficial_EE_WEB.pdf?alt=media&token=a1c252ec-766a-4844-8d80-de913b7d09bc';
-    public docx = 'https://firebasestorage.googleapis.com/v0/b/planishare.appspot.com/o/Formulario-Inscripci%C3%B3n-de-Tesis.docx?alt=media&token=ca6883f2-e4ef-46d4-88f2-d251adb177c3';
-    public doc = 'https://firebasestorage.googleapis.com/v0/b/planishare.appspot.com/o/plantilla_informepracticaformato.doc?alt=media&token=5c4ed8f6-96fc-43be-aaac-5d7a39a75fdc';
-    public pptx = 'https://firebasestorage.googleapis.com/v0/b/planishare.appspot.com/o/Consultas%20a%20Documentos%20Anidados%20y%20Arreglos.pptx?alt=media&token=db8b8bbc-7967-4c42-88aa-37e0a65b356f';
-    public xlsx = 'https://firebasestorage.googleapis.com/v0/b/planishare.appspot.com/o/Buscador_Instituciones_2022%20(1).xlsx?alt=media&token=4efc7001-dc13-4c00-92f3-ad289ea1b35c';
+    public isMobile = true;
 
     constructor(
         private route: ActivatedRoute,
@@ -61,66 +43,67 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
         private router: Router,
         private authService: AuthService,
         private reactionService: ReactionsService,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        private windowResize: WindowResizeService
     ) {
         super();
         this.postId = Number(this.route.snapshot.paramMap.get('id'));
         this.searchParams = this.route.snapshot.queryParams;
         this.user = this.authService.getUserProfile() ?? null;
+        this.windowResize.isMobile$
+            .pipe(takeUntil(this.ngUnsubscribe$))
+            .subscribe(value => this.isMobile = value);
     }
 
     public ngOnInit(): void {
         this.postsService.getPostById(this.postId)
             .pipe(
-                catchError(error => {
+                catchError(() => {
                     this.commonSnackbarMsg.showErrorMessage();
-                    this.hasData = false;
-                    this.isLoading = false;
                     return of();
                 }),
                 takeUntil(this.ngUnsubscribe$)
             )
             .subscribe(post => {
                 this.post = new PostDetail(post!);
-                this.viewDocument(this.post.mainFile.url);
-                this.isLoading = false;
-                this.hasData = true;
+                this.viewDocument(this.post.mainFile);
+                this.registerView(this.post);
             });
     }
 
-    public viewDocument(docUrl: string): void {
-        const docType = this.getDocType(docUrl);
-        const viewer = this.getViewer(docType) as viewerType;
+    public viewDocument(file: IPostFile): void {
+        this.currentViewer = file.ngxDocViewer;
+        this.currentFile = file;
+    }
 
-        if (!!viewer) {
-            if (!!docUrl && docUrl !== this.currentDocUrl) {
-                this.currentViewer = viewer;
-                this.currentDocUrl = docUrl;
+    public report(post: PostDetail): any {
+        if (!!!this.user) {
+            this.commonSnackbarMsg.showLoginRequiredMessage('crear un reporte');
+            return;
+        }
+
+        this.dialog.open(ReportDialogComponent, {
+            data: {
+                post,
+                userId: this.user?.id
+            },
+            autoFocus: false,
+            maxWidth: '95%'
+        });
+    }
+
+    public deletePost(post: PostDetail): void {
+        const dialogRef = this.dialog.open(DeleteDialogComponent, {
+            data: { post }
+        });
+
+        dialogRef.afterClosed().subscribe(done => {
+            if (done) {
+                this.router.navigate(['/results'], {
+                    queryParams: this.searchParams
+                });
             }
-        } else {
-            // this.download(docUrl);
-        }
-    }
-
-    public getDocType(docUrl: string): string {
-        const docName =  docUrl.split('/o/')[1].split('?')[0].split('.');
-        return docName[docName.length - 1];
-    }
-
-    public getViewer(docType: string): string | viewerType {
-        // if (docType === 'pdf') {
-        //     return this.isMobile ? 'google' : 'pdf'; // TODO: add safari support
-        // }
-        if (this.docTypes.doc.find(ext => ext === docType)) {
-            return 'office';
-        }
-        if (this.docTypes.ppt.find(ext => ext === docType)) {
-            return 'office';
-        }
-        if (this.docTypes.xls.find(ext => ext === docType)) {
-            return 'office';
-        }
-        return '';
+        });
     }
 
     public toggleLike(post: PostDetail): any {
@@ -130,7 +113,7 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
         }
 
         post.totalLikes = !!post.alreadyLiked ? post.totalLikes - 1 : post.totalLikes + 1;
-        post.alreadyLiked = post.alreadyLiked ?? -1;
+        post.alreadyLiked = !!post.alreadyLiked ? null : -1;
 
         this.reactionService.toggleLike(this.user.id, post.id)
             .pipe(
@@ -138,57 +121,31 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
                     post.totalLikes = !!post.alreadyLiked ? post.totalLikes - 1 : post.totalLikes + 1;
                     post.alreadyLiked = post.alreadyLiked ?? -1;
                     this.commonSnackbarMsg.showErrorMessage();
-                    return of(null);
+                    return of();
                 })
             )
             .subscribe(resp => {
-                post.alreadyLiked = resp?.id!;
+                post.alreadyLiked = resp.id!;
             });
     }
 
-    public deletePost(post: PostDetail): void {
-        const dialogRef = this.dialog.open(DeleteDialogComponent, {
-            data: {
-                post
-            }
-        });
+    private registerView(post: PostDetail): void {
+        this.reactionService.registerView(this.postId)
+            .pipe(
+                catchError(error => of())
+            )
+            .subscribe(() => {
+                this.post!.totalViews += 1;
+            });
+    }
 
-        dialogRef.afterClosed().subscribe(refresh => {
-            if (refresh) {
-                this.router.navigate(['/', 'results']);
-            }
+    public goBackToResults(): void {
+        this.router.navigate(['/results'], {
+            queryParams: this.searchParams
         });
     }
 
-    // private registerView(post: PostDetail): void {
-    //     const isAuth = !!this.authService.isAuth$.value;
-    //     const isOwner = post.user.email === this.user?.email;
-
-    //     // if ((isAuth && !isOwner) || !isAuth) {}
-    //     this.reactionService.registerView(this.postId)
-    //         .pipe(
-    //             catchError(error => of())
-    //         )
-    //         .subscribe(() => {
-    //             this.post!.total_views += 1;
-    //         });
-    // }
-
-    // public scroll(el: HTMLElement): any {
-    //     return this.isMobile ? el.scrollIntoView({ behavior: 'smooth' }) : null;
-    // }
-
-    // public goBack(): void {
-    //     this.router.navigate(['/results'], {
-    //         queryParams: this.searchParams
-    //     });
-    // }
-
-    // public download(docUrl: string): void {
-    //     if (this.donwloadInSameTab.find(el => el === this.getDocType(docUrl))) {
-    //         location.href = docUrl;
-    //     } else {
-    //         window.open(docUrl, '_blank');
-    //     }
-    // }
+    public scroll(el: HTMLElement): any {
+        return this.isMobile ? el.scrollIntoView({ behavior: 'smooth' }) : null;
+    }
 }

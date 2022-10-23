@@ -55,7 +55,7 @@ export class TopsComponent extends Unsubscriber implements OnInit {
             )
             .subscribe(resp => {
                 if (!!resp) {
-                    this.mostLiked = resp;
+                    // this.mostLiked = resp;
                     this.isLoadingMostLiked = false;
                 }
             });
@@ -71,7 +71,7 @@ export class TopsComponent extends Unsubscriber implements OnInit {
             )
             .subscribe(resp => {
                 if (!!resp) {
-                    this.popular = resp;
+                    // this.popular = resp;
                     this.isLoadingPopular = false;
                 }
             });

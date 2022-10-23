@@ -154,11 +154,11 @@ export class EditPostComponent extends Unsubscriber implements OnInit {
             );
     }
 
-    private getPostInfo(): Observable<PostDetail> {
+    private getPostInfo(): Observable<any> {
         return this.postsService.getPostById(this.postId)
             .pipe(
                 tap(data => {
-                    this.post = data;
+                    // this.post = data;
                     this.isPostInfoLoading = false;
                 })
             );

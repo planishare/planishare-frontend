@@ -1,7 +1,7 @@
 // Variables
 :root {
     // Sizes: calc([min-fs]px + ([max-fs - min-fs]) * ((100vw - [min-vw]px) / ([max-vw - min-vw])));
-    --fs-small: 12px;
+    --fs-small: clamp(12px, calc(12px + (13 - 12) * ((100vw - 320px) / (1440 - 320))), 13px);
     --fs-regular: clamp(14px, calc(14px + (15 - 14) * ((100vw - 320px) / (1440 - 320))), 15px);
     --fs-medium: clamp(16px, calc(16px + (22 - 16) * ((100vw - 320px) / (1440 - 320))), 22px);
     --fs-large: clamp(20px, calc(20px + (24 - 20) * ((100vw - 320px) / (1440 - 320))), 24px);
