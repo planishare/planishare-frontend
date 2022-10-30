@@ -107,21 +107,21 @@ export class CreatePostComponent extends Unsubscriber implements OnInit {
                 suporting_material: this.documentsControl.value.slice(1, this.documentsControl.value.length)
             };
             console.log(body);
-            this.postsService.createPost(body)
-                .pipe(
-                    catchError(error => {
-                        this.commonSnackbarMsg.showErrorMessage();
-                        return of(null);
-                    })
-                )
-                .subscribe(resp => {
-                    if (resp) {
-                        const postId = resp.id;
-                        this.router.navigate(['/posts/view/', postId]);
-                        this.matSnackbar.open('Publicación creada :)', 'Cerrar', { duration: 2000 });
-                    }
-                    this.isLoading = false;
-                });
+            // this.postsService.createPost(body)
+            //     .pipe(
+            //         catchError(error => {
+            //             this.commonSnackbarMsg.showErrorMessage();
+            //             return of(null);
+            //         })
+            //     )
+            //     .subscribe(resp => {
+            //         if (resp) {
+            //             const postId = resp.id;
+            //             this.router.navigate(['/posts/view/', postId]);
+            //             this.matSnackbar.open('Publicación creada :)', 'Cerrar', { duration: 2000 });
+            //         }
+            //         this.isLoading = false;
+            //     });
         }
     }
 

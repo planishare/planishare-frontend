@@ -11,7 +11,7 @@ export interface IPostDetail {
     academic_level: IAcademicLevel,
     axis: IAxis,
     main_file: string,
-    suporting_material: string[],
+    suporting_material: string[] | null,
     created_at: string | Date,
     updated_at: string | Date,
     total_likes: number,
@@ -47,8 +47,8 @@ export class PostDetail {
         this.academicLevel = post.academic_level;
         this.axis = post.axis;
         this.mainFile = this.setFileInfo(post.main_file);
-        this.supportingMaterial = post.suporting_material.map(this.setFileInfo);
-        this.totalFiles = post.suporting_material.length + 1;
+        this.supportingMaterial = post.suporting_material?.map(this.setFileInfo) ?? [];
+        this.totalFiles = (post.suporting_material?.length ?? 0) + 1;
         this.createdAt = post.created_at;
         this.updatedAt = post.updated_at;
         this.totalLikes = post.total_likes;
@@ -95,6 +95,12 @@ export interface IAxis {
     subject: ISubject
 }
 
+export type ISubjectWithAxis = {
+    id: number,
+    name: string,
+    axis: IAxis[]
+}
+
 export interface IPostFile {
     url: string,
     name: string,
@@ -102,4 +108,46 @@ export interface IPostFile {
     ext: string,
     tagColor: string,
     ngxDocViewer: viewerType | null
+}
+
+export class PostFile {
+    public url: string;
+    public name: string;
+    public fullName: string;
+    public ext: string;
+    public tagColor: string;
+    public ngxDocViewer: viewerType | null;
+
+    // For upload file
+    public progress: number;
+    public uploadCompleted: boolean;
+
+    constructor(url: string, file?: File) {
+        if (!!file) {
+            this.name = file.name.split('.')[0];
+            this.ext = '.' + file.name.split('.').pop() ?? '';
+            this.fullName = file.name;
+        } else {
+            this.name = decodeURIComponent(url.split('/o/')[1].split('?')[0]).split('___')[0];
+            this.ext = url.match(/\.[a-z]+\?/g)?.at(0)?.slice(0, -1) ?? '';
+            this.fullName = this.name + this.ext;
+        }
+
+        const fileTypeColors = FILE_TAG_COLOR;
+        this.url = url;
+        this.tagColor = fileTypeColors[this.ext.slice(1) as keyof typeof fileTypeColors];
+        this.ngxDocViewer = DOCUMENT_VIEWER[this.ext.replace('.','')] ?? null;
+        this.progress = 0;
+        this.uploadCompleted = false;
+    }
+}
+
+export type IPostForm = {
+    user: number,
+    title: string,
+    description: string,
+    academic_level: number,
+    axis: number,
+    main_file: string,
+    suporting_material: string[]
 }

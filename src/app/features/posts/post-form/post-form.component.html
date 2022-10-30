@@ -1,0 +1,118 @@
+<main class="container">
+  <div class="rounded-card w-100">
+    <h1 class="fs-large m-b-05">Crear publicación</h1>
+
+    <form [formGroup]="form" (ngSubmit)="save($event)">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Título</mat-label>
+        <input matInput placeholder="Título" formControlName="title">
+        <mat-error *ngIf="this.form.controls.title.hasError('required')">Este campo es requerido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Nivel académico</mat-label>
+        <mat-select formControlName="academicLevel">
+          <mat-option>
+            <ngx-mat-select-search [searching]="isAcademicLevelsLoading" [formControl]="searchAcademicLevel"
+              placeholderLabel="Buscar nivel académico" noEntriesFoundLabel="No se encontraron resultados">
+            </ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngFor="let academicLevel of filteredAcademicLevels|async" [value]="academicLevel.id">
+            {{ academicLevel.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="this.form.controls.academicLevel.hasError('required')">Este campo es requerido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Eje</mat-label>
+        <mat-select formControlName="axis">
+          <mat-option>
+            <ngx-mat-select-search [searching]="isAxesLoading" [formControl]="searchAxis" placeholderLabel="Buscar axis"
+              noEntriesFoundLabel="No se encontraron resultados">
+            </ngx-mat-select-search>
+          </mat-option>
+          <mat-optgroup *ngFor="let subject of filteredSubjectAxis|async" [label]="subject.name">
+            <mat-option *ngFor="let axis of subject.axis" [value]="axis.id">
+              {{ axis.name }}
+            </mat-option>
+          </mat-optgroup>
+        </mat-select>
+        <mat-error *ngIf="this.form.controls.axis.hasError('required')">Este campo es requerido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput formControlName="description" cdkTextareaAutosize cdkAutosizeMinRows="3"
+          cdkAutosizeMaxRows="20">
+              </textarea>
+        <div class="flex-end-center">
+          <mat-hint *ngIf="this.form.controls.description.valid">{{ this.form.controls.description.value?.length ?? 0
+            }}/1000
+          </mat-hint>
+          <mat-error *ngIf="this.form.controls.description.hasError('maxlength')">{{
+            this.form.controls.description.value?.length ?? 0 }}/1000</mat-error>
+        </div>
+      </mat-form-field>
+
+      <div class="flex-end-center">
+        <button type="submit" mat-raised-button color="primary" *ngIf="!isLoading" @inOutRight>
+          <span>Publicar</span>
+          <mat-icon class="fs-regular">send</mat-icon>
+        </button>
+        <div class="shapes-loader" *ngIf="isLoading" @inOutLeft></div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Upload File -->
+  <div class="rounded-card grow-1 right-card min-w-0">
+    <div class="upload-area flex-column flex-center-center gap-1" appDragAndDropFile
+      (fileDropped)="onFileDroped($event)"
+      [ngClass]="{'upload-area_invalid': this.form.controls.files.invalid && this.form.controls.files.touched}">
+      <h2 class="text-blue-dark"
+        [ngClass]="{'text-red': this.form.controls.files.invalid && this.form.controls.files.touched}">Arrastra los
+        archivos aquí</h2>
+      <div>
+        <p class="fw-500 m-b-05">Los archivos con estos formatos se podrán ver sin descargar</p>
+        <div class="flex-center-center gap-05">
+          <div class="file-box bg-red text-white fw-700">.pdf</div>
+          <div class="file-box bg-blue text-white fw-700">.doc</div>
+          <div class="file-box bg-green text-white fw-700">.xls</div>
+          <div class="file-box bg-orange text-white fw-700">.ppt</div>
+        </div>
+      </div>
+      <button class="rounded-button-slim bg-blue text-white w-fit" (click)="fileInput.click()" matRipple>
+        <mat-icon>upload_file</mat-icon>
+        <span>Buscar en el dispositivo</span>
+      </button>
+      <input type="file" class="sr-only" (change)="onFileSelected($event)" multiple #fileInput>
+      <mat-error *ngIf="this.form.controls.files.hasError('required') && this.form.controls.files.touched">
+        {{ fileInputMsg.minFiles }}
+      </mat-error>
+    </div>
+
+    <div *ngFor="let file of fileList; index as i" @inOutRight>
+      <span class="block m-t-1" *ngIf="i === 0">Archivo principal</span>
+      <span class="block m-t-1" *ngIf="i === 1">Material complementario</span>
+      <div class="flex-space_between-center gap-05">
+        <div class="flex-center-center gap-05 min-w-0">
+          <span class="small-border-tag{{ '-' + file.tagColor }} min-w-fit">{{ file.ext }}</span>
+          <span class="fw-500 text-ellipsis">{{ file.fullName }}</span>
+        </div>
+        <div *ngIf="file.uploadCompleted" class="flex-center-center">
+          <a mat-icon-button [href]="file.url" download [target]="file.ngxDocViewer === 'office' ? '_self' : '_blank'"
+            aria-label="Descargar" matTooltip="Descargar">
+            <mat-icon class="text-blue-dark">download</mat-icon>
+          </a>
+          <button (click)="removeFile(i)" mat-icon-button>
+            <mat-icon class="text-blue-dark">delete</mat-icon>
+          </button>
+        </div>
+        <div class="p-05" *ngIf="!file.uploadCompleted">
+          <mat-spinner diameter="24"></mat-spinner>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
