@@ -72,8 +72,8 @@
               <mat-icon class="text-blue-dark">file_download</mat-icon>
             </a>
             <button class="rounded-button-slim fw-600 bg-transparent text-blue" [disabled]="!file.ngxDocViewer"
-              [ngClass]="{'active': currentFile?.name === file.name}" (click)="viewDocument(file); scroll(filePreview)"
-              mat-ripple>
+              [ngClass]="{'active': currentFile?.fullName === file.fullName}"
+              (click)="viewDocument(file); scroll(filePreview)" mat-ripple>
               Ver
             </button>
           </div>
