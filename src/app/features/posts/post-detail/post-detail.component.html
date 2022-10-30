@@ -43,7 +43,7 @@
         </div>
 
         <div class="flex-space_between-center m-l-05">
-          <div class="border-tag{{ '-' + post.mainFile.tagColor }}">
+          <div class="border-tag{{ '-' + post.mainFile.tagColor }}" matTooltip="{{ post.mainFile.fullName }}">
             <span class="text-ellipsis">{{ post.mainFile.name }}</span>
             <span>{{ post.mainFile.ext }}</span>
           </div>
@@ -62,7 +62,7 @@
         </div>
 
         <div class="flex-space_between-center m-l-05" *ngFor="let file of post.supportingMaterial">
-          <div class="border-tag{{ '-' + file.tagColor }}">
+          <div class="border-tag{{ '-' + file.tagColor }}" matTooltip="{{ file.fullName }}">
             <span class="text-ellipsis">{{ file.name }}</span>
             <span>{{ file.ext }}</span>
           </div>
