@@ -9,7 +9,6 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 import { PostDetailComponent } from './post-detail/post-detail.component';
 import { PostDetailCardShimmerComponent } from './components/post-detail-card-shimmer/post-detail-card-shimmer.component';
-import { CreatePostComponent } from './create-post/create-post.component';
 import { UserPostsComponent } from './user-posts/user-posts.component';
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 import { EditPostComponent } from './edit-post/edit-post.component';
@@ -19,7 +18,6 @@ import { PostFormComponent } from './post-form/post-form.component';
     declarations: [
         PostDetailComponent,
         PostDetailCardShimmerComponent,
-        CreatePostComponent,
         UserPostsComponent,
         DeleteDialogComponent,
         EditPostComponent,
