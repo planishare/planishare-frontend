@@ -18,11 +18,13 @@ import { WindowResizeService } from 'src/app/shared/services/window-resize.servi
 
 import { DeleteDialogComponent } from '../components/delete-dialog/delete-dialog.component';
 import { ReportDialogComponent } from 'src/app/shared/components/report-dialog/report-dialog.component';
+import { fadeInOutAnimation } from 'src/app/shared/animations/animations';
 
 @Component({
     selector: 'app-post-detail',
     templateUrl: './post-detail.component.html',
-    styleUrls: ['./post-detail.component.scss']
+    styleUrls: ['./post-detail.component.scss'],
+    animations: [fadeInOutAnimation]
 })
 export class PostDetailComponent extends Unsubscriber implements OnInit {
     public searchParams: PostsQueryParams;
@@ -31,7 +33,7 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
     public postId: number;
     public post?: PostDetail;
 
-    public currentFile?: IPostFile;
+    public currentFile: IPostFile | null = null;
     public currentViewer: viewerType | null = null;
 
     public isMobile = true;
@@ -72,6 +74,9 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
     }
 
     public viewDocument(file: IPostFile): void {
+        // Set null to force reload ngx-doc-viewer
+        this.currentViewer = null;
+        this.currentFile = null;
         this.currentViewer = file.ngxDocViewer;
         this.currentFile = file;
     }

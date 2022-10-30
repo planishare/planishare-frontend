@@ -8,7 +8,7 @@
           {{ showFilterCardContent && !isDesktop ? 'expand_less' : 'filter_alt' }}
         </mat-icon>
     </button>
-    <div class="filters-card__content" *ngIf="showFilterCardContent" @inOutY>
+    <div class="filters-card__content" *ngIf="showFilterCardContent" @inOutY [@.disabled]="isDesktop">
       <!-- Searchbar -->
       <div class="rounded-search-bar">
         <input type="search" [formControl]="searchControl" placeholder="Buscar" (keyup.enter)="doSearch(1); updateHasFilters()">
