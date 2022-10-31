@@ -13,7 +13,6 @@ import { RoundedSelectOption, RoundedSelectGroup } from 'src/app/shared/types/ro
 
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
-import { ReactionsService } from 'src/app/core/services/reactions.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
 import { ReportDialogComponent } from 'src/app/shared/components/report-dialog/report-dialog.component';
@@ -53,7 +52,7 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
         }
     });
 
-    public user: UserDetail | null;
+    public authUser: UserDetail | null;
     public posts: PostDetail[] = [];
 
     public academicLevelsList: RoundedSelectOption<IAcademicLevel>[] = [];
@@ -116,10 +115,11 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
         private router: Router,
         private commonSnackbarMsg: CommonSnackbarMsgService,
         private dialog: MatDialog,
-        private windowResize: WindowResizeService
+        private windowResize: WindowResizeService,
+        private route: ActivatedRoute
     ) {
         super();
-        this.user = this.authService.getUserProfile() ?? null;
+        this.authUser = this.authService.getUserProfile() ?? null;
         this.windowResize.isDesktop$.pipe(takeUntil(this.ngUnsubscribe$))
             .subscribe(value => {
                 this.isDesktop = value;
@@ -357,7 +357,7 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
     }
 
     public report(post: PostDetail): any {
-        if (!!!this.user) {
+        if (!!!this.authUser) {
             this.commonSnackbarMsg.showLoginRequiredMessage('crear un reporte');
             return;
         }
@@ -365,7 +365,7 @@ export class ResultsListComponent extends Unsubscriber implements OnInit {
         this.dialog.open(ReportDialogComponent, {
             data: {
                 post,
-                userId: this.user?.id
+                userId: this.authUser?.id
             },
             autoFocus: false,
             maxWidth: '95%'
