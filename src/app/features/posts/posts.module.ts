@@ -13,9 +13,11 @@ import { UserPostsComponent } from './user-posts/user-posts.component';
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 import { EditPostComponent } from './edit-post/edit-post.component';
 import { PostFormComponent } from './post-form/post-form.component';
+import { PostsComponent } from './posts/posts.component';
 
 @NgModule({
     declarations: [
+        PostsComponent,
         PostDetailComponent,
         PostDetailCardShimmerComponent,
         UserPostsComponent,

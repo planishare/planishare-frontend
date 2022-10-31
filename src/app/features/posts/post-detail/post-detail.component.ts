@@ -104,7 +104,7 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
 
         dialogRef.afterClosed().subscribe(done => {
             if (done) {
-                this.router.navigate(['/results'], {
+                this.router.navigate(['/posts'], {
                     queryParams: this.searchParams
                 });
             }
@@ -145,7 +145,7 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
     }
 
     public goBackToResults(): void {
-        this.router.navigate(['/results'], {
+        this.router.navigate(['/posts'], {
             queryParams: this.searchParams
         });
     }

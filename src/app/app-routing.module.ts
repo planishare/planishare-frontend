@@ -13,10 +13,6 @@ const routes: Routes = [
                 loadChildren: () => import('./features/homepage/homepage.module').then(mod => mod.HomepageModule)
             },
             {
-                path: 'results',
-                loadChildren: () => import('./features/results/results.module').then(mod => mod.ResultsModule)
-            },
-            {
                 path: 'posts',
                 loadChildren: () => import('./features/posts/posts.module').then(mod => mod.PostsModule)
             },

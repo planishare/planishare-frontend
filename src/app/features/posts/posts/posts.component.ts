@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, debounceTime, filter, forkJoin, map, merge, Observable, of, takeUntil, tap } from 'rxjs';
+import { catchError, debounceTime, forkJoin, map, merge, Observable, of, takeUntil, tap } from 'rxjs';
 
 import { Pageable } from 'src/app/core/models/pageable.model';
 import { IOrdering, PostFilters, PostsQueryParams } from 'src/app/core/models/post-filter.model';
@@ -23,9 +23,9 @@ import { WindowResizeService } from 'src/app/shared/services/window-resize.servi
 import { fadeInOutAnimation, inOutLeftAnimation, inOutRightAnimation, inOutYAnimation } from 'src/app/shared/animations/animations';
 
 @Component({
-    selector: 'app-results-list',
-    templateUrl: './results-list.component.html',
-    styleUrls: ['./results-list.component.scss'],
+    selector: 'app-posts',
+    templateUrl: './posts.component.html',
+    styleUrls: ['./posts.component.scss'],
     animations: [
         inOutYAnimation,
         inOutLeftAnimation,
@@ -33,7 +33,7 @@ import { fadeInOutAnimation, inOutLeftAnimation, inOutRightAnimation, inOutYAnim
         fadeInOutAnimation
     ]
 })
-export class ResultsListComponent extends Unsubscriber implements OnInit {
+export class PostsComponent extends Unsubscriber implements OnInit {
     public isLoading = true;
     public hasData = true;
     public isAcademicLevelsLoading = true;
