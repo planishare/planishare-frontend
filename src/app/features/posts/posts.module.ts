@@ -8,7 +8,6 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 import { PostDetailComponent } from './post-detail/post-detail.component';
-import { PostDetailCardShimmerComponent } from './components/post-detail-card-shimmer/post-detail-card-shimmer.component';
 import { UserPostsComponent } from './user-posts/user-posts.component';
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 import { EditPostComponent } from './edit-post/edit-post.component';
@@ -19,7 +18,6 @@ import { PostsComponent } from './posts/posts.component';
     declarations: [
         PostsComponent,
         PostDetailComponent,
-        PostDetailCardShimmerComponent,
         UserPostsComponent,
         DeleteDialogComponent,
         EditPostComponent,
