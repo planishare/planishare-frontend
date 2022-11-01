@@ -190,7 +190,8 @@
 // Shimmers loadings
 .shimmer-loading,
 .shimmer-text-large,
-.shimmer-text-regular {
+.shimmer-text-regular,
+.shimmer-input-form {
     animation-duration: 2.2s;
     animation-fill-mode: forwards;
     animation-iteration-count: infinite;
@@ -231,6 +232,16 @@
     height: var(--fs-regular);
     border-radius: 8px;
     margin-bottom: calc(var(--fs-regular) / 4);
+}
+
+.shimmer-input-form {
+    height: 45px;
+    border-radius: 3px;
+    margin-bottom: calc(var(--fs-regular) / 4);
+    padding-inline: .5rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .shimmer-text-color {

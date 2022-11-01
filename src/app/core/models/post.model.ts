@@ -28,8 +28,8 @@ export class PostDetail {
     public image: string;
     public academicLevel: IAcademicLevel;
     public axis: IAxis;
-    public mainFile: IPostFile;
-    public supportingMaterial: IPostFile[];
+    public mainFile: PostFile;
+    public supportingMaterial: PostFile[];
     public totalFiles: number;
     public createdAt: string | Date;
     public updatedAt: string | Date;
@@ -46,29 +46,14 @@ export class PostDetail {
         this.image = post.image;
         this.academicLevel = post.academic_level;
         this.axis = post.axis;
-        this.mainFile = this.setFileInfo(post.main_file);
-        this.supportingMaterial = post.suporting_material?.map(this.setFileInfo) ?? [];
+        this.mainFile = new PostFile(post.main_file),
+        this.supportingMaterial = post.suporting_material?.map(url => new PostFile(url)) ?? [];
         this.totalFiles = (post.suporting_material?.length ?? 0) + 1;
         this.createdAt = post.created_at;
         this.updatedAt = post.updated_at;
         this.totalLikes = post.total_likes;
         this.totalViews = post.total_views;
         this.alreadyLiked = post.already_liked;
-    }
-
-    private setFileInfo(url: string): IPostFile {
-        const fileTypeColors = FILE_TAG_COLOR;
-        const name = decodeURIComponent(url.split('/o/')[1].split('?')[0]).split('___')[0];
-        const ext = url.match(/\.[a-z]+\?/g)?.at(0)?.slice(0, -1) ?? 'nd';
-        const tagColor = fileTypeColors[ext.slice(1) as keyof typeof fileTypeColors];
-        return {
-            url,
-            name,
-            fullName: name + ext,
-            ext,
-            tagColor,
-            ngxDocViewer: DOCUMENT_VIEWER[ext.replace('.','')] ?? null
-        };
     }
 
     private setShortDescription(description: string): string {
@@ -127,27 +112,29 @@ export class PostFile {
             this.name = file.name.split('.')[0];
             this.ext = '.' + file.name.split('.').pop() ?? '';
             this.fullName = file.name;
+            this.progress = 0;
+            this.uploadCompleted = false;
         } else {
             this.name = decodeURIComponent(url.split('/o/')[1].split('?')[0]).split('___')[0];
             this.ext = url.match(/\.[a-z]+\?/g)?.at(0)?.slice(0, -1) ?? '';
             this.fullName = this.name + this.ext;
+            this.progress = 100;
+            this.uploadCompleted = true;
         }
 
         const fileTypeColors = FILE_TAG_COLOR;
         this.url = url;
         this.tagColor = fileTypeColors[this.ext.slice(1) as keyof typeof fileTypeColors];
         this.ngxDocViewer = DOCUMENT_VIEWER[this.ext.replace('.','')] ?? null;
-        this.progress = 0;
-        this.uploadCompleted = false;
     }
 }
 
 export type IPostForm = {
-    user: number,
+    user?: number,
     title: string,
     description: string,
     academic_level: number,
     axis: number,
-    main_file: string,
-    suporting_material: string[]
+    main_file?: string,
+    suporting_material?: string[]
 }

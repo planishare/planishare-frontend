@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { IsAuthGuard } from 'src/app/core/guards/is-auth.guard';
 import { IsVerificatedGuard } from 'src/app/core/guards/is-verificated.guard';
-import { EditPostComponent } from './edit-post/edit-post.component';
 import { PostDetailComponent } from './post-detail/post-detail.component';
 import { PostFormComponent } from './post-form/post-form.component';
 import { PostsComponent } from './posts/posts.component';
@@ -24,7 +23,7 @@ const routes: Routes = [
     },
     {
         path: 'edit/:id',
-        component: EditPostComponent,
+        component: PostFormComponent,
         canActivate: [IsAuthGuard, IsVerificatedGuard]
     },
     {

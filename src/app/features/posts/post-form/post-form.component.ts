@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Observable, of, forkJoin, takeUntil, catchError, tap, startWith, map } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, of, forkJoin, takeUntil, catchError, tap, startWith, map, delay } from 'rxjs';
 
-import { IAcademicLevel, IAxis, IPostForm, ISubjectWithAxis, PostFile } from 'src/app/core/models/post.model';
+import { IAcademicLevel, IAxis, IPostDetail, IPostForm, ISubjectWithAxis, PostDetail, PostFile } from 'src/app/core/models/post.model';
 import { inOutLeftAnimation, inOutRightAnimation, inOutYAnimation } from 'src/app/shared/animations/animations';
 
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
@@ -21,6 +21,9 @@ import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
     animations: [inOutRightAnimation, inOutLeftAnimation]
 })
 export class PostFormComponent extends Unsubscriber implements OnInit {
+    public isEditForm = false;
+    public post?: PostDetail;
+    public isPostDataLoading = false;
 
     public form = new FormGroup({
         title: new FormControl<string>('', Validators.required),
@@ -57,13 +60,14 @@ export class PostFormComponent extends Unsubscriber implements OnInit {
         private authService: AuthService,
         private matSnackbar: MatSnackBar,
         private storage: Storage,
-        private router: Router
+        private router: Router,
+        private route: ActivatedRoute
     ) {
         super();
     }
 
     public ngOnInit(): void {
-        forkJoin([this.getAcademicLevels(), this.getAxis() ])
+        forkJoin([this.getAcademicLevels(), this.getAxis(), this.getPostToEdit() ])
             .pipe(
                 catchError(() => {
                     this.commonSnackbarMsg.showErrorMessage();
@@ -72,6 +76,34 @@ export class PostFormComponent extends Unsubscriber implements OnInit {
                 takeUntil(this.ngUnsubscribe$)
             )
             .subscribe();
+    }
+
+    public getPostToEdit(): Observable<IPostDetail | null> {
+        const postId = Number(this.route.snapshot.paramMap.get('id'));
+        this.isEditForm = !!postId;
+        if (this.isEditForm) {
+            this.isPostDataLoading = true;
+            this.form.disable();
+            return this.postsService.getPostById(postId)
+                .pipe(
+                    tap(data => {
+                        this.post = new PostDetail(data);
+
+                        // Patch values
+                        this.form.patchValue({
+                            title: this.post.title,
+                            academicLevel: this.post.academicLevel.id,
+                            axis: this.post.axis.id,
+                            description: this.post.description
+                        });
+                        this.fileList = [this.post.mainFile, ...this.post.supportingMaterial];
+                        this.isPostDataLoading = false;
+                        this.form.controls.files.clearValidators();
+                        this.form.enable();
+                    })
+                );
+        }
+        return of(null);
     }
 
     public onFileSelected(event: Event): void {
@@ -174,6 +206,14 @@ export class PostFormComponent extends Unsubscriber implements OnInit {
             this.form.markAllAsTouched();
             return;
         }
+        if (this.isEditForm) {
+            this.editPost();
+        } else {
+            this.createPost();
+        }
+    }
+
+    private createPost(): void {
         this.isLoading = true;
         const userId = this.authService.getUserProfile()?.id;
         const files = this.form.controls.files.value!;
@@ -200,6 +240,36 @@ export class PostFormComponent extends Unsubscriber implements OnInit {
                     if (resp) {
                         this.router.navigate(['/posts/view/', resp.id]);
                         this.matSnackbar.open('Publicación creada 🙌', 'Cerrar', { duration: 2000 });
+                    } else {
+                        this.commonSnackbarMsg.showErrorMessage();
+                    }
+                    this.isLoading = false;
+                });
+        }
+    }
+
+    private editPost(): void {
+        this.isLoading = true;
+        if (this.form.valid && !!this.post) {
+            const postData: IPostForm = {
+                title: this.form.controls.title.value!,
+                description: this.form.controls.description.value!,
+                academic_level: this.form.controls.academicLevel.value!,
+                axis: this.form.controls.axis.value!
+            };
+            this.postsService.updatePostById(this.post.id, postData)
+                .pipe(
+                    catchError(() => {
+                        this.commonSnackbarMsg.showErrorMessage();
+                        this.isLoading = false;
+                        return of();
+                    }),
+                    takeUntil(this.ngUnsubscribe$)
+                )
+                .subscribe(resp => {
+                    if (resp) {
+                        this.router.navigate(['/posts/view/', resp.id]);
+                        this.matSnackbar.open('Publicación editada 🪄', 'Cerrar', { duration: 2000 });
                     } else {
                         this.commonSnackbarMsg.showErrorMessage();
                     }

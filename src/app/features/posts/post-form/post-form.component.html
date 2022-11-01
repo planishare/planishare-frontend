@@ -1,8 +1,31 @@
 <main class="container">
   <div class="rounded-card w-100">
-    <h1 class="fs-large m-b-05">Crear publicación</h1>
+    <h1 class="fs-large m-b-05">
+      {{ !isEditForm ? 'Crear publicación' : 'Editar publicación' }}
+    </h1>
 
-    <form [formGroup]="form" (ngSubmit)="save($event)">
+    <!-- Form shimmer -->
+    <div class="flex-column gap-1 w-100" *ngIf="isPostDataLoading">
+      <div class="shimmer-input-form grow-1"></div>
+      <div class="shimmer-input-form grow-1">
+        <mat-icon class="shimmer-text-color">expand_more</mat-icon>
+      </div>
+      <div class="shimmer-input-form grow-1">
+        <mat-icon class="shimmer-text-color">expand_more</mat-icon>
+      </div>
+      <div>
+        <div class="shimmer-input-form grow-1 m-0"></div>
+        <div class="shimmer-input-form grow-1"></div>
+      </div>
+      <div class="flex-end-center">
+        <button type="submit" mat-raised-button color="primary" disabled="true">
+          <span>Guardar</span>
+          <mat-icon class="fs-regular">save</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="save($event)" *ngIf="!isPostDataLoading">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Título</mat-label>
         <input matInput placeholder="Título" formControlName="title">
@@ -56,9 +79,12 @@
       </mat-form-field>
 
       <div class="flex-end-center">
-        <button type="submit" mat-raised-button color="primary" *ngIf="!isLoading" @inOutRight [@.disabled]="this.form.invalid">
-          <span>Publicar</span>
-          <mat-icon class="fs-regular">send</mat-icon>
+        <button type="submit" mat-raised-button color="primary" *ngIf="!isLoading" @inOutRight
+          [@.disabled]="this.form.invalid || isPostDataLoading" [disabled]="isPostDataLoading">
+          <span>{{ !isEditForm ? 'Publicar' : 'Guardar' }}</span>
+          <mat-icon class="fs-regular">
+            {{ !isEditForm ? 'send' : 'save' }}
+          </mat-icon>
         </button>
         <div class="shapes-loader" *ngIf="isLoading" @inOutLeft matTooltip="Cargando"></div>
       </div>
@@ -67,9 +93,12 @@
 
   <!-- Upload File -->
   <div class="rounded-card grow-1 right-card min-w-0">
+    <h2 class="fs-medium" *ngIf="isEditForm">Archivos</h2>
+
     <div class="upload-area flex-column flex-center-center gap-1" appDragAndDropFile
       (fileDropped)="onFileDroped($event)"
-      [ngClass]="{'upload-area_invalid': this.form.controls.files.invalid && this.form.controls.files.touched}">
+      [ngClass]="{'upload-area_invalid': this.form.controls.files.invalid && this.form.controls.files.touched}"
+      *ngIf="!isEditForm">
       <h2 class="text-blue-dark"
         [ngClass]="{'text-red': this.form.controls.files.invalid && this.form.controls.files.touched}">Arrastra los
         archivos aquí</h2>
@@ -93,7 +122,7 @@
     </div>
 
     <div *ngFor="let file of fileList; index as i" @inOutRight>
-      <span class="block m-t-1" *ngIf="i === 0">Archivo principal</span>
+      <span class="block m-t-05" *ngIf="i === 0">Archivo principal</span>
       <span class="block m-t-1" *ngIf="i === 1">Material complementario</span>
       <div class="flex-space_between-center gap-05">
         <div class="flex-center-center gap-05 min-w-0">
@@ -103,15 +132,28 @@
         <div *ngIf="file.uploadCompleted" class="flex-center-center">
           <a mat-icon-button [href]="file.url" download [target]="file.ngxDocViewer === 'office' ? '_self' : '_blank'"
             aria-label="Descargar" matTooltip="Descargar">
-            <mat-icon class="text-blue-dark">download</mat-icon>
+            <mat-icon class="text-blue-dark">file_download</mat-icon>
           </a>
-          <button (click)="removeFile(i)" mat-icon-button matTooltip="Remover">
+          <button *ngIf="!isEditForm" (click)="removeFile(i)" mat-icon-button matTooltip="Remover">
             <mat-icon class="text-blue-dark">delete</mat-icon>
           </button>
         </div>
         <div class="p-05" *ngIf="!file.uploadCompleted" matTooltip="Cargando">
           <mat-spinner diameter="24"></mat-spinner>
         </div>
+      </div>
+    </div>
+
+    <!-- File list shimmer -->
+    <div *ngIf="isPostDataLoading">
+      <div class="shimmer-text-regular w-70 m-t-05"></div>
+      <div class="flex-center-center gap-025 w-100">
+        <div class="shimmer-text-large grow-1"></div>
+        <mat-icon class="shimmer-text-color">file_download</mat-icon>
+      </div>
+      <div class="flex-center-center gap-025 w-100">
+        <div class="shimmer-text-large grow-1"></div>
+        <mat-icon class="shimmer-text-color">file_download</mat-icon>
       </div>
     </div>
   </div>

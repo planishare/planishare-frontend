@@ -5,7 +5,6 @@ import { environment } from 'src/environments/environment';
 import { IPageable } from '../models/pageable.model';
 import { APIPostsQueryParams } from '../models/post-filter.model';
 import { IPostDetail, IAcademicLevel, ISubject, IAxis, ISubjectWithAxis, IPostForm } from '../models/post.model';
-import { PostForm } from '../types/posts.type';
 
 @Injectable({
     providedIn: 'root'
@@ -46,7 +45,7 @@ export class PostsService {
         return this.http.delete<IPostDetail>(environment.apiUrl + `/posts/delete/${postId}/`);
     }
 
-    public updatePostById(postId: number, postData: PostForm): Observable<IPostDetail> {
+    public updatePostById(postId: number, postData: IPostForm): Observable<IPostDetail> {
         return this.http.patch<IPostDetail>(environment.apiUrl + `/posts/update/${postId}/`, postData);
     }
 

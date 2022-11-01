@@ -159,6 +159,10 @@
                 <mat-icon>report</mat-icon>
                 <span>Reportar</span>
               </button>
+              <a mat-menu-item [routerLink]="['/posts/edit', post.id]" *ngIf="post.user.id === authUser?.id">
+                <mat-icon>edit</mat-icon>
+                <span>Editar</span>
+              </a>
               <button mat-menu-item (click)="deletePost(post)" *ngIf="post.user.id === authUser?.id">
                 <mat-icon>delete</mat-icon>
                 <span>Eliminar</span>
