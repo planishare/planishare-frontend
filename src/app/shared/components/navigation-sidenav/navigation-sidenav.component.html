@@ -4,50 +4,57 @@
   </button>
 
   <ul class="navbar__list">
-    <li *ngIf="!isUserAuth">
-      <a [routerLink]="['/auth/register']" class="navbar__link p-l-container" routerLinkActive="active" (click)="hideSidenav()">
+    <li>
+      <a [routerLink]="['/posts/list']" class="navbar__link p-l-container" routerLinkActive="active"
+        (click)="hideSidenav()">
+        <mat-icon>search</mat-icon>
+        <span>Planificaciones</span>
+      </a>
+    </li>
+    <li *ngIf="!authUser">
+      <a [routerLink]="['/auth/register']" class="navbar__link p-l-container" routerLinkActive="active"
+        (click)="hideSidenav()">
         <mat-icon>person_add</mat-icon>
         <span>Registrarse</span>
       </a>
     </li>
-    <li *ngIf="!isUserAuth">
-      <a [routerLink]="['/auth/login']" class="navbar__link p-l-container"
-        routerLinkActive="active" (click)="hideSidenav()">
+    <li *ngIf="!authUser">
+      <a [routerLink]="['/auth/login']" class="navbar__link p-l-container" routerLinkActive="active"
+        (click)="hideSidenav()">
         <mat-icon>login</mat-icon>
         <span>Iniciar sesión</span>
       </a>
     </li>
-    <li *ngIf="isUserAuth">
-      <a [routerLink]="['/user/edit-profile']" class="navbar__link p-l-container"
-        routerLinkActive="active" (click)="hideSidenav()">
+    <li *ngIf="authUser">
+      <a [routerLink]="['/user/edit-profile']" class="navbar__link p-l-container" routerLinkActive="active"
+        (click)="hideSidenav()">
         <mat-icon>person</mat-icon>
         <span>Mi perfil</span>
       </a>
     </li>
-    <li *ngIf="isUserAuth">
-      <a [routerLink]="['/posts/user']" class="navbar__link p-l-container"
-        routerLinkActive="active" (click)="hideSidenav()">
+    <li *ngIf="authUser">
+      <a [routerLink]="['/posts/user', authUser.id]" class="navbar__link p-l-container" routerLinkActive="active"
+        (click)="hideSidenav()">
         <mat-icon>description</mat-icon>
         <span>Mis publicaciones</span>
       </a>
     </li>
-    <li *ngIf="isUserAuth">
-      <a [routerLink]="['/posts/create']" class="navbar__link p-l-container"
-        routerLinkActive="active" (click)="hideSidenav()">
+    <li *ngIf="authUser">
+      <a [routerLink]="['/posts/create']" class="navbar__link p-l-container" routerLinkActive="active"
+        (click)="hideSidenav()">
         <mat-icon>control_point</mat-icon>
         <span>Crear publicación</span>
       </a>
     </li>
     <li>
-      <a [routerLink]="['/tops']" class="navbar__link p-l-container"
-        routerLinkActive="active" (click)="hideSidenav()">
+      <a [routerLink]="['/tops']" class="navbar__link p-l-container" routerLinkActive="active" (click)="hideSidenav()">
         <mat-icon>local_fire_department</mat-icon>
         <span>Tops</span>
       </a>
     </li>
   </ul>
 
-  <button *ngIf="isUserAuth" class="rounded-button" (click)="hideSidenav(); logout()">
+  <button *ngIf="authUser" class="rounded-button" (click)="hideSidenav(); logout()">
     <mat-icon>logout</mat-icon>
     <span>Cerrar sesión</span>
   </button>

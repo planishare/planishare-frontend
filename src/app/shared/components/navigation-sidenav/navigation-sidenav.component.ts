@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { SidenavService } from 'src/app/core/services/sidenav.service';
+import { UserDetail } from 'src/app/core/types/users.type';
 
 @Component({
     selector: 'app-navigation-sidenav',
@@ -8,7 +9,7 @@ import { SidenavService } from 'src/app/core/services/sidenav.service';
     styleUrls: ['./navigation-sidenav.component.scss']
 })
 export class NavigationSidenavComponent implements OnInit {
-    public isUserAuth = false;
+    public authUser?: UserDetail;
 
     constructor(
         private sidenav: SidenavService,
@@ -16,8 +17,8 @@ export class NavigationSidenavComponent implements OnInit {
     ) { }
 
     public ngOnInit(): void {
-        this.authService.isAuth$.subscribe(isAuth => {
-            this.isUserAuth = !!isAuth;
+        this.authService.isAuth$.subscribe(() => {
+            this.authUser = this.authService.getUserProfile();
         });
     }
 
