@@ -9,6 +9,7 @@ import { WindowScrollService } from '../../services/window-scroll.service';
 import { SidenavComponent } from 'src/app/shared/enums/sidenav.enum';
 
 import { Unsubscriber } from '../../utils/unsubscriber';
+import { UserDetail } from 'src/app/core/types/users.type';
 
 @Component({
     selector: 'app-navbar',
@@ -16,7 +17,7 @@ import { Unsubscriber } from '../../utils/unsubscriber';
     styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent extends Unsubscriber implements OnInit {
-    public isUserAuth = false;
+    public authUser?: UserDetail;
     public isDesktop = false;
     public onScroll = false;
 
@@ -33,7 +34,9 @@ export class NavbarComponent extends Unsubscriber implements OnInit {
 
     public ngOnInit(): void {
         this.authService.isAuth$.pipe(takeUntil(this.ngUnsubscribe$))
-            .subscribe(isAuth => this.isUserAuth = !!isAuth);
+            .subscribe(() => {
+                this.authUser = this.authService.getUserProfile();
+            });
         this.windowScroll.scrollYPos$.pipe(takeUntil(this.ngUnsubscribe$))
             .subscribe(value => this.onScroll = value > 0);
     }

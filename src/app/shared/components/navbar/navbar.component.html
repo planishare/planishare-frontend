@@ -23,37 +23,37 @@
                         <span>Tops</span>
                     </a>
                 </li>
-                <li *ngIf="!isUserAuth">
+                <li *ngIf="!authUser">
                     <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/auth/register']" routerLinkActive="active">
                         <mat-icon>person_add</mat-icon>
                         <span>Registrarse</span>
                     </a>
                 </li>
-                <li *ngIf="!isUserAuth">
+                <li *ngIf="!authUser">
                     <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/auth/login']" routerLinkActive="active">
                         <mat-icon>login</mat-icon>
                         <span>Iniciar Sesión</span>
                     </a>
                 </li>
-                <li *ngIf="isUserAuth">
-                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/posts/user']" routerLinkActive="active">
+                <li *ngIf="authUser">
+                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/posts/user', authUser.id]" routerLinkActive="active">
                         <mat-icon>description</mat-icon>
                         <span>Mis publicaciones</span>
                     </a>
                 </li>
-                <li *ngIf="isUserAuth">
+                <li *ngIf="authUser">
                     <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/posts/create']" routerLinkActive="active">
                         <mat-icon>control_point</mat-icon>
                         <span>Crear publicación</span>
                     </a>
                 </li>
                 <li>
-                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/posts']" routerLinkActive="active">
+                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/posts/list']" routerLinkActive="active">
                         <mat-icon>search</mat-icon>
                         <span>Buscar</span>
                     </a>
                 </li>
-                <li *ngIf="isUserAuth">
+                <li *ngIf="authUser">
                     <button class="circle-button box-shadow-1" matRipple
                         [matMenuTriggerFor]="menu"
                         aria-label="Menu de perfil">
