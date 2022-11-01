@@ -37,6 +37,7 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
     public currentViewer: viewerType | null = null;
 
     public isMobile = true;
+    public hasPreview = true;
 
     constructor(
         private route: ActivatedRoute,
@@ -68,7 +69,14 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
             )
             .subscribe(post => {
                 this.post = new PostDetail(post!);
-                this.viewDocument(this.post.mainFile);
+                const firstPreview = !!this.post.mainFile.ngxDocViewer
+                    ? this.post.mainFile
+                    : this.post.supportingMaterial.find(file => !!file.ngxDocViewer);
+                if (!!firstPreview) {
+                    this.viewDocument(firstPreview);
+                } else {
+                    this.hasPreview = false;
+                }
                 this.registerView(this.post);
             });
     }

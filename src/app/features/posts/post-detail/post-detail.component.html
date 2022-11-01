@@ -165,10 +165,16 @@
   </div>
 
   <!-- File preview -->
-  <div class="right-card" #filePreview>
+  <div class="right-card" [ngClass]="{'flex-center-center': !hasPreview}" #filePreview>
     <div class="doc-viewer shimmer-loading" *ngIf="(!!currentFile?.ngxDocViewer && !!post) || !post" @fadeInOut>
       <ngx-doc-viewer *ngIf="!!currentFile && !!currentViewer" [url]="currentFile.url" [viewer]="currentViewer">
       </ngx-doc-viewer>
+    </div>
+    <div class="flex-column flex-center-center text-center gap-05 m-t-2" *ngIf="!hasPreview" @fadeInOut>
+      <img class="no-preview-image" src="/assets/images/no-preview.png" alt="Vista previa no disponible">
+      <p class="fs-medium fw-700">Vista previa no disponible</p>
+      <p class="fw-700">Esta publicación no tiene archivos que se puedan ver sin descargar</p>
+      <p class="fs-small">Pronto permitiremos previsualizar más arhivos en Planishare 👀</p>
     </div>
   </div>
 </main>
