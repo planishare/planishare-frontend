@@ -1,202 +1,43 @@
-<main class="main">
-    <mat-card class="left-card">
-        <mat-card-title>Mis publicaciones ({{ user?.total_posts }})</mat-card-title>
-        
-        <!-- Query bar -->
-        <div class="flex_column gap-07">
-            <div class="searchbar">
-                <div class="search-icon">
-                    <mat-icon>search</mat-icon>
-                </div>
-                <input type="search" autocomplete="off" [formControl]="searchControl" placeholder="Buscar" (keyup.enter)="doSearch(1)">
-                <button *ngIf="searchControl.value" mat-icon-button aria-label="Clear" (click)="clearSearchControl()">
-                    <mat-icon>close</mat-icon>
-                </button>
-            </div>
-    
-            <!-- <div class="flex_column gap-05">
-                <app-rounded-select-search
-                    class="filter"
-                    [list]="academicLevelsList"
-                    [control]="academicLevelControl"
-                    [loading]="isAcademicLevelsLoading"
-                    [showSearch]="false"
-                    buttonText="Nivel Académico"
-                    bgColor="var(--primary-color)"
-                    textColor="var(--light-text)"
-                    placeholder="Buscar nivel académico">
-                </app-rounded-select-search>
-                <app-rounded-select-group-search
-                    class="filter"
-                    [list]="subjectWithAxis"
-                    [control]="axisControl"
-                    [loading]="isAxesLoading"
-                    buttonText="Eje"
-                    bgColor="var(--purple-color)"
-                    textColor="var(--light-text)"
-                    placeholder="Buscar eje">
-                </app-rounded-select-group-search>
-                <app-rounded-select-search
-                    class="filter"
-                    [list]="subjectList"
-                    [control]="subjectControl"
-                    [loading]="isSubjectsLoading"
-                    buttonText="Asignatura"
-                    bgColor="var(--warn-color)"
-                    textColor="var(--light-text)"
-                    placeholder="Buscar asignatura">
-                </app-rounded-select-search>
-                <app-rounded-select-search
-                    class="filter"
-                    [list]="orderingList"
-                    [control]="orderingControl"
-                    [showSearch]="false"
-                    buttonText="Ordenar por"
-                    bgColor="var(--green-dark-color)"
-                    textColor="var(--light-text)"
-                    placeholder="Ordenar por">
-                </app-rounded-select-search>
-                <button
-                    mat-raised-button
-                    class="delete-button"
-                    *ngIf="showDeleteButton"
-                    (click)="clearFilterControls()">
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </div> -->
-        </div>
-
-        <!-- Stats -->
-        <div>
-            <div class="flex_justify_center flex_center gap-1 m-y-32">
-                <div>
-                    <div class="stat-number">
-                        <span>{{ user?.total_likes ?? 0 }}</span>
-                        <mat-icon class="red-icon">favorite</mat-icon>
-                    </div>
-                    <span class="stat-text">Me gusta</span>
-                </div>
-                <div>
-                    <div class="stat-number">
-                        <span>{{ user?.total_views ?? 0 }}</span>
-                        <mat-icon class="blue-icon">visibility</mat-icon>
-                    </div>
-                    <span class="stat-text">Vistas</span>
-                </div>
-            </div>
-            <p class="stat-p" *ngIf="!!!user?.total_posts">
-                Anímante, crea un publicación y comparte con la comunidad! :)
+<app-posts [filterByOwner]="ownerId">
+    <div *ngIf="showOwnPosts" class="rounded-card m-b-05" left-section-element>
+        <h1 class="fs-large m-b-05">Mis publicaciones</h1>
+        <div class="text-center fw-500 m-b-05">
+            <p *ngIf="!posts.value">
+                Anímante, crea un publicación y comparte con la comunidad! 🙌
             </p>
-            <p class="stat-p" *ngIf="!!user?.total_views">
-                En total, tus {{ user?.total_posts }} publicaciones han sido <span class="blue-icon">vistas {{ user?.total_views }} veces</span>
-                <span *ngIf="!!user?.total_likes">
-                    y han tenido <span class="red-icon">{{ user?.total_likes }} me gusta</span>
+            <p *ngIf="posts.value && !views.value">
+                Haz creado
+                <span class="text-{{ posts.color }} fw-600">
+                    {{ posts.value }} publicaciones
                 </span>
-                , gracias por ayudar a la comunidad, sigue así!
+                , gracias por ayudar a la comunidad, sigue así! 🎈
+            </p>
+            <p *ngIf="posts.value && views.value">
+                En total, tus
+                <span class="text-{{ posts.color }} fw-600">
+                    {{ posts.value }} publicaciones
+                </span>
+                han sido
+                <span class="text-{{ views.color }} fw-600">
+                    vistas {{ views.value }} veces
+                </span>
+                <span *ngIf="likes.value">
+                    y han tenido
+                </span>
+                <span *ngIf="likes.value" class="text-{{ likes.color }} fw-600">
+                    {{ likes.value }} me gusta
+                </span>
+                , gracias por ayudar a la comunidad, sigue así 🎈
             </p>
         </div>
-    </mat-card>
-
-    <!-- Results -->
-    <div class="right-side">
-        <!-- Top pagination -->
-        <div class="pagination flex_justify_end" *ngIf="hasData && !!user?.total_posts">
-            <div *ngIf="!isLoading && !!posts.length" class="pagination-text">
-                <span>{{ 10 * (searchParams.page! - 1) + 1 }} - {{ 10 * (searchParams.page! - 1) + posts.length }} de {{pageInfo?.count}}</span>
+        <div class="flex-center-center gap-07">
+            <div class="flex-column-center text-center" *ngFor="let stat of stats">
+                <div class="flex-center-center" [matTooltip]="stat.text">
+                    <span class="fs-large fw-600">{{ stat.value }}</span>
+                    <mat-icon class="text-{{ stat.color }}">{{ stat.icon }}</mat-icon>
+                </div>
+                <span class="fs-regular fw-500">{{ stat.text }}</span>
             </div>
-            <button mat-raised-button class="pagination-button" (click)="previousPage()" [disabled]="!pageInfo?.previous || isLoading">
-                <mat-icon>navigate_before</mat-icon>
-            </button>
-            <button mat-raised-button class="pagination-button pagination-number" [disabled]="isLoading" [matMenuTriggerFor]="pagesMenu">
-                {{ searchParams.page }}
-            </button>
-            <mat-menu #pagesMenu>
-                <button mat-menu-item *ngFor="let item of [].constructor(maxPage); let i = index" (click)="doSearch(i+1)">{{ i+1 }}</button>
-            </mat-menu>
-            <button mat-raised-button class="pagination-button" (click)="nextPage()" [disabled]="!pageInfo?.next || isLoading">
-                <mat-icon>navigate_next</mat-icon>
-            </button>
-        </div>
-
-        <!-- Posts -->
-        <div class="flex_column gap-05" *ngIf="!isLoading && hasData">
-            <mat-card class="card" *ngFor="let post of posts">
-                <mat-card-subtitle class="card-subtitle">
-                  <div>
-                    <span> {{ post.user|getUsername }} - {{ post.created_at|timeAgo }}</span>
-                  </div>
-                  <div class="flex_between_center">
-                    <mat-icon>description</mat-icon>
-                    <span>{{ (post.suporting_material?.length ?? 0) + 1 }}</span>
-                  </div>
-                </mat-card-subtitle>
-
-                <mat-card-title [routerLink]="['/posts/view', post.id]">{{ post.title }}</mat-card-title>
-
-                <mat-card-content>
-                  {{ post.description }}
-                </mat-card-content>
-
-                <mat-chip-list class="flex_start_center flex_wrap">
-                    <mat-chip class="academic-level-tag">
-                        <span *ngIf="!isMobile">Nivel académico: {{ post.academic_level.name }}</span>
-                        <span *ngIf="isMobile">{{ post.academic_level.name }}</span>
-                    </mat-chip>
-                    <mat-chip class="axis-tag">
-                        <span *ngIf="!isMobile">Eje: {{ post.axis.name }}</span>
-                        <span *ngIf="isMobile">{{ post.axis.name }}</span>
-                    </mat-chip>
-                    <mat-chip class="subject-tag">
-                        <span *ngIf="!isMobile">Asignatura: {{ post.axis.subject.name }}</span>
-                        <span *ngIf="isMobile">{{ post.axis.subject.name }}</span>
-                    </mat-chip>
-                </mat-chip-list>
-
-                <div class="m-t-16 flex_between_center">
-                    <div class="flex gap-05">
-                        <div class="flex_center gap-05">
-                            <mat-icon>favorite</mat-icon>
-                            <span>{{ post.total_likes }}</span>
-                        </div>
-                        <div class="flex_center gap-05">
-                            <mat-icon>visibility</mat-icon>
-                            <span>{{ post.total_views }}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="flex gap-05">
-                      <button mat-raised-button color="primary" class="flex_between_center" [routerLink]="['/posts/edit', post.id]">
-                          <mat-icon>edit</mat-icon>
-                          <span *ngIf="!isMobile">Editar</span>
-                      </button>
-                      <button mat-raised-button color="warn" class="flex_between_center" (click)="deletePost(post)">
-                          <mat-icon>delete</mat-icon>
-                          <span *ngIf="!isMobile">Eliminar</span>
-                      </button>
-                    </div>
-                </div>
-              </mat-card>
-        </div>
-
-        <!-- No results card -->
-        <div *ngIf="!hasData && !isLoading && !!user?.total_posts">
-            <mat-card>
-                <div class="flex_column flex_center">
-                    <mat-icon>search</mat-icon>
-                    <p class="no-results-title">No se encontraron resultados</p>
-                    <p>Prueba con algo diferente</p>
-                </div>
-            </mat-card>
-        </div>
-        
-        <div *ngIf="!!!user?.total_posts && !isLoading">
-            <mat-card>
-                <div class="flex_column flex_center">
-                    <mat-icon>search</mat-icon>
-                    <p class="no-results-title">Aún nada por aquí</p>
-                    <p>Tus publicaciones creadas se verán aquí</p>
-                </div>
-            </mat-card>
         </div>
     </div>
-</main>
+</app-posts>

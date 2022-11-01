@@ -44,11 +44,13 @@ export class PostFilters {
 
     public formatForQueryParams(): PostsQueryParams {
         return {
+            page: String(this.page ?? 1),
             search: this.search,
             academicLevel: this.academicLevel ? String(this.academicLevel?.id) : undefined,
             subject: this.subject ? String(this.subject?.id) : undefined,
             axis: this.axis ? String(this.axis?.id) : undefined,
-            ordering: this.ordering?.id
+            ordering: this.ordering?.id,
+            userId: this.userId ? String(this.userId) : undefined
         };
     }
 }

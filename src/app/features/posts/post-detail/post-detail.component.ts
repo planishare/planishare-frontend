@@ -144,8 +144,14 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
             });
     }
 
-    public goBackToResults(): void {
-        this.router.navigate(['/posts'], {
+    public goBackToResults(): any {
+        if (this.searchParams.userId === String(this.user?.id)) {
+            this.router.navigate(['/posts/user', this.user?.id], {
+                queryParams: this.searchParams
+            });
+            return;
+        }
+        this.router.navigate(['/posts/list'], {
             queryParams: this.searchParams
         });
     }

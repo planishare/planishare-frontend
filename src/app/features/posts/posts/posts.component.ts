@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -34,6 +34,8 @@ import { fadeInOutAnimation, inOutLeftAnimation, inOutRightAnimation, inOutYAnim
     ]
 })
 export class PostsComponent extends Unsubscriber implements OnInit {
+    @Input() public filterByOwner?: number;
+
     public isLoading = true;
     public hasData = true;
     public isAcademicLevelsLoading = true;
@@ -115,8 +117,7 @@ export class PostsComponent extends Unsubscriber implements OnInit {
         private router: Router,
         private commonSnackbarMsg: CommonSnackbarMsgService,
         private dialog: MatDialog,
-        private windowResize: WindowResizeService,
-        private route: ActivatedRoute
+        private windowResize: WindowResizeService
     ) {
         super();
         this.authUser = this.authService.getUserProfile() ?? null;
@@ -179,6 +180,10 @@ export class PostsComponent extends Unsubscriber implements OnInit {
         this.postFilters.axis = this.axisControl.value?.data;
         this.postFilters.ordering = this.orderingControl.value?.data;
 
+        // Filter by owner if input has value
+        this.postFilters.userId =  this.filterByOwner ?? (Number(this.filterQueryParams.userId) || undefined);
+
+        this.setQueryParams();
         this.updateHasFilters();
         this.getPosts(this.postFilters);
     }

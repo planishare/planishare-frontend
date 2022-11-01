@@ -10,7 +10,7 @@ import { UserPostsComponent } from './user-posts/user-posts.component';
 
 const routes: Routes = [
     {
-        path: '',
+        path: 'list',
         component: PostsComponent
     },
     {
@@ -28,7 +28,7 @@ const routes: Routes = [
         canActivate: [IsAuthGuard, IsVerificatedGuard]
     },
     {
-        path: 'user',
+        path: 'user/:id',
         component: UserPostsComponent,
         canActivate: [IsAuthGuard, IsVerificatedGuard]
     }

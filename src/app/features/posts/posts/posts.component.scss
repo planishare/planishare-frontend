@@ -15,7 +15,6 @@
 
 // Filters
 .filters-card {
-    width: 100%;
     background-color: hsl(var(--clr-blue-dark), .9);
     padding: .5rem 1rem;
 }
@@ -75,7 +74,7 @@
 }
 
 @media (min-width: 64rem) {
-    .filters-card {
+    .left-section {
         max-width: 320px;
         position: sticky;
         top: 70px;
