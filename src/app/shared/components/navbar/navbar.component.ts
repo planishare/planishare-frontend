@@ -35,7 +35,7 @@ export class NavbarComponent extends Unsubscriber implements OnInit {
     public ngOnInit(): void {
         this.authService.isAuth$.pipe(takeUntil(this.ngUnsubscribe$))
             .subscribe(() => {
-                this.authUser = this.authService.getUserProfile();
+                this.authUser = this.authService.userDetail ?? undefined;
             });
         this.windowScroll.scrollYPos$.pipe(takeUntil(this.ngUnsubscribe$))
             .subscribe(value => this.onScroll = value > 0);

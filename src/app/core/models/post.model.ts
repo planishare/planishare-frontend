@@ -129,7 +129,7 @@ export class PostFile {
     }
 }
 
-export type IPostForm = {
+export interface IPostForm {
     user?: number,
     title: string,
     description: string,

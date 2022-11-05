@@ -52,7 +52,7 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
         super();
         this.postId = Number(this.route.snapshot.paramMap.get('id'));
         this.searchParams = this.route.snapshot.queryParams;
-        this.user = this.authService.getUserProfile() ?? null;
+        this.user = this.authService.userDetail;
         this.windowResize.isMobile$
             .pipe(takeUntil(this.ngUnsubscribe$))
             .subscribe(value => this.isMobile = value);

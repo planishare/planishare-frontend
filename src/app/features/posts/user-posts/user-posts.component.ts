@@ -39,7 +39,7 @@ export class UserPostsComponent  {
         const userId = this.route.snapshot.paramMap.get('id');
         this.ownerId = userId ? Number(userId) : undefined;
 
-        this.authUser = this.authService.getUserProfile();
+        this.authUser = this.authService.userDetail ?? undefined;
         this.showOwnPosts = this.ownerId === this.authUser?.id;
         this.likes.value = this.authUser?.total_likes ?? 0;
         this.views.value = this.authUser?.total_views ?? 0;

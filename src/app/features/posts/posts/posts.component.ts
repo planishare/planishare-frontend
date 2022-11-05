@@ -120,7 +120,7 @@ export class PostsComponent extends Unsubscriber implements OnInit {
         private windowResize: WindowResizeService
     ) {
         super();
-        this.authUser = this.authService.getUserProfile() ?? null;
+        this.authUser = this.authService.userDetail;
         this.windowResize.isDesktop$.pipe(takeUntil(this.ngUnsubscribe$))
             .subscribe(value => {
                 this.isDesktop = value;

@@ -119,11 +119,11 @@ export class EditProfileComponent extends Unsubscriber implements OnInit {
                     this.isAlreadySaved = true;
                     this.form.setErrors({});
 
-                    const currentUserProfile = this.authService.getUserProfile();
-                    this.authService.setUserProfile({
+                    const currentUserProfile = this.authService.userDetail;
+                    this.authService.userDetail = {
                         ...currentUserProfile,
                         ...resp
-                    });
+                    };
                 });
         }
     }
@@ -165,8 +165,8 @@ export class EditProfileComponent extends Unsubscriber implements OnInit {
         );
     }
 
-    public getUserProfile(): Observable<UserDetail> {
-        return this.authService.refreshUserProfile().pipe(
+    public getUserProfile(): Observable<UserDetail | undefined> {
+        return this.authService.reloadUserProfile().pipe(
             tap(resp => this.userProfile = resp)
         );
     }

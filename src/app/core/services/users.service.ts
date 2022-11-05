@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { IUserDetail } from '../models/user.model';
 import { UserDetail, UserForm } from '../types/users.type';
 
 @Injectable({
@@ -20,8 +21,8 @@ export class UsersService {
         return this.http.get<UserDetail>(`${environment.apiUrl}/users/${id}/`);
     }
 
-    public getUserProfileByEmail(email: string): Observable<UserDetail> {
-        return this.http.get<UserDetail>(`${environment.apiUrl}/users/by-email/${email}/`);
+    public getUserProfileByEmail(email: string): Observable<IUserDetail> {
+        return this.http.get<IUserDetail>(`${environment.apiUrl}/users/by-email/${email}/`);
     }
 
     public updateUserProfile(id: number, body: UserForm): Observable<UserDetail> {
