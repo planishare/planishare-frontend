@@ -1,41 +1,70 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, filter, forkJoin, map, Observable, of, startWith, switchMap, takeUntil, tap } from 'rxjs';
-import { AuthService } from 'src/app/core/services/auth.service';
+import {
+    catchError,
+    concat,
+    debounceTime,
+    filter,
+    forkJoin,
+    map,
+    Observable,
+    of,
+    skip,
+    startWith,
+    switchMap,
+    takeUntil,
+    tap
+} from 'rxjs';
+import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
+
 import { FirebaseAuthService } from 'src/app/core/services/firebase-auth.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { LocationsService } from 'src/app/core/services/locations.service';
 import { OccupationsService } from 'src/app/core/services/occupations.service';
 import { UsersService } from 'src/app/core/services/users.service';
-import { Commune, RegionWithCommunes } from 'src/app/core/types/location.type';
-import { Education, Institution, InstitutionPageable, UserDetail, UserForm } from 'src/app/core/types/users.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
-import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
+
+import { IEducation, IInstitution, IUserDetail, IUserForm } from 'src/app/core/models/user.model';
+import { ICommune, IRegionWithCommunes } from 'src/app/core/models/location.model';
+import { inOutLeftAnimation, inOutRightAnimation } from 'src/app/shared/animations/animations';
 
 @Component({
     selector: 'app-edit-profile',
     templateUrl: './edit-profile.component.html',
-    styleUrls: ['./edit-profile.component.scss']
+    styleUrls: ['./edit-profile.component.scss'],
+    animations: [inOutRightAnimation, inOutLeftAnimation]
 })
 export class EditProfileComponent extends Unsubscriber implements OnInit {
-    public userProfile?: UserDetail;
-    public isVerificated?: boolean;
-    public form: FormGroup;
-    public isSaving = false;
-    public isLoading = true;
-    public isAlreadySaved = true;
+    public userDetail?: IUserDetail;
+    public isUserDataLoading = true;
 
-    public educations: Education[] = [];
-    public institutions?: Institution[];
-    public regionsWithComunnes?: RegionWithCommunes[];
+    public form = new FormGroup({
+        email: new FormControl<string>(''),
+        firstName: new FormControl<string>('', Validators.minLength(2)),
+        lastName: new FormControl<string>('', Validators.minLength(2)),
+        education: new FormControl<number | undefined>(undefined),
+        institution: new FormControl<number | undefined>(undefined),
+        commune: new FormControl<number | undefined>(undefined)
+    });
+
+    public isVerificated = false;
+    public isLoading = false;
+    public alreadySaved = true;
+
+    public educations: IEducation[] = [];
+    public institutions: IInstitution[] = [];
+    public regionsWithComunnes?: IRegionWithCommunes[];
 
     public isInstitutionsLoading = false;
-    public isGetInstitutionsFirstReq = true;
+    public firstInstitutionReq = true;
     public isLocationsLoading = true;
-    public searchInstitution: FormControl;
-    public searchLocation: FormControl;
-    public filteredInstitutions?: Observable<Institution[]>;
-    public filteredLocations?: Observable<RegionWithCommunes[]>;
+    public searchInstitution = new FormControl();
+    public searchLocation = new FormControl();
+    public filteredInstitutions?: Observable<IInstitution[]>;
+    public filteredLocations?: Observable<IRegionWithCommunes[]>;
+
+    public changePasswordMsg = 'Te enviaremos un correo al email asociado a tu cuenta para que puedas restablecer tu contraseña 📫';
 
     constructor(
         private authService: AuthService,
@@ -47,139 +76,147 @@ export class EditProfileComponent extends Unsubscriber implements OnInit {
         private firebaseAuthService: FirebaseAuthService
     ) {
         super();
-        this.form = new FormGroup({
-            email: new FormControl(null),
-            firstName: new FormControl(null),
-            lastName: new FormControl(null),
-            education: new FormControl(null),
-            institution: new FormControl(null),
-            commune: new FormControl(null)
-        });
-        this.form.get('email')?.disable();
-        this.searchInstitution = new FormControl();
-        this.searchLocation = new FormControl();
-        this.form.valueChanges.subscribe(() => this.isAlreadySaved = false);
+        this.form.controls.email.disable();
+        this.form.valueChanges.pipe(
+            debounceTime(300),
+            skip(1)
+        ).subscribe(() => this.alreadySaved = false);
     }
 
     public ngOnInit(): void {
-        this.isVerificated = this.authService.isAuth$.value?.emailVerified;
-
-        this.filteredInstitutions = this.searchInstitution.valueChanges.pipe(
-            filter(value => !!value),
-            tap(() => this.isInstitutionsLoading = true),
-            startWith(''),
-            switchMap((value: string) => this.getInstitutions(value))
-        );
+        this.isVerificated = this.authService.isAuth$.getValue()?.emailVerified ?? false;
 
         forkJoin([this.getEducations(), this.getRegionsWithCommunes(), this.getUserProfile()])
             .pipe(
-                takeUntil(this.ngUnsubscribe$),
-                catchError(error => {
+                catchError(() => {
                     this.commonSnackbarMsg.showErrorMessage();
-                    return of(null);
-                })
+                    return of();
+                }),
+                takeUntil(this.ngUnsubscribe$)
             )
             .subscribe(() => {
                 this.form.patchValue({
-                    email: this.userProfile?.email,
-                    firstName: this.userProfile?.first_name,
-                    lastName: this.userProfile?.last_name,
-                    education: this.userProfile?.education?.id,
-                    institution: this.userProfile?.institution?.id,
-                    commune: this.userProfile?.commune?.id
+                    email: this.userDetail?.email,
+                    firstName: this.userDetail?.first_name,
+                    lastName: this.userDetail?.last_name,
+                    education: this.userDetail?.education?.id,
+                    institution: this.userDetail?.institution?.id,
+                    commune: this.userDetail?.commune?.id
                 });
-                this.isLoading = false;
-                this.isAlreadySaved = true;
+
+                // Filter institutions on input change
+                this.searchInstitution.valueChanges.pipe(
+                    startWith(''),
+                    takeUntil(this.ngUnsubscribe$)
+                ).subscribe(value => {
+                    if (!!this.userDetail?.institution && this.firstInstitutionReq) {
+                        this.firstInstitutionReq = false;
+                        this.filteredInstitutions = of([this.userDetail.institution]);
+                    } else if (!!value) {
+                        this.filteredInstitutions = this.getInstitutions(value);
+                    }
+                });
+
+                this.isUserDataLoading = false;
+                this.alreadySaved = true;
             });
     }
 
     public save(event: Event): any {
         event.preventDefault();
-        console.log(this.form);
-        if (this.form.valid) {
-            const body: UserForm = {
-                first_name: this.form.get('firstName')?.value,
-                last_name: this.form.get('lastName')?.value,
-                education: this.form.get('education')?.value,
-                institution: this.form.get('institution')?.value,
-                commune: this.form.get('commune')?.value
-            };
 
-            this.isSaving = true;
-            this.userServices.updateUserProfile(this.userProfile!.id, body)
-                .pipe(
-                    catchError(error => {
-                        this.commonSnackbarMsg.showErrorMessage();
-                        return of();
-                    })
-                )
-                .subscribe(resp => {
-                    this.matSnackBar.open('Datos actualizados :)', 'Cerrar', { duration: 2000 });
-                    this.isSaving = false;
-                    this.isAlreadySaved = true;
-                    this.form.setErrors({});
-
-                    const currentUserProfile = this.authService.userDetail;
-                    this.authService.userDetail = {
-                        ...currentUserProfile,
-                        ...resp
-                    };
-                });
+        if (this.form.invalid || this.isLoading) {
+            return;
         }
+
+        if (this.alreadySaved) {
+            this.matSnackBar.open('Perfil actualizado 🙌', 'Cerrar', { duration: 2000 });
+            return;
+        }
+
+        this.isLoading = true;
+        const userData: IUserForm = {
+            first_name: this.form.controls.firstName.value ?? undefined,
+            last_name: this.form.controls.lastName.value ?? undefined,
+            education: this.form.controls.education.value ?? undefined,
+            institution: this.form.controls.institution.value ?? undefined,
+            commune: this.form.controls.commune.value ?? undefined
+        };
+        this.userServices.updateUserProfile(this.userDetail!.id, userData)
+            .pipe(
+                catchError(() => {
+                    this.commonSnackbarMsg.showErrorMessage();
+                    this.isLoading = false;
+                    return of();
+                }),
+                takeUntil(this.ngUnsubscribe$)
+            )
+            .subscribe(newUserDetail => {
+                this.matSnackBar.open('Perfil actualizado 🙌', 'Cerrar', { duration: 2000 });
+                this.isLoading = false;
+                this.alreadySaved = true;
+
+                const oldUserDetail = this.authService.userDetail;
+                this.authService.userDetail = {
+                    ...oldUserDetail,
+                    ...newUserDetail
+                };
+            });
     }
 
-    public getEducations(): Observable<Education[]> {
+    public getEducations(): Observable<IEducation[]> {
         return this.occupationService.getEducations().pipe(
             tap(resp => this.educations = resp)
         );
     }
 
-    public getInstitutions(search: string): Observable<Institution[]> {
+    public getInstitutions(search: string): Observable<IInstitution[]> {
+        this.isInstitutionsLoading = true;
         return this.occupationService.getInstitutions(search).pipe(
-            catchError(error => {
+            map(resp => {
+                this.institutions = resp.results;
+                this.isInstitutionsLoading = false;
+                return resp.results;
+            }),
+            catchError(() => {
                 this.commonSnackbarMsg.showErrorMessage();
                 return of();
             }),
-            tap(resp => {
-                this.institutions = resp.results;
-                if (!!this.userProfile?.institution && this.isGetInstitutionsFirstReq) {
-                    this.institutions?.unshift(this.userProfile?.institution);
-                }
-                this.isGetInstitutionsFirstReq = false;
-                this.isInstitutionsLoading = false;
-            }),
-            map(data => data.results)
+            takeUntil(this.ngUnsubscribe$)
         );
     }
 
-    public getRegionsWithCommunes(): Observable<RegionWithCommunes[]> {
+    public getRegionsWithCommunes(): Observable<IRegionWithCommunes[]> {
         return this.locationService.getRegionsWithCommunes().pipe(
             tap(resp => {
                 this.regionsWithComunnes = resp;
                 this.isLocationsLoading = false;
                 this.filteredLocations = this.searchLocation.valueChanges.pipe(
                     startWith(''),
-                    map(value => this.locationsFilter(value, this.regionsWithComunnes!))
+                    map(value => this.locationsFilter(value, resp))
                 );
             })
         );
     }
 
-    public getUserProfile(): Observable<UserDetail | undefined> {
-        return this.authService.reloadUserProfile().pipe(
-            tap(resp => this.userProfile = resp)
+    public getUserProfile(): Observable<IUserDetail | undefined> {
+        return this.authService.refreshUserDetail().pipe(
+            tap(resp => {
+                this.userDetail = resp;
+                this.changePasswordMsg = `Te enviaremos un correo a ${resp?.email} para que puedas restablecer tu contraseña 📫`;
+            })
         );
     }
 
     private locationsFilter(
         searchValue: string,
-        optionList: RegionWithCommunes[]): RegionWithCommunes[] {
+        optionList: IRegionWithCommunes[]): IRegionWithCommunes[] {
         if (!!searchValue) {
             searchValue = searchValue.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-            const results: RegionWithCommunes[] = [];
+            const results: IRegionWithCommunes[] = [];
             optionList.forEach(region => {
-                const communesFiltered: Commune[] = [];
+                const communesFiltered: ICommune[] = [];
                 region.communes.forEach(commune => {
                     const communeNameNormalized = commune.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                     if (communeNameNormalized.includes(searchValue)) {
@@ -187,9 +224,10 @@ export class EditProfileComponent extends Unsubscriber implements OnInit {
                     }
                 });
                 if (communesFiltered.length) {
-                    results.push(
-                        { ...region, communes: communesFiltered }
-                    );
+                    results.push({
+                        ...region,
+                        communes: communesFiltered
+                    });
                 }
             });
             return results;
@@ -203,6 +241,6 @@ export class EditProfileComponent extends Unsubscriber implements OnInit {
     }
 
     public resetPassword(): void {
-        this.firebaseAuthService.sendPasswordResetEmail(this.userProfile?.email!);
+        this.firebaseAuthService.sendPasswordResetEmail(this.userDetail?.email!);
     }
 }

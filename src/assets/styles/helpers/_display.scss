@@ -69,6 +69,12 @@
     gap: 1rem;
 }
 
+@media (min-width: 48rem) {
+    .gap-1-lg {
+        gap: 1rem;
+    }
+}
+
 .grow-1 {
     flex-grow: 1;
 }

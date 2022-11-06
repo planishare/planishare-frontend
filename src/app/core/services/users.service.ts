@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { IUserDetail } from '../models/user.model';
-import { UserDetail, UserForm } from '../types/users.type';
+
+import { IUserDetail, IUserForm } from '../models/user.model';
 
 @Injectable({
     providedIn: 'root'
@@ -17,15 +17,15 @@ export class UsersService {
         return this.http.get(`${environment.apiUrl}/users/is-email-available/${email}/`);
     }
 
-    public getUserById(id: number): Observable<UserDetail> {
-        return this.http.get<UserDetail>(`${environment.apiUrl}/users/${id}/`);
+    public getUserById(id: number): Observable<IUserDetail> {
+        return this.http.get<IUserDetail>(`${environment.apiUrl}/users/${id}/`);
     }
 
     public getUserProfileByEmail(email: string): Observable<IUserDetail> {
         return this.http.get<IUserDetail>(`${environment.apiUrl}/users/by-email/${email}/`);
     }
 
-    public updateUserProfile(id: number, body: UserForm): Observable<UserDetail> {
-        return this.http.patch<UserDetail>(`${environment.apiUrl}/users/update/${id}/`, body);
+    public updateUserProfile(id: number, body: IUserForm): Observable<IUserDetail> {
+        return this.http.patch<IUserDetail>(`${environment.apiUrl}/users/update/${id}/`, body);
     }
 }

@@ -92,7 +92,7 @@ export interface IInstitutionType {
 }
 
 export interface IUserForm {
-    email: string,
+    email?: string,
     first_name?: string,
     last_name?: string,
     education?: number,

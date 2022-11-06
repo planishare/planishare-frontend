@@ -1,9 +1,8 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, filter, finalize, from, map, Observable, of, retry, skip, switchMap, take, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, catchError, filter, from, map, Observable, of, retry, skip, switchMap, take, takeUntil, tap } from 'rxjs';
+import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { BasicCredentials } from '../types/auth.type';
-
 import {
     Auth,
     User,
@@ -16,10 +15,12 @@ import {
     createUserWithEmailAndPassword,
     signOut
 } from '@angular/fire/auth';
+
+import { FirebaseAuthService } from './firebase-auth.service';
 import { UsersService } from './users.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
-import { FirebaseAuthService } from './firebase-auth.service';
-import { Router } from '@angular/router';
+
+import { BasicCredentials } from '../types/auth.type';
 import { IUserDetail, IUserForm } from '../models/user.model';
 
 @Injectable({
@@ -161,11 +162,13 @@ export class AuthService {
         localStorage.setItem('authUserDetail', JSON.stringify(data ?? {}));
     }
 
+    // Get in memory auth user detail
     public get userDetail(): IUserDetail | null {
         return this._userDetail;
     }
 
-    public reloadUserProfile(): Observable<IUserDetail | undefined> {
+    // Request backend auth user detail
+    public refreshUserDetail(): Observable<IUserDetail | undefined> {
         const user = this.isAuth$.getValue();
         if (!!user) {
             return this.userService.getUserProfileByEmail(user.email!).pipe(

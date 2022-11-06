@@ -23,7 +23,7 @@
 }
 
 .rounded-button-slim {
-    gap: .2em;
+    gap: .4em;
     padding: .3em .8em;
     font-weight: 600;
 }
@@ -37,6 +37,7 @@
 .rounded-button-slim:disabled {
     background-color: rgba(0, 0, 0, 0.12);
     color: rgba(0, 0, 0, 0.26);
+    box-shadow: none;
 }
 
 @media (min-width: 48rem) {

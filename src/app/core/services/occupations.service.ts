@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { RegionWithCommunes } from '../types/location.type';
-import { Education, Institution, InstitutionPageable } from '../types/users.type';
+
+import { IPageable } from '../models/pageable.model';
+import { IEducation, IInstitution } from '../models/user.model';
 
 @Injectable({
     providedIn: 'root'
@@ -14,12 +15,12 @@ export class OccupationsService {
         private http: HttpClient
     ) { }
 
-    public getEducations(): Observable<Education[]> {
-        return this.http.get<Education[]>(environment.apiUrl + '/educations/');
+    public getEducations(): Observable<IEducation[]> {
+        return this.http.get<IEducation[]>(environment.apiUrl + '/educations/');
     }
 
-    public getInstitutions(search: string): Observable<InstitutionPageable> {
-        return this.http.get<InstitutionPageable>(environment.apiUrl + '/institutions/', {
+    public getInstitutions(search: string): Observable<IPageable<IInstitution>> {
+        return this.http.get<IPageable<IInstitution>>(environment.apiUrl + '/institutions/', {
             params: {
                 search
             }

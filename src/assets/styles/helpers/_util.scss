@@ -8,6 +8,21 @@
     margin-inline: auto;
 }
 
+.container-row {
+    @extend .container;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+@media (min-width: 48rem) {
+    .container-row {
+        flex-wrap: nowrap;
+    }
+}
+
 .p-l-container {
     padding-left: min(5vw, 2rem);
 }

@@ -1,108 +1,145 @@
-<mat-card class="main-card">
-    <mat-card-title>Editar perfil</mat-card-title>
-    <mat-card-content class="card-content">
-        <form class="profile-form" [formGroup]="form" (ngSubmit)="save($event)" *ngIf="!isLoading">
-            <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Email</mat-label>
-                <input matInput placeholder="Email" formControlName="email">
-                <!-- <mat-error *ngIf="this.?.hasError('required')">Este campo es requerido</mat-error> -->
-            </mat-form-field>
-            
-            <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Nombre</mat-label>
-                <input matInput placeholder="Nombre" formControlName="firstName">
-                <!-- <mat-error *ngIf="this.?.hasError('required')">Este campo es requerido</mat-error> -->
-            </mat-form-field>
-            
-            <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Apellido</mat-label>
-                <input matInput placeholder="Apellido" formControlName="lastName">
-                <!-- <mat-error *ngIf="this.?.hasError('required')">Este campo es requerido</mat-error> -->
-            </mat-form-field>
-            
-            <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Ocupación</mat-label>
-                <mat-select formControlName="education" disableOptionCentering>
-                  <mat-option *ngFor="let option of educations" [value]="option.id">
-                    {{ option.name }}
-                  </mat-option>
-                </mat-select>
-            </mat-form-field>
-            
-            <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Comuna</mat-label>
-                <mat-select formControlName="commune" disableOptionCentering>
-                    <mat-option>
-                        <ngx-mat-select-search 
-                            [searching]="isLocationsLoading"
-                            [formControl]="searchLocation"
-                            placeholderLabel="Buscar por comuna/region"
-                            noEntriesFoundLabel="No se encontraron resultados">
-                        </ngx-mat-select-search>
-                        </mat-option>
-                        <mat-optgroup *ngFor="let region of filteredLocations|async" [label]="region.name">
-                            <mat-option *ngFor="let commune of region.communes" [value]="commune.id">
-                            {{ commune.name }}
-                            </mat-option>
-                        </mat-optgroup>
-                </mat-select>
-            </mat-form-field>
+<main class="container-row m-b-2">
+  <div class="rounded-card w-100">
+    <h1 class="fs-large m-b-05">Editar perfil</h1>
 
-            <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Institución</mat-label>
-                <mat-select formControlName="institution" disableOptionCentering>
-                    <mat-option>
-                        <ngx-mat-select-search
-                          [searching]="isInstitutionsLoading"
-                          [formControl]="searchInstitution"
-                          placeholderLabel="Escribe para cargar más instituciones"
-                          [noEntriesFoundLabel]="!isInstitutionsLoading ? 'No se encontraron resultados' : 'Cargando...'">
-                        </ngx-mat-select-search>
-                    </mat-option>
-                    <mat-option
-                        *ngIf="!isInstitutionsLoading && !!form.get('institution')?.value && !!(filteredInstitutions|async)?.length"
-                        [value]="null">
-                        Borrar
-                    </mat-option>
-                    <mat-option *ngFor="let institution of filteredInstitutions|async" [value]="institution.id">
-                        {{ institution.name }}
-                    </mat-option>
-                </mat-select>
-                <mat-hint>Pronto agregaremos más instituciones.</mat-hint>
-            </mat-form-field>
+    <!-- Form shimmer -->
+    <div class="flex-column gap-1 w-100" *ngIf="isUserDataLoading">
+      <div class="shimmer-input-form grow-1"></div>
+      <div class="flex-space_between-center flex-wrap gap-1-lg">
+        <div class="shimmer-input-form grow-1"></div>
+        <div class="shimmer-input-form grow-1"></div>
+      </div>
+      <div class="shimmer-input-form grow-1">
+        <mat-icon class="shimmer-text-color">expand_more</mat-icon>
+      </div>
+      <div class="shimmer-input-form grow-1">
+        <mat-icon class="shimmer-text-color">expand_more</mat-icon>
+      </div>
+      <div class="shimmer-input-form grow-1">
+        <mat-icon class="shimmer-text-color">expand_more</mat-icon>
+      </div>
+      <div class="flex-end-center">
+        <button mat-raised-button color="primary" disabled="true">
+          <span>Guardado</span>
+          <mat-icon class="fs-medium">check_circle</mat-icon>
+        </button>
+      </div>
+    </div>
 
-            <div class="flex_justify_end">
-                <button mat-raised-button color="primary" type="submit" *ngIf="!isSaving && !isAlreadySaved">Guardar</button>
-                <button mat-raised-button color="primary" type="button"  *ngIf="!isSaving && isAlreadySaved">
-                    Guardado
-                    <mat-icon>done</mat-icon>
-                </button>
-                <app-square-loader *ngIf="isSaving"></app-square-loader>
-            </div>
-        </form>
+    <form [formGroup]="form" (ngSubmit)="save($event)" *ngIf="!isUserDataLoading">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Email" [value]="form.controls.email.value" disabled="true">
+      </mat-form-field>
 
-        <div class="info">
-            <div class="info-card" *ngIf="isVerificated">
-                <h2>Cambiar contraseña</h2>
-                <p>Te enviaremos un correo al email asociado a tu cuenta</p>
-                <div class="flex_justify_end">
-                    <button mat-raised-button (click)="resetPassword()">Cambiar contraseña</button>
-                </div>
-            </div>
-            <div class="info-card" *ngIf="!isVerificated">
-                <h2>Verificar cuenta</h2>
-                <p>Revisa tu email y valida tu cuenta para poder crear publicaciones y dar Me gusta.</p>
-                <div class="flex_between_center">
-                    <p class="m-0 p-0">¿No recibiste el correo?</p>
-                    <button mat-raised-button (click)="resendEmail()">Reenviar correo de verificación</button>
-                </div>
-            </div>
-            <div class="info-card">
-                <h2>Ayúdanos contandonos más sobre tí  :)</h2>
-                <h3>¿Para que se usa esta información?</h3>
-                <p>Esta información será visible  para todos los usuarios del sitio, incluso para usuarios no registrados.</p>
-                <p>Además, será utilizada exclusivamente por Planishare para realizar análisis o nuevas carácteristicas para la plataforma.</p>
-            </div>
-        </div>
-    </mat-card-content>
-</mat-card>
+      <div class="flex-space_between-center flex-wrap gap-1-lg">
+        <mat-form-field appearance="outline" class="grow-1">
+          <mat-label>Nombre</mat-label>
+          <input matInput placeholder="Nombre" formControlName="firstName">
+          <mat-error *ngIf="!!this.form.controls.firstName.errors">Debe tener al menos 2 carácteres de largo</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="grow-1">
+          <mat-label>Apellido</mat-label>
+          <input matInput placeholder="Apellido" formControlName="lastName">
+          <mat-error *ngIf="!!this.form.controls.lastName.errors">Debe tener al menos 2 carácteres de largo</mat-error>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Ocupación</mat-label>
+        <mat-select formControlName="education" disableOptionCentering>
+          <mat-option *ngFor="let option of educations" [value]="option.id">
+            {{ option.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Comuna</mat-label>
+        <mat-select formControlName="commune" disableOptionCentering>
+          <mat-option>
+            <ngx-mat-select-search [searching]="isLocationsLoading" [formControl]="searchLocation"
+              placeholderLabel="Buscar por comuna/region" noEntriesFoundLabel="No se encontraron resultados">
+            </ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngIf="!isLocationsLoading && !!form.get('commune')?.value && !!(filteredLocations|async)?.length"
+            [value]="null">
+            Borrar
+          </mat-option>
+          <mat-optgroup *ngFor="let region of filteredLocations|async" [label]="region.name">
+            <mat-option *ngFor="let commune of region.communes" [value]="commune.id">
+              {{ commune.name }}
+            </mat-option>
+          </mat-optgroup>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Institución</mat-label>
+        <mat-select formControlName="institution" disableOptionCentering>
+          <mat-option>
+            <ngx-mat-select-search [searching]="isInstitutionsLoading" [formControl]="searchInstitution"
+              placeholderLabel="Escribe para cargar más instituciones"
+              [noEntriesFoundLabel]="!isInstitutionsLoading ? 'No se encontraron resultados' : 'Cargando...'">
+            </ngx-mat-select-search>
+          </mat-option>
+          <mat-option
+            *ngIf="!isInstitutionsLoading && !!form.controls.institution.value && !!(filteredInstitutions|async)?.length"
+            [value]="null">
+            Borrar
+          </mat-option>
+          <mat-option *ngFor="let institution of filteredInstitutions|async" [value]="institution.id">
+            {{ institution.name }}
+          </mat-option>
+        </mat-select>
+        <mat-hint>Pronto agregaremos más instituciones.</mat-hint>
+      </mat-form-field>
+
+      <div class="flex-end-center m-t-1">
+        <button type="submit" mat-raised-button color="primary" *ngIf="!isLoading && !alreadySaved" @inOutRight>
+          Guardar
+          <mat-icon class="fs-medium">save</mat-icon>
+        </button>
+        <button type="submit" mat-raised-button color="primary" *ngIf="!isLoading && alreadySaved" @inOutRight>
+          Guardado
+          <mat-icon class="fs-medium">check_circle</mat-icon>
+        </button>
+        <div class="shapes-loader" *ngIf="isLoading" @inOutLeft matTooltip="Cargando"></div>
+      </div>
+    </form>
+  </div>
+
+  <div class="w-100 flex-column gap-05">
+    <div class="rounded-card">
+      <h2>Ayúdanos contandonos más sobre tí :)</h2>
+      <p class="fw-600">¿Para que se usa esta información?</p>
+      <ul>
+        <li>Esta información será visible para todos los usuarios del sitio, incluso para usuarios no registrados.</li>
+        <li>
+          Además, será utilizada exclusivamente por Planishare para realizar análisis o nuevas carácteristicas para la plataforma.
+        </li>
+      </ul>
+    </div>
+    <div class="rounded-card" *ngIf="isVerificated">
+      <h2>Cambiar contraseña</h2>
+      <p>{{ changePasswordMsg }}</p>
+      <div class="flex-end-center m-t-1">
+        <button mat-raised-button color="primary" (click)="resetPassword()">
+          Cambiar contraseña
+          <mat-icon class="fs-medium">lock_reset</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="rounded-card" *ngIf="!isVerificated">
+      <h2>Verificar cuenta</h2>
+      <p>Revisa tu email y valida tu cuenta para poder crear publicaciones y dar Me gusta 💙</p>
+      <div class="flex-end-center m-t-1">
+        <button mat-raised-button color="primary" (click)="resendEmail()">
+          Reenviar correo de verificación
+          <mat-icon class="fs-medium">send</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</main>
