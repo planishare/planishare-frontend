@@ -76,13 +76,13 @@ export class LoginComponent implements OnInit {
                         } else
                         if (error.code === FirebaseAuthErrorCodes.TOO_MANY_REQUESTS) {
                             this.matSnackbar.open(
-                                'Has hecho demasiados intentos, intenta más tarde :(',
+                                'Has hecho demasiados intentos, intenta más tarde 😢',
                                 'Cerrar'
                             );
                         } else
                         if (error.code === FirebaseAuthErrorCodes.USER_DISABLED) {
                             this.matSnackbar.open(
-                                'Tu cuenta está desactivada :(',
+                                'Tu cuenta está desactivada 🕵️',
                                 'Cerrar'
                             );
                         } else {
@@ -110,7 +110,7 @@ export class LoginComponent implements OnInit {
                 catchError((error: FirebaseError) => {
                     if (error.code === FirebaseAuthErrorCodes.USER_DISABLED) {
                         this.matSnackbar.open(
-                            'Tu cuenta está desactivada :(',
+                            'Tu cuenta está desactivada 🕵️',
                             'Cerrar'
                         );
                     } else {

@@ -21,7 +21,7 @@ export class FirebaseAuthService {
     public sendEmailVerification(): void {
         sendEmailVerification(this.auth.currentUser!)
             .then(() => {
-                this.matSnackbar.open('Te enviamos un email para validar tu cuenta (revisa spam).', 'Cerrar', {
+                this.matSnackbar.open('Te enviamos un email para validar tu cuenta, recuerda revisar spam 👀.', 'Cerrar', {
                     duration: 4000
                 });
             })
@@ -33,7 +33,7 @@ export class FirebaseAuthService {
     public sendPasswordResetEmail(email: string): void {
         sendPasswordResetEmail(this.auth, email)
             .then(() => {
-                this.matSnackbar.open('Te enviaremos un email para que cambies tu contraseña :)', 'Cerrar', {
+                this.matSnackbar.open('Te enviaremos un email para que cambies tu contraseña 📫', 'Cerrar', {
                     duration: 4000
                 });
             })
@@ -47,7 +47,7 @@ export class FirebaseAuthService {
     }
 
     private showErrorMessage(
-        msg = 'Ups! ha ocurrido un problema, recarga la página o intentalo más tarde'
+        msg = 'Ups! ha ocurrido un problema, recarga la página o intentalo más tarde 😢'
     ): void {
         const action = 'Cerrar';
         this.matSnackbar.open(msg, action);
