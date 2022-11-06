@@ -22,6 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     public addAccessToken(request: HttpRequest<any>) {
+        // TODO: use getIdToken() to get update accessToken
         const accessToken = this.authService.getAccessToken();
         const requestWithAccessToken  = request.clone({
             setHeaders: {

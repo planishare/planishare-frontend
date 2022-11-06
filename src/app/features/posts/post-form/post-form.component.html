@@ -20,7 +20,7 @@
       <div class="flex-end-center">
         <button type="submit" mat-raised-button color="primary" disabled="true">
           <span>Guardar</span>
-          <mat-icon class="fs-regular">save</mat-icon>
+          <mat-icon class="fs-medium">save</mat-icon>
         </button>
       </div>
     </div>
@@ -82,7 +82,7 @@
         <button type="submit" mat-raised-button color="primary" *ngIf="!isLoading" @inOutRight
           [@.disabled]="this.form.invalid || isPostDataLoading" [disabled]="isPostDataLoading">
           <span>{{ !isEditForm ? 'Publicar' : 'Guardar' }}</span>
-          <mat-icon class="fs-regular">
+          <mat-icon class="fs-medium">
             {{ !isEditForm ? 'send' : 'save' }}
           </mat-icon>
         </button>
