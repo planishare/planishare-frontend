@@ -156,11 +156,9 @@ export class EditProfileComponent extends Unsubscriber implements OnInit {
                 this.isLoading = false;
                 this.alreadySaved = true;
 
-                const oldUserDetail = this.authService.userDetail;
-                this.authService.userDetail = {
-                    ...oldUserDetail,
-                    ...newUserDetail
-                };
+                const userDetail = this.authService.getUserDetail();
+                userDetail?.update(newUserDetail);
+                this.authService.setUserDetail(userDetail);
             });
     }
 

@@ -17,12 +17,6 @@
         <!-- Desktop navbar -->
         <nav *ngIf="isDesktop">
             <ul class="navbar__list fs-regular fw-700">
-                <li>
-                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/tops']" routerLinkActive="active">
-                        <mat-icon>local_fire_department</mat-icon>
-                        <span>Tops</span>
-                    </a>
-                </li>
                 <li *ngIf="!authUser">
                     <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/auth/register']" routerLinkActive="active">
                         <mat-icon>person_add</mat-icon>

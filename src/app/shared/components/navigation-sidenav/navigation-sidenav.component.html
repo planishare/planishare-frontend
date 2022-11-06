@@ -46,12 +46,6 @@
         <span>Crear publicación</span>
       </a>
     </li>
-    <li>
-      <a [routerLink]="['/tops']" class="navbar__link p-l-container" routerLinkActive="active" (click)="hideSidenav()">
-        <mat-icon>local_fire_department</mat-icon>
-        <span>Tops</span>
-      </a>
-    </li>
   </ul>
 
   <button *ngIf="authUser" class="rounded-button" (click)="hideSidenav(); logout()">

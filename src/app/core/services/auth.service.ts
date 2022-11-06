@@ -21,7 +21,7 @@ import { UsersService } from './users.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
 import { BasicCredentials } from '../types/auth.type';
-import { IUserDetail, IUserForm } from '../models/user.model';
+import { IUserDetail, IUserForm, UserDetail } from '../models/user.model';
 
 @Injectable({
     providedIn: 'root'
@@ -34,7 +34,7 @@ export class AuthService {
     public isAuth$ = new BehaviorSubject<User | null>(null);
 
     private alreadyRegistered$ = new BehaviorSubject<boolean>(false);
-    private _userDetail: IUserDetail | null = null;
+    private _userDetail: UserDetail | null = null;
     private _accessToken: string | null = null;
 
     constructor(
@@ -86,7 +86,7 @@ export class AuthService {
                 }),
                 takeUntil(this.isCompleted$.pipe(skip(1)))
             ).subscribe((userDetail: IUserDetail) => {
-                this._userDetail = userDetail;
+                this._userDetail = new UserDetail(userDetail);
                 this.isAuth$.next(user);
                 this.isCompleted$.next(true);
             });
@@ -157,13 +157,13 @@ export class AuthService {
         return this._accessToken ?? undefined;
     }
 
-    public set userDetail(data: IUserDetail | null) {
+    public setUserDetail(data: UserDetail | null) {
         this._userDetail = data;
         localStorage.setItem('authUserDetail', JSON.stringify(data ?? {}));
     }
 
     // Get in memory auth user detail
-    public get userDetail(): IUserDetail | null {
+    public getUserDetail(): UserDetail | null {
         return this._userDetail;
     }
 
@@ -173,7 +173,7 @@ export class AuthService {
         if (!!user) {
             return this.userService.getUserProfileByEmail(user.email!).pipe(
                 tap((userDetail: IUserDetail) => {
-                    this._userDetail = userDetail;
+                    this._userDetail = new UserDetail(userDetail);
                 })
             );
         }

@@ -8,7 +8,7 @@ import { Pageable } from 'src/app/core/models/pageable.model';
 import { IOrdering, PostFilters, PostsQueryParams } from 'src/app/core/models/post-filter.model';
 import { IAcademicLevel, IAxis, IPostDetail, ISubject, PostDetail } from 'src/app/core/models/post.model';
 import { OrderingType, OrderingTypeName } from 'src/app/core/enums/posts.enum';
-import { UserDetail } from 'src/app/core/types/users.type';
+import { UserDetail } from 'src/app/core/models/user.model';
 import { RoundedSelectOption, RoundedSelectGroup } from 'src/app/shared/types/rounded-select.type';
 
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -120,7 +120,7 @@ export class PostsComponent extends Unsubscriber implements OnInit {
         private windowResize: WindowResizeService
     ) {
         super();
-        this.authUser = this.authService.userDetail;
+        this.authUser = this.authService.getUserDetail();
         this.windowResize.isDesktop$.pipe(takeUntil(this.ngUnsubscribe$))
             .subscribe(value => {
                 this.isDesktop = value;

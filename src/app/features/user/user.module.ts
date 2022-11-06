@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { UserRoutingModule } from './user-routing.module';
-import { EditProfileComponent } from './edit-profile/edit-profile.component';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { MaterialModule } from 'src/app/material.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 @NgModule({
     declarations: [

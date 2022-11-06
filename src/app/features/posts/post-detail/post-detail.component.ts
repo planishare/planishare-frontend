@@ -9,7 +9,7 @@ import { ReactionsService } from 'src/app/core/services/reactions.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
 import { PostsQueryParams } from 'src/app/core/models/post-filter.model';
-import { UserDetail } from 'src/app/core/types/users.type';
+import { UserDetail } from 'src/app/core/models/user.model';
 import { IPostFile, PostDetail } from 'src/app/core/models/post.model';
 import { viewerType } from 'ngx-doc-viewer';
 
@@ -52,7 +52,7 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
         super();
         this.postId = Number(this.route.snapshot.paramMap.get('id'));
         this.searchParams = this.route.snapshot.queryParams;
-        this.user = this.authService.userDetail;
+        this.user = this.authService.getUserDetail();
         this.windowResize.isMobile$
             .pipe(takeUntil(this.ngUnsubscribe$))
             .subscribe(value => this.isMobile = value);

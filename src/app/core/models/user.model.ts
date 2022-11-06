@@ -38,7 +38,7 @@ export interface IUserDetail {
     education: IEducation,
     institution: IInstitution
     commune: ICommune,
-    created_at: string | Date, // TODO: delte Date
+    created_at: string | Date, // TODO: delete Date
     updated_at: string | Date,
     total_likes: number,
     total_views: number,
@@ -72,6 +72,15 @@ export class UserDetail {
         this.totalLikes = user.total_likes;
         this.totalViews = user.total_views;
         this.totalPosts = user.total_posts;
+    }
+
+    public update(user: IUserDetail): void {
+        this.firstName = user.first_name ?? this.firstName;
+        this.lastName = user.last_name ?? this.lastName;
+        this.education = user.education ?? this.education;
+        this.institution = user.institution ?? this.institution;
+        this.commune = user.commune ?? this.commune;
+        this.updatedAt = user.updated_at ? new Date(user.updated_at) : this.updatedAt;
     }
 }
 
