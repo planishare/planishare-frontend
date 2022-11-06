@@ -143,9 +143,10 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
     }
 
     private registerView(post: PostDetail): void {
-        this.reactionService.registerView(this.postId)
+        this.reactionService.registerView(post.id)
             .pipe(
-                catchError(error => of())
+                catchError(() => of()),
+                takeUntil(this.ngUnsubscribe$)
             )
             .subscribe(() => {
                 this.post!.totalViews += 1;

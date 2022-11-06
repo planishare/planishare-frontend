@@ -136,8 +136,9 @@ export class AuthService {
     }
 
     public logout(): void {
+        this.isCompleted$.next(false);
         signOut(this.auth);
-        this.isAuth$.asObservable().pipe(
+        this.isCompleted$.asObservable().pipe(
             filter(user => !!user),
             take(1)
         ).subscribe(() => {

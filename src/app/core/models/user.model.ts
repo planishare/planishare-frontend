@@ -38,8 +38,8 @@ export interface IUserDetail {
     education: IEducation,
     institution: IInstitution
     commune: ICommune,
-    created_at: string | Date, // TODO: delete Date
-    updated_at: string | Date,
+    created_at: string,
+    updated_at: string,
     total_likes: number,
     total_views: number,
     total_posts: number
