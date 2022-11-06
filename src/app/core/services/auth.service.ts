@@ -30,12 +30,12 @@ export class AuthService {
     // Emits true when completes a new sesion process
     public isCompleted$ = new BehaviorSubject<boolean>(false);
 
-    // Emits the User instance of Firebase Auth
+    // Emits the User instance of Firebase Auth if user is not anonimous
     public isAuth$ = new BehaviorSubject<User | null>(null);
 
     private alreadyRegistered$ = new BehaviorSubject<boolean>(false);
     private _userDetail: UserDetail | null = null;
-    private _accessToken: string | null = null;
+    private _firebaseUser: User | null = null;
 
     constructor(
         private auth: Auth,
@@ -53,14 +53,12 @@ export class AuthService {
                 return;
             }
 
+            this._firebaseUser = user;
             if (user.isAnonymous) {
                 this.authLog('onAuthStateChanged: anonymous auth', user);
-                user.getIdToken().then(token => {
-                    this._accessToken = token;
-                    this._userDetail = null;
-                    this.isAuth$.next(null);
-                    this.isCompleted$.next(true);
-                });
+                this._userDetail = null;
+                this.isAuth$.next(null);
+                this.isCompleted$.next(true);
                 return;
             }
 
@@ -72,13 +70,8 @@ export class AuthService {
                 filter(value => value),
                 take(1),
                 switchMap(() => {
-                    return from(user.getIdToken());
-                }),
-                switchMap((accessToken: string) => {
-                    this._accessToken = accessToken;
                     return this.userService.getUserProfileByEmail(user.email!);
                 }),
-                retry(1),
                 catchError(() => {
                     this.commonSnackbarMsg.showErrorMessage();
                     this.logout();
@@ -153,8 +146,11 @@ export class AuthService {
         });
     }
 
-    public getAccessToken(): string | undefined {
-        return this._accessToken ?? undefined;
+    public getAccessToken(): Observable<string | undefined> {
+        if (!!this._firebaseUser) {
+            return from(this._firebaseUser.getIdToken());
+        }
+        return of(undefined);
     }
 
     public setUserDetail(data: UserDetail | null) {

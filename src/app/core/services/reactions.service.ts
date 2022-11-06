@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthService } from './auth.service';
 
@@ -21,10 +21,14 @@ export class ReactionsService {
     }
 
     public registerView(postId: number): Observable<any> {
-        const body = {
-            firebase_user_id: this.authService.getAccessToken(),
-            post: postId
-        };
-        return this.http.post<any>(environment.apiUrl + '/views/create/', body);
+        return this.authService.getAccessToken().pipe(
+            switchMap(accessToken => {
+                const body = {
+                    firebase_user_id: accessToken,
+                    post: postId
+                };
+                return this.http.post<any>(environment.apiUrl + '/views/create/', body);
+            })
+        );
     }
 }
