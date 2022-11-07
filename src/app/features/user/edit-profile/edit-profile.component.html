@@ -97,15 +97,10 @@
       </mat-form-field>
 
       <div class="flex-end-center m-t-1">
-        <button type="submit" mat-raised-button color="primary" *ngIf="!isLoading && !alreadySaved" @inOutRight>
-          Guardar
-          <mat-icon class="fs-medium">save</mat-icon>
+        <button *appButtonLoader="isLoading" type="submit" mat-raised-button color="primary" @inOutRight>
+          {{ alreadySaved ? 'Guardado' : 'Guardar' }}
+          <mat-icon class="fs-medium">{{ alreadySaved ? 'check_circle' : 'save' }}</mat-icon>
         </button>
-        <button type="submit" mat-raised-button color="primary" *ngIf="!isLoading && alreadySaved" @inOutRight>
-          Guardado
-          <mat-icon class="fs-medium">check_circle</mat-icon>
-        </button>
-        <div class="shapes-loader" *ngIf="isLoading" @inOutLeft matTooltip="Cargando"></div>
       </div>
     </form>
   </div>
@@ -117,7 +112,8 @@
       <ul>
         <li>Esta información será visible para todos los usuarios del sitio, incluso para usuarios no registrados.</li>
         <li>
-          Además, será utilizada exclusivamente por Planishare para realizar análisis o nuevas carácteristicas para la plataforma.
+          Además, será utilizada exclusivamente por Planishare para realizar análisis o nuevas carácteristicas para la
+          plataforma.
         </li>
       </ul>
     </div>

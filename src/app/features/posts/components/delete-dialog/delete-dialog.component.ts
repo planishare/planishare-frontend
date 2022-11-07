@@ -6,11 +6,13 @@ import { PostDetail } from 'src/app/core/models/post.model';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { inOutLeftAnimation, inOutRightAnimation } from 'src/app/shared/animations/animations';
 
 @Component({
     selector: 'app-delete-dialog',
     templateUrl: './delete-dialog.component.html',
-    styleUrls: ['./delete-dialog.component.scss']
+    styleUrls: ['./delete-dialog.component.scss'],
+    animations: [inOutLeftAnimation, inOutRightAnimation]
 })
 export class DeleteDialogComponent extends Unsubscriber {
     public isLoading = false;

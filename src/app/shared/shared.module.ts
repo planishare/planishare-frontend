@@ -19,6 +19,7 @@ import { TruncatePipe } from './pipes/truncate.pipe';
 
 import { DragAndDropFileDirective } from './directives/drag-and-drop-file.directive';
 import { DebounceClickDirective } from './directives/debounce-click.directive';
+import { ButtonLoaderDirective } from './directives/button-loader.directive';
 
 @NgModule({
     declarations: [
@@ -37,7 +38,8 @@ import { DebounceClickDirective } from './directives/debounce-click.directive';
         SquareLoaderComponent,
         RoundedSelectComponent,
         FillArrayPipe,
-        DebounceClickDirective
+        DebounceClickDirective,
+        ButtonLoaderDirective
     ],
     imports: [
         CommonModule,
@@ -62,7 +64,8 @@ import { DebounceClickDirective } from './directives/debounce-click.directive';
 
         // Directives
         DragAndDropFileDirective,
-        DebounceClickDirective
+        DebounceClickDirective,
+        ButtonLoaderDirective
     ]
 })
 export class SharedModule { }

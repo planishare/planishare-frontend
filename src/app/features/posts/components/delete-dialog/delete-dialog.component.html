@@ -5,13 +5,12 @@
   </p>
   <p>No podrás recuperar esta publicación.</p>
 </div>
-<div mat-dialog-actions class="flex-end-center">
-  <button mat-flat-button mat-dialog-close>
-    Cancelar
-  </button>
-
-  <button mat-raised-button color="warn" (click)="deletePost()">
+<div mat-dialog-actions class="flex-end-center gap-025">
+  <button *appButtonLoader="isLoading" mat-raised-button color="warn" (click)="deletePost()" @inOutRight [@.disabled]="!isLoading">
     <span>Eliminar</span>
     <mat-icon class="fs-medium">delete</mat-icon>
+  </button>
+  <button mat-flat-button mat-dialog-close>
+    Cancelar
   </button>
 </div>
