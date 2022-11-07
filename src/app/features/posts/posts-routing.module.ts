@@ -29,7 +29,7 @@ const routes: Routes = [
     {
         path: 'user/:id',
         component: UserPostsComponent,
-        canActivate: [IsAuthGuard, IsVerificatedGuard]
+        canActivate: [IsAuthGuard]
     }
 ];
 
