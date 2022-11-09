@@ -13,6 +13,11 @@ const routes: Routes = [
                 loadChildren: () => import('./features/homepage/homepage.module').then(mod => mod.HomepageModule)
             },
             {
+                path: 'auth',
+                loadChildren: () => import('./features/auth/auth.module').then(mod => mod.AuthModule),
+                canActivate: [IsNotAuthGuard]
+            },
+            {
                 path: 'posts',
                 loadChildren: () => import('./features/posts/posts.module').then(mod => mod.PostsModule)
             },
@@ -21,11 +26,6 @@ const routes: Routes = [
                 loadChildren: () => import('./features/user/user.module').then(mod => mod.UserModule)
             }
         ]
-    },
-    {
-        path: 'auth',
-        loadChildren: () => import('./features/auth/auth.module').then(mod => mod.AuthModule),
-        canActivate: [IsNotAuthGuard]
     },
     {
         path: '**',

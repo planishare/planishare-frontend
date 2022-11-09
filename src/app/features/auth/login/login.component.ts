@@ -1,29 +1,38 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { FirebaseError } from 'firebase/app';
 import { catchError, of } from 'rxjs';
-import { FirebaseAuthErrorCodes } from 'src/app/core/enums/auth.enum';
+
 import { AuthService } from 'src/app/core/services/auth.service';
-import { FirebaseAuthService } from 'src/app/core/services/firebase-auth.service';
-import { BasicCredentials } from 'src/app/core/types/auth.type';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
+
+import { FirebaseError } from 'firebase/app';
+import { FirebaseAuthErrorCodes } from 'src/app/core/enums/auth.enum';
+import { BasicCredentials } from 'src/app/core/types/auth.type';
+
 import { ForgotPasswordDialogComponent } from '../components/forgot-password-dialog/forgot-password-dialog.component';
+
+import { inOutLeftAnimation, inOutRightAnimation } from 'src/app/shared/animations/animations';
+import { WindowResizeService } from 'src/app/shared/services/window-resize.service';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss']
+    styleUrls: ['./login.component.scss'],
+    animations: [inOutLeftAnimation, inOutRightAnimation]
 })
-export class LoginComponent implements OnInit {
-    public form: FormGroup;
-    public hidePassword = true;
+export class LoginComponent {
+    public form = new FormGroup({
+        email: new FormControl<string>('', [Validators.required, Validators.email]),
+        password: new FormControl<string>('', [Validators.required])
+    });
 
+    public showPassword = false;
     public wrongCredentials = false;
     public isLoading = false;
+    public isLoadingGoogle = false;
 
     public redirectTo: string = '/';
 
@@ -33,118 +42,90 @@ export class LoginComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private commonSnackbarMsg: CommonSnackbarMsgService,
         private matSnackbar: MatSnackBar,
-        private firebaseAuthService: FirebaseAuthService,
-        private matDialog: MatDialog
+        private matDialog: MatDialog,
+        public windowResize: WindowResizeService
     ) {
-        this.form = new FormGroup(
-            {
-                email: new FormControl('', [ Validators.required, Validators.email]),
-                password: new FormControl('', [
-                    Validators.required,
-                    Validators.minLength(8),
-                    Validators.pattern(/(?=.*?[a-z])(?=.*\d)/)
-                ])
-            }
-        );
-
         // Get url to redirect after login
         const params: Params = this.activatedRoute.snapshot.queryParams;
-        this.redirectTo = params['redirectTo'] ?? '/';
-    }
-
-    public ngOnInit(): void {
-        this.form.valueChanges.subscribe();
+        this.redirectTo = params['redirectTo'] ?? '/posts/list';
     }
 
     public loginWithEmailAndPassword(event: Event): void {
         event.preventDefault();
-        if (this.form.valid) {
-            const credentials: BasicCredentials = {
-                email: this.form.get('email')?.value,
-                password: this.form.get('password')?.value
-            };
-            this.isLoading = true;
 
-            this.authService.loginWithEmailAndPassword(credentials)
-                .pipe(
-                    catchError((error: FirebaseError) => {
-                        if (
-                            error.code === FirebaseAuthErrorCodes.EMAIL_NOT_FOUND ||
-                            error.code === FirebaseAuthErrorCodes.INVALID_PASSWORD
-                        ) {
-                            this.wrongCredentials = true;
-                        } else
-                        if (error.code === FirebaseAuthErrorCodes.TOO_MANY_REQUESTS) {
-                            this.matSnackbar.open(
-                                'Has hecho demasiados intentos, intenta más tarde 😢',
-                                'Cerrar'
-                            );
-                        } else
-                        if (error.code === FirebaseAuthErrorCodes.USER_DISABLED) {
-                            this.matSnackbar.open(
-                                'Tu cuenta está desactivada 🕵️',
-                                'Cerrar'
-                            );
-                        } else {
-                            this.commonSnackbarMsg.showErrorMessage();
-                        }
-                        return of(null);
-                    })
-                )
-                .subscribe(resp => {
-                    if (!!resp) {
-                        this.router.navigate([this.redirectTo]);
-                    }
-                    this.isLoading = false;
-                });
-
-        } else {
+        if (this.form.invalid) {
             this.form.markAllAsTouched();
+            return;
         }
-    }
 
-    public loginWithGoogle(): void {
         this.isLoading = true;
-        this.authService.loginWithGoogle()
-            .pipe(
-                catchError((error: FirebaseError) => {
-                    if (error.code === FirebaseAuthErrorCodes.USER_DISABLED) {
+        this.wrongCredentials = false;
+        const credentials: BasicCredentials = {
+            email: this.form.controls.email.value!,
+            password: this.form.controls.password.value!
+        };
+
+        this.authService.loginWithEmailAndPassword(credentials).pipe(
+            catchError((error: FirebaseError) => {
+                switch (error.code) {
+                    case FirebaseAuthErrorCodes.EMAIL_NOT_FOUND:
+                        this.form.controls.password.setValue('');
+                        this.wrongCredentials = true;
+                        break;
+                    case FirebaseAuthErrorCodes.INVALID_PASSWORD:
+                        this.form.controls.password.setValue('');
+                        this.wrongCredentials = true;
+                        break;
+                    case FirebaseAuthErrorCodes.TOO_MANY_REQUESTS:
+                        this.matSnackbar.open(
+                            'Has hecho demasiados intentos, intenta más tarde 😢',
+                            'Cerrar'
+                        );
+                        break;
+                    case FirebaseAuthErrorCodes.USER_DISABLED:
                         this.matSnackbar.open(
                             'Tu cuenta está desactivada 🕵️',
                             'Cerrar'
                         );
-                    } else {
+                        break;
+                    default:
                         this.commonSnackbarMsg.showErrorMessage();
-                    }
-                    return of(null);
-                })
-            )
-            .subscribe(resp => {
-                if (!!resp) {
-                    this.router.navigate([this.redirectTo]);
+                        break;
                 }
                 this.isLoading = false;
-            });
+                return of();
+            })
+        ).subscribe(() => {
+            this.router.navigate([this.redirectTo]);
+            // this.isLoading = false;
+        });
+
     }
 
-    public get emailControl() {
-        return this.form.get('email');
-    }
-    public get passwordControl() {
-        return this.form.get('password');
-    }
-
-    public getEmailErrorMessage() {
-        if (this.emailControl?.hasError('required')) {
-            return 'Ingresa un email';
-        }
-        return this.emailControl?.hasError('email') ? 'Email no válido' : '';
-    }
-    public getPasswordErrorMessage() {
-        if (this.passwordControl?.hasError('required')) {
-            return 'Ingresa una contraseña';
-        }
-        return !!this.passwordControl?.errors ? 'Contraseña no válida' : '';
+    public loginWithGoogle(): void {
+        this.isLoadingGoogle = true;
+        this.authService.loginWithGoogle().pipe(
+            catchError((error: FirebaseError) => {
+                switch (error.code) {
+                    case FirebaseAuthErrorCodes.USER_DISABLED:
+                        this.matSnackbar.open(
+                            'Tu cuenta está desactivada 🕵️',
+                            'Cerrar'
+                        );
+                        break;
+                    case FirebaseAuthErrorCodes.POPUP_CLOSED_BY_USER:
+                        break;
+                    default:
+                        this.commonSnackbarMsg.showErrorMessage();
+                        break;
+                }
+                this.isLoadingGoogle = false;
+                return of();
+            })
+        ).subscribe(() => {
+            this.router.navigate([this.redirectTo]);
+            // this.isLoadingGoogle = false;
+        });
     }
 
     public openForgotPasswordDialog(): void {

@@ -101,13 +101,17 @@ export class AuthService {
         );
     }
 
-    public loginWithEmailAndPassword(credentials: BasicCredentials): Observable<UserCredential> {
+    public loginWithEmailAndPassword(credentials: BasicCredentials): Observable<User | null> {
         return from(signInWithEmailAndPassword(this.auth, credentials.email, credentials.password)).pipe(
-            tap(() => this.alreadyRegistered$.next(true))
+            tap(() => this.alreadyRegistered$.next(true)),
+            switchMap(() => {
+                return this.isAuth$.asObservable();
+            }),
+            filter(user => !!user)
         );
     }
 
-    public loginWithGoogle(): Observable<UserCredential> {
+    public loginWithGoogle(): Observable<User | null> {
         return from(signInWithPopup(this.auth, new GoogleAuthProvider())).pipe(
             switchMap((userCredential: UserCredential | any) => {
                 const data = userCredential._tokenResponse;
@@ -121,7 +125,11 @@ export class AuthService {
                 }
                 this.alreadyRegistered$.next(true);
                 return of(userCredential);
-            })
+            }),
+            switchMap(() => {
+                return this.isAuth$.asObservable();
+            }),
+            filter(user => !!user)
         );
     }
 
@@ -132,6 +140,11 @@ export class AuthService {
                     this.firebaseAuthService.sendEmailVerification();
                     return this.register(credentials);
                 })
+                // TODO: if login after register then add this
+                // switchMap(() => {
+                //     return this.isAuth$.asObservable();
+                // }),
+                // filter(user => !!user)
             );
     }
 

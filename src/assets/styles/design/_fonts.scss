@@ -5,7 +5,7 @@
     --fs-regular: clamp(14px, calc(14px + (15 - 14) * ((100vw - 320px) / (1440 - 320))), 15px);
     --fs-medium: clamp(16px, calc(16px + (22 - 16) * ((100vw - 320px) / (1440 - 320))), 22px);
     --fs-large: clamp(20px, calc(20px + (24 - 20) * ((100vw - 320px) / (1440 - 320))), 24px);
-    --fs-x-large: 32px;
+    --fs-x-large: clamp(26px, calc(26px + (32 - 26) * ((100vw - 320px) / (1440 - 320))), 32px);
     --fs-xx-large: clamp(30px, calc(30px + (68 - 30) * ((100vw - 320px) / (1440 - 320))), 68px);
 
     // Line height
@@ -38,3 +38,4 @@
 .fw-500 { font-weight: 500; }
 .fw-600 { font-weight: 600; }
 .fw-700 { font-weight: 700; }
+.fw-800 { font-weight: 800; }
