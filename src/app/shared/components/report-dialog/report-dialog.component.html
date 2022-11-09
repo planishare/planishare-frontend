@@ -20,11 +20,12 @@
         Debes ingresar una descripción con menos de 1000 carácteres.
       </mat-error>
     </mat-form-field>
-    <div class="flex-end-center gap-025 m-t-1">
-      <button *appButtonLoader="isLoading" mat-raised-button color="primary" type="submit" @inOutRight [@.disabled]="!isLoading">
-        <span>Enviar</span>
+    <div class="flex-end-center gap-025 m-t-1 m-b-05">
+      <button mat-raised-button color="primary" type="submit" *ngIf="!isLoading" @inOutRight [@.disabled]="!isLoading">
+        Enviar
         <mat-icon class="fs-medium">send</mat-icon>
       </button>
+      <div class="shapes-loader" *ngIf="isLoading" @inOutLeft></div>
       
       <button mat-flat-button type="button" mat-dialog-close>
         Cancelar

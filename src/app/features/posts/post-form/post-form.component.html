@@ -78,14 +78,16 @@
         </div>
       </mat-form-field>
 
-      <div class="flex-end-center gap-025">
-        <button *appButtonLoader="isLoading" type="submit" mat-raised-button color="primary" @inOutRight
-          [@.disabled]="!isLoading" [disabled]="isPostDataLoading">
-          {{ !isEditForm ? 'Publicar' : 'Guardar' }}
-          <mat-icon class="fs-medium">
-            {{ !isEditForm ? 'send' : 'save' }}
-          </mat-icon>
+      <div class="flex-end-center">
+        <button type="submit" mat-raised-button color="primary" [disabled]="isPostDataLoading" *ngIf="!isLoading && !isEditForm" @inOutRight [@.disabled]="!isLoading">
+          Publicar
+          <mat-icon class="fs-medium">send</mat-icon>
         </button>
+        <button type="submit" mat-raised-button color="primary" [disabled]="isPostDataLoading" *ngIf="!isLoading && isEditForm" @inOutRight [@.disabled]="!isLoading">
+          Guardar
+          <mat-icon class="fs-medium">save</mat-icon>
+        </button>
+        <div class="shapes-loader" *ngIf="isLoading" @inOutLeft></div>
       </div>
     </form>
   </div>

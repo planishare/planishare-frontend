@@ -8,8 +8,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { NavigationSidenavComponent } from './components/navigation-sidenav/navigation-sidenav.component';
-import { BookLoaderComponent } from './components/loaders/book-loader/book-loader.component';
-import { SquareLoaderComponent } from './components/loaders/square-loader/square-loader.component';
+import { BookLoaderComponent } from './components/book-loader/book-loader.component';
 import { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
 import { RoundedSelectComponent } from './components/rounded-select/rounded-select.component';
 
@@ -19,27 +18,24 @@ import { TruncatePipe } from './pipes/truncate.pipe';
 
 import { DragAndDropFileDirective } from './directives/drag-and-drop-file.directive';
 import { DebounceClickDirective } from './directives/debounce-click.directive';
-import { ButtonLoaderDirective } from './directives/button-loader.directive';
 
 @NgModule({
     declarations: [
         // Pipes
         TimeAgoPipe,
         TruncatePipe,
+        FillArrayPipe,
 
         // Directives
         DragAndDropFileDirective,
+        DebounceClickDirective,
 
         // Components
         ReportDialogComponent,
         NavbarComponent,
         NavigationSidenavComponent,
         BookLoaderComponent,
-        SquareLoaderComponent,
-        RoundedSelectComponent,
-        FillArrayPipe,
-        DebounceClickDirective,
-        ButtonLoaderDirective
+        RoundedSelectComponent
     ],
     imports: [
         CommonModule,
@@ -53,7 +49,6 @@ import { ButtonLoaderDirective } from './directives/button-loader.directive';
         NavbarComponent,
         NavigationSidenavComponent,
         BookLoaderComponent,
-        SquareLoaderComponent,
         RoundedSelectComponent,
         ReportDialogComponent,
 
@@ -64,8 +59,7 @@ import { ButtonLoaderDirective } from './directives/button-loader.directive';
 
         // Directives
         DragAndDropFileDirective,
-        DebounceClickDirective,
-        ButtonLoaderDirective
+        DebounceClickDirective
     ]
 })
 export class SharedModule { }

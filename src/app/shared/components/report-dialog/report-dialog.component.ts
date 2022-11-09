@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, filter, of } from 'rxjs';
+import { catchError, of } from 'rxjs';
 
 import { ReportType } from 'src/app/shared/enums/report.enum';
 import { APIReportBody, ReportInput } from 'src/app/core/types/report.type';
