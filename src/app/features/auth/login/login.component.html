@@ -2,7 +2,7 @@
   <div class="login-card rounded-card flex-column-center">
     <img src="/assets/images/main-icon.png" alt="Ícono de Planishare" *ngIf="(windowResize.isDesktop$)|async">
     <h1 class="fs-x-large">Iniciar sesión</h1>
-    <p class="fw-500">Que bueno tenerte de vuelta 🙌</p>
+    <p class="fw-500 text-center">Que bueno tenerte de vuelta 🙌</p>
 
     <form [formGroup]="form" (ngSubmit)="loginWithEmailAndPassword($event)" class="w-100 m-t-05">
       <mat-form-field appearance="outline" class="w-100">
@@ -20,12 +20,12 @@
         <mat-label>Contraseña</mat-label>
         <input matInput placeholder="Contraseña" formControlName="password"
           [type]="showPassword? 'text' : 'password'">
-        <button mat-icon-button matSuffix (click)="showPassword = !showPassword">
+        <button mat-icon-button matSuffix type="button" (click)="showPassword = !showPassword">
           <mat-icon *ngIf="showPassword">visibility_off</mat-icon>
           <mat-icon *ngIf="!showPassword">visibility</mat-icon>
         </button>
-        <mat-error *ngIf="!wrongCredentials && form.controls.password.errors!['required']">
-          Debes ingresa una contraseña
+        <mat-error *ngIf="!wrongCredentials && form.controls.password.invalid && form.controls.password.errors!['required']">
+          Debes ingresar una contraseña
         </mat-error>
         <mat-error *ngIf="wrongCredentials">
           El email y/o contraseña ingresados son incorrectos

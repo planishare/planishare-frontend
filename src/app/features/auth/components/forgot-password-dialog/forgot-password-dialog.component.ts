@@ -1,39 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { take } from 'rxjs';
 import { FirebaseAuthService } from 'src/app/core/services/firebase-auth.service';
+import { inOutLeftAnimation, inOutRightAnimation } from 'src/app/shared/animations/animations';
 
 @Component({
     selector: 'app-forgot-password-dialog',
     templateUrl: './forgot-password-dialog.component.html',
-    styleUrls: ['./forgot-password-dialog.component.scss']
+    styleUrls: ['./forgot-password-dialog.component.scss'],
+    animations: [inOutLeftAnimation, inOutRightAnimation]
 })
 export class ForgotPasswordDialogComponent {
-    public email: FormControl;
+    public email = new FormControl<string>('', [Validators.required, Validators.email]);
     public isLoading = false;
 
     constructor(
         private firebaseAuthService: FirebaseAuthService,
         public dialogRef: MatDialogRef<ForgotPasswordDialogComponent>
-    ) {
-        this.email = new FormControl(null, [Validators.required, Validators.email]);
-    }
+    ) {}
 
     public resetPassword(): void {
-        if (!!this.email.valid) {
-            this.isLoading = true;
-            this.firebaseAuthService.sendPasswordResetEmail(this.email.value);
+        if (this.email.invalid) {
+            this.email.markAllAsTouched();
+            return;
+        }
 
-            setTimeout(() => {
+        this.isLoading = true;
+        this.firebaseAuthService.sendPasswordResetEmail(this.email.value!).pipe(
+            take(1)
+        ).subscribe(emailSended => {
+            if (emailSended) {
                 this.dialogRef.close();
-            }, 1500);
-        }
-    }
-
-    public getEmailErrorMessage() {
-        if (this.email?.hasError('required')) {
-            return 'Ingresa un email';
-        }
-        return this.email?.hasError('email') ? 'Email no válido' : '';
+            }
+            this.isLoading = false;
+        });
     }
 }
