@@ -5,7 +5,7 @@
             <router-outlet></router-outlet>
         </div>
     </mat-sidenav-content>
-    <mat-sidenav mode="over" [(opened)]="isOpened" [autoFocus]="false">
+    <mat-sidenav mode="over" [(opened)]="isOpened" [autoFocus]="false" [fixedInViewport]="true">
         <ng-container [ngSwitch]="component">
             <app-navigation-sidenav *ngSwitchCase="sidenavComponent.NAVIGATION_SIDENAV"></app-navigation-sidenav>
         </ng-container>
