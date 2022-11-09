@@ -271,7 +271,8 @@
     <div class="flex-column flex-center-center text-center gap-05 m-t-2" *ngIf="!hasData && !isLoading" @fadeInOut>
       <img class="no-results-image" src="assets/images/no-results.png" alt="Perdido en el espacio">
       <p class="fs-medium fw-700">No se han encontrado resultados</p>
-      <p class="fw-700">Aún nadie ha creado una publicación con tus parámetros de búsqueda 😅</p>
+      <p class="fw-700" *ngIf="postFilters.userId !== authUser?.id">Aún nadie ha creado una publicación con tus parámetros de búsqueda 😅</p>
+      <p class="fw-700" *ngIf="postFilters.userId === authUser?.id">Aún no has creado publicaciones 😅</p>
     </div>
   </div>
 </main>
