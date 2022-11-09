@@ -47,6 +47,9 @@ export class AuthService {
     ) {
         let isFirstAccess = true;
         onAuthStateChanged(auth, (user: User | null) => {
+            this.alreadyRegistered$.next(isFirstAccess);
+            isFirstAccess = false;
+
             if (!user) {
                 this.authLog('onAuthStateChanged: no auth', user);
                 signInAnonymously(this.auth);
@@ -59,13 +62,12 @@ export class AuthService {
                 this._userDetail = null;
                 this.isAuth$.next(null);
                 this.isCompleted$.next(true);
+                this.alreadyRegistered$.next(false);
                 return;
             }
 
             // Login with email or Login/Register with Google
             this.authLog('onAuthStateChanged: auth', user);
-            this.alreadyRegistered$.next(isFirstAccess);
-            isFirstAccess = false;
             this.alreadyRegistered$.pipe(
                 filter(value => value),
                 take(1),
@@ -139,12 +141,11 @@ export class AuthService {
                 switchMap(() => {
                     this.firebaseAuthService.sendEmailVerification();
                     return this.register(credentials);
-                })
-                // TODO: if login after register then add this
-                // switchMap(() => {
-                //     return this.isAuth$.asObservable();
-                // }),
-                // filter(user => !!user)
+                }),
+                switchMap(() => {
+                    return this.isAuth$.asObservable();
+                }),
+                filter(user => !!user)
             );
     }
 

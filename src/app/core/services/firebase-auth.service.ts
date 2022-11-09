@@ -6,6 +6,7 @@ import {
 } from '@angular/fire/auth';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FirebaseError } from 'firebase/app';
+import { Observable, Subject } from 'rxjs';
 import { FirebaseAuthErrorCodes } from '../enums/auth.enum';
 
 @Injectable({
@@ -30,20 +31,24 @@ export class FirebaseAuthService {
             });
     }
 
-    public sendPasswordResetEmail(email: string): void {
+    public sendPasswordResetEmail(email: string): Observable<boolean> {
+        const emailSended = new Subject<boolean>();
         sendPasswordResetEmail(this.auth, email)
             .then(() => {
+                emailSended.next(true);
                 this.matSnackbar.open('Te enviaremos un email para que cambies tu contraseña 📫', 'Cerrar', {
                     duration: 4000
                 });
             })
             .catch((error: FirebaseError) => {
+                emailSended.next(false);
                 if (error.code === FirebaseAuthErrorCodes.USER_NOT_FOUND) {
                     this.showErrorMessage('Emm... el email ingresado no está registrado 😅');
                 } else {
                     this.showErrorMessage();
                 }
             });
+        return emailSended.asObservable();
     }
 
     private showErrorMessage(
