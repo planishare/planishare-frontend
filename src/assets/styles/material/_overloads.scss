@@ -59,3 +59,11 @@
         border-radius: 18px !important;
     }
 }
+
+// Dialog pannelClasses
+.default-dialog {
+    border-radius: 12px !important;
+    background-color: hsl(var(--clr-white), .7);
+    backdrop-filter: blur(20px);
+    color: hsl(var(--clr-blue-dark), .8);
+}

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Observable, of } from 'rxjs';
 
 import { AuthService } from './core/services/auth.service';
 import { inOutYAnimation } from './shared/animations/animations';
@@ -14,7 +15,7 @@ import { WindowScrollService } from './shared/services/window-scroll.service';
 })
 export class AppComponent implements OnInit {
     public inMaintenance = false;
-    public isAuthCompleted = false;
+    public isAuthCompleted: Observable<boolean> = of(false);
 
     constructor (
         private authService: AuthService,
@@ -24,14 +25,11 @@ export class AppComponent implements OnInit {
     ) {
         this.windowResize.startListening();
         this.windowScroll.startListening();
+
+        this.isAuthCompleted = this.authService.isCompleted$;
     }
 
     public ngOnInit(): void {
-        this.authService.isCompleted$.asObservable()
-            .subscribe((isAuthCompleted: boolean) => {
-                this.isAuthCompleted = isAuthCompleted;
-            });
-
         if (this.inMaintenance) {
             this.matSnackBar.open('Estamos trabajando en actualizaciones, te recomendamos volver más tarde. 🔧');
         }
