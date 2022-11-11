@@ -19,6 +19,11 @@ import { TruncatePipe } from './pipes/truncate.pipe';
 import { DragAndDropFileDirective } from './directives/drag-and-drop-file.directive';
 import { DebounceClickDirective } from './directives/debounce-click.directive';
 
+import { CommonSnackbarMsgService } from './services/common-snackbar-msg.service';
+import { SidenavService } from './services/sidenav.service';
+import { WindowResizeService } from './services/window-resize.service';
+import { WindowScrollService } from './services/window-scroll.service';
+
 @NgModule({
     declarations: [
         // Pipes
@@ -43,6 +48,12 @@ import { DebounceClickDirective } from './directives/debounce-click.directive';
         NgxMatSelectSearchModule,
         ReactiveFormsModule,
         RouterModule
+    ],
+    providers: [
+        CommonSnackbarMsgService,
+        SidenavService,
+        WindowResizeService,
+        WindowScrollService
     ],
     exports: [
         // Components

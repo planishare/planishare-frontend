@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs';
 
 import { AuthService } from 'src/app/core/services/auth.service';
-import { SidenavService } from 'src/app/core/services/sidenav.service';
+import { SidenavService } from 'src/app/shared/services/sidenav.service';
 import { WindowResizeService } from '../../services/window-resize.service';
 import { WindowScrollService } from '../../services/window-scroll.service';
 
