@@ -5,6 +5,9 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "deploy:prod": "firebase deploy -P prod",
+    "build:dev": "ng build --configuration development",
+    "deploy:dev": "firebase deploy -P dev",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint"
