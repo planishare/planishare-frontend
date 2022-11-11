@@ -1,0 +1,4 @@
+<button mat-mini-fab class="bg-blue-dark" aria-label="Volver al comienzo" (click)="scrollToTop()"
+  *ngIf="(windowScroll.scrollYPos$|async)! > heightToShow" @inOutRight>
+  <mat-icon>arrow_upward</mat-icon>
+</button>

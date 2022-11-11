@@ -11,6 +11,7 @@ import { NavigationSidenavComponent } from './components/navigation-sidenav/navi
 import { BookLoaderComponent } from './components/book-loader/book-loader.component';
 import { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
 import { RoundedSelectComponent } from './components/rounded-select/rounded-select.component';
+import { ScrollToTopButtonComponent } from './components/scroll-to-top-button/scroll-to-top-button.component';
 
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { FillArrayPipe } from './pipes/fill-array.pipe';
@@ -40,7 +41,8 @@ import { WindowScrollService } from './services/window-scroll.service';
         NavbarComponent,
         NavigationSidenavComponent,
         BookLoaderComponent,
-        RoundedSelectComponent
+        RoundedSelectComponent,
+        ScrollToTopButtonComponent
     ],
     imports: [
         CommonModule,
@@ -51,9 +53,7 @@ import { WindowScrollService } from './services/window-scroll.service';
     ],
     providers: [
         CommonSnackbarMsgService,
-        SidenavService,
-        WindowResizeService,
-        WindowScrollService
+        SidenavService
     ],
     exports: [
         // Components
@@ -62,6 +62,7 @@ import { WindowScrollService } from './services/window-scroll.service';
         BookLoaderComponent,
         RoundedSelectComponent,
         ReportDialogComponent,
+        ScrollToTopButtonComponent,
 
         // Pipes
         TimeAgoPipe,
