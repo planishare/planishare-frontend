@@ -1,9 +1,11 @@
+@import './design/components/index';
 @import './design/reset';
 @import './design/fonts';
-@import './design/components';
+
 @import './helpers/util';
 @import './helpers/misc';
 @import './helpers/display';
 @import './helpers/box-model';
+
 @import './material/overloads';
 @import './design/colors';
