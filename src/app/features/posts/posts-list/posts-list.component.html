@@ -1,0 +1,8 @@
+<app-posts-filters
+    [pageInfo]="pageInfo"
+    [urlQueryParams]="urlQueryParams"
+    [isLoading]="isLoading"
+    [authUser]="authUser"
+    (getPosts)="getPosts($event)">
+</app-posts-filters>
+<app-scroll-to-top-button></app-scroll-to-top-button>

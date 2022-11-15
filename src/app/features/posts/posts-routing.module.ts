@@ -4,13 +4,12 @@ import { IsAuthGuard } from 'src/app/core/guards/is-auth.guard';
 import { IsVerificatedGuard } from 'src/app/core/guards/is-verificated.guard';
 import { PostDetailComponent } from './post-detail/post-detail.component';
 import { PostFormComponent } from './post-form/post-form.component';
-import { PostsComponent } from './posts/posts.component';
-import { UserPostsComponent } from './user-posts/user-posts.component';
+import { PostsListComponent } from './posts-list/posts-list.component';
 
 const routes: Routes = [
     {
         path: 'list',
-        component: PostsComponent
+        component: PostsListComponent
     },
     {
         path: 'view/:id',
@@ -25,11 +24,6 @@ const routes: Routes = [
         path: 'edit/:id',
         component: PostFormComponent,
         canActivate: [IsAuthGuard, IsVerificatedGuard]
-    },
-    {
-        path: 'user/:id',
-        component: UserPostsComponent,
-        canActivate: [IsAuthGuard]
     }
 ];
 

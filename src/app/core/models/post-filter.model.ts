@@ -30,7 +30,7 @@ export class PostFilters {
         this.ordering = queryParams.ordering;
     }
 
-    public formatForAPI(): APIPostsQueryParams {
+    public formatForAPI(): IAPIPostsQueryParams {
         return {
             page: String(this.page ?? 1),
             search: this.search ?? '',
@@ -42,7 +42,7 @@ export class PostFilters {
         };
     }
 
-    public formatForQueryParams(): PostsQueryParams {
+    public formatForURL(): IURLPostsQueryParams {
         return {
             page: String(this.page ?? 1),
             search: this.search,
@@ -55,7 +55,7 @@ export class PostFilters {
     }
 }
 
-export type PostsQueryParams = {
+export interface IURLPostsQueryParams {
     page?: string | undefined,
     search?: string | undefined,
     userId?: string | undefined,
@@ -65,7 +65,7 @@ export type PostsQueryParams = {
     ordering?: OrderingType | undefined
 }
 
-export type APIPostsQueryParams = {
+export interface IAPIPostsQueryParams {
     page?: string,
     search?: string,
     user__id?: string,

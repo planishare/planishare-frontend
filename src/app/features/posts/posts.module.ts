@@ -8,18 +8,22 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 import { PostDetailComponent } from './post-detail/post-detail.component';
-import { UserPostsComponent } from './user-posts/user-posts.component';
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 import { PostFormComponent } from './post-form/post-form.component';
-import { PostsComponent } from './posts/posts.component';
+import { PostsListComponent } from './posts-list/posts-list.component';
+import { PostsFiltersComponent } from './components/posts-filters/posts-filters.component';
+import { PostCardComponent } from './components/post-card/post-card.component';
+import { PostCardShimmerComponent } from './components/post-card-shimmer/post-card-shimmer.component';
 
 @NgModule({
     declarations: [
-        PostsComponent,
         PostDetailComponent,
-        UserPostsComponent,
         DeleteDialogComponent,
-        PostFormComponent
+        PostFormComponent,
+        PostsListComponent,
+        PostsFiltersComponent,
+        PostCardComponent,
+        PostCardShimmerComponent
     ],
     imports: [
         CommonModule,

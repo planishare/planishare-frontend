@@ -8,7 +8,7 @@ import { PostsService } from 'src/app/core/services/posts.service';
 import { ReactionsService } from 'src/app/core/services/reactions.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
-import { PostsQueryParams } from 'src/app/core/models/post-filter.model';
+import { IURLPostsQueryParams } from 'src/app/core/models/post-filter.model';
 import { UserDetail } from 'src/app/core/models/user.model';
 import { IPostFile, PostDetail } from 'src/app/core/models/post.model';
 import { viewerType } from 'ngx-doc-viewer';
@@ -27,7 +27,7 @@ import { fadeInOutAnimation } from 'src/app/shared/animations/animations';
     animations: [fadeInOutAnimation]
 })
 export class PostDetailComponent extends Unsubscriber implements OnInit {
-    public searchParams: PostsQueryParams;
+    public searchParams: IURLPostsQueryParams;
 
     public user: UserDetail | null;
     public postId: number;

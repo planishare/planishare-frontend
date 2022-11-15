@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { inOutRightAnimation, inOutYAnimation } from '../../animations/animations';
+import { fadeInOutAnimation } from '../../animations/animations';
 import { WindowScrollService } from '../../services/window-scroll.service';
 
 @Component({
     selector: 'app-scroll-to-top-button',
     templateUrl: './scroll-to-top-button.component.html',
     styleUrls: ['./scroll-to-top-button.component.scss'],
-    animations: [inOutRightAnimation]
+    animations: [fadeInOutAnimation]
 })
 export class ScrollToTopButtonComponent {
     public heightToShow = 300;
