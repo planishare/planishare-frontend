@@ -14,6 +14,7 @@ import { PostsListComponent } from './posts-list/posts-list.component';
 import { PostsFiltersComponent } from './components/posts-filters/posts-filters.component';
 import { PostCardComponent } from './components/post-card/post-card.component';
 import { PostCardShimmerComponent } from './components/post-card-shimmer/post-card-shimmer.component';
+import { UserPostsComponent } from './user-posts/user-posts.component';
 
 @NgModule({
     declarations: [
@@ -23,7 +24,8 @@ import { PostCardShimmerComponent } from './components/post-card-shimmer/post-ca
         PostsListComponent,
         PostsFiltersComponent,
         PostCardComponent,
-        PostCardShimmerComponent
+        PostCardShimmerComponent,
+        UserPostsComponent
     ],
     imports: [
         CommonModule,

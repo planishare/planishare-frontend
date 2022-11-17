@@ -32,8 +32,8 @@ import { fadeInOutAnimation, inOutLeftAnimation, inOutRightAnimation, inOutYAnim
     ]
 })
 export class PostsFiltersComponent extends Unsubscriber implements OnChanges, OnInit {
-    @Input() public pageInfo?: Pageable<PostDetail>;
-    @Input() public urlQueryParams?: IURLPostsQueryParams;
+    @Input() public pageResults?: Pageable<PostDetail>;
+    @Input() public urlQueryParams: IURLPostsQueryParams = {};
     @Input() public isLoading = true;
     @Input() public authUser: UserDetail | null = null;
     @Output() public getPosts = new EventEmitter<PostFilters>();
@@ -120,8 +120,8 @@ export class PostsFiltersComponent extends Unsubscriber implements OnChanges, On
     }
 
     public ngOnChanges(changes: SimpleChanges) {
-        if (changes['pageInfo']) {
-            this.posts = this.pageInfo?.results ?? [];
+        if (changes['pageResults']) {
+            this.posts = this.pageResults?.results ?? [];
         }
     }
 
@@ -278,14 +278,14 @@ export class PostsFiltersComponent extends Unsubscriber implements OnChanges, On
     }
 
     public nextPage(): void {
-        if (this.pageInfo?.next) {
+        if (this.pageResults?.next) {
             this.postFilters.page = (this.postFilters.page ?? 0) + 1;
             this.doSearch();
         }
     }
 
     public previousPage(): void {
-        if (this.pageInfo?.previous) {
+        if (this.pageResults?.previous) {
             this.postFilters.page = (this.postFilters.page ?? 0) - 1;
             this.doSearch();
         }

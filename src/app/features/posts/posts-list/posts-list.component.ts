@@ -20,12 +20,9 @@ import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
     styleUrls: ['./posts-list.component.scss']
 })
 export class PostsListComponent extends Unsubscriber implements OnInit {
-    public urlQueryParams?: IURLPostsQueryParams;
-    public pageInfo?: Pageable<PostDetail>;
-
+    public urlQueryParams: IURLPostsQueryParams = {};
+    public pageResults?: Pageable<PostDetail>;
     public isLoading = true;
-    public hasData = true;
-
     public authUser: UserDetail | null;
 
     constructor(
@@ -44,9 +41,9 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
     }
 
     public getPosts(postFilters: PostFilters): void {
-        console.log('getPosts', postFilters);
         this.isLoading = true;
-        this.setQueryParams(postFilters.formatForURL());
+        this.urlQueryParams = postFilters.formatForURL();
+        this.setQueryParams(this.urlQueryParams);
 
         this.postsService.getPosts(postFilters.formatForAPI()).pipe(
             catchError(() => {
@@ -57,11 +54,10 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
             takeUntil(this.ngUnsubscribe$)
         ).subscribe(resp => {
             const posts: PostDetail[] = resp!.results.map(post => new PostDetail(post));
-            this.pageInfo = new Pageable<PostDetail>({
+            this.pageResults = new Pageable<PostDetail>({
                 ...resp,
                 results: posts
             });
-            this.hasData = !!this.pageInfo.results.length;
             this.isLoading = false;
         });
     }

@@ -88,10 +88,10 @@
       <!-- Pagination -->
       <div class="pagination flex-center-center gap-05">
         <span class="fw-700 fs-regular" *ngIf="!isLoading && !!posts.length" @inOutRight>
-          {{ pageInfo?.count }} resultados
+          {{ pageResults?.count }} resultados
         </span>
         <div class="flex-center-center gap-025">
-          <button class="circle-button" (click)="previousPage()" [disabled]="!pageInfo?.previous || isLoading"
+          <button class="circle-button" (click)="previousPage()" [disabled]="!pageResults?.previous || isLoading"
             aria-label="Pág. Anterior" matTooltip="Pág. Anterior" matRipple>
             <mat-icon class="small-icon">navigate_before</mat-icon>
           </button>
@@ -100,11 +100,11 @@
             <span class="fs-small fw-700">{{ postFilters.page }}</span>
           </button>
           <mat-menu #pagesMenu>
-            <button mat-menu-item *ngFor="let page of (pageInfo?.maxPage ?? 1)|fillArray" (click)="doSearch(page)">
+            <button mat-menu-item *ngFor="let page of (pageResults?.maxPage ?? 1)|fillArray" (click)="doSearch(page)">
               {{ page }}
             </button>
           </mat-menu>
-          <button class="circle-button" (click)="nextPage()" [disabled]="!pageInfo?.next || isLoading"
+          <button class="circle-button" (click)="nextPage()" [disabled]="!pageResults?.next || isLoading"
             aria-label="Pág. Siguiente" matTooltip="Pág. Siguiente" matRipple>
             <mat-icon class="small-icon">navigate_next</mat-icon>
           </button>

@@ -5,6 +5,7 @@ import { IsVerificatedGuard } from 'src/app/core/guards/is-verificated.guard';
 import { PostDetailComponent } from './post-detail/post-detail.component';
 import { PostFormComponent } from './post-form/post-form.component';
 import { PostsListComponent } from './posts-list/posts-list.component';
+import { UserPostsComponent } from './user-posts/user-posts.component';
 
 const routes: Routes = [
     {
@@ -24,6 +25,11 @@ const routes: Routes = [
         path: 'edit/:id',
         component: PostFormComponent,
         canActivate: [IsAuthGuard, IsVerificatedGuard]
+    },
+    {
+        path: 'user/:id',
+        component: UserPostsComponent,
+        canActivate: [IsAuthGuard]
     }
 ];
 
