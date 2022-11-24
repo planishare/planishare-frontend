@@ -1,4 +1,5 @@
 /* eslint-disable @angular-eslint/component-class-suffix */
+// https://www.youtube.com/watch?v=wDAmfqnIrck
 import { Component, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, of, takeUntil } from 'rxjs';
+import { catchError, Observable, of, takeUntil } from 'rxjs';
 
 import { Pageable } from 'src/app/core/models/pageable.model';
 import { PostFilters, IURLPostsQueryParams } from 'src/app/core/models/post-filter.model';
-import { PostDetail } from 'src/app/core/models/post.model';
-import { OrderingType, OrderingTypeName } from 'src/app/core/enums/posts.enum';
+import { IAcademicLevel, ISubjectWithAxis, PostDetail } from 'src/app/core/models/post.model';
+import { OrderingType } from 'src/app/core/enums/posts.enum';
 import { UserDetail } from 'src/app/core/models/user.model';
 
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -20,10 +20,15 @@ import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
     styleUrls: ['./posts-list.component.scss']
 })
 export class PostsListComponent extends Unsubscriber implements OnInit {
-    public urlQueryParams: IURLPostsQueryParams = {};
+    public urlQueryParams?: IURLPostsQueryParams;
     public pageResults?: Pageable<PostDetail>;
     public isLoading = true;
     public authUser: UserDetail | null;
+    public academicLevels$: Observable<IAcademicLevel[]> = of();
+    public subjectWithAxes$: Observable<ISubjectWithAxis[]> = of();
+    public currentFilters?: PostFilters;
+    public removeFilter?: { removeFilter: string };
+    public changePage?: { changePage: number };
 
     constructor(
         private postsService: PostsService,
@@ -33,16 +38,20 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
         private router: Router
     ) {
         super();
+        this.urlQueryParams = this.activatedRoute.snapshot.queryParams;
         this.authUser = this.authService.getUserDetail();
     }
 
     public ngOnInit(): void {
-        this.urlQueryParams = this.activatedRoute.snapshot.queryParams;
+        this.academicLevels$ = this.postsService.getAcademicLevels();
+        this.subjectWithAxes$ = this.postsService.getSubjectWithAxis();
     }
 
     public getPosts(postFilters: PostFilters): void {
+        this.currentFilters = postFilters;
         this.isLoading = true;
         this.urlQueryParams = postFilters.formatForURL();
+        console.log('Filters: ', this.urlQueryParams);
         this.setQueryParams(this.urlQueryParams);
 
         this.postsService.getPosts(postFilters.formatForAPI()).pipe(
@@ -58,6 +67,7 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
                 ...resp,
                 results: posts
             });
+            console.log('Results: ', this.pageResults);
             this.isLoading = false;
         });
     }

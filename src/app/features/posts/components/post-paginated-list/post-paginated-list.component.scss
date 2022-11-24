@@ -1,0 +1,36 @@
+.filter-tags {
+    flex-grow: 1;
+}
+
+@media (min-width: 48rem) {
+    .filter-tags {
+        justify-content: start;
+    }
+}
+
+.pagination {
+    .circle-button {
+        --padding: .35em;
+    }
+
+    .mat-icon {
+        color: hsl(var(--clr-white));
+    }
+}
+
+.posts-grid {
+    margin-top: .7rem;
+    display: grid;
+    gap: .5rem;
+}
+
+@media (min-width: 48rem) {
+    .posts-grid {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    }
+}
+
+.no-results-image {
+    width: 80%;
+    max-width: 400px;
+}

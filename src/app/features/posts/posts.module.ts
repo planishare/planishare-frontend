@@ -15,6 +15,8 @@ import { PostsFiltersComponent } from './components/posts-filters/posts-filters.
 import { PostCardComponent } from './components/post-card/post-card.component';
 import { PostCardShimmerComponent } from './components/post-card-shimmer/post-card-shimmer.component';
 import { UserPostsComponent } from './user-posts/user-posts.component';
+import { PostFiltersCardComponent } from './components/post-filters-card/post-filters-card.component';
+import { PostPaginatedListComponent } from './components/post-paginated-list/post-paginated-list.component';
 
 @NgModule({
     declarations: [
@@ -25,7 +27,9 @@ import { UserPostsComponent } from './user-posts/user-posts.component';
         PostsFiltersComponent,
         PostCardComponent,
         PostCardShimmerComponent,
-        UserPostsComponent
+        UserPostsComponent,
+        PostFiltersCardComponent,
+        PostPaginatedListComponent
     ],
     imports: [
         CommonModule,

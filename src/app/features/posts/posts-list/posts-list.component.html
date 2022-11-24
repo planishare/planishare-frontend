@@ -1,8 +1,22 @@
-<app-posts-filters
-    [pageResults]="pageResults"
-    [urlQueryParams]="urlQueryParams"
-    [isLoading]="isLoading"
-    [authUser]="authUser"
-    (getPosts)="getPosts($event)">
-</app-posts-filters>
+<main class="container">
+    <app-post-filters-card
+        class="post-filters-card w-100"
+        [urlQueryParams]="urlQueryParams"
+        [academicLevels]="(academicLevels$ | async) ?? []"
+        [subjectWithAxis]="(subjectWithAxes$ | async) ?? []"
+        [removeFilter]="removeFilter"
+        [changePage]="changePage"
+        (filtersChange)="getPosts($event)"
+    ></app-post-filters-card>
+    <app-post-paginated-list
+        class="post-paginated-list grow-1"
+        [pageResults]="pageResults"
+        [isLoading]="isLoading"
+        [authUser]="authUser"
+        [currentFilters]="currentFilters"
+        [urlQueryParams]="urlQueryParams"
+        (changePage)="changePage = { changePage: $event }"
+        (removeFilter)="removeFilter = { removeFilter: $event }"
+    ></app-post-paginated-list>
+</main>
 <app-scroll-to-top-button></app-scroll-to-top-button>

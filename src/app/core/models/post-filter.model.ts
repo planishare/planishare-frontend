@@ -75,7 +75,7 @@ export interface IAPIPostsQueryParams {
     ordering?: OrderingType | ''
 }
 
-export type IOrdering = {
+export interface IOrdering {
     id: OrderingType,
     name: OrderingTypeName
 }
