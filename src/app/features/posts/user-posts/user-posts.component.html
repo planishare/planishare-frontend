@@ -1,47 +1,27 @@
-<!-- <div *ngIf="showOwnPosts" class="rounded-card m-b-05" left-section-element>
-  <div class="flex-center-center m-b-05 gap-05">
-    <h1 class="fs-large">Mis publicaciones</h1>
-    <a mat-icon-button class="text-blue" aria-label="Crear publicación" matTooltip="Crear publicación"
-      [routerLink]="['/posts/create']">
-      <mat-icon>add</mat-icon>
-    </a>
+<main class="container-row">
+  <div class="left-side w-100">
+    <app-user-posts-stats
+      class="m-b-1"
+      *ngIf="showOwnPosts"
+      [stats]="stats">
+    </app-user-posts-stats>
+    <app-post-filters-card
+      [urlQueryParams]="urlQueryParams"
+      [academicLevels]="(academicLevels$ | async) ?? []"
+      [subjectWithAxis]="(subjectWithAxes$ | async) ?? []"
+      [removeFilter]="removeFilter"
+      [changePage]="changePage"
+      (filtersChange)="getPosts($event)">
+    </app-post-filters-card>    
   </div>
-  <div class="text-center fw-500 m-b-05">
-    <p *ngIf="!posts.value">
-      Anímante, crea un publicación y comparte con la comunidad! 🙌
-    </p>
-    <p *ngIf="posts.value && !views.value">
-      Haz creado
-      <span class="text-{{ posts.color }} fw-600">
-        {{ posts.value }} publicaciones
-      </span>
-      , gracias por ayudar a la comunidad, sigue así! 🎈
-    </p>
-    <p *ngIf="posts.value && views.value">
-      En total, tus
-      <span class="text-{{ posts.color }} fw-600">
-        {{ posts.value }} publicaciones
-      </span>
-      han sido
-      <span class="text-{{ views.color }} fw-600">
-        vistas {{ views.value }} veces
-      </span>
-      <span *ngIf="likes.value">
-        y han tenido
-      </span>
-      <span *ngIf="likes.value" class="text-{{ likes.color }} fw-600">
-        {{ likes.value }} me gusta
-      </span>
-      , gracias por ayudar a la comunidad, sigue así 🎈
-    </p>
-  </div>
-  <div class="flex-center-center gap-07">
-    <div class="flex-column-center text-center" *ngFor="let stat of stats">
-      <div class="flex-center-center">
-        <span class="fs-large fw-600">{{ stat.value }}</span>
-        <mat-icon class="text-{{ stat.color }}">{{ stat.icon }}</mat-icon>
-      </div>
-      <span class="fs-regular fw-500">{{ stat.text }}</span>
-    </div>
-  </div>
-</div> -->
+  <app-post-paginated-list
+    [pageResults]="pageResults"
+    [isLoading]="isLoading"
+    [authUser]="authUser"
+    [currentFilters]="currentFilters"
+    [urlQueryParams]="urlQueryParams"
+    (changePage)="changePage = { value: $event }"
+    (removeFilter)="removeFilter = { value: $event }">
+  </app-post-paginated-list>
+</main>
+<app-scroll-to-top-button></app-scroll-to-top-button>

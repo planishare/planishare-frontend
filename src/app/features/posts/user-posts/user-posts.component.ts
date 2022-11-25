@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { takeUntil, catchError, of } from 'rxjs';
-import { OrderingType } from 'src/app/core/enums/posts.enum';
+import { catchError, Observable, of, takeUntil } from 'rxjs';
+
 import { Pageable } from 'src/app/core/models/pageable.model';
-import { IAPIPostsQueryParams, IURLPostsQueryParams, PostFilters } from 'src/app/core/models/post-filter.model';
-import { PostDetail } from 'src/app/core/models/post.model';
+import { PostFilters, IURLPostsQueryParams } from 'src/app/core/models/post-filter.model';
+import { IAcademicLevel, ISubjectWithAxis, PostDetail } from 'src/app/core/models/post.model';
+import { OrderingType } from 'src/app/core/enums/posts.enum';
 import { UserDetail } from 'src/app/core/models/user.model';
+import { PostsStats } from '../types/posts-stats.type';
+
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/core/services/posts.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
-import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 
-type Stat = { text: string, value?: number, icon?: string, color?: string };
+import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 
 @Component({
     selector: 'app-user-posts',
@@ -19,29 +21,34 @@ type Stat = { text: string, value?: number, icon?: string, color?: string };
     styleUrls: ['./user-posts.component.scss']
 })
 export class UserPostsComponent extends Unsubscriber implements OnInit  {
-    public urlQueryParams: IURLPostsQueryParams = {};
+    public urlQueryParams?: IURLPostsQueryParams;
     public pageResults?: Pageable<PostDetail>;
     public isLoading = true;
     public authUser: UserDetail | null;
+    public academicLevels$: Observable<IAcademicLevel[]> = of();
+    public subjectWithAxes$: Observable<ISubjectWithAxis[]> = of();
+    public currentFilters?: PostFilters;
+    public removeFilter?: { value: string };
+    public changePage?: { value: number };
 
     public ownerId?: number;
     public showOwnPosts = false;
-
-    public stats: Stat[] = [];
-    public likes: Stat = {
-        text: 'Me gusta',
-        icon: 'favorite_outline',
-        color: 'red'
-    };
-    public views: Stat = {
-        text: 'Visualizaciones',
-        icon: 'visibility',
-        color: 'blue'
-    };
-    public posts: Stat = {
-        text: 'Publicaciones',
-        icon: 'description',
-        color: 'green'
+    public stats: PostsStats = {
+        likes: {
+            text: 'Me gusta',
+            icon: 'favorite_outline',
+            color: 'red'
+        },
+        views: {
+            text: 'Visualizaciones',
+            icon: 'visibility',
+            color: 'blue'
+        },
+        posts: {
+            text: 'Publicaciones',
+            icon: 'description',
+            color: 'green'
+        }
     };
 
     constructor(
@@ -53,9 +60,11 @@ export class UserPostsComponent extends Unsubscriber implements OnInit  {
         private router: Router
     ) {
         super();
+        this.urlQueryParams = this.activatedRoute.snapshot.queryParams;
+        this.authUser = this.authService.getUserDetail();
+
         const userId = this.route.snapshot.paramMap.get('id');
         this.ownerId = userId ? Number(userId) : undefined;
-        this.authUser = this.authService.getUserDetail();
         this.showOwnPosts = !!this.authUser && this.ownerId === this.authUser?.id;
 
         if (this.showOwnPosts) {
@@ -65,19 +74,21 @@ export class UserPostsComponent extends Unsubscriber implements OnInit  {
     }
 
     public ngOnInit(): void {
+        if (!!this.ownerId) {
+            this.academicLevels$ = this.postsService.getAcademicLevels();
+            this.subjectWithAxes$ = this.postsService.getSubjectWithAxis();
+        }
+
         if (this.showOwnPosts) {
             this.authService.refreshUserDetail().pipe(
                 takeUntil(this.ngUnsubscribe$)
             ).subscribe(userDetail => {
                 if (!!userDetail) {
                     this.authUser = new UserDetail(userDetail);
-                    this.setStatsValues(this.authUser);
+                    this.setStatsValues(this.authUser); // Updated info
                 }
             });
         }
-
-        this.urlQueryParams = this.activatedRoute.snapshot.queryParams;
-
     }
 
     public setStatsValues(user: UserDetail | null): void {
@@ -85,17 +96,17 @@ export class UserPostsComponent extends Unsubscriber implements OnInit  {
             return;
         }
 
-        this.stats = [];
-        this.likes.value = this.authUser?.totalLikes ?? 0;
-        this.views.value = this.authUser?.totalViews ?? 0;
-        this.posts.value = this.authUser?.totalPosts ?? 0;
-        this.stats.push(this.likes, this.views);
+        this.stats.likes.value = this.authUser?.totalLikes ?? 0;
+        this.stats.views.value = this.authUser?.totalViews ?? 0;
+        this.stats.posts.value = this.authUser?.totalPosts ?? 0;
     }
 
     public getPosts(postFilters: PostFilters): void {
-        this.isLoading = true;
         postFilters.userId = this.ownerId;
+        this.currentFilters = postFilters;
+        this.isLoading = true;
         this.urlQueryParams = postFilters.formatForURL();
+        console.log('Filters: ', this.urlQueryParams);
         this.setQueryParams(this.urlQueryParams);
 
         this.postsService.getPosts(postFilters.formatForAPI()).pipe(
@@ -111,6 +122,7 @@ export class UserPostsComponent extends Unsubscriber implements OnInit  {
                 ...resp,
                 results: posts
             });
+            console.log('Results: ', this.pageResults);
             this.isLoading = false;
         });
     }
