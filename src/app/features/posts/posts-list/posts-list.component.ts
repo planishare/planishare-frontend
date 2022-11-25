@@ -27,8 +27,8 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
     public academicLevels$: Observable<IAcademicLevel[]> = of();
     public subjectWithAxes$: Observable<ISubjectWithAxis[]> = of();
     public currentFilters?: PostFilters;
-    public removeFilter?: { removeFilter: string };
-    public changePage?: { changePage: number };
+    public removeFilter?: { value: string };
+    public changePage?: { value: number };
 
     constructor(
         private postsService: PostsService,

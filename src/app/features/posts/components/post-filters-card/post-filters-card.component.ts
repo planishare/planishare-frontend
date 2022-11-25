@@ -23,15 +23,9 @@ export class PostFiltersCardComponent extends Unsubscriber implements OnInit, On
     @Input() public academicLevels: IAcademicLevel[] = [];
     @Input() public subjectWithAxis: ISubjectWithAxis[] = [];
 
-    // Set as object to force detect changes
-    @Input() public set removeFilter(value: { removeFilter: string } | undefined) {
-        this.removeFilterByName(value?.removeFilter);
-    }
-
-    // Set as object to force detect changes
-    @Input() public set changePage(value: { changePage: number } | undefined) {
-        this.changePageByNumber(value?.changePage);
-    };
+    // Set as objects to force detect changes
+    @Input() public removeFilter: { value: string } | undefined;
+    @Input() public changePage: { value: number } | undefined;
 
     @Output() public filtersChange = new EventEmitter<PostFilters>();
 
@@ -121,7 +115,7 @@ export class PostFiltersCardComponent extends Unsubscriber implements OnInit, On
             this.setFilterFromUrlParams(this.urlQueryParams!);
             this.doSearch();
 
-            // Listen to filters changes to do search
+            // When filters changes then do search
             const filtersValueChanges$ = merge(
                 this.academicLevelControl.valueChanges,
                 this.subjectControl.valueChanges,
@@ -138,14 +132,25 @@ export class PostFiltersCardComponent extends Unsubscriber implements OnInit, On
         });
     }
 
-    public ngOnChanges(changes: SimpleChanges) {
-        if (changes['academicLevels']) {
-            this.academicLevelsOptions = this.getAcademicLevelOptions(this.academicLevels);
+    public ngOnChanges({ academicLevels, subjectWithAxis, removeFilter, changePage }: SimpleChanges) {
+        const filtersLoaded =
+            (!!academicLevels || !!subjectWithAxis) &&
+            !!this.academicLevels.length &&
+            !!this.subjectWithAxis.length &&
+            !!this.urlQueryParams;
+        this.filtersLoaded$.next(filtersLoaded);
+
+        if (!!academicLevels) {
+            this.academicLevelsOptions = this.getAcademicLevelOptions(academicLevels.currentValue);
             this.academicLevelsLoading = false;
         }
 
-        if (changes['subjectWithAxis']) {
-            const [axesOptions, subjectsOptions, axesGroupOptions] = this.getSubjectAndAxesOptions(this.subjectWithAxis);
+        if (!!subjectWithAxis) {
+            const [
+                axesOptions,
+                subjectsOptions,
+                axesGroupOptions
+            ] = this.getSubjectAndAxesOptions(subjectWithAxis.currentValue);
             this.axesOptions = axesOptions;
             this.axesGroupOptions = axesGroupOptions;
             this.subjectsOptions = subjectsOptions;
@@ -154,12 +159,13 @@ export class PostFiltersCardComponent extends Unsubscriber implements OnInit, On
             this.subjectsLoading = false;
         }
 
-        const filtersLoaded =
-            (changes['academicLevels'] || changes['subjectWithAxis']) &&
-            !!this.academicLevels.length &&
-            !!this.subjectWithAxis.length &&
-            !!this.urlQueryParams;
-        this.filtersLoaded$.next(filtersLoaded);
+        if (!!removeFilter) {
+            this.removeFilterByName(removeFilter.currentValue?.value);
+        }
+
+        if (!!changePage) {
+            this.changePageByNumber(changePage.currentValue?.value);
+        }
     }
 
     private setFilterFromUrlParams(urlQueryParams: IURLPostsQueryParams): void {
@@ -275,7 +281,7 @@ export class PostFiltersCardComponent extends Unsubscriber implements OnInit, On
         });
     }
 
-    public removeFilterByName(name: string | undefined): void {
+    public removeFilterByName(name?: string): void {
         if (!name) {
             return;
         }
@@ -295,7 +301,7 @@ export class PostFiltersCardComponent extends Unsubscriber implements OnInit, On
         }
     }
 
-    public changePageByNumber(newPage: number | undefined): void {
+    public changePageByNumber(newPage?: number): void {
         if (!newPage || newPage === this.filters.page) {
             return;
         }
