@@ -7,7 +7,7 @@
 </div>
 <div mat-dialog-actions class="flex-end-center gap-025">
   <button mat-raised-button color="warn" (click)="deletePost()" *ngIf="!isLoading" @inOutRight [@.disabled]="!isLoading">
-    Eliminar
+    <span class="m-r-05">Eliminar</span>
     <mat-icon class="fs-medium">delete</mat-icon>
   </button>
   <div class="shapes-loader" *ngIf="isLoading" @inOutLeft></div>

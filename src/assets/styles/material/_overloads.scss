@@ -23,13 +23,12 @@
 
 // Material icons
 .small-icon.mat-icon {
-    width: var(--fs-medium);
-    height: 100%;
-    font-size: var(--fs-medium);
+    width: fit-content;
+    font-size: 18px;
 }
 
-.mat-menu-item > .mat-icon {
-    height: 100%;
+.mat-icon {
+    height: fit-content !important;
 }
 
 // Material buttons
@@ -37,10 +36,6 @@
 .mat-flat-button,
 .mat-raised-button {
     border-radius: 100px !important;
-
-    .mat-icon {
-        height: 100%;
-    }
 }
 
 .mat-stroked-button:hover,

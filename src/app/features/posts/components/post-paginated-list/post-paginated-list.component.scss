@@ -13,8 +13,12 @@
 }
 
 .pagination {
-    .circle-button {
+    .circle-button:not(.page-number) {
         --padding: .35em;
+    }
+
+    .page-number {
+        --padding: .8em;
     }
 
     .mat-icon {

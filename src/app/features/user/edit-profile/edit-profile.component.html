@@ -98,11 +98,11 @@
 
       <div class="flex-end-center m-t-1">
         <button type="submit" mat-raised-button color="primary" *ngIf="!isLoading && !alreadySaved" @inOutRight [@.disabled]="!isLoading">
-          Guardar
+          <span class="m-r-05">Guardar</span>
           <mat-icon class="fs-medium">save</mat-icon>
         </button>
         <button type="submit" mat-raised-button color="primary" *ngIf="!isLoading && alreadySaved" @inOutRight [@.disabled]="!isLoading">
-          Guardado
+          <span class="m-r-05">Guardado</span>
           <mat-icon class="fs-medium">check_circle</mat-icon>
         </button>
         <div class="shapes-loader" *ngIf="isLoading" @inOutLeft></div>
@@ -126,7 +126,7 @@
       <p>{{ changePasswordMsg }}</p>
       <div class="flex-end-center m-t-1">
         <button mat-raised-button color="primary" (click)="resetPassword()">
-          Cambiar contraseña
+          <span class="m-r-05">Cambiar contraseña</span>
           <mat-icon class="fs-medium">lock_reset</mat-icon>
         </button>
       </div>

@@ -57,27 +57,15 @@
     border: none;
     text-decoration: none;
     margin: 0;
-    padding: var(--padding, .5em);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: .5em;
+    padding-inline: var(--padding, .5em);
 
     border-radius: 100px;
     aspect-ratio: 1;
+    display: grid;
+    place-items: center;
 
     color: var(--text-color, hsl(var(--clr-white)));
     background-color: var(--bg-color, hsl(var(--clr-blue-dark)));
-
-    >.mat-icon {
-        height: 100%;
-        font-weight: 300;
-    }
-
-    >span {
-        padding-inline: .5ch;
-    }
 }
 
 .circle-button:hover:not(:disabled) {

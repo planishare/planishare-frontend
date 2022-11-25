@@ -45,9 +45,9 @@
         aria-label="Pág. Anterior" matTooltip="Pág. Anterior" matRipple>
         <mat-icon class="small-icon">navigate_before</mat-icon>
       </button>
-      <button class="circle-button fs-medium" [matMenuTriggerFor]="pagesMenu" aria-label="Seleccionar página"
+      <button class="circle-button page-number" [matMenuTriggerFor]="pagesMenu" aria-label="Seleccionar página"
         matTooltip="Seleccionar página" matRipple [disabled]="isLoading || !posts.length">
-        <span class="fs-small fw-700">{{ currentFilters?.page ?? 1 }}</span>
+        <span class="fw-700">{{ currentFilters?.page ?? 1 }}</span>
       </button>
       <mat-menu #pagesMenu>
         <button mat-menu-item *ngFor="let page of (pageResults?.maxPage ?? 1)|fillArray" (click)="changePageByNumber(page)">

@@ -19,7 +19,7 @@
       </div>
       <div class="flex-end-center">
         <button type="submit" mat-raised-button color="primary" disabled="true">
-          <span>Guardar</span>
+          <span class="m-r-05">Guardar</span>
           <mat-icon class="fs-medium">save</mat-icon>
         </button>
       </div>
@@ -80,11 +80,11 @@
 
       <div class="flex-end-center">
         <button type="submit" mat-raised-button color="primary" [disabled]="isPostDataLoading" *ngIf="!isLoading && !isEditForm" @inOutRight [@.disabled]="!isLoading">
-          Publicar
+          <span class="m-r-05">Publicar</span>
           <mat-icon class="fs-medium">send</mat-icon>
         </button>
         <button type="submit" mat-raised-button color="primary" [disabled]="isPostDataLoading" *ngIf="!isLoading && isEditForm" @inOutRight [@.disabled]="!isLoading">
-          Guardar
+          <span class="m-r-05">Guardar</span>
           <mat-icon class="fs-medium">save</mat-icon>
         </button>
         <div class="shapes-loader" *ngIf="isLoading" @inOutLeft></div>
