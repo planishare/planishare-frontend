@@ -1,4 +1,4 @@
-<main class="container">
+<main class="container-row">
     <app-post-filters-card
         class="post-filters-card w-100"
         [urlQueryParams]="urlQueryParams"
@@ -9,7 +9,6 @@
         (filtersChange)="getPosts($event)"
     ></app-post-filters-card>
     <app-post-paginated-list
-        class="post-paginated-list grow-1"
         [pageResults]="pageResults"
         [isLoading]="isLoading"
         [authUser]="authUser"

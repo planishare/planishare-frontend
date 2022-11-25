@@ -80,7 +80,7 @@ export class PostFiltersCardComponent extends Unsubscriber implements OnInit, On
         academicLevel: new FormControl<RoundedSelectOption<IAcademicLevel> | undefined>(undefined),
         subject: new FormControl<RoundedSelectOption<ISubject> | undefined>(undefined),
         axis: new FormControl<RoundedSelectOption<IAxis> | undefined>(undefined),
-        ordering: new FormControl<RoundedSelectOption<IOrdering> | undefined>(undefined)
+        ordering: new FormControl<RoundedSelectOption<IOrdering>>(this.orderOptions[0])
     });
 
     public searchControl = this.form.controls.search as FormControl<string | undefined>;

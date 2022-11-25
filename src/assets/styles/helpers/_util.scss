@@ -17,12 +17,6 @@
     flex-wrap: wrap;
 }
 
-@media (min-width: 48rem) {
-    .container-row {
-        flex-wrap: nowrap;
-    }
-}
-
 .p-l-container {
     padding-left: min(5vw, 2rem);
 }

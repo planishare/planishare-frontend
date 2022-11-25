@@ -1,20 +1,16 @@
-.container {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1rem;
+.container-row {
     padding-bottom: 1.5rem;
-    flex-wrap: wrap;
 }
 
 @media (min-width: 64rem) {
-    .container {
+    .container-row {
         flex-wrap: nowrap;
     }
 
     .post-filters-card {
+        align-self: flex-start;
         max-width: 320px;
-        position: sticky;
+        position: static;
         top: 70px;
     }
 }
