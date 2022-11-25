@@ -11,7 +11,6 @@ import { PostDetailComponent } from './post-detail/post-detail.component';
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 import { PostFormComponent } from './post-form/post-form.component';
 import { PostsListComponent } from './posts-list/posts-list.component';
-import { PostsFiltersComponent } from './components/posts-filters/posts-filters.component';
 import { PostCardComponent } from './components/post-card/post-card.component';
 import { PostCardShimmerComponent } from './components/post-card-shimmer/post-card-shimmer.component';
 import { UserPostsComponent } from './user-posts/user-posts.component';
@@ -24,7 +23,6 @@ import { PostPaginatedListComponent } from './components/post-paginated-list/pos
         DeleteDialogComponent,
         PostFormComponent,
         PostsListComponent,
-        PostsFiltersComponent,
         PostCardComponent,
         PostCardShimmerComponent,
         UserPostsComponent,
