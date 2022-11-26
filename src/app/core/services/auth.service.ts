@@ -192,12 +192,10 @@ export class AuthService {
     }
 
     private authLog(...data: any[]): void {
-        if (!environment.production) {
-            console.log(
-                `%c (AUTH-SERVICE): ${data[0]}`,
-                'background: #222; color: #bada55',
-                ...data.splice(1,1)
-            );
-        }
+        // console.log(
+        //     `%c (AUTH-SERVICE): ${data[0]}`,
+        //     'background: #222; color: #bada55',
+        //     ...data.splice(1,1)
+        // );
     }
 }
