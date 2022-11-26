@@ -17,13 +17,15 @@ import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 
 import { FirebaseAuthService } from 'src/app/core/services/firebase-auth.service';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { LocationsService } from 'src/app/core/services/locations.service';
-import { OccupationsService } from 'src/app/core/services/occupations.service';
-import { UsersService } from 'src/app/core/services/users.service';
+import { LocationsService } from 'src/app/features/user/services/locations.service';
+import { OccupationsService } from 'src/app/features/user/services/occupations.service';
+import { UsersService } from 'src/app/features/user/services/users.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
-import { IEducation, IInstitution, IUserDetail, IUserForm } from 'src/app/core/models/user.model';
-import { ICommune, IRegionWithCommunes } from 'src/app/core/models/location.model';
+import { IUserDetail, IUserForm } from 'src/app/features/user/models/user.model';
+import { ICommune, IRegionWithCommunes } from 'src/app/features/user/models/location.model';
+import { IEducation, IInstitution } from '../../models/institution.model';
+
 import { inOutLeftAnimation, inOutRightAnimation } from 'src/app/shared/animations/animations';
 
 @Component({

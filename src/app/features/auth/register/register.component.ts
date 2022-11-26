@@ -10,7 +10,7 @@ import { FirebaseAuthErrorCodes } from 'src/app/core/enums/auth.enum';
 import { BasicCredentials } from 'src/app/core/types/auth.type';
 
 import { AuthService } from 'src/app/core/services/auth.service';
-import { UsersService } from 'src/app/core/services/users.service';
+import { UsersService } from 'src/app/features/user/services/users.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
 import { inOutLeftAnimation, inOutRightAnimation } from 'src/app/shared/animations/animations';
@@ -46,8 +46,8 @@ export class RegisterComponent {
     public matcher = new MyErrorStateMatcher();
     public redirectTo: string = '/';
 
-    public showPassword = true;
-    public showPasswordConfirmation = true;
+    public showPassword = false;
+    public showPasswordConfirmation = false;
     public isLoading = false;
     public isLoadingGoogle = false;
 

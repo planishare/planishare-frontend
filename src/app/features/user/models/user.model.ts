@@ -1,4 +1,4 @@
-import { User } from "@angular/fire/auth";
+import { IEducation, IInstitution } from "./institution.model";
 import { ICommune } from "./location.model";
 
 export interface IUserSimpleDetail {
@@ -82,22 +82,6 @@ export class UserDetail {
         this.commune = user.commune ?? this.commune;
         this.updatedAt = user.updated_at ? new Date(user.updated_at) : this.updatedAt;
     }
-}
-
-export interface IEducation {
-    id: number,
-    name: string
-}
-
-export interface IInstitution {
-    id: number,
-    name: string,
-    institution_type: IInstitutionType
-}
-
-export interface IInstitutionType {
-    id: number,
-    name: string
 }
 
 export interface IUserForm {

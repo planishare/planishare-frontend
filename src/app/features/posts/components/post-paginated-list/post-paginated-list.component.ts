@@ -11,7 +11,7 @@ import { OrderingType } from 'src/app/features/posts/enums/posts.enum';
 import { Pageable } from 'src/app/shared/models/pageable.model';
 import { IURLPostsQueryParams, PostFilters } from 'src/app/features/posts/models/post-filter.model';
 import { PostDetail } from 'src/app/features/posts/models/post.model';
-import { UserDetail } from 'src/app/core/models/user.model';
+import { UserDetail } from 'src/app/features/user/models/user.model';
 
 @Component({
     selector: 'app-post-paginated-list',

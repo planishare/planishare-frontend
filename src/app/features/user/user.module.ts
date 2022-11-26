@@ -7,7 +7,7 @@ import { MaterialModule } from 'src/app/material.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
-import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
 
 @NgModule({
     declarations: [

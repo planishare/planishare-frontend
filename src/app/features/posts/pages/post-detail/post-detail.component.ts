@@ -9,14 +9,14 @@ import { ReactionsService } from 'src/app/features/posts/services/reactions.serv
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
 import { IURLPostsQueryParams } from 'src/app/features/posts/models/post-filter.model';
-import { UserDetail } from 'src/app/core/models/user.model';
+import { UserDetail } from 'src/app/features/user/models/user.model';
 import { IPostFile, PostDetail } from 'src/app/features/posts/models/post.model';
 import { viewerType } from 'ngx-doc-viewer';
 
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 import { WindowResizeService } from 'src/app/shared/services/window-resize.service';
 
-import { DeleteDialogComponent } from '../components/delete-dialog/delete-dialog.component';
+import { DeleteDialogComponent } from '../../components/delete-dialog/delete-dialog.component';
 import { ReportDialogComponent } from 'src/app/shared/components/report-dialog/report-dialog.component';
 import { fadeInOutAnimation } from 'src/app/shared/animations/animations';
 

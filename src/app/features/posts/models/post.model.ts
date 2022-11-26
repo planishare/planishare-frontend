@@ -1,4 +1,4 @@
-import { IUserSimpleDetail, UserSimpleDetail } from "../../../core/models/user.model";
+import { IUserSimpleDetail, UserSimpleDetail } from "../../user/models/user.model";
 import { DOCUMENT_VIEWER, FILE_TAG_COLOR } from "../../../shared/constants/files.constants";
 import { viewerType } from "ngx-doc-viewer";
 

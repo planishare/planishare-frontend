@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AuthService } from './services/auth.service';
-import { UsersService } from './services/users.service';
+import { UsersService } from '../features/user/services/users.service';
 import { FirebaseAuthService } from './services/firebase-auth.service';
 import { RollbarErrorHandlerService } from './services/rollbar-error-handler.service';
 

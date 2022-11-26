@@ -9,7 +9,7 @@ import { WindowScrollService } from '../../services/window-scroll.service';
 import { SidenavComponent } from 'src/app/shared/enums/sidenav.enum';
 
 import { Unsubscriber } from '../../utils/unsubscriber';
-import { UserDetail } from 'src/app/core/models/user.model';
+import { UserDetail } from 'src/app/features/user/models/user.model';
 
 @Component({
     selector: 'app-navbar',

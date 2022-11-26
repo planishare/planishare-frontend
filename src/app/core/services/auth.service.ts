@@ -17,11 +17,11 @@ import {
 } from '@angular/fire/auth';
 
 import { FirebaseAuthService } from './firebase-auth.service';
-import { UsersService } from './users.service';
+import { UsersService } from '../../features/user/services/users.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
 import { BasicCredentials } from '../types/auth.type';
-import { IUserDetail, IUserForm, UserDetail } from '../models/user.model';
+import { IUserDetail, IUserForm, UserDetail } from '../../features/user/models/user.model';
 
 @Injectable({
     providedIn: 'root'
@@ -139,10 +139,10 @@ export class AuthService {
         return from(createUserWithEmailAndPassword(this.auth, credentials.email, credentials.password))
             .pipe(
                 switchMap(() => {
-                    this.firebaseAuthService.sendEmailVerification();
                     return this.register(credentials);
                 }),
                 switchMap(() => {
+                    this.firebaseAuthService.sendEmailVerification();
                     return this.isAuth$.asObservable();
                 }),
                 filter(user => !!user)

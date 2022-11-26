@@ -26,8 +26,12 @@ export class FirebaseAuthService {
                     duration: 4000
                 });
             })
-            .catch(() => {
-                this.showErrorMessage();
+            .catch((error: FirebaseError) => {
+                if (error.code === FirebaseAuthErrorCodes.TOO_MANY_REQUESTS) {
+                    this.showErrorMessage('Ya se envió un correo, intenta de nuevo más tarde 👀');
+                } else {
+                    this.showErrorMessage();
+                }
             });
     }
 
