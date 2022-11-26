@@ -6,27 +6,40 @@ export interface IUserSimpleDetail {
     email: string,
     first_name: string,
     last_name: string,
-    education: IEducation,
-    institution: IInstitution
+    education: IEducation | null,
+    institution: IInstitution | null
 }
 
 export class UserSimpleDetail {
     public id: number;
     public email: string;
-    public firstName: string;
-    public lastName: string;
-    public fullName: string;
-    public education: IEducation;
-    public institution: IInstitution;
+    public firstName?: string;
+    public lastName?: string;
+    public fullName?: string;
+    public education?: IEducation;
+    public institution?: IInstitution;
 
     constructor (user: IUserSimpleDetail) {
         this.id = user.id;
         this.email = user.email;
         this.firstName = user.first_name;
         this.lastName = user.last_name;
-        this.fullName = `${user.first_name} ${user.last_name}`;
-        this.education = user.education;
-        this.institution = user.institution;
+        this.fullName = this.getFullName(user.first_name, user.last_name);
+        this.education = user.education ?? undefined;
+        this.institution = user.institution ?? undefined;
+    }
+
+    private getFullName(firstName: string, lastName: string): string | undefined {
+        if (firstName && lastName) {
+            return `${firstName} ${lastName}`;
+        }
+        if (firstName !== '') {
+            return firstName;
+        }
+        if (lastName !== '') {
+            return lastName;
+        }
+        return undefined;
     }
 }
 
