@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-post-card-shimmer',
-  templateUrl: './post-card-shimmer.component.html',
-  styleUrls: ['./post-card-shimmer.component.scss']
+    selector: 'app-post-card-shimmer',
+    templateUrl: './post-card-shimmer.component.html',
+    styleUrls: ['./post-card-shimmer.component.scss']
 })
-export class PostCardShimmerComponent implements OnInit {
+export class PostCardShimmerComponent {
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+    constructor() { }
 
 }
