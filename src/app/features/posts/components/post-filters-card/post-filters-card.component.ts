@@ -7,9 +7,9 @@ import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 
 import { WindowResizeService } from 'src/app/shared/services/window-resize.service';
 
-import { OrderingType, OrderingTypeName } from 'src/app/core/enums/posts.enum';
-import { IOrdering, IURLPostsQueryParams, PostFilters } from 'src/app/core/models/post-filter.model';
-import { IAcademicLevel, IAxis, ISubject, ISubjectWithAxis } from 'src/app/core/models/post.model';
+import { OrderingType, OrderingTypeName } from 'src/app/features/posts/enums/posts.enum';
+import { IOrdering, IURLPostsQueryParams, PostFilters } from 'src/app/features/posts/models/post-filter.model';
+import { IAcademicLevel, IAxis, ISubject, ISubjectWithAxis } from 'src/app/features/posts/models/post.model';
 import { RoundedSelectGroup, RoundedSelectOption } from 'src/app/shared/types/rounded-select.type';
 
 @Component({

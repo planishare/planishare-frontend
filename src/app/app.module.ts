@@ -3,9 +3,10 @@ import {
     NgModule,
     ErrorHandler
 } from '@angular/core';
-
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { environment } from '../environments/environment';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Components
 import { AppComponent } from './app.component';
@@ -15,8 +16,6 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
 import { CoreModule } from './core/core.module';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
 
 // Firebase

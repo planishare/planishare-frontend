@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { IURLPostsQueryParams } from 'src/app/core/models/post-filter.model';
-import { PostDetail } from 'src/app/core/models/post.model';
+import { IURLPostsQueryParams } from 'src/app/features/posts/models/post-filter.model';
+import { PostDetail } from 'src/app/features/posts/models/post.model';
 
 @Component({
     selector: 'app-post-card',

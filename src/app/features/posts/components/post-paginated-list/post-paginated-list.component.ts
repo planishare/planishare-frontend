@@ -7,10 +7,10 @@ import { fadeInOutAnimation, inOutLeftAnimation, inOutRightAnimation } from 'src
 
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
-import { OrderingType } from 'src/app/core/enums/posts.enum';
-import { Pageable } from 'src/app/core/models/pageable.model';
-import { IURLPostsQueryParams, PostFilters } from 'src/app/core/models/post-filter.model';
-import { PostDetail } from 'src/app/core/models/post.model';
+import { OrderingType } from 'src/app/features/posts/enums/posts.enum';
+import { Pageable } from 'src/app/shared/models/pageable.model';
+import { IURLPostsQueryParams, PostFilters } from 'src/app/features/posts/models/post-filter.model';
+import { PostDetail } from 'src/app/features/posts/models/post.model';
 import { UserDetail } from 'src/app/core/models/user.model';
 
 @Component({

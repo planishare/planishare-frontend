@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Observable, of, takeUntil } from 'rxjs';
 
-import { Pageable } from 'src/app/core/models/pageable.model';
-import { PostFilters, IURLPostsQueryParams } from 'src/app/core/models/post-filter.model';
-import { IAcademicLevel, ISubjectWithAxis, PostDetail } from 'src/app/core/models/post.model';
-import { OrderingType } from 'src/app/core/enums/posts.enum';
+import { Pageable } from 'src/app/shared/models/pageable.model';
+import { PostFilters, IURLPostsQueryParams } from 'src/app/features/posts/models/post-filter.model';
+import { IAcademicLevel, ISubjectWithAxis, PostDetail } from 'src/app/features/posts/models/post.model';
+import { OrderingType } from 'src/app/features/posts/enums/posts.enum';
 import { UserDetail } from 'src/app/core/models/user.model';
 
 import { AuthService } from 'src/app/core/services/auth.service';
-import { PostsService } from 'src/app/core/services/posts.service';
+import { PostsService } from 'src/app/features/posts/services/posts.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';

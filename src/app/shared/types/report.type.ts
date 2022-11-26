@@ -1,5 +1,5 @@
-import { ReportType } from "../../shared/enums/report.enum";
-import { PostDetail } from "../models/post.model";
+import { ReportType } from "../enums/report.enum";
+import { PostDetail } from "../../features/posts/models/post.model";
 
 export type APIReportBody = {
     report_type: ReportType,

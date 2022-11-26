@@ -4,13 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, of, takeUntil } from 'rxjs';
 
 import { AuthService } from 'src/app/core/services/auth.service';
-import { PostsService } from 'src/app/core/services/posts.service';
-import { ReactionsService } from 'src/app/core/services/reactions.service';
+import { PostsService } from 'src/app/features/posts/services/posts.service';
+import { ReactionsService } from 'src/app/features/posts/services/reactions.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
-import { IURLPostsQueryParams } from 'src/app/core/models/post-filter.model';
+import { IURLPostsQueryParams } from 'src/app/features/posts/models/post-filter.model';
 import { UserDetail } from 'src/app/core/models/user.model';
-import { IPostFile, PostDetail } from 'src/app/core/models/post.model';
+import { IPostFile, PostDetail } from 'src/app/features/posts/models/post.model';
 import { viewerType } from 'ngx-doc-viewer';
 
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';

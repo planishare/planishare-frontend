@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { PostsRoutingModule } from './posts-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MaterialModule } from 'src/app/material.module';
-import { ReactiveFormsModule } from '@angular/forms';
-import { NgxDocViewerModule } from 'ngx-doc-viewer';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 import { PostDetailComponent } from './post-detail/post-detail.component';
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';

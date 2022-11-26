@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { IPageable } from '../models/pageable.model';
+import { IPageable } from '../../../shared/models/pageable.model';
 import { IAPIPostsQueryParams } from '../models/post-filter.model';
 import { IPostDetail, IAcademicLevel, ISubject, IAxis, ISubjectWithAxis, IPostForm } from '../models/post.model';
 

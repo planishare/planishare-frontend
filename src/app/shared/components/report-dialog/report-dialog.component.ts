@@ -5,9 +5,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, of } from 'rxjs';
 
 import { ReportType } from 'src/app/shared/enums/report.enum';
-import { APIReportBody, ReportInput } from 'src/app/core/types/report.type';
+import { APIReportBody, ReportInput } from 'src/app/shared/types/report.type';
 
-import { ReportService } from 'src/app/core/services/report.service';
+import { ReportService } from 'src/app/features/posts/services/report.service';
 import { CommonSnackbarMsgService } from '../../services/common-snackbar-msg.service';
 import { inOutLeftAnimation, inOutRightAnimation } from '../../animations/animations';
 

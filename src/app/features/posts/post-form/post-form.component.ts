@@ -3,11 +3,11 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of, forkJoin, takeUntil, catchError, tap, startWith, map, delay } from 'rxjs';
 
-import { IAcademicLevel, IAxis, IPostDetail, IPostForm, ISubjectWithAxis, PostDetail, PostFile } from 'src/app/core/models/post.model';
+import { IAcademicLevel, IAxis, IPostDetail, IPostForm, ISubjectWithAxis, PostDetail, PostFile } from 'src/app/features/posts/models/post.model';
 import { inOutLeftAnimation, inOutRightAnimation, inOutYAnimation } from 'src/app/shared/animations/animations';
 
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
-import { PostsService } from 'src/app/core/services/posts.service';
+import { PostsService } from 'src/app/features/posts/services/posts.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
