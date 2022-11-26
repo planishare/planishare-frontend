@@ -5,7 +5,7 @@ import { catchError, Observable, of, takeUntil } from 'rxjs';
 import { Pageable } from 'src/app/shared/models/pageable.model';
 import { PostFilters, IURLPostsQueryParams } from 'src/app/features/posts/models/post-filter.model';
 import { IAcademicLevel, ISubjectWithAxis, PostDetail } from 'src/app/features/posts/models/post.model';
-import { OrderingType } from 'src/app/features/posts/enums/posts.enum';
+import { OrderingType } from 'src/app/features/posts/constants/posts.enum';
 import { UserDetail } from 'src/app/features/user/models/user.model';
 import { PostsStats } from '../../types/posts-stats.type';
 
