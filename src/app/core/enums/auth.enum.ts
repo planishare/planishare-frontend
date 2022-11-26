@@ -5,4 +5,5 @@ export enum FirebaseAuthErrorCodes {
     USER_NOT_FOUND = 'auth/user-not-found',
     USER_DISABLED = 'auth/user-disabled',
     POPUP_CLOSED_BY_USER = 'auth/popup-closed-by-user',
+    EMAIL_ALREADY_USED = 'auth/email-already-in-use'
 }

@@ -81,7 +81,18 @@ export class RegisterComponent {
 
         this.authService.registerWithEmailAndPassword(credentials).pipe(
             catchError((error: FirebaseError) => {
-                this.commonSnackbarMsg.showErrorMessage();
+                switch (error.code) {
+                    case FirebaseAuthErrorCodes.EMAIL_ALREADY_USED:
+                        this.form.controls.email.setErrors({ alreadyUsed: true });
+                        this.matSnackbar.open(
+                            'Ya existe una cuenta registrada con este email 👀',
+                            'Cerrar'
+                        );
+                        break;
+                    default:
+                        this.commonSnackbarMsg.showErrorMessage();
+                        break;
+                }
                 this.isLoading = false;
                 return of();
             })
