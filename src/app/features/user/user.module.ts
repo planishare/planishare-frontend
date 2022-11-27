@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { UserRoutingModule } from './user-routing.module';
-import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { MaterialModule } from 'src/app/material.module';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+
+import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
 
 @NgModule({
     declarations: [
@@ -12,7 +16,10 @@ import { SharedModule } from 'src/app/shared/shared.module';
     imports: [
         CommonModule,
         UserRoutingModule,
-        SharedModule
+        SharedModule,
+        MaterialModule,
+        ReactiveFormsModule,
+        NgxMatSelectSearchModule
     ]
 })
 export class UserModule { }

@@ -1,10 +1,64 @@
-// Mobile  responsive fix to center options in scren
-@media (max-width: 48rem) {
+// ngx-mat-select-search tablet and mobile fix
+@media (max-width: calc(48rem - 1px)) {
+    .mat-select-search-input {
+        padding: 0 0 0 16px !important;
+    }
+    .mat-select-search-inner {
+        width: 100%;
+    }
+    .mat-select-panel {
+        max-width: 80vw !important;
+    }
+}
+
+@media (max-height: 32rem) and (max-width: calc(64rem - 1px)) {
     .cdk-overlay-pane {
         position: static;
     }
     .cdk-overlay-connected-position-bounding-box {
         align-items: center;
-        justify-content: center;
+        justify-content: space-around;
     }
+}
+
+// Material icons
+.small-icon.mat-icon {
+    width: fit-content;
+    font-size: 18px;
+}
+
+.mat-icon {
+    height: fit-content !important;
+}
+
+// Material buttons
+.mat-stroked-button,
+.mat-flat-button,
+.mat-raised-button {
+    border-radius: 100px !important;
+}
+
+.mat-stroked-button:hover,
+.mat-flat-button:hover,
+.mat-raised-button:hover {
+    opacity: .9;
+}
+
+// Material dialogs
+.mat-dialog-container {
+    border-radius: 15px !important;
+}
+
+@media (min-width: 48rem) {
+    .mat-dialog-container {
+        border-radius: 18px !important;
+    }
+}
+
+// Dialog pannelClasses
+.default-dialog {
+    border-radius: 12px !important;
+    background-color: hsl(var(--clr-white), .7);
+    backdrop-filter: blur(20px);
+    color: hsl(var(--clr-blue-dark), .8);
 }

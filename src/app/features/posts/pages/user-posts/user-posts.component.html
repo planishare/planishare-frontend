@@ -1,0 +1,27 @@
+<main class="container-row">
+  <div class="left-side w-100">
+    <app-user-posts-stats
+      class="m-b-1"
+      *ngIf="showOwnPosts"
+      [stats]="stats">
+    </app-user-posts-stats>
+    <app-post-filters-card
+      [urlQueryParams]="urlQueryParams"
+      [academicLevels]="(academicLevels$ | async) ?? []"
+      [subjectWithAxis]="(subjectWithAxes$ | async) ?? []"
+      [removeFilter]="removeFilter"
+      [changePage]="changePage"
+      (filtersChange)="getPosts($event)">
+    </app-post-filters-card>    
+  </div>
+  <app-post-paginated-list
+    [pageResults]="pageResults"
+    [isLoading]="isLoading"
+    [authUser]="authUser"
+    [currentFilters]="currentFilters"
+    [urlQueryParams]="urlQueryParams"
+    (changePage)="changePage = { value: $event }"
+    (removeFilter)="removeFilter = { value: $event }">
+  </app-post-paginated-list>
+</main>
+<app-scroll-to-top-button></app-scroll-to-top-button>

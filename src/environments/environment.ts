@@ -2,10 +2,9 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-// Build dev: ng build --configuration development
-// Deploy to Firebase dev: firebase deploy -P dev
+import { IEnviroment } from "./environment.interface";
 
-export const environment = {
+export const environment: IEnviroment = {
     firebase: {
         projectId: "planishare-dev",
         appId: "1:792556766443:web:1ef9b360cbb004e48aaaae",

@@ -1,11 +1,11 @@
-// Design variables
-@import './design/colors';
-@import './helpers/display';
-@import './helpers/misc';
-@import './helpers/box-model';
-@import './material/overloads';
+@import './design/components/index';
+@import './design/reset';
+@import './design/fonts';
 
-// Typography
-// * {
-//     font-family: 'Manrope', 'Roboto', sans-serif;
-// }
+@import './helpers/util';
+@import './helpers/misc';
+@import './helpers/display';
+@import './helpers/box-model';
+
+@import './material/overloads';
+@import './design/colors';

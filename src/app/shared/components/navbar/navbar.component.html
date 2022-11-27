@@ -1,76 +1,71 @@
-<div [style.background-color]="(buttonConfig|async)?.backgroundColor">
-    <nav class="navbar" *ngIf="!isTablet">
-        <button mat-raised-button class="logo" [routerLink]="['/']">
-            <span class="logo-text">Planishare 📖</span>
+<header class="header" [ngClass]="{'header_on-scroll': onScroll}">
+    <div class="container">
+
+        <!-- Mobile navbar -->
+        <button mat-icon-button (click)="openSidenav()" *ngIf="!isDesktop">
+            <mat-icon>menu</mat-icon>
         </button>
-        <ul>
-            <li>
-                <button mat-raised-button [routerLink]="['/tops']" routerLinkActive="button-active-red">
-                    <mat-icon>local_fire_department</mat-icon>
-                    Tops
-                </button>
-            </li>
-            <li *ngIf="!isUserAuth">
-                <button mat-raised-button [routerLink]="['/auth/register']" routerLinkActive="button-active">
-                    <mat-icon>person_add</mat-icon>
-                    Registrarse
-                </button>
-            </li>
-            <li *ngIf="!isUserAuth">
-                <button mat-raised-button [routerLink]="['/auth/login']" routerLinkActive="button-active">
-                    <mat-icon>login</mat-icon>
-                    Iniciar Sesión
-                </button>
-            </li>
-            <li *ngIf="isUserAuth">
-                <button mat-raised-button [routerLink]="['/posts/user']" routerLinkActive="button-active">
-                    <mat-icon>description</mat-icon>
-                    Mis publicaciones
-                </button>
-            </li>
-            <li *ngIf="isUserAuth">
-                <button mat-raised-button [routerLink]="['/posts/create']" routerLinkActive="button-active">
-                    <mat-icon>control_point</mat-icon>
-                    Crear publicación
-                </button>
-            </li>
-            <li *ngIf="(buttonConfig|async)?.showSeachButton">
-                <button mat-raised-button class="search-button" [routerLink]="['/', 'results']">
-                    <mat-icon>search</mat-icon>
-                    <span>Buscar</span>
-                </button>
-            </li>
-            <li *ngIf="isUserAuth">
-                <button mat-mini-fab
-                class="profile-button"
-                [matMenuTriggerFor]="menu"
-                aria-label="Menu de perfil">
-                    <mat-icon>person</mat-icon>
-                </button>
-                <mat-menu #menu="matMenu">
-                    <button mat-menu-item [routerLink]="['/user/edit-profile']">
-                      <mat-icon>person</mat-icon>
-                      <span>Mi perfil</span>
-                    </button>
-                    <button mat-menu-item (click)="logout()">
-                      <mat-icon>logout</mat-icon>
-                      <span>Cerrar sesión</span>
-                    </button>
-                </mat-menu>
-            </li>
-        </ul>
-    </nav>
     
-    <nav class="navbar" *ngIf="isTablet">
-        <button mat-icon-button (click)="openSidenav()">
-            <mat-icon class="menu-icon">menu</mat-icon>
-        </button>
-        <button mat-raised-button class="logo-mobile" [routerLink]="['/']">
-            Planishare
-        </button>
-        <!-- <button [ngStyle]="{'visibility': !(buttonConfig|async)?.showSeachButton ? 'hidden' : 'visible'}" mat-raised-button class="simple-icon" (click)="openSearchDialog()"> -->
-        <button [ngStyle]="{'visibility': !(buttonConfig|async)?.showSeachButton ? 'hidden' : 'visible'}" mat-raised-button class="simple-icon" [routerLink]="['/', 'results']">
+        <a class="logo fs-large fw-800 text-blue-dark" matRipple [routerLink]="['/']">
+            <img src="/assets/images/main-icon.png" alt="Ícono de Planishare">
+            <span>Plansihare</span>
+        </a>
+    
+        <a mat-icon-button *ngIf="!isDesktop" [routerLink]="['/posts/list']">
             <mat-icon>search</mat-icon>
-        </button>
-    </nav>
-</div>    
+        </a>
+    
+        <!-- Desktop navbar -->
+        <nav *ngIf="isDesktop">
+            <ul class="navbar__list fs-regular fw-700">
+                <li *ngIf="!authUser">
+                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/auth/register']" routerLinkActive="active">
+                        <mat-icon>person_add</mat-icon>
+                        <span>Registrarse</span>
+                    </a>
+                </li>
+                <li *ngIf="!authUser">
+                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/auth/login']" routerLinkActive="active">
+                        <mat-icon>login</mat-icon>
+                        <span>Iniciar Sesión</span>
+                    </a>
+                </li>
+                <li *ngIf="authUser">
+                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/posts/user', authUser.id]" routerLinkActive="active">
+                        <mat-icon>description</mat-icon>
+                        <span>Mis publicaciones</span>
+                    </a>
+                </li>
+                <li *ngIf="authUser">
+                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/posts/create']" routerLinkActive="active">
+                        <mat-icon>control_point</mat-icon>
+                        <span>Crear publicación</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="rounded-button box-shadow-1" matRipple [routerLink]="['/posts/list']" routerLinkActive="active">
+                        <mat-icon>search</mat-icon>
+                        <span>Buscar</span>
+                    </a>
+                </li>
+                <li *ngIf="authUser">
+                    <button class="circle-button box-shadow-1" matRipple
+                        [matMenuTriggerFor]="menu"
+                        aria-label="Menu de perfil">
+                            <mat-icon class="fw-300">person</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item [routerLink]="['/user/edit-profile']">
+                          <mat-icon>person</mat-icon>
+                          <span>Mi perfil</span>
+                        </button>
+                        <button mat-menu-item (click)="logout()">
+                          <mat-icon>logout</mat-icon>
+                          <span>Cerrar sesión</span>
+                        </button>
+                    </mat-menu>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>

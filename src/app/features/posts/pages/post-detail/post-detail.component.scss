@@ -1,0 +1,55 @@
+.container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+@media (min-width: 64rem) {
+    .container {
+        flex-wrap: nowrap;
+    }
+
+    .left-card {
+        min-width: 350px;
+        max-width: 350px;
+    }
+
+    .rounded-card {
+        gap: 1rem;
+    }
+}
+
+.rounded-button-slim.fs-small {
+    font-weight: 700;
+}
+
+.active {
+    background-color: hsl(var(--clr-blue));
+    color: hsl(var(--clr-white));
+}
+
+.right-card {
+    width: 100%;
+    height: 90vh;
+    border-radius: 10px;
+    background-color: hsl(var(--clr-white));
+    padding: .4rem .4rem .5rem .4rem;
+    resize: vertical;
+    overflow: auto;
+}
+
+.doc-viewer {
+    height: 100%;
+
+    ngx-doc-viewer {
+        height: 100%;
+    }
+}
+
+.no-preview-image {
+    width: 80%;
+    max-width: 400px;
+}

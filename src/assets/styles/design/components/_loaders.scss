@@ -1,0 +1,35 @@
+// Loaders
+.shapes-loader {
+    width: 2rem;
+    height: 2rem;
+
+    // Circle shape
+    border-radius: 50%;
+    background: hsl(var(--clr-purple-light));
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    animation: shapes-loader 2.5s infinite cubic-bezier(0.3, 1, 0, 1);
+
+    // Resets
+    padding: 0 !important;
+    > * {
+        display: none !important;
+    }
+}
+
+@keyframes shapes-loader {
+
+    // Square
+    33% {
+        border-radius: 0;
+        background: hsl(var(--clr-pink));
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+
+    // Triangle
+    66% {
+        border-radius: 0;
+        background: hsl(var(--clr-yellow-light));
+        clip-path: polygon(50% 0, 50% 0, 100% 100%, 0 100%);
+        transform: rotate(360deg);
+    }
+}

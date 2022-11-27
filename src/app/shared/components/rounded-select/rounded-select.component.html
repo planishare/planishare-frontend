@@ -1,0 +1,34 @@
+<mat-form-field class="hidden-select">
+  <mat-label>{{ textValue ?? baseText }}</mat-label>
+  <mat-select [formControl]="control!" disableOptionCentering panelClass="rounded-select-panel" #custom_select>
+    <mat-option *ngIf="searchInput">
+      <ngx-mat-select-search [disableInitialFocus]="true" [formControl]="search"
+        placeholderLabel="{{ searchPlaceholder }}" [searching]="loading"
+        noEntriesFoundLabel="No se encontraron resultados">
+      </ngx-mat-select-search>
+    </mat-option>
+
+    <mat-option *ngIf="!!control!.value && resetButton" [value]="null">Borrar</mat-option>
+    <mat-divider *ngIf="!!control!.value && resetButton"></mat-divider>
+
+    <ng-container *ngIf="!hasGroups">
+      <mat-option [value]="option" *ngFor="let option of filteredOptions">
+        {{ option.text}}
+      </mat-option>
+    </ng-container>
+
+    <ng-container *ngIf="hasGroups">
+      <mat-optgroup *ngFor="let group of filteredOptions" [label]="group.text">
+        <!-- Workaround: https://angular.io/guide/template-typecheck#disabling-type-checking-using-any -->
+        <mat-option *ngFor="let option of $any(group).options" [value]="option">
+          {{ option.text }}
+        </mat-option>
+      </mat-optgroup>
+    </ng-container>
+  </mat-select>
+</mat-form-field>
+
+<button class="rounded-button" [disabled]="disabled" (click)="toggleSelect(custom_select)" aria-hidden="true" matRipple>
+  <span>{{ textValue ?? baseText }}</span>
+  <mat-icon>expand_more</mat-icon>
+</button>
