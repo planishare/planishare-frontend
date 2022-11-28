@@ -3,7 +3,7 @@
     <div class="flex-space_between-center">
       <p>{{ post.user.fullName ?? post.user.email }} - {{ post.createdAt|timeAgo }}</p>
 
-      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Opciones" matTooltip="Opciones">
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Opciones">
         <mat-icon class="text-blue-dark">more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
