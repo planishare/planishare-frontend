@@ -95,4 +95,12 @@ export class PostPaginatedListComponent implements OnChanges {
             }
         });
     }
+
+    public postTrackBy(index: number, post: PostDetail) {
+        return post.id;
+    }
+
+    public shimmerTrackBy(index: number, value: number) {
+        return value;
+    }
 }

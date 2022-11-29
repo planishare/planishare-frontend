@@ -64,7 +64,7 @@
 
 <!-- Post grid -->
 <section class="posts-grid" *ngIf="!isLoading && posts.length" @fadeInOut>
-  <ng-container *ngFor="let post of posts">
+  <ng-container *ngFor="let post of posts; trackBy: postTrackBy">
     <app-post-card [post]="post" [urlQueryParams]="urlQueryParams ?? {}" [isOwner]="authUser?.id === post.user.id"
       (report)="report(post)" (delete)="deletePost(post)"></app-post-card>
   </ng-container>
@@ -72,7 +72,7 @@
 
 <!-- Post shimmer grid -->
 <div class="posts-grid" *ngIf="isLoading" @fadeInOut>
-  <app-post-card-shimmer *ngFor="let post of 5|fillArray"></app-post-card-shimmer>
+  <app-post-card-shimmer *ngFor="let post of 5|fillArray; trackBy: shimmerTrackBy"></app-post-card-shimmer>
 </div>
 
 <!-- No results -->
