@@ -1,0 +1,42 @@
+// Variables
+:root {
+    // Sizes: calc([min-fs]px + ([max-fs - min-fs]) * ((100vw - [min-vw]px) / ([max-vw - min-vw])));
+    --fs-small: clamp(12px, calc(12px + (13 - 12) * ((100vw - 320px) / (1440 - 320))), 13px);
+    --fs-regular: clamp(14px, calc(14px + (15 - 14) * ((100vw - 320px) / (1440 - 320))), 15px);
+    --fs-medium: clamp(16px, calc(16px + (22 - 16) * ((100vw - 320px) / (1440 - 320))), 22px);
+    --fs-large: clamp(20px, calc(20px + (24 - 20) * ((100vw - 320px) / (1440 - 320))), 24px);
+    --fs-x-large: clamp(26px, calc(26px + (32 - 26) * ((100vw - 320px) / (1440 - 320))), 32px);
+    --fs-xx-large: clamp(30px, calc(30px + (68 - 30) * ((100vw - 320px) / (1440 - 320))), 68px);
+
+    // Line height
+    --lh-xx-large: clamp(35px, calc(35px + (76 - 35) * ((100vw - 320px) / (1440 - 320))), 76px);
+}
+
+// Font sizes
+.fs-small { 
+    font-size: var(--fs-small);
+}
+.fs-regular { 
+    font-size: var(--fs-regular);
+}
+.fs-medium { 
+    font-size: var(--fs-medium);
+}
+.fs-large { 
+    font-size: var(--fs-large);
+}
+.fs-x-large { 
+    font-size: var(--fs-x-large);
+}
+.fs-xx-large { 
+    font-size: var(--fs-xx-large);
+    line-height: var(--lh-xx-large, auto);
+}
+
+// Font weight
+.fw-300 { font-weight: 300; }
+.fw-400 { font-weight: 400; }
+.fw-500 { font-weight: 500; }
+.fw-600 { font-weight: 600; }
+.fw-700 { font-weight: 700; }
+.fw-800 { font-weight: 800; }

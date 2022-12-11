@@ -1,7 +1,7 @@
-<ng-container *ngIf="isAuthCompleted && !this.inMaintenance">
+<ng-container *ngIf="(isAuthCompleted|async) && !this.inMaintenance">
     <router-outlet></router-outlet>
 </ng-container>
 
-<div class="loader" *ngIf="!isAuthCompleted || this.inMaintenance">
-    <app-book-loader></app-book-loader>
+<div class="loader" *ngIf="(isAuthCompleted|async) === false || this.inMaintenance">
+    <app-book-loader @inOutY></app-book-loader>
 </div>

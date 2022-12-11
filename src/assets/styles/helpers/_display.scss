@@ -1,117 +1,99 @@
-// START flex
+// Flex
 .flex,
-.flex_wrap,
-.flex_end,
-.flex_column,
-.flex_column_start,
-.flex_column_end,
-.flex_center,
-.flex_between,
-.flex_between_center,
-.flex_start_center,
-.flex_end_center,
-.flex_justify_end,
-.flex_justify_center,
-.flex_center_center,
-.flex_start {
-  display: flex;
+.flex-center-center,
+.flex-space_between-center,
+.flex-start-center,
+.flex-end-center,
+.flex-column,
+.flex-column-center,
+.flex-wrap
+{
+    display: flex;
 }
 
-.flex_wrap {
-  flex-wrap: wrap;
-}
-
-.flex_start {
-  align-items: flex-start;
-}
-
-.flex_center {
+.flex-center-center {
+    justify-content: center;
     align-items: center;
 }
 
-// .flex_end {
-//   align-items: flex-end;
-// }
-
-.flex_column {
-  flex-direction: column;
+.flex-start-center {
+    justify-content: flex-start;
+    align-items: center;
 }
 
-.flex_column_start {
-  flex-direction: column;
-  align-items: flex-start;
+.flex-end-center {
+    justify-content: flex-end;
+    align-items: center;
 }
 
-// .flex_column_end {
-//   flex-direction: column;
-//   align-items: flex-end;
-// }
-
-.flex_between {
-  justify-content: space-between;
+.flex-space_between-center {
+    justify-content: space-between;
+    align-items: center;
 }
 
-.flex_between_center {
-  justify-content: space-between;
-  align-items: center;
+.flex-space_between {
+    justify-content: space-between;
 }
 
-.flex_start_center {
-  justify-content: flex-start;
-  align-items: center;
+.flex-column {
+    flex-direction: column;
 }
 
-.flex_end_center {
-  justify-content: flex-end;
-  align-items: center;
+.flex-column-center {
+    flex-direction: column;
+    align-items: center;
 }
 
-.flex_justify_end {
-  justify-content: flex-end;
+.flex-wrap {
+    flex-wrap: wrap;
 }
 
-.flex_justify_center {
-  justify-content: center;
+.flex-wrap-reverse {
+    flex-wrap: wrap-reverse;
 }
 
-.flex_center_center {
-  justify-content: center;
-  align-items: center;
-}
-
-.flex-grow-1 {
-  flex: 1;
-}
-
-.flex-grow-2 {
-  flex: 2;
-}
-
-.flex-grow-3 {
-  flex: 3;
-}
-
-// .flex-shrink-0 {
-//   flex-shrink: 0;
-// }
-
-// .flex_self_start {
-//   align-self: start;
-// }
-
-// .flex_inline {
-//   display: inline-flex;
-// }
-
-// Start others
-.gap-1 {
-  gap: 1rem;
+// Gap
+.gap-025 {
+    gap: .25rem;
 }
 
 .gap-05 {
-  gap: 0.5rem;
+    gap: .5rem;
 }
 
 .gap-07 {
-  gap: 0.7rem;
+    gap: .7rem;
+}
+
+.gap-1 {
+    gap: 1rem;
+}
+
+@media (min-width: 48rem) {
+    .gap-1-lg {
+        gap: 1rem;
+    }
+}
+
+.grow-1 {
+    flex-grow: 1;
+}
+
+// Grid
+.grid,
+.grid-center-center {
+    display: grid;
+}
+
+.grid-center-center {
+    place-content: center;
+}
+
+// Other display
+.block {
+    display: block;
+}
+
+.inline-block {
+    display: inline-block;
 }

@@ -1,10 +1,15 @@
-<header class="header">
-  <div class="flex_column" [ngClass]="isMobile ? 'flex_center' : ''">
-    <h1 class="title">Busca y comparte planificaciones de enseñanza básica</h1>
-    <button mat-raised-button class="results-button" [routerLink]="['/', 'results']">
-      Ver planificaciones
+<main class="hero container">
+  <div class="hero__text">
+    <h1 class="fs-xx-large fw-600 text-blue-dark text-shadow-1">Busca y comparte planificaciones de enseñanza básica</h1>
+    <a class="rounded-button fs-medium fw-600 box-shadow-2" matRipple [routerLink]="['/', 'posts', 'list']" @inOutY>
+      <span>Ver planificaciones</span>
       <mat-icon>arrow_forward</mat-icon>
-    </button>
+    </a>
   </div>
-  <img class="teachers-img" src="../../../../assets/images/homepage-teachers.png" alt="Ilustraciones de profesores">
-</header>
+  <div class="hero__img">
+    <picture>
+      <source srcset="/assets/images/homepage_hero.png" media="(min-width: 48rem)">
+      <img src="/assets/images/homepage_hero-mobile.png" alt="Ilustración compartiendo archivos">
+    </picture>
+  </div>
+</main>

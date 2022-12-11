@@ -1,24 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { HomepageRoutingModule } from './homepage-routing.module';
 import { HomepageComponent } from './homepage/homepage.component';
+
+import { HomepageRoutingModule } from './homepage-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { ResultsComponent } from './results/results.component';
-import { ResultsShimmerComponent } from './components/results-shimmer/results-shimmer.component';
-import { TopsComponent } from './tops/tops.component';
+import { MaterialModule } from 'src/app/material.module';
 
 @NgModule({
     declarations: [
-        HomepageComponent,
-        ResultsComponent,
-        ResultsShimmerComponent,
-        TopsComponent
+        HomepageComponent
     ],
     imports: [
         CommonModule,
         HomepageRoutingModule,
-        SharedModule
+        SharedModule,
+        MaterialModule
     ]
 })
 export class HomepageModule { }

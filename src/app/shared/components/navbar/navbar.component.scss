@@ -1,99 +1,56 @@
-// INFO: Navbar height (considerar como 4rem)
-// desktop: 52px
-// mobile: 56px
-
-:host {
-    display: block;
-    // background-color: #faebd7;
+.header {
+    background-color: hsl(var(--clr-white-old));
 }
 
-.navbar {
+.container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
-    padding: 0.5rem 4rem;
-    
-    ul {
-        list-style-type: none;
-        
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
 
-        margin: 0;
-        padding: 0;
-    }
+    max-width: calc(90rem - 16px);
+    padding-inline: calc(min(5%, 2rem) - 16px);
 }
 
 .logo {
-    background-color: var(--green-dark-color);
-    
-    color: var(--light-text);
-    font-weight: 500;
-    border-radius: 10px;
-    font-size: clamp(1.2rem, 1.7000rem + -0.4167vw, 1rem);
-    
-    box-shadow: 0px 1px 3px #303030;
-
-    padding: 0em 0.3em 0em 1.1em;
-
+    text-decoration: none;
     display: flex;
     align-items: center;
-    justify-content: center;
-    
-    .logo-text {
-        margin-right: 1rem;
+    gap: .3em;
+    border-radius: 100px;
+    padding-inline: .5em;
+
+    img {
+        max-height: var(--fs-large);
     }
 }
 
-.search-button {
-    border-radius: 100px;
-}
-
-.logo-mobile {
-    background-color: var(--green-dark-color);
-    
-    color: var(--light-text);
-    font-weight: 500;
-    border-radius: 10px;
-    font-size: clamp(1.2rem, 1.7000rem + -0.4167vw, 1rem);
-    
-    box-shadow: 0px 1px 3px #303030;
-
-    padding: 0.1 1.1em;
-
+.navbar__list {
     display: flex;
+    list-style: none;
+    margin: 0;
+    padding: .5rem 0;
+    gap: .5rem;
 }
 
-.menu-icon {
-    color: var(--dark-text);
+.rounded-button {
+    --bg-color: transparent;
+    --text-color: hsl(var(--clr-grey-dark));
+    --p-x: 1.25em;
+    --p-y: .3em;
+    border: 2px solid hsl(var(--clr-grey-dark));
 }
 
-.profile-button {
-    color: var(--button-text);
-    background-color: var(--button-background);
+.rounded-button,
+.circle-button {
+    transition: transform .07s ease-in;
 }
 
-.simple-icon {
-    line-height: normal;
-    min-width: auto;
-    padding: 0.2em 0.5em;
-    border-radius: 100px;
+.rounded-button:hover,
+.circle-button:hover {
+    transform: scale(1.025);
 }
 
-.button-active {
-    background-color: var(--primary-color);
-    color: var(--light-text);
-}
-
-.button-active-red {
-    background-color: var(--warn-color);
-    color: var(--light-text);
-}
-
-@media (max-width: 48rem) {
-    .navbar {
-        padding: 0.5rem 1rem;
-    }
+.active {
+    --bg-color: hsl(var(--clr-grey-dark));
+    --text-color: hsl(var(--clr-white));
 }

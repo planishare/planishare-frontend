@@ -12,10 +12,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TimeAgoPipe implements PipeTransform {
 
-    public transform(value: any, args?: any): any {
-        value = new Date(value);
+    public transform(value: string | Date): string {
+        const isString = typeof value === 'string';
         if (value) {
-            const seconds = Math.floor((+new Date() - +new Date(value)) / 1000);
+            const seconds = Math.floor((+new Date() - +(isString ? new Date(value) : value)) / 1000);
             if (seconds < 29) {
                 return 'Justo ahora';
             }
@@ -43,7 +43,7 @@ export class TimeAgoPipe implements PipeTransform {
                 }
             }
         }
-        return value;
+        return 'Empty input';
     }
 
 }

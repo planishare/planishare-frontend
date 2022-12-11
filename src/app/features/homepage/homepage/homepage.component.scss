@@ -1,52 +1,38 @@
-:host {
-    display: grid;
-    place-content: center;
+.hero {
+    min-height: 100%;
 
-    background-image: url('/assets/images/bg-desktop-pink.png');
-    background-size: contain;
-    background-attachment: fixed;
-
-    padding: 4rem 4rem 1rem 4rem;
-    min-height: calc(100% - 4rem - 1rem); // 4rem = navbar height
-}
-
-.header{
-    display: grid;
-    grid-template-columns: repeat(2, minmax(50%, 1fr));
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
     align-items: center;
-    justify-items: center;
+    gap: 1rem;
 }
 
-.title {
-    position: relative;
-    line-height: clamp(1.8rem, 0.8308rem + 4.3077vw, 6rem);
-    font-size: clamp(2rem, 0.9615rem + 4.6154vw, 6.5rem);
+.hero__text {
+    text-align: center;
+
+    h1 {
+        margin-bottom: 1rem;
+    }
 }
 
-.results-button {
-    max-width: min-content;
-    font-size: 1rem;
-    background-color: var(--green-dark-color);
-    color: var(--light-text);
-    padding: 0.2rem 1rem;
-    border-radius: 10px;
-}
-
-.teachers-img {
-    max-height: 600px;
-    max-width: 610.737px;
-    width: 100%;
-}
-
-@media (max-width: 48rem) {
-    :host {
-        padding: 4rem 1rem 1rem 1rem;
+@media (min-width: 64rem) {
+    .hero {
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 0;
     }
 
-    .header {
-        min-height: auto;
-        display: flex;
-        flex-direction: column-reverse;
-        gap: 1rem;
+    .hero__text {
+        text-align: left;
+        width: 100%;
+
+        h1 {
+            margin-bottom: 2rem;
+        }
+    }
+    
+    .hero__img {
+        width: 80%;
     }
 }

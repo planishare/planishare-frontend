@@ -1,82 +1,55 @@
-<ul class="navigation-sidenav">
+<nav class="navbar">
+  <button class="navbar__close text-white" mat-icon-button (click)="hideSidenav();">
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <ul class="navbar__list">
     <li>
-        <button
-            *ngIf="!isUserAuth"
-            mat-button
-            class="menu-button"
-            [routerLink]="['/auth/register']"
-            (click)="hideSidenav()">
-                <mat-icon>person_add</mat-icon>
-                <span>Registrarse</span>
-        </button>
+      <a [routerLink]="['/posts/list']" class="navbar__link p-l-container" routerLinkActive="active"
+        (click)="hideSidenav()">
+        <mat-icon>search</mat-icon>
+        <span>Buscar</span>
+      </a>
     </li>
-    <li>
-        <button
-            *ngIf="!isUserAuth"
-            mat-button
-            class="menu-button"
-            [routerLink]="['/auth/login']"
-            (click)="hideSidenav()">
-                <mat-icon>login</mat-icon>
-                <span>Iniciar sesión</span>
-        </button>
+    <li *ngIf="!authUser">
+      <a [routerLink]="['/auth/register']" class="navbar__link p-l-container" routerLinkActive="active"
+        (click)="hideSidenav()">
+        <mat-icon>person_add</mat-icon>
+        <span>Registrarse</span>
+      </a>
     </li>
-    <li>
-        <button
-            *ngIf="isUserAuth"
-            mat-button
-            class="menu-button"
-            [routerLink]="['/user/edit-profile']"
-            routerLinkActive="active"
-            (click)="hideSidenav()">
-                <mat-icon>person</mat-icon>
-                <span>Mi perfil</span>
-        </button>
+    <li *ngIf="!authUser">
+      <a [routerLink]="['/auth/login']" class="navbar__link p-l-container" routerLinkActive="active"
+        (click)="hideSidenav()">
+        <mat-icon>login</mat-icon>
+        <span>Iniciar sesión</span>
+      </a>
     </li>
-    <li>
-        <button
-            *ngIf="isUserAuth"
-            mat-button
-            class="menu-button"
-            [routerLink]="['/posts/user']"
-            routerLinkActive="active"
-            (click)="hideSidenav()">
-                <mat-icon>description</mat-icon>
-                <span>Mis publicaciones</span>
-        </button>
+    <li *ngIf="authUser">
+      <a [routerLink]="['/user/edit-profile']" class="navbar__link p-l-container" routerLinkActive="active"
+        (click)="hideSidenav()">
+        <mat-icon>person</mat-icon>
+        <span>Mi perfil</span>
+      </a>
     </li>
-    <li>
-        <button
-            *ngIf="isUserAuth"
-            mat-button
-            class="menu-button"
-            [routerLink]="['/posts/create']"
-            routerLinkActive="active"
-            (click)="hideSidenav()">
-                <mat-icon>control_point</mat-icon>
-                <span>Crear publicación</span>
-        </button>
+    <li *ngIf="authUser">
+      <a [routerLink]="['/posts/user', authUser.id]" class="navbar__link p-l-container" routerLinkActive="active"
+        (click)="hideSidenav()">
+        <mat-icon>description</mat-icon>
+        <span>Mis publicaciones</span>
+      </a>
     </li>
-    <li>
-        <button
-            mat-button
-            class="menu-button"
-            [routerLink]="['/tops']"
-            routerLinkActive="active"
-            (click)="hideSidenav()">
-                <mat-icon>local_fire_department</mat-icon>
-                <span>Tops</span>
-        </button>
+    <li *ngIf="authUser">
+      <a [routerLink]="['/posts/create']" class="navbar__link p-l-container" routerLinkActive="active"
+        (click)="hideSidenav()">
+        <mat-icon>control_point</mat-icon>
+        <span>Crear publicación</span>
+      </a>
     </li>
-    <li>
-        <button
-            *ngIf="isUserAuth"
-            mat-button
-            class="menu-button"
-            (click)="hideSidenav(); logout()">
-                <mat-icon>logout</mat-icon>
-                <span>Cerrar sesión</span>
-        </button>
-    </li>
-</ul>
-<!-- <mat-divider></mat-divider> -->
+  </ul>
+
+  <button *ngIf="authUser" class="rounded-button" (click)="hideSidenav(); logout()">
+    <mat-icon>logout</mat-icon>
+    <span>Cerrar sesión</span>
+  </button>
+</nav>

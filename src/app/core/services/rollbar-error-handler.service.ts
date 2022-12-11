@@ -13,10 +13,10 @@ export class RollbarErrorHandlerService implements ErrorHandler {
         this.rollbar.configure({
             payload: {
                 person: {
-                    id: JSON.parse(localStorage.getItem('userProfile') ?? '')?.id ?? 0,
-                    email: JSON.parse(localStorage.getItem('userProfile') ?? '')?.email ?? ''
+                    id: JSON.parse(localStorage.getItem('authUserDetail') ?? '')?.id ?? 0,
+                    email: JSON.parse(localStorage.getItem('authUserDetail') ?? '')?.email ?? ''
                 },
-                userProfile: JSON.parse(localStorage.getItem('userProfile') ?? '')
+                userDetail: JSON.parse(localStorage.getItem('authUserDetail') ?? '')
             }
         });
         this.rollbar.error(err.originalError || err);

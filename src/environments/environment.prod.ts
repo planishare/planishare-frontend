@@ -1,7 +1,6 @@
-// Build prod: ng build
-// Deploy to Firebase prod: firebase deploy -P prod
+import { IEnviroment } from "./environment.interface";
 
-export const environment = {
+export const environment: IEnviroment = {
     firebase: {
         projectId: 'planishare',
         appId: '1:175030081436:web:c74db7a4a9f1d8d5f59a59',

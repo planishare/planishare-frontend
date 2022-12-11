@@ -22,14 +22,14 @@ export class DragAndDropFileDirective {
     @HostListener('dragleave', ['$event']) public onDragLeave(event: any) {
         event.preventDefault();
         event.stopPropagation();
-        this.fileOver = 'opacity(0.6)';
+        this.fileOver = 'opacity(0.8)';
     }
 
     // Drop listener
     @HostListener('drop', ['$event']) public ondrop(event: any) {
         event.preventDefault();
         event.stopPropagation();
-        this.fileOver = 'opacity(0.6)';
+        this.fileOver = 'opacity(0.8)';
         let files = event.dataTransfer.files;
         if (files.length > 0) {
             this.fileDropped.emit(files);

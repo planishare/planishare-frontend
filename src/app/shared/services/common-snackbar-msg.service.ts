@@ -14,7 +14,7 @@ export class CommonSnackbarMsgService {
         private firebaseAuthService: FirebaseAuthService
     ) { }
 
-    public showLoginMessage(actionMsg: string): void {
+    public showLoginRequiredMessage(actionMsg: string): void {
         const msg = `Debes iniciar sesión para ${actionMsg} :(`;
         const action = 'Iniciar sesión';
         this.matSnackbar.open(msg, action, {
@@ -24,7 +24,7 @@ export class CommonSnackbarMsgService {
     }
 
     public showVerficatedMessage(): void {
-        const msg = `Primero debes verificar tu cuenta, si ya lo hiciste recarga la página :)`;
+        const msg = `Primero debes verificar tu cuenta, si ya lo hiciste recarga la página 🙌`;
         const action = 'Reenviar email';
         this.matSnackbar.open(msg, action, {
             duration: 4000
@@ -35,7 +35,7 @@ export class CommonSnackbarMsgService {
     }
 
     public showErrorMessage(): void {
-        const msg = 'Ups! ha ocurrido un problema, recarga la página o intentalo más tarde';
+        const msg = 'Ups! ha ocurrido un problema, recarga la página o intentalo más tarde 😢';
         const action = 'Cerrar';
         this.matSnackbar.open(msg, action);
     }

@@ -1,19 +1,35 @@
-<h1>Reportar {{ reportTypeName }}</h1>
-<p>Puedes reportar {{ reportTypeName }}, solo dinos el motivo y lo revisaremos a la brevedad.</p>
-<div class="flex_column flex_center">
-    <mat-form-field class="description-textarea" appearance="outline">
-        <mat-label>Descripción</mat-label>
-        <textarea matInput 
-          [formControl]="form"
-          cdkTextareaAutosize cdkAutosizeMinRows="3" cdkAutosizeMaxRows="20">
-        </textarea>
+<h1 class="fs-large">Crear un reporte 🕵️</h1>
+<div mat-dialog-content>
+  <p class="m-y-1">Completa los siguientes datos explicando el motivo de tu reporte y lo revisaremos a la brevedad.</p>
+  <form [formGroup]="form" (ngSubmit)="createReport($event)">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>¿Qué quieres reportar?</mat-label>
+      <mat-select formControlName="type">
+        <mat-option [value]="reportType.POST">Reportar publicación</mat-option>
+        <mat-option [value]="reportType.USER">Reportar usuario</mat-option>
+      </mat-select>
     </mat-form-field>
-    <mat-error *ngIf="form?.invalid && form?.touched">Debes ingresar una descripción con menos de 1000 carácteres.</mat-error>
-    <app-square-loader *ngIf="isLoading"></app-square-loader>
-    <button
-        mat-raised-button
-        color="warn"
-        [disabled]="!form.valid"
-        (click)="createReport()"
-        *ngIf="!isLoading">Enviar reporte</button>
+  
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput formControlName="description" cdkTextareaAutosize cdkAutosizeMinRows="3"
+        cdkAutosizeMaxRows="20">
+      </textarea>
+      <mat-hint align="end">{{ form.controls.description.value?.length ?? 0 }} / 1000</mat-hint>
+      <mat-error *ngIf="form.controls.description.invalid">
+        Debes ingresar una descripción con menos de 1000 carácteres.
+      </mat-error>
+    </mat-form-field>
+    <div class="flex-end-center gap-025 m-t-1 m-b-05">
+      <button mat-raised-button color="primary" type="submit" *ngIf="!isLoading" @inOutRight [@.disabled]="!isLoading">
+        Enviar
+        <mat-icon class="fs-medium">send</mat-icon>
+      </button>
+      <div class="shapes-loader" *ngIf="isLoading" @inOutLeft></div>
+      
+      <button mat-flat-button type="button" mat-dialog-close>
+        Cancelar
+      </button>
+    </div>
+  </form>
 </div>

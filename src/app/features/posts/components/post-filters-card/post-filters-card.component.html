@@ -1,0 +1,47 @@
+<div class="filters-card rounded-card">
+  <button class="filters-card__button rounded-button-slim" (click)="showFilters = !isDesktop ? !showFilters : true">
+    <span>Filtros y búsqueda</span>
+    <mat-icon class="small-icon">
+      {{ showFilters && !isDesktop ? 'expand_less' : 'filter_alt' }}
+    </mat-icon>
+  </button>
+  <div class="filters-card__content" *ngIf="showFilters" @inOutY [@.disabled]="isDesktop">
+    <!-- Searchbar -->
+    <div class="rounded-search-bar">
+      <input type="search" [formControl]="searchControl" placeholder="Buscar"
+        (keyup.enter)="doSearch(1)">
+      <button *ngIf="!!filters.search && filters.search === searchControl.value" mat-icon-button
+        (click)="clearSearchControl()" aria-label="Borrar">
+        <mat-icon>close</mat-icon>
+      </button>
+      <button *ngIf="!!!filters.search || filters.search !== searchControl.value" mat-icon-button
+        (click)="doSearch(1)" aria-label="Buscar">
+        <mat-icon>search</mat-icon>
+      </button>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- Filters -->
+    <div class="filters__selects">
+      <app-rounded-select class="bg-text-academic-level" baseText="Nivel Académico" [control]="academicLevelControl"
+        [options]="academicLevelsOptions" [resetButton]="true" [loading]="academicLevelsLoading">
+      </app-rounded-select>
+      <app-rounded-select class="bg-text-axis" baseText="Eje" [control]="axisControl" [hasGroups]="true"
+        [options]="axesGroupOptions" [searchInput]="true" searchPlaceholder="Busca un eje o asignatura" [resetButton]="true"
+        [loading]="axesLoading">
+      </app-rounded-select>
+      <app-rounded-select class="bg-text-subject" baseText="Asignatura" [control]="subjectControl" [options]="subjectsOptions"
+        [searchInput]="true" searchPlaceholder="Busca una asignatura" [resetButton]="true"
+        [loading]="subjectsLoading">
+      </app-rounded-select>
+      <app-rounded-select class="bg-text-blue-white" baseText="Ordenar por" [control]="orderingControl"
+        [options]="orderOptions">
+      </app-rounded-select>
+    </div>
+    <button class="reset-filters-button" *ngIf="hasFilters" (click)="removeFilters()" matRipple @inOutY>
+      <mat-icon class="small-icon">delete</mat-icon>
+      <span class="fw-600">Borrar filtros</span>
+    </button>
+  </div>
+</div>
