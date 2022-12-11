@@ -1,8 +1,4 @@
-import {
-    InjectionToken,
-    NgModule,
-    ErrorHandler
-} from '@angular/core';
+import { InjectionToken, NgModule, ErrorHandler } from '@angular/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { BrowserModule } from '@angular/platform-browser';
@@ -29,6 +25,7 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import * as Rollbar from 'rollbar';
 import { RollbarErrorHandlerService } from './core/services/rollbar-error-handler.service';
 import { RollbarHttpErrorInterceptor } from './core/interceptors/rollbar-http-error.interceptor';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 const rollbarConfig: Rollbar.Configuration = {
     accessToken: '722c61425c0043098adab09252c3732f',
@@ -58,7 +55,13 @@ export const RollbarService = new InjectionToken<Rollbar>('rollbar');
         provideFirebaseApp(() => initializeApp(environment.firebase)),
         provideAnalytics(() => getAnalytics()),
         provideAuth(() => getAuth()),
-        provideStorage(() => getStorage())
+        provideStorage(() => getStorage()),
+        ServiceWorkerModule.register('ngsw-worker.js', {
+            enabled: environment.production,
+            // Register the ServiceWorker as soon as the application is stable
+            // or after 30 seconds (whichever comes first).
+            registrationStrategy: 'registerWhenStable:30000'
+        })
     ],
     providers: [
         ScreenTrackingService,

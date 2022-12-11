@@ -1,13 +1,7 @@
 // Cards
 .rounded-card {
     background-color: hsl(var(--clr-white));
-    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.2);
-    border-radius: 15px;
+    box-shadow: .5px 2px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
     padding: 1rem;
-}
-
-@media (min-width: 48rem) {
-    .rounded-card {
-        border-radius: 18px;
-    }
 }

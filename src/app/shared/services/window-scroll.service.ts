@@ -11,13 +11,14 @@ export class WindowScrollService {
 
     constructor() {}
 
+    // TODO: Fix this to not emit changes to all app
     public startListening(): void {
-        fromEvent(window, 'scroll').pipe(
-            throttleTime(this.delay),
-            debounceTime(this.delay)
-        ).subscribe(() => {
-            const scrollY = window.scrollY || window.pageYOffset;
-            this.scrollYPos$.next(scrollY);
-        });
+        // fromEvent(window, 'scroll').pipe(
+        //     throttleTime(this.delay),
+        //     debounceTime(this.delay)
+        // ).subscribe(() => {
+        //     const scrollY = window.scrollY || window.pageYOffset;
+        //     this.scrollYPos$.next(scrollY);
+        // });
     }
 }

@@ -12,7 +12,7 @@
     border-radius: 100px;
 
     color: var(--text-color, hsl(var(--clr-white)));
-    background-color: var(--bg-color, hsl(var(--clr-blue-dark)));
+    background-color: var(--bg-color, hsl(var(--clr-grey-dark)));
     padding-inline: var(--p-x, 1em);
     padding-block: var(--p-y, .7em);
 
@@ -65,7 +65,7 @@
     place-items: center;
 
     color: var(--text-color, hsl(var(--clr-white)));
-    background-color: var(--bg-color, hsl(var(--clr-blue-dark)));
+    background-color: var(--bg-color, hsl(var(--clr-grey-dark)));
 }
 
 .circle-button:hover:not(:disabled) {

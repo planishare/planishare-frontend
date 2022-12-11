@@ -128,18 +128,18 @@
       <div class="flex-space_between-center gap-05">
         <div class="flex-center-center gap-05 min-w-0">
           <span class="small-border-tag{{ '-' + file.tagColor }} min-w-fit">{{ file.ext }}</span>
-          <span class="fw-500 text-ellipsis" matTooltip="{{ file.fullName }}">{{ file.fullName }}</span>
+          <span class="fw-500 text-ellipsis" [attr.aria-label]="file.fullName">{{ file.fullName }}</span>
         </div>
         <div *ngIf="file.uploadCompleted" class="flex-center-center">
           <a mat-icon-button [href]="file.url" download [target]="file.ngxDocViewer === 'office' ? '_self' : '_blank'"
-            aria-label="Descargar" matTooltip="Descargar">
+            aria-label="Descargar">
             <mat-icon class="text-blue-dark">file_download</mat-icon>
           </a>
-          <button *ngIf="!isEditForm" (click)="removeFile(i)" mat-icon-button matTooltip="Remover">
+          <button *ngIf="!isEditForm" (click)="removeFile(i)" mat-icon-button aria-label="Remover">
             <mat-icon class="text-blue-dark">delete</mat-icon>
           </button>
         </div>
-        <div class="p-05" *ngIf="!file.uploadCompleted" matTooltip="Cargando">
+        <div class="p-05" *ngIf="!file.uploadCompleted" aria-label="Cargando">
           <mat-spinner diameter="24"></mat-spinner>
         </div>
       </div>

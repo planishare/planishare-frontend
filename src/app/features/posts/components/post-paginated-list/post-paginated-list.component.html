@@ -6,28 +6,28 @@
       matRipple class="rounded-button-slim">
       <mat-icon class="small-icon">search</mat-icon>
       <span>{{ (currentFilters?.search ?? '')|truncate:20 }}</span>
-      <mat-icon class="small-icon" matTooltip="Remover">close</mat-icon>
+      <mat-icon class="small-icon" aria-label="Remover">close</mat-icon>
     </button>
     <button *ngIf="!!currentFilters?.academicLevel" @inOutLeft (click)="removeFilterByName('academicLevel')" matRipple
       class="rounded-button-slim bg-text-academic-level">
       <span>{{ currentFilters?.academicLevel?.name }}</span>
-      <mat-icon class="small-icon" matTooltip="Remover">close</mat-icon>
+      <mat-icon class="small-icon" aria-label="Remover">close</mat-icon>
     </button>
     <button *ngIf="!!currentFilters?.axis" @inOutLeft (click)="removeFilterByName('axis')" matRipple
       class="rounded-button-slim bg-text-axis">
       <span>{{ currentFilters?.axis?.name }}</span>
-      <mat-icon class="small-icon" matTooltip="Remover">close</mat-icon>
+      <mat-icon class="small-icon" aria-label="Remover">close</mat-icon>
     </button>
     <button *ngIf="!!currentFilters?.subject" @inOutLeft (click)="removeFilterByName('subject')" matRipple
       class="rounded-button-slim bg-text-subject">
       <span>{{ currentFilters?.subject?.name }}</span>
-      <mat-icon class="small-icon" matTooltip="Remover">close</mat-icon>
+      <mat-icon class="small-icon" aria-label="Remover">close</mat-icon>
     </button>
     <button *ngIf="!!currentFilters?.ordering && currentFilters?.ordering?.id !== orderingType.MOST_RECENT" @inOutLeft
       (click)="removeFilterByName('ordering')" matRipple class="rounded-button-slim bg-text-blue-white">
       <mat-icon class="small-icon">sort</mat-icon>
       <span>{{ currentFilters?.ordering?.name }}</span>
-      <mat-icon class="small-icon" matTooltip="Remover">close</mat-icon>
+      <mat-icon class="small-icon" aria-label="Remover">close</mat-icon>
     </button>
   </div>
 
@@ -42,11 +42,11 @@
     
     <div class="flex-center-center gap-025">
       <button class="circle-button" (click)="previousPage()" [disabled]="!pageResults?.previous || isLoading"
-        aria-label="Pág. Anterior" matTooltip="Pág. Anterior" matRipple>
+        aria-label="Pág. Anterior" matRipple>
         <mat-icon class="small-icon">navigate_before</mat-icon>
       </button>
-      <button class="circle-button page-number" [matMenuTriggerFor]="pagesMenu" aria-label="Seleccionar página"
-        matTooltip="Seleccionar página" matRipple [disabled]="isLoading || !posts.length">
+      <button class="circle-button page-number" [matMenuTriggerFor]="pagesMenu" aria-label="Seleccionar Pág."
+        matRipple [disabled]="isLoading || !posts.length">
         <span class="fw-700">{{ currentFilters?.page ?? 1 }}</span>
       </button>
       <mat-menu #pagesMenu>
@@ -55,7 +55,7 @@
         </button>
       </mat-menu>
       <button class="circle-button" (click)="nextPage()" [disabled]="!pageResults?.next || isLoading"
-        aria-label="Pág. Siguiente" matTooltip="Pág. Siguiente" matRipple>
+        aria-label="Pág. Siguiente" matRipple>
         <mat-icon class="small-icon">navigate_next</mat-icon>
       </button>
     </div>
@@ -64,7 +64,7 @@
 
 <!-- Post grid -->
 <section class="posts-grid" *ngIf="!isLoading && posts.length" @fadeInOut>
-  <ng-container *ngFor="let post of posts">
+  <ng-container *ngFor="let post of posts; trackBy: postTrackBy">
     <app-post-card [post]="post" [urlQueryParams]="urlQueryParams ?? {}" [isOwner]="authUser?.id === post.user.id"
       (report)="report(post)" (delete)="deletePost(post)"></app-post-card>
   </ng-container>
@@ -72,7 +72,7 @@
 
 <!-- Post shimmer grid -->
 <div class="posts-grid" *ngIf="isLoading" @fadeInOut>
-  <app-post-card-shimmer *ngFor="let post of 5|fillArray"></app-post-card-shimmer>
+  <app-post-card-shimmer *ngFor="let post of 5|fillArray; trackBy: shimmerTrackBy"></app-post-card-shimmer>
 </div>
 
 <!-- No results -->

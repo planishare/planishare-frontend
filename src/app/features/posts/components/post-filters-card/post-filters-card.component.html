@@ -11,11 +11,11 @@
       <input type="search" [formControl]="searchControl" placeholder="Buscar"
         (keyup.enter)="doSearch(1)">
       <button *ngIf="!!filters.search && filters.search === searchControl.value" mat-icon-button
-        (click)="clearSearchControl()" matTooltip="Borrar">
+        (click)="clearSearchControl()" aria-label="Borrar">
         <mat-icon>close</mat-icon>
       </button>
       <button *ngIf="!!!filters.search || filters.search !== searchControl.value" mat-icon-button
-        (click)="doSearch(1)" matTooltip="Buscar">
+        (click)="doSearch(1)" aria-label="Buscar">
         <mat-icon>search</mat-icon>
       </button>
     </div>

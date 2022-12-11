@@ -11,7 +11,7 @@
         <div class="flex-space_between-center">
           <p>{{ post.user.fullName ?? post.user.email }} - {{ post.createdAt|timeAgo }}</p>
 
-          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Opciones" matTooltip="Opciones">
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Opciones">
             <mat-icon class="text-blue-dark">more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
@@ -47,14 +47,13 @@
         </div>
 
         <div class="flex-space_between-center m-l-05">
-          <div class="border-tag{{ '-' + post.mainFile.tagColor }}" matTooltip="{{ post.mainFile.fullName }}">
+          <div class="border-tag{{ '-' + post.mainFile.tagColor }}" [attr.aria-label]="post.mainFile.fullName">
             <span class="text-ellipsis">{{ post.mainFile.name }}</span>
             <span>{{ post.mainFile.ext }}</span>
           </div>
           <div class="flex-center-center">
             <a mat-icon-button [href]="post.mainFile.url" download
-              [target]="post.mainFile.ngxDocViewer === 'office' ? '_self' : '_blank'" aria-label="Descargar"
-              matTooltip="Descargar">
+              [target]="post.mainFile.ngxDocViewer === 'office' ? '_self' : '_blank'" aria-label="Descargar">
               <mat-icon class="text-blue-dark">file_download</mat-icon>
             </a>
             <button class="rounded-button-slim fw-600 bg-transparent text-blue" [disabled]="!post.mainFile.ngxDocViewer"
@@ -66,13 +65,13 @@
         </div>
 
         <div class="flex-space_between-center m-l-05" *ngFor="let file of post.supportingMaterial">
-          <div class="border-tag{{ '-' + file.tagColor }}" matTooltip="{{ file.fullName }}">
+          <div class="border-tag{{ '-' + file.tagColor }}" [attr.aria-label]="file.fullName">
             <span class="text-ellipsis">{{ file.name }}</span>
             <span>{{ file.ext }}</span>
           </div>
           <div class="flex-center-center">
             <a mat-icon-button [href]="file.url" download [target]="file.ngxDocViewer === 'office' ? '_self' : '_blank'"
-              aria-label="Descargar" matTooltip="Descargar">
+              aria-label="Descargar">
               <mat-icon class="text-blue-dark">file_download</mat-icon>
             </a>
             <button class="rounded-button-slim fw-600 bg-transparent text-blue" [disabled]="!file.ngxDocViewer"
@@ -98,7 +97,7 @@
         </div>
 
         <button mat-icon-button appDebounceClick (debounceClick)="toggleLike(post)" [debounceTime]="700"
-          aria-label="Me gusta" [matTooltip]="post.alreadyLiked ? 'Quitar me gusta' : 'Dar me gusta'">
+          [attr.aria-label]="post.alreadyLiked ? 'Quitar me gusta' : 'Dar me gusta'">
           <mat-icon class="text-red">
             {{ post.alreadyLiked ? 'favorite' : 'favorite_outline' }}
           </mat-icon>

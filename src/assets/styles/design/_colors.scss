@@ -1,29 +1,29 @@
 :root {
     // Use colors variables like
-    // background-color: hsl(var(--clr-blue-dark), .5);
+    // background-color: hsl(var(--clr-grey-dark), .5);
 
     // Base colors
-    --clr-blue: 211, 89%, 58%; //#3590F3
-    --clr-blue-dark: 250, 100%, 15%; //#0D004D
+    --clr-blue: 211, 89%, 58%;
+    --clr-grey-dark: 0, 0%, 2%;
 
-    --clr-red: 0, 65%, 51%; //#D32F2F
+    --clr-red: 0, 65%, 51%;
 
-    --clr-green: 123, 46%, 34%; //#2E7D32
+    --clr-green: 123, 46%, 34%;
 
-    --clr-orange: 27, 100%, 47%; //#EF6C00
+    --clr-orange: 27, 100%, 47%;
 
-    --clr-pink: 0, 55%, 91%; //#F5DDDD
-    --clr-pink-light: 349, 100%, 96%; //#FFEAEE
+    --clr-pink: 0, 55%, 91%;
+    --clr-pink-light: 349, 100%, 96%;
 
-    --clr-purple-light: 242, 70%, 91%; //#D9D8F8
-    --clr-yellow-light: 44, 67%, 86%; //#F3E6C3
+    --clr-purple-light: 242, 70%, 91%;
+    --clr-yellow-light: 44, 67%, 86%;
 
-    --clr-white: 0, 0%, 100%; //#FFFFFF
-    --clr-white-98: 0, 0%, 98%;
-    --clr-black: 0, 0%, 13%; //#222222
+    --clr-white: 0, 0%, 100%;
+    --clr-white-old: 38, 36%, 96%;
+    --clr-black: 0, 0%, 13%;
 
     // Variable colors
-    --clr-primary: var(--clr-blue-dark);
+    --clr-primary: var(--clr-grey-dark);
     --clr-accent: var(--clr-accent);
     --clr-warn: var(--clr-warn);
 
@@ -34,7 +34,7 @@
 
 // Text color
 .text-blue { color: hsl(var(--clr-blue)); }
-.text-blue-dark { color: hsl(var(--clr-blue-dark)); }
+.text-blue-dark { color: hsl(var(--clr-grey-dark)); }
 .text-red { color: hsl(var(--clr-red)); }
 .text-green { color: hsl(var(--clr-green)); }
 .text-orange { color: hsl(var(--clr-orange)); }
@@ -42,7 +42,7 @@
 
 // Background color
 .bg-blue { background-color: hsl(var(--clr-blue)); }
-.bg-blue-dark { background-color: hsl(var(--clr-blue-dark)); }
+.bg-blue-dark { background-color: hsl(var(--clr-grey-dark)); }
 .bg-red { background-color: hsl(var(--clr-red)); }
 .bg-green { background-color: hsl(var(--clr-green)); }
 .bg-orange { background-color: hsl(var(--clr-orange)); }

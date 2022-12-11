@@ -4,7 +4,6 @@ import { takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { SidenavService } from 'src/app/shared/services/sidenav.service';
 import { WindowResizeService } from '../../services/window-resize.service';
-import { WindowScrollService } from '../../services/window-scroll.service';
 
 import { SidenavComponent } from 'src/app/shared/enums/sidenav.enum';
 
@@ -24,8 +23,7 @@ export class NavbarComponent extends Unsubscriber implements OnInit {
     constructor(
         private sidenav: SidenavService,
         private authService: AuthService,
-        private windowResize: WindowResizeService,
-        private windowScroll: WindowScrollService
+        private windowResize: WindowResizeService
     ) {
         super();
         this.windowResize.isDesktop$.pipe(takeUntil(this.ngUnsubscribe$))
@@ -37,8 +35,6 @@ export class NavbarComponent extends Unsubscriber implements OnInit {
             .subscribe(() => {
                 this.authUser = this.authService.getUserDetail() ?? undefined;
             });
-        this.windowScroll.scrollYPos$.pipe(takeUntil(this.ngUnsubscribe$))
-            .subscribe(value => this.onScroll = value > 0);
     }
 
     public openSidenav(): void {

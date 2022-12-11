@@ -8,7 +8,7 @@
 .loader {
     width: calc(200px * var(--size));
     height: calc(140px * var(--size));
-    background: #979794;
+    background: hsl(var(--clr-blue), .8);
     box-sizing: border-box;
     position: relative;
     border-radius: calc(8px * var(--size));

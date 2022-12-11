@@ -6,9 +6,10 @@ import { environment } from './environments/environment';
 
 if (environment.production) {
     enableProdMode();
-    if (window) {
+    if (window && !localStorage.getItem('enableConsole')) {
         window.console.log = () => {};
         window.console.warn = () => {};
+        window.console.info = () => {};
     }
 }
 
