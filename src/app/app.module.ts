@@ -22,21 +22,13 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
 
 // Interceptors
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
-import * as Rollbar from 'rollbar';
 import { RollbarErrorHandlerService } from './core/services/rollbar-error-handler.service';
-import { RollbarHttpErrorInterceptor } from './core/interceptors/rollbar-http-error.interceptor';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
-const rollbarConfig: Rollbar.Configuration = {
-    accessToken: '722c61425c0043098adab09252c3732f',
-    captureUncaught: true,
-    captureUnhandledRejections: true,
-    enabled: environment.production,
-    environment: environment.production ? 'prod' : 'dev'
-};
-
+// Rollbar
+import * as Rollbar from 'rollbar';
 export function rollbarFactory() {
-    return new Rollbar(rollbarConfig);
+    return new Rollbar(environment.rollbar);
 }
 export const RollbarService = new InjectionToken<Rollbar>('rollbar');
 
@@ -72,12 +64,7 @@ export const RollbarService = new InjectionToken<Rollbar>('rollbar');
             multi: true // Intercept all requests
         },
         { provide: ErrorHandler, useClass: RollbarErrorHandlerService },
-        { provide: RollbarService, useFactory: rollbarFactory },
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: RollbarHttpErrorInterceptor,
-            multi: true // Intercept all requests
-        }
+        { provide: RollbarService, useFactory: rollbarFactory }
     ],
     bootstrap: [AppComponent]
 })
