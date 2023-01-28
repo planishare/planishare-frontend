@@ -1,6 +1,7 @@
 import { IEnviroment } from "./environment.interface";
 
 export const environment: IEnviroment = {
+    production: true,
     firebase: {
         projectId: 'planishare',
         appId: '1:175030081436:web:c74db7a4a9f1d8d5f59a59',
@@ -11,7 +12,13 @@ export const environment: IEnviroment = {
         messagingSenderId: '175030081436',
         measurementId: 'G-9KZ02B60FB'
     },
-    production: true,
+    rollbar: {
+        accessToken: '722c61425c0043098adab09252c3732f',
+        captureUncaught: true,
+        captureUnhandledRejections: true,
+        enabled: true,
+        environment: 'prod'
+    },
 
     apiUrl: 'https://planishare-backend.azurewebsites.net/api'
 };

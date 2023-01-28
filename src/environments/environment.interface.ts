@@ -1,6 +1,9 @@
+import * as Rollbar from "rollbar";
+
 export interface IEnviroment {
-    firebase: IFirebaseConfiguration,
     production: boolean,
+    firebase: IFirebaseConfiguration,
+    rollbar: Rollbar.Configuration,
     apiUrl: string
 }
 
