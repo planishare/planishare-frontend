@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandler, Inject, Injectable } from '@angular/core';
 import * as Rollbar from 'rollbar';
 import { RollbarService } from 'src/app/app.module';
@@ -9,17 +10,21 @@ export class RollbarErrorHandlerService implements ErrorHandler {
 
     constructor(@Inject(RollbarService) private rollbar: Rollbar) {}
 
-    public handleError(err:any) : void {
+    public handleError(error: Error | HttpErrorResponse) : void {
+        const authUserDetail = JSON.parse(localStorage.getItem('authUserDetail') ?? '{}');
         this.rollbar.configure({
             payload: {
                 person: {
-                    id: JSON.parse(localStorage.getItem('authUserDetail') ?? '')?.id ?? 0,
-                    email: JSON.parse(localStorage.getItem('authUserDetail') ?? '')?.email ?? ''
+                    id: authUserDetail.id ?? 0,
+                    email: authUserDetail.email ?? ''
                 },
-                userDetail: JSON.parse(localStorage.getItem('authUserDetail') ?? '')
+                userDetail: authUserDetail
             }
         });
-        this.rollbar.error(err.originalError || err);
+        console.log(error.name === 'HttpErrorResponse');
+        const reportedError = error.name === 'HttpErrorResponse' ? (error as HttpErrorResponse).message : (error as Error);
+        this.rollbar.error(reportedError);
+        console.error(error);
     }
 
 }
