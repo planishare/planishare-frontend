@@ -21,7 +21,6 @@ export class RollbarErrorHandlerService implements ErrorHandler {
                 userDetail: authUserDetail
             }
         });
-        console.log(error.name === 'HttpErrorResponse');
         const reportedError = error.name === 'HttpErrorResponse' ? (error as HttpErrorResponse).message : (error as Error);
         this.rollbar.error(reportedError);
         console.error(error);

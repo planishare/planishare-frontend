@@ -28,7 +28,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 // Rollbar
 import * as Rollbar from 'rollbar';
 export function rollbarFactory() {
-    return new Rollbar(environment.rollbar);
+    return new Rollbar(environment.externalService.rollbar);
 }
 export const RollbarService = new InjectionToken<Rollbar>('rollbar');
 
@@ -44,7 +44,7 @@ export const RollbarService = new InjectionToken<Rollbar>('rollbar');
         BrowserAnimationsModule,
         CoreModule,
         MaterialModule,
-        provideFirebaseApp(() => initializeApp(environment.firebase)),
+        provideFirebaseApp(() => initializeApp(environment.externalService.firebase)),
         provideAnalytics(() => getAnalytics()),
         provideAuth(() => getAuth()),
         provideStorage(() => getStorage()),

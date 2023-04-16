@@ -2,9 +2,15 @@ import * as Rollbar from "rollbar";
 
 export interface IEnviroment {
     production: boolean,
-    firebase: IFirebaseConfiguration,
-    rollbar: Rollbar.Configuration,
-    apiUrl: string
+    externalService: {
+        firebase: IFirebaseConfiguration,
+        rollbar: Rollbar.Configuration,
+    },
+    planishare: {
+        baseUrl: string,
+        protected: string,
+        protectedAnon: string
+    }
 }
 
 export interface IFirebaseConfiguration {

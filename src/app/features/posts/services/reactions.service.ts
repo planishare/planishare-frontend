@@ -14,7 +14,7 @@ export class ReactionsService {
     ) { }
 
     public toggleLike(userId: number, postId: number): Observable<{ id: number }> {
-        return this.http.post<{ id: number }>(environment.apiUrl + `/likes/toggle/`, {
+        return this.http.post<{ id: number }>(environment.planishare.protected + `/likes/toggle/`, {
             user: userId,
             post: postId
         });
@@ -27,7 +27,7 @@ export class ReactionsService {
                     firebase_user_id: accessToken,
                     post: postId
                 };
-                return this.http.post<any>(environment.apiUrl + '/views/create/', body);
+                return this.http.post<any>(environment.planishare.protected + '/views/create/', body);
             })
         );
     }
