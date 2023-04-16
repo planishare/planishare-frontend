@@ -83,7 +83,7 @@ export class EditProfileComponent extends Unsubscriber implements OnInit {
     }
 
     public ngOnInit(): void {
-        this.isVerificated = this.authService.isAuth$.getValue()?.emailVerified ?? false;
+        this.isVerificated = this.authService.user?.firebaseUser.emailVerified ?? false;
 
         forkJoin([this.getEducations(), this.getRegionsWithCommunes(), this.getUserProfile()])
             .pipe(

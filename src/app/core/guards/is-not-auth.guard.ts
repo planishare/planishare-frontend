@@ -15,18 +15,17 @@ export class IsNotAuthGuard implements CanActivate {
     public canActivate(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+        // Return true if auth user is anonymous
         return this.isNotAuth();
     }
 
     private isNotAuth(): Observable<boolean> {
-        return this.authService.isCompleted$.asObservable()
+        return this.authService.isCompleted$
             .pipe(
-                filter(isAuthComplete => !!isAuthComplete),
+                filter(isCompleted => !!isCompleted),
                 switchMap(() => {
-                    return this.authService.isAuth$.asObservable();
-                }),
-                switchMap(isAuth => {
-                    return !isAuth ? of(true) : this.router.navigate([]);
+                    const isAnon = this.authService.user?.isAnon;
+                    return isAnon ? of(true) : this.router.navigate([]);
                 })
             );
     }

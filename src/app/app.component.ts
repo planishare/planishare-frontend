@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { AuthService } from './core/services/auth.service';
 import { inOutYAnimation } from './shared/animations/animations';
 import { WindowResizeService } from './shared/services/window-resize.service';
+import { LoadersService } from './shared/services/loaders.service';
 
 @Component({
     selector: 'app-root',
@@ -18,9 +19,15 @@ export class AppComponent implements OnInit {
     constructor (
         private authService: AuthService,
         private matSnackBar: MatSnackBar,
-        private windowResize: WindowResizeService
+        private windowResize: WindowResizeService,
+        private loadersService: LoadersService
     ) {
-        this.isAuthCompleted = this.authService.isCompleted$;
+        this.authService.isCompleted$.subscribe(isCompleted => {
+            if (isCompleted && !this.inMaintenance) {
+                console.log({ isCompleted });
+                this.loadersService.hideBookLoader();
+            }
+        });
         this.windowResize.startListening();
     }
 

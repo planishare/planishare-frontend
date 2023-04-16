@@ -21,14 +21,11 @@ export class IsVerificatedGuard implements CanActivate {
     }
 
     private isVerificated(): Observable<boolean> {
-        return this.authService.isCompleted$.asObservable()
+        return this.authService.isCompleted$
             .pipe(
-                filter(isAuthComplete => !!isAuthComplete),
+                filter(isCompleted => !!isCompleted),
                 switchMap(() => {
-                    return this.authService.isAuth$.asObservable();
-                }),
-                switchMap(isAuth => {
-                    if (isAuth?.emailVerified) {
+                    if (this.authService.user?.firebaseUser.emailVerified) {
                         return of(true);
                     }
                     this.commonSnackbarMsgService.showVerficatedMessage();
