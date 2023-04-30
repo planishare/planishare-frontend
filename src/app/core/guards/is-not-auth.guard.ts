@@ -20,9 +20,9 @@ export class IsNotAuthGuard implements CanActivate {
     }
 
     private isNotAuth(): Observable<boolean> {
-        return this.authService.isCompleted$
+        return this.authService.servicesLoaded$
             .pipe(
-                filter(isCompleted => !!isCompleted),
+                filter(loaded => !!loaded),
                 switchMap(() => {
                     const isAnon = this.authService.user?.isAnon;
                     return isAnon ? of(true) : this.router.navigate([]);

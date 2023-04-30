@@ -20,9 +20,9 @@ export class IsAuthGuard implements CanActivate {
     }
 
     private isAuth(): Observable<boolean> {
-        return this.authService.isCompleted$
+        return this.authService.servicesLoaded$
             .pipe(
-                filter(isCompleted => !!isCompleted),
+                filter(loaded => !!loaded),
                 switchMap(() => {
                     // TODO: Allow redirect to specific route after redirect to login
                     const isAuth = !this.authService.user?.isAnon;

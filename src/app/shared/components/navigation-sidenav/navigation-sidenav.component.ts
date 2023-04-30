@@ -17,7 +17,7 @@ export class NavigationSidenavComponent implements OnInit {
     ) { }
 
     public ngOnInit(): void {
-        this.authService.isCompleted$.subscribe(() => {
+        this.authService.servicesLoaded$.subscribe(() => {
             this.authUser = this.authService.getUserDetail() ?? undefined;
         });
     }

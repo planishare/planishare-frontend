@@ -21,9 +21,9 @@ export class IsVerificatedGuard implements CanActivate {
     }
 
     private isVerificated(): Observable<boolean> {
-        return this.authService.isCompleted$
+        return this.authService.servicesLoaded$
             .pipe(
-                filter(isCompleted => !!isCompleted),
+                filter(loaded => !!loaded),
                 switchMap(() => {
                     if (this.authService.user?.firebaseUser.emailVerified) {
                         return of(true);

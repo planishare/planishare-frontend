@@ -22,9 +22,9 @@ export class AppComponent implements OnInit {
         private windowResize: WindowResizeService,
         private loadersService: LoadersService
     ) {
-        this.authService.isCompleted$.subscribe(isCompleted => {
-            if (isCompleted && !this.inMaintenance) {
-                console.log({ isCompleted });
+        this.authService.servicesLoaded$.subscribe(loaded => {
+            if (loaded && !this.inMaintenance) {
+                console.log({ loaded });
                 this.loadersService.hideBookLoader();
             }
         });

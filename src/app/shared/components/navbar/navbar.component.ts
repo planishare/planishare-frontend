@@ -31,7 +31,7 @@ export class NavbarComponent extends Unsubscriber implements OnInit {
     }
 
     public ngOnInit(): void {
-        this.authService.isCompleted$.pipe(takeUntil(this.ngUnsubscribe$))
+        this.authService.servicesLoaded$.pipe(takeUntil(this.ngUnsubscribe$))
             .subscribe(() => {
                 this.authUser = this.authService.getUserDetail() ?? undefined;
             });

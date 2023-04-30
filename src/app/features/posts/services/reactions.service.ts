@@ -21,7 +21,7 @@ export class ReactionsService {
     }
 
     public registerView(postId: number): Observable<any> {
-        return this.authService.getAccessToken().pipe(
+        return this.authService.accessToken$.pipe(
             switchMap(accessToken => {
                 const body = {
                     firebase_user_id: accessToken,
