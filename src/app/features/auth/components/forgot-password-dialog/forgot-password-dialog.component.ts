@@ -13,7 +13,7 @@ import { inOutLeftAnimation, inOutRightAnimation } from 'src/app/shared/animatio
 })
 export class ForgotPasswordDialogComponent {
     public email = new FormControl<string>('', [Validators.required, Validators.email]);
-    public isLoading = false;
+    public loading = false;
 
     constructor(
         private firebaseAuthService: FirebaseAuthService,
@@ -26,14 +26,14 @@ export class ForgotPasswordDialogComponent {
             return;
         }
 
-        this.isLoading = true;
+        this.loading = true;
         this.firebaseAuthService.sendPasswordResetEmail(this.email.value!).pipe(
             take(1)
         ).subscribe(emailSended => {
             if (emailSended) {
                 this.dialogRef.close();
             }
-            this.isLoading = false;
+            this.loading = false;
         });
     }
 }

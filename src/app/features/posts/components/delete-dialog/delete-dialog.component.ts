@@ -17,7 +17,7 @@ import { inOutLeftAnimation, inOutRightAnimation } from 'src/app/shared/animatio
     animations: [inOutLeftAnimation, inOutRightAnimation]
 })
 export class DeleteDialogComponent extends Unsubscriber {
-    public isLoading = false;
+    public loading = false;
     public post?: PostDetail;
 
     constructor(
@@ -32,18 +32,18 @@ export class DeleteDialogComponent extends Unsubscriber {
     }
 
     public deletePost(): void {
-        this.isLoading = true;
+        this.loading = true;
         this.postService.deletePostById(this.post!.id)
             .pipe(
-                catchError(error => {
+                catchError(() => {
                     this.commonSnackbarMsg.showErrorMessage();
-                    this.isLoading = false;
+                    this.loading = false;
                     return of();
                 })
             )
-            .subscribe(resp => {
+            .subscribe(() => {
                 this.matSnackBar.open('Publicación eliminada 🗑️', 'Cerrar', { duration: 2000 });
-                this.isLoading = false;
+                this.loading = false;
                 this.dialogRef.close(true);
             });
     }

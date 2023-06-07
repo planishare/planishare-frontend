@@ -34,7 +34,7 @@ export class AuthService {
 
     // Emits true when Firebase auth completes and initial services are loaded.
     private _servicesLoaded$ = new BehaviorSubject<boolean>(false);
-    public servicesLoaded$ = from(this._servicesLoaded$);
+    public servicesLoaded$ = this._servicesLoaded$.asObservable();
 
     // Store user authentication data. TODO: use as observable
     public user: IAuthUser|null = null;

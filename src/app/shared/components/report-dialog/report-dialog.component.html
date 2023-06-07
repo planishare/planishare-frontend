@@ -21,11 +21,11 @@
       </mat-error>
     </mat-form-field>
     <div class="flex-end-center gap-025 m-t-1 m-b-05">
-      <button mat-raised-button color="primary" type="submit" *ngIf="!isLoading" @inOutRight [@.disabled]="!isLoading">
+      <button mat-raised-button color="primary" type="submit" *ngIf="!loading" @inOutRight [@.disabled]="!loading">
         Enviar
         <mat-icon class="fs-medium">send</mat-icon>
       </button>
-      <div class="shapes-loader" *ngIf="isLoading" @inOutLeft></div>
+      <div class="shapes-loader" *ngIf="loading" @inOutLeft></div>
       
       <button mat-flat-button type="button" mat-dialog-close>
         Cancelar

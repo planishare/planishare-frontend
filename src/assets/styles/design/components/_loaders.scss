@@ -46,7 +46,7 @@
     z-index: 100;
 
     span {
-        --size: 1;
+        --size: .8;
         width: calc(200px * var(--size));
         height: calc(140px * var(--size));
         background: hsl(var(--clr-grey-dark), .6);
@@ -96,6 +96,12 @@
         transform: rotateY(0deg);
         transform-origin: left center;
         animation: paging 1s linear infinite;
+    }
+
+    @media (min-width: 48rem) {
+        span {
+            --size: .9
+        }
     }
 }
 

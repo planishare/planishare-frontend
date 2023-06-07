@@ -14,7 +14,6 @@ import { LoadersService } from './shared/services/loaders.service';
 })
 export class AppComponent implements OnInit {
     public inMaintenance = false;
-    public isAuthCompleted: Observable<boolean> = of(false);
 
     constructor (
         private authService: AuthService,
@@ -24,7 +23,6 @@ export class AppComponent implements OnInit {
     ) {
         this.authService.servicesLoaded$.subscribe(loaded => {
             if (loaded && !this.inMaintenance) {
-                console.log({ loaded });
                 this.loadersService.hideBookLoader();
             }
         });

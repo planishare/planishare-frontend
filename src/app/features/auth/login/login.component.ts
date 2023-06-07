@@ -31,8 +31,8 @@ export class LoginComponent {
 
     public showPassword = false;
     public wrongCredentials = false;
-    public isLoading = false;
-    public isLoadingGoogle = false;
+    public loading = false;
+    public loadingGoogle = false;
 
     public redirectTo: string = '/';
 
@@ -58,7 +58,7 @@ export class LoginComponent {
             return;
         }
 
-        this.isLoading = true;
+        this.loading = true;
         this.wrongCredentials = false;
         const credentials: BasicCredentials = {
             email: this.form.controls.email.value!,
@@ -67,64 +67,26 @@ export class LoginComponent {
 
         this.authService.loginWithEmailAndPassword(credentials).pipe(
             catchError((error: FirebaseError) => {
-                switch (error.code) {
-                    case FirebaseAuthErrorCodes.EMAIL_NOT_FOUND:
-                        this.form.controls.password.setValue('');
-                        this.wrongCredentials = true;
-                        break;
-                    case FirebaseAuthErrorCodes.INVALID_PASSWORD:
-                        this.form.controls.password.setValue('');
-                        this.wrongCredentials = true;
-                        break;
-                    case FirebaseAuthErrorCodes.TOO_MANY_REQUESTS:
-                        this.matSnackbar.open(
-                            'Has hecho demasiados intentos, intenta más tarde 😢',
-                            'Cerrar'
-                        );
-                        break;
-                    case FirebaseAuthErrorCodes.USER_DISABLED:
-                        this.matSnackbar.open(
-                            'Tu cuenta está desactivada 🕵️',
-                            'Cerrar'
-                        );
-                        break;
-                    default:
-                        this.commonSnackbarMsg.showErrorMessage();
-                        break;
-                }
-                this.isLoading = false;
+                this.handleAuthError(error.code);
+                this.loading = false;
                 return of();
             })
         ).subscribe(() => {
             this.router.navigate([this.redirectTo]);
-            // this.isLoading = false;
         });
 
     }
 
     public loginWithGoogle(): void {
-        this.isLoadingGoogle = true;
+        this.loadingGoogle = true;
         this.authService.loginWithGoogle().pipe(
             catchError((error: FirebaseError) => {
-                switch (error.code) {
-                    case FirebaseAuthErrorCodes.USER_DISABLED:
-                        this.matSnackbar.open(
-                            'Tu cuenta está desactivada 🕵️',
-                            'Cerrar'
-                        );
-                        break;
-                    case FirebaseAuthErrorCodes.POPUP_CLOSED_BY_USER:
-                        break;
-                    default:
-                        this.commonSnackbarMsg.showErrorMessage();
-                        break;
-                }
-                this.isLoadingGoogle = false;
+                this.handleAuthError(error.code);
+                this.loadingGoogle = false;
                 return of();
             })
         ).subscribe(() => {
             this.router.navigate([this.redirectTo]);
-            // this.isLoadingGoogle = false;
         });
     }
 
@@ -132,5 +94,35 @@ export class LoginComponent {
         this.matDialog.open(ForgotPasswordDialogComponent, {
             autoFocus: false
         });
+    }
+
+    private handleAuthError(error: string): void {
+        switch (error) {
+            case FirebaseAuthErrorCodes.EMAIL_NOT_FOUND:
+                this.form.controls.password.setValue('');
+                this.wrongCredentials = true;
+                break;
+            case FirebaseAuthErrorCodes.INVALID_PASSWORD:
+                this.form.controls.password.setValue('');
+                this.wrongCredentials = true;
+                break;
+            case FirebaseAuthErrorCodes.TOO_MANY_REQUESTS:
+                this.matSnackbar.open(
+                    'Has hecho demasiados intentos, intenta más tarde 😢',
+                    'Cerrar'
+                );
+                break;
+            case FirebaseAuthErrorCodes.USER_DISABLED:
+                this.matSnackbar.open(
+                    'Tu cuenta está desactivada 🕵️',
+                    'Cerrar'
+                );
+                break;
+            case FirebaseAuthErrorCodes.POPUP_CLOSED_BY_USER:
+                break;
+            default:
+                this.commonSnackbarMsg.showErrorMessage();
+                break;
+        }
     }
 }

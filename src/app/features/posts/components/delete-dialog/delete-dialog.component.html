@@ -6,11 +6,11 @@
   <p>No podrás recuperar esta publicación.</p>
 </div>
 <div mat-dialog-actions class="flex-end-center gap-025">
-  <button mat-raised-button color="warn" (click)="deletePost()" *ngIf="!isLoading" @inOutRight [@.disabled]="!isLoading">
+  <button mat-raised-button color="warn" (click)="deletePost()" *ngIf="!loading" @inOutRight [@.disabled]="!loading">
     <span class="m-r-05">Eliminar</span>
     <mat-icon class="fs-medium">delete</mat-icon>
   </button>
-  <div class="shapes-loader" *ngIf="isLoading" @inOutLeft></div>
+  <div class="shapes-loader" *ngIf="loading" @inOutLeft></div>
 
   <button mat-flat-button mat-dialog-close>
     Cancelar

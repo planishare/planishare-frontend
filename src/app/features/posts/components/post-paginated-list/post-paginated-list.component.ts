@@ -21,7 +21,7 @@ import { UserDetail } from 'src/app/features/user/models/user.model';
 })
 export class PostPaginatedListComponent implements OnChanges {
     @Input() public pageResults?: Pageable<PostDetail>;
-    @Input() public isLoading = true;
+    @Input() public loading = true;
     @Input() public authUser: UserDetail | null = null;
     @Input() public currentFilters?: PostFilters;
     @Input() public urlQueryParams?: IURLPostsQueryParams;
