@@ -27,7 +27,7 @@ export class ReportDialogComponent {
         ])
     });
 
-    public isLoading = false;
+    public loading = false;
     public reportType = ReportType;
 
     constructor(
@@ -44,7 +44,7 @@ export class ReportDialogComponent {
             this.form.markAllAsTouched();
             return;
         }
-        this.isLoading = true;
+        this.loading = true;
         const reportData: APIReportBody = {
             report_type: this.form.controls.type.value!,
             user: this.data.userId,
@@ -57,13 +57,13 @@ export class ReportDialogComponent {
             .pipe(
                 catchError(() => {
                     this.commonSnackbarMsg.showErrorMessage();
-                    this.isLoading = false;
+                    this.loading = false;
                     return of();
                 })
             )
             .subscribe(() => {
                 this.matSnackBar.open('Reporte enviado 👀', 'Cerrar', { duration: 2000 });
-                this.isLoading = false;
+                this.loading = false;
                 this.dialogRef.close();
             });
     }

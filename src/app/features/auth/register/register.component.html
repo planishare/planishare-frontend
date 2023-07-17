@@ -56,21 +56,21 @@
 
       <div class="flex-column-center m-t-05">
         <button mat-raised-button type="submit" color="primary" class="w-100"
-        *ngIf="!isLoading" @inOutRight>
+        *ngIf="!loading" @inOutRight>
           Registrarse
           <mat-icon class="fs-medium">person_add</mat-icon>
         </button>
-        <div class="shapes-loader" *ngIf="isLoading" @inOutLeft></div>
+        <div class="shapes-loader" *ngIf="loading" @inOutLeft></div>
       </div>
     </form>
 
     <div class="flex-column-center m-t-05 gap-05 w-100">
       <button mat-stroked-button color="primary" (click)="loginWithGoogle()" class="w-100"
-      *ngIf="!isLoadingGoogle" @inOutRight>
+      *ngIf="!loadingGoogle" @inOutRight>
         Continuar con Google
         <img class="inline-block m-l-025" src="/assets/icons/icon-google.svg" alt="Google icon">
       </button>
-      <div class="shapes-loader" *ngIf="isLoadingGoogle" @inOutLeft></div>
+      <div class="shapes-loader" *ngIf="loadingGoogle" @inOutLeft></div>
 
       <div class="w-100 flex-center-center gap-05">
         <mat-divider class="w-30"></mat-divider>

@@ -16,11 +16,11 @@ export class OccupationsService {
     ) { }
 
     public getEducations(): Observable<IEducation[]> {
-        return this.http.get<IEducation[]>(environment.apiUrl + '/educations/');
+        return this.http.get<IEducation[]>(environment.planishare.protectedAnon + '/educations/');
     }
 
     public getInstitutions(search: string): Observable<IPageable<IInstitution>> {
-        return this.http.get<IPageable<IInstitution>>(environment.apiUrl + '/institutions/', {
+        return this.http.get<IPageable<IInstitution>>(environment.planishare.protectedAnon + '/institutions/', {
             params: {
                 search
             }

@@ -23,7 +23,7 @@ import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 export class UserPostsComponent extends Unsubscriber implements OnInit  {
     public urlQueryParams?: IURLPostsQueryParams;
     public pageResults?: Pageable<PostDetail>;
-    public isLoading = true;
+    public loading = true;
     public authUser: UserDetail | null;
     public academicLevels$: Observable<IAcademicLevel[]> = of();
     public subjectWithAxes$: Observable<ISubjectWithAxis[]> = of();
@@ -104,14 +104,14 @@ export class UserPostsComponent extends Unsubscriber implements OnInit  {
     public getPosts(postFilters: PostFilters): void {
         postFilters.userId = this.ownerId;
         this.currentFilters = postFilters;
-        this.isLoading = true;
+        this.loading = true;
         this.urlQueryParams = postFilters.formatForURL();
         console.log('Filters: ', this.urlQueryParams);
         this.setQueryParams(this.urlQueryParams);
 
         this.postsService.getPosts(postFilters.formatForAPI()).pipe(
             catchError(() => {
-                this.isLoading = false;
+                this.loading = false;
                 this.commonSnackbarMsg.showErrorMessage();
                 return of();
             }),
@@ -123,7 +123,7 @@ export class UserPostsComponent extends Unsubscriber implements OnInit  {
                 results: posts
             });
             console.log('Results: ', this.pageResults);
-            this.isLoading = false;
+            this.loading = false;
         });
     }
 

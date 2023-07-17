@@ -21,9 +21,9 @@ import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
     animations: [inOutRightAnimation, inOutLeftAnimation]
 })
 export class PostFormComponent extends Unsubscriber implements OnInit {
-    public isEditForm = false;
+    public editForm = false;
     public post?: PostDetail;
-    public isPostDataLoading = false;
+    public loadingPost = false;
 
     public form = new FormGroup({
         title: new FormControl<string>('', Validators.required),
@@ -42,9 +42,9 @@ export class PostFormComponent extends Unsubscriber implements OnInit {
 
     public fileList: PostFile[] = [];
 
-    public isLoading = false;
-    public isAcademicLevelsLoading = true;
-    public isAxesLoading = true;
+    public loading = false;
+    public loadingAcademicLevels = true;
+    public loadingAxes = true;
 
     public maxFileSize = 3000000; // 3Mb
     public fileInputMsg = {
@@ -67,22 +67,20 @@ export class PostFormComponent extends Unsubscriber implements OnInit {
     }
 
     public ngOnInit(): void {
-        forkJoin([this.getAcademicLevels(), this.getAxis(), this.getPostToEdit() ])
-            .pipe(
-                catchError(() => {
-                    this.commonSnackbarMsg.showErrorMessage();
-                    return of();
-                }),
-                takeUntil(this.ngUnsubscribe$)
-            )
-            .subscribe();
+        forkJoin([this.getAcademicLevels(), this.getAxis(), this.getPostToEdit()]).pipe(
+            catchError(() => {
+                this.commonSnackbarMsg.showErrorMessage();
+                return of();
+            }),
+            takeUntil(this.ngUnsubscribe$)
+        ).subscribe();
     }
 
     public getPostToEdit(): Observable<IPostDetail | null> {
         const postId = Number(this.route.snapshot.paramMap.get('id'));
-        this.isEditForm = !!postId;
-        if (this.isEditForm) {
-            this.isPostDataLoading = true;
+        this.editForm = !!postId;
+        if (this.editForm) {
+            this.loadingPost = true;
             this.form.disable();
             return this.postsService.getPostById(postId)
                 .pipe(
@@ -97,7 +95,7 @@ export class PostFormComponent extends Unsubscriber implements OnInit {
                             description: this.post.description
                         });
                         this.fileList = [this.post.mainFile, ...this.post.supportingMaterial];
-                        this.isPostDataLoading = false;
+                        this.loadingPost = false;
                         this.form.controls.files.clearValidators();
                         this.form.enable();
                     })
@@ -202,11 +200,11 @@ export class PostFormComponent extends Unsubscriber implements OnInit {
 
     public save(event: Event): any {
         event.preventDefault();
-        if (this.isLoading || this.form.invalid) {
+        if (this.loading || this.form.invalid) {
             this.form.markAllAsTouched();
             return;
         }
-        if (this.isEditForm) {
+        if (this.editForm) {
             this.editPost();
         } else {
             this.createPost();
@@ -214,7 +212,7 @@ export class PostFormComponent extends Unsubscriber implements OnInit {
     }
 
     private createPost(): void {
-        this.isLoading = true;
+        this.loading = true;
         const userId = this.authService.getUserDetail()?.id;
         const files = this.form.controls.files.value!;
         if (this.form.valid && userId) {
@@ -231,7 +229,7 @@ export class PostFormComponent extends Unsubscriber implements OnInit {
                 .pipe(
                     catchError(() => {
                         this.commonSnackbarMsg.showErrorMessage();
-                        this.isLoading = false;
+                        this.loading = false;
                         return of();
                     }),
                     takeUntil(this.ngUnsubscribe$)
@@ -243,13 +241,13 @@ export class PostFormComponent extends Unsubscriber implements OnInit {
                     } else {
                         this.commonSnackbarMsg.showErrorMessage();
                     }
-                    this.isLoading = false;
+                    this.loading = false;
                 });
         }
     }
 
     private editPost(): void {
-        this.isLoading = true;
+        this.loading = true;
         if (this.form.valid && !!this.post) {
             const postData: IPostForm = {
                 title: this.form.controls.title.value!,
@@ -261,7 +259,7 @@ export class PostFormComponent extends Unsubscriber implements OnInit {
                 .pipe(
                     catchError(() => {
                         this.commonSnackbarMsg.showErrorMessage();
-                        this.isLoading = false;
+                        this.loading = false;
                         return of();
                     }),
                     takeUntil(this.ngUnsubscribe$)
@@ -273,7 +271,7 @@ export class PostFormComponent extends Unsubscriber implements OnInit {
                     } else {
                         this.commonSnackbarMsg.showErrorMessage();
                     }
-                    this.isLoading = false;
+                    this.loading = false;
                 });
         }
     }
@@ -283,7 +281,7 @@ export class PostFormComponent extends Unsubscriber implements OnInit {
             .pipe(
                 tap(resp => {
                     this.academicLevels = resp;
-                    this.isAcademicLevelsLoading = false;
+                    this.loadingAcademicLevels = false;
                     this.filteredAcademicLevels = this.searchAcademicLevel.valueChanges.pipe(
                         startWith(''),
                         map(value => this.simpleFilter(value, this.academicLevels))
@@ -297,7 +295,7 @@ export class PostFormComponent extends Unsubscriber implements OnInit {
             .pipe(
                 tap(resp => {
                     this.subjectWithAxis = resp;
-                    this.isAxesLoading = false;
+                    this.loadingAxes = false;
                     this.filteredSubjectAxis = this.searchAxis.valueChanges.pipe(
                         startWith(''),
                         map(value => this.groupFilter(value, this.subjectWithAxis))

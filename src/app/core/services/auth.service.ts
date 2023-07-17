@@ -22,20 +22,25 @@ import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackba
 
 import { BasicCredentials } from '../types/auth.type';
 import { IUserDetail, IUserForm, UserDetail } from '../../features/user/models/user.model';
+import { IAuthUser } from '../models/auth.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    // Emits true when completes a new sesion process
-    public isCompleted$ = new BehaviorSubject<boolean>(false);
+    // Emits the Firebase accessToken even if is anon auth
+    private _accessToken$ = new BehaviorSubject<string | null>(null);
+    public accessToken$ = this._accessToken$.asObservable();
 
-    // Emits the User instance of Firebase Auth if user is not anonimous
-    public isAuth$ = new BehaviorSubject<User | null>(null);
+    // Emits true when Firebase auth completes and initial services are loaded.
+    private _servicesLoaded$ = new BehaviorSubject<boolean>(false);
+    public servicesLoaded$ = this._servicesLoaded$.asObservable();
 
-    private alreadyRegistered$ = new BehaviorSubject<boolean>(false);
-    private _userDetail: UserDetail | null = null;
-    private _firebaseUser: User | null = null;
+    // Store user authentication data. TODO: use as observable
+    public user: IAuthUser|null = null;
+
+    // To manage internal service logic related to registration
+    private _alreadyRegistered$ = new BehaviorSubject<boolean>(false);
 
     constructor(
         private auth: Auth,
@@ -47,31 +52,44 @@ export class AuthService {
     ) {
         let isFirstAccess = true;
         onAuthStateChanged(auth, (user: User | null) => {
-            this.alreadyRegistered$.next(isFirstAccess);
+            this._alreadyRegistered$.next(isFirstAccess);
             isFirstAccess = false;
 
             if (!user) {
+                this.router.navigate(['/auth/login']);
                 this.authLog('onAuthStateChanged: no auth', user);
                 signInAnonymously(this.auth);
                 return;
             }
 
-            this._firebaseUser = user;
             if (user.isAnonymous) {
                 this.authLog('onAuthStateChanged: anonymous auth', user);
-                this._userDetail = null;
-                this.isAuth$.next(null);
-                this.isCompleted$.next(true);
-                this.alreadyRegistered$.next(false);
+                user.getIdToken().then(token => {
+                    this.user = {
+                        firebaseUser: user,
+                        isAnon: true
+                    };
+                    this._accessToken$.next(token);
+                    this._servicesLoaded$.next(true);
+                    this._alreadyRegistered$.next(false);
+                });
                 return;
             }
 
             // Login with email or Login/Register with Google
             this.authLog('onAuthStateChanged: auth', user);
-            this.alreadyRegistered$.pipe(
+            this._alreadyRegistered$.pipe(
                 filter(value => value),
                 take(1),
                 switchMap(() => {
+                    return from(user.getIdToken());
+                }),
+                switchMap((token: string) => {
+                    this.user = {
+                        firebaseUser: user,
+                        isAnon: false
+                    };
+                    this._accessToken$.next(token);
                     return this.userService.getUserProfileByEmail(user.email!);
                 }),
                 catchError(() => {
@@ -79,41 +97,53 @@ export class AuthService {
                     this.logout();
                     return of();
                 }),
-                takeUntil(this.isCompleted$.pipe(skip(1)))
-            ).subscribe((userDetail: IUserDetail) => {
-                this._userDetail = new UserDetail(userDetail);
-                this.isAuth$.next(user);
-                this.isCompleted$.next(true);
+                takeUntil(this._servicesLoaded$.pipe(skip(1)))
+            ).subscribe((data: IUserDetail) => {
+                this.setUserDetail(new UserDetail(data));
+                this._servicesLoaded$.next(true);
             });
             return;
         },
         error => {
             console.log(error);
             this.commonSnackbarMsg.showErrorMessage();
-            this.isCompleted$.next(true);
+            this._servicesLoaded$.next(true);
         });
     }
 
-    // Register in planishare backend
-    public register(newUser: IUserForm | BasicCredentials): Observable<any> {
-        return this.http.post(environment.apiUrl + '/auth/register/', newUser).pipe(
+    public registerWithEmailAndPassword(credentials: BasicCredentials): Observable<boolean> {
+        return from(createUserWithEmailAndPassword(this.auth, credentials.email, credentials.password))
+            .pipe(
+                switchMap(() => {
+                    return this.registerInPlanishare(credentials);
+                }),
+                switchMap(() => {
+                    this.firebaseAuthService.sendEmailVerification();
+                    return this._servicesLoaded$.asObservable();
+                }),
+                filter(loaded => !!loaded)
+            );
+    }
+
+    public registerInPlanishare(newUser: IUserForm | BasicCredentials): Observable<any> {
+        return this.http.post(environment.planishare.protectedAnon + '/auth/register/', newUser).pipe(
             tap(() => {
-                this.alreadyRegistered$.next(true);
+                this._alreadyRegistered$.next(true);
             })
         );
     }
 
-    public loginWithEmailAndPassword(credentials: BasicCredentials): Observable<User | null> {
+    public loginWithEmailAndPassword(credentials: BasicCredentials): Observable<boolean> {
         return from(signInWithEmailAndPassword(this.auth, credentials.email, credentials.password)).pipe(
-            tap(() => this.alreadyRegistered$.next(true)),
+            tap(() => this._alreadyRegistered$.next(true)),
             switchMap(() => {
-                return this.isAuth$.asObservable();
+                return this._servicesLoaded$.asObservable();
             }),
-            filter(user => !!user)
+            filter(loaded => !!loaded)
         );
     }
 
-    public loginWithGoogle(): Observable<User | null> {
+    public loginWithGoogle(): Observable<boolean> {
         return from(signInWithPopup(this.auth, new GoogleAuthProvider())).pipe(
             switchMap((userCredential: UserCredential | any) => {
                 const data = userCredential._tokenResponse;
@@ -123,79 +153,52 @@ export class AuthService {
                         first_name: data.firstName,
                         last_name: data.lastName
                     };
-                    return this.register(newUser).pipe(map(() => userCredential));
+                    return this.registerInPlanishare(newUser).pipe(map(() => userCredential));
                 }
-                this.alreadyRegistered$.next(true);
+                this._alreadyRegistered$.next(true);
                 return of(userCredential);
             }),
             switchMap(() => {
-                return this.isAuth$.asObservable();
+                return this._servicesLoaded$.asObservable();
             }),
-            filter(user => !!user)
+            filter(loaded => !!loaded)
         );
     }
 
-    public registerWithEmailAndPassword(credentials: BasicCredentials): Observable<any> {
-        return from(createUserWithEmailAndPassword(this.auth, credentials.email, credentials.password))
-            .pipe(
-                switchMap(() => {
-                    return this.register(credentials);
-                }),
-                switchMap(() => {
-                    this.firebaseAuthService.sendEmailVerification();
-                    return this.isAuth$.asObservable();
-                }),
-                filter(user => !!user)
-            );
-    }
-
     public logout(): void {
-        this.isCompleted$.next(false);
+        this._servicesLoaded$.next(false);
         signOut(this.auth);
-        this.isCompleted$.asObservable().pipe(
-            filter(user => !!user),
-            take(1)
-        ).subscribe(() => {
-            this.authLog('logout');
-            this.router.navigate(['/auth/login']);
-        });
     }
 
-    public getAccessToken(): Observable<string | undefined> {
-        if (!!this._firebaseUser) {
-            return from(this._firebaseUser.getIdToken());
-        }
-        return of(undefined);
-    }
-
+    // Current user methods
     public setUserDetail(data: UserDetail | null) {
-        this._userDetail = data;
-        localStorage.setItem('authUserDetail', JSON.stringify(data ?? {}));
+        if (this.user && !this.user.isAnon) {
+            this.user.detail = data ?? undefined;
+            localStorage.setItem('authUserDetail', JSON.stringify(data ?? {}));
+        }
     }
 
-    // Get in memory auth user detail
     public getUserDetail(): UserDetail | null {
-        return this._userDetail;
+        return this.user?.detail ?? null;
     }
 
-    // Request backend auth user detail
-    public refreshUserDetail(): Observable<IUserDetail | undefined> {
-        const user = this.isAuth$.getValue();
-        if (!!user) {
-            return this.userService.getUserProfileByEmail(user.email!).pipe(
+    public refreshUserDetail(): Observable<IUserDetail | null> {
+        if (this.user && !this.user.isAnon) {
+            return this.userService.getUserProfileByEmail(this.user.firebaseUser.email!).pipe(
                 tap((userDetail: IUserDetail) => {
-                    this._userDetail = new UserDetail(userDetail);
+                    this.user!.detail = new UserDetail(userDetail);
                 })
             );
         }
-        return of(undefined);
+        return of(null);
     }
 
+    // Utils
     private authLog(...data: any[]): void {
-        // console.log(
-        //     `%c (AUTH-SERVICE): ${data[0]}`,
-        //     'background: #222; color: #bada55',
-        //     ...data.splice(1,1)
-        // );
+        console.log(
+            `%c (AUTH-SERVICE): ${data[0]}`,
+            'background: #222; color: #bada55',
+            ...data.splice(1,1)
+        );
     }
 }
