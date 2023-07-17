@@ -14,18 +14,18 @@ export class UsersService {
     ) { }
 
     public isEmailAvailable(email: string): Observable<any> {
-        return this.http.get(`${environment.apiUrl}/users/is-email-available/${email}/`);
+        return this.http.get(`${environment.planishare.protectedAnon}/users/is-email-available/${email}/`);
     }
 
     public getUserById(id: number): Observable<IUserDetail> {
-        return this.http.get<IUserDetail>(`${environment.apiUrl}/users/${id}/`);
+        return this.http.get<IUserDetail>(`${environment.planishare.protectedAnon}/users/${id}/`);
     }
 
     public getUserProfileByEmail(email: string): Observable<IUserDetail> {
-        return this.http.get<IUserDetail>(`${environment.apiUrl}/users/by-email/${email}/`);
+        return this.http.get<IUserDetail>(`${environment.planishare.protected}/users/by-email/${email}/`);
     }
 
     public updateUserProfile(id: number, body: IUserForm): Observable<IUserDetail> {
-        return this.http.patch<IUserDetail>(`${environment.apiUrl}/users/update/${id}/`, body);
+        return this.http.patch<IUserDetail>(`${environment.planishare.protected}/users/update/${id}/`, body);
     }
 }

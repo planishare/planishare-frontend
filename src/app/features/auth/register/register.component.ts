@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AbstractControl, AbstractControlOptions, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { catchError, map, Observable, of } from 'rxjs';
@@ -43,13 +42,12 @@ export class RegisterComponent {
         } as AbstractControlOptions
     );
 
-    public matcher = new MyErrorStateMatcher();
     public redirectTo: string = '/';
 
     public showPassword = false;
     public showPasswordConfirmation = false;
-    public isLoading = false;
-    public isLoadingGoogle = false;
+    public loading = false;
+    public loadingGoogle = false;
 
     constructor(
         private authService: AuthService,
@@ -73,7 +71,7 @@ export class RegisterComponent {
             return;
         }
 
-        this.isLoading = true;
+        this.loading = true;
         const credentials: BasicCredentials = {
             email: this.form.controls.email.value!,
             password: this.form.controls.password.value!
@@ -93,17 +91,16 @@ export class RegisterComponent {
                         this.commonSnackbarMsg.showErrorMessage();
                         break;
                 }
-                this.isLoading = false;
+                this.loading = false;
                 return of();
             })
         ).subscribe(() => {
             this.router.navigate([this.redirectTo]);
-            // this.isLoading = false;
         });
     }
 
     public loginWithGoogle(): void {
-        this.isLoadingGoogle = true;
+        this.loadingGoogle = true;
         this.authService.loginWithGoogle().pipe(
             catchError((error: FirebaseError) => {
                 switch (error.code) {
@@ -119,12 +116,11 @@ export class RegisterComponent {
                         this.commonSnackbarMsg.showErrorMessage();
                         break;
                 }
-                this.isLoadingGoogle = false;
+                this.loadingGoogle = false;
                 return of();
             })
         ).subscribe(() => {
             this.router.navigate([this.redirectTo]);
-            // this.isLoadingGoogle = false;
         });
     }
 
@@ -145,14 +141,5 @@ export class RegisterComponent {
                 return data.isAvailable ? null : { alreadyUsed: true };
             })
         );
-    }
-}
-
-class MyErrorStateMatcher implements ErrorStateMatcher {
-    public isErrorState(control: FormControl | null): boolean {
-        const invalidCtrl = !!(control && control.invalid && control.parent?.dirty);
-        const invalidParent = !!(control && control.parent && control.parent.invalid && control.parent.dirty);
-
-        return (invalidCtrl || invalidParent);
     }
 }

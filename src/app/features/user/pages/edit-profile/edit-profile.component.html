@@ -3,7 +3,7 @@
     <h1 class="fs-large m-b-05">Editar perfil</h1>
 
     <!-- Form shimmer -->
-    <div class="flex-column gap-1 w-100" *ngIf="isUserDataLoading">
+    <div class="flex-column gap-1 w-100" *ngIf="loadingUser">
       <div class="shimmer-input-form grow-1"></div>
       <div class="flex-space_between-center flex-wrap gap-1-lg">
         <div class="shimmer-input-form grow-1"></div>
@@ -26,7 +26,7 @@
       </div>
     </div>
 
-    <form [formGroup]="form" (ngSubmit)="save($event)" *ngIf="!isUserDataLoading">
+    <form [formGroup]="form" (ngSubmit)="save($event)" *ngIf="!loadingUser">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Email</mat-label>
         <input matInput placeholder="Email" [value]="form.controls.email.value" disabled="true">
@@ -59,11 +59,11 @@
         <mat-label>Comuna</mat-label>
         <mat-select formControlName="commune" disableOptionCentering>
           <mat-option>
-            <ngx-mat-select-search [searching]="isLocationsLoading" [formControl]="searchLocation"
+            <ngx-mat-select-search [searching]="loadingLocations" [formControl]="searchLocation"
               placeholderLabel="Buscar por comuna/region" noEntriesFoundLabel="No se encontraron resultados">
             </ngx-mat-select-search>
           </mat-option>
-          <mat-option *ngIf="!isLocationsLoading && !!form.get('commune')?.value && !!(filteredLocations|async)?.length"
+          <mat-option *ngIf="!loadingLocations && !!form.get('commune')?.value && !!(filteredLocations|async)?.length"
             [value]="null">
             Borrar
           </mat-option>
@@ -79,17 +79,17 @@
         <mat-label>Institución</mat-label>
         <mat-select formControlName="institution" disableOptionCentering>
           <mat-option>
-            <ngx-mat-select-search [searching]="isInstitutionsLoading" [formControl]="searchInstitution"
+            <ngx-mat-select-search [searching]="loadingInstitutions" [formControl]="searchInstitution"
               placeholderLabel="Escribe para cargar más instituciones"
-              [noEntriesFoundLabel]="!isInstitutionsLoading ? 'No se encontraron resultados' : 'Cargando...'">
+              [noEntriesFoundLabel]="!loadingInstitutions ? 'No se encontraron resultados' : 'Cargando...'">
             </ngx-mat-select-search>
           </mat-option>
           <mat-option
-            *ngIf="!isInstitutionsLoading && !!form.controls.institution.value && !!(filteredInstitutions|async)?.length"
+            *ngIf="!loadingInstitutions && !!form.controls.institution.value && !!institutions?.length"
             [value]="null">
             Borrar
           </mat-option>
-          <mat-option *ngFor="let institution of filteredInstitutions|async" [value]="institution.id">
+          <mat-option *ngFor="let institution of institutions" [value]="institution.id">
             {{ institution.name }}
           </mat-option>
         </mat-select>
@@ -97,15 +97,15 @@
       </mat-form-field>
 
       <div class="flex-end-center m-t-1">
-        <button type="submit" mat-raised-button color="primary" *ngIf="!isLoading && !alreadySaved" @inOutRight [@.disabled]="!isLoading">
+        <button type="submit" mat-raised-button color="primary" *ngIf="!saving && !saved" @inOutRight [@.disabled]="!saving">
           <span class="m-r-05">Guardar</span>
           <mat-icon class="fs-medium">save</mat-icon>
         </button>
-        <button type="submit" mat-raised-button color="primary" *ngIf="!isLoading && alreadySaved" @inOutRight [@.disabled]="!isLoading">
+        <button type="submit" mat-raised-button color="primary" *ngIf="!saving && saved" @inOutRight [@.disabled]="!saving">
           <span class="m-r-05">Guardado</span>
           <mat-icon class="fs-medium">check_circle</mat-icon>
         </button>
-        <div class="shapes-loader" *ngIf="isLoading" @inOutLeft></div>
+        <div class="shapes-loader" *ngIf="saving" @inOutLeft></div>
       </div>
     </form>
   </div>
@@ -121,7 +121,7 @@
         </li>
       </ul>
     </div>
-    <div class="rounded-card" *ngIf="isVerificated">
+    <div class="rounded-card" *ngIf="userVerified">
       <h2>Cambiar contraseña</h2>
       <p>{{ changePasswordMsg }}</p>
       <div class="flex-end-center m-t-1">
@@ -131,7 +131,7 @@
         </button>
       </div>
     </div>
-    <div class="rounded-card" *ngIf="!isVerificated">
+    <div class="rounded-card" *ngIf="!userVerified">
       <h2>Verificar cuenta</h2>
       <p>Revisa tu email y valida tu cuenta para poder crear publicaciones y dar Me gusta 💙</p>
       <div class="flex-end-center m-t-1">

@@ -5,28 +5,28 @@ import { Observable, of } from 'rxjs';
 import { AuthService } from './core/services/auth.service';
 import { inOutYAnimation } from './shared/animations/animations';
 import { WindowResizeService } from './shared/services/window-resize.service';
-import { WindowScrollService } from './shared/services/window-scroll.service';
+import { LoadersService } from './shared/services/loaders.service';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
-    animations: [inOutYAnimation]
+    styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
     public inMaintenance = false;
-    public isAuthCompleted: Observable<boolean> = of(false);
 
     constructor (
         private authService: AuthService,
         private matSnackBar: MatSnackBar,
         private windowResize: WindowResizeService,
-        private windowScroll: WindowScrollService
+        private loadersService: LoadersService
     ) {
+        this.authService.servicesLoaded$.subscribe(loaded => {
+            if (loaded && !this.inMaintenance) {
+                this.loadersService.hideBookLoader();
+            }
+        });
         this.windowResize.startListening();
-        this.windowScroll.startListening();
-
-        this.isAuthCompleted = this.authService.isCompleted$;
     }
 
     public ngOnInit(): void {

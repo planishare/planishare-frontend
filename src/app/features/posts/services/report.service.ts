@@ -14,6 +14,6 @@ export class ReportService {
     ) { }
 
     public createReport(report: APIReportBody): Observable<any> {
-        return this.http.post(environment.apiUrl + '/report/create/', report);
+        return this.http.post(environment.planishare.protected + '/report/create/', report);
     }
 }
