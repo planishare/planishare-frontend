@@ -7,7 +7,7 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FirebaseError } from 'firebase/app';
 import { Observable, Subject } from 'rxjs';
-import { FirebaseAuthErrorCodes } from '../models/auth.enum';
+import { FirebaseAuthErrorCodes } from '../models/auth.model';
 
 @Injectable({
     providedIn: 'root'

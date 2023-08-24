@@ -9,8 +9,8 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
 import { FirebaseError } from 'firebase/app';
-import { FirebaseAuthErrorCodes } from 'src/app/core/models/auth.enum';
-import { BasicCredentials } from 'src/app/core/models/auth.type';
+import { FirebaseAuthErrorCodes } from 'src/app/core/models/auth.model';
+import { BasicCredentials } from 'src/app/core/models/auth.model';
 
 import { ForgotPasswordDialogComponent } from '../components/forgot-password-dialog/forgot-password-dialog.component';
 

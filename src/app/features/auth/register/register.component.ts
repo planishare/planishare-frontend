@@ -5,8 +5,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { catchError, map, Observable, of } from 'rxjs';
 
 import { FirebaseError } from 'firebase/app';
-import { FirebaseAuthErrorCodes } from 'src/app/core/models/auth.enum';
-import { BasicCredentials } from 'src/app/core/models/auth.type';
+import { FirebaseAuthErrorCodes } from 'src/app/core/models/auth.model';
+import { BasicCredentials } from 'src/app/core/models/auth.model';
 
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UsersService } from 'src/app/features/user/services/users.service';
