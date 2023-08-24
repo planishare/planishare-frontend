@@ -8,7 +8,7 @@ import { WindowResizeService } from '../../../shared/services/window-resize.serv
 import { SidenavComponent } from 'src/app/core/models/sidenav.enum';
 
 import { Unsubscriber } from '../../../shared/utils/unsubscriber';
-import { UserDetail } from 'src/app/features/user/models/user.model';
+import { UserDetail } from 'src/app/pages/user/models/user.model';
 
 @Component({
     selector: 'app-navbar',

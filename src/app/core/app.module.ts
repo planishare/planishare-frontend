@@ -29,7 +29,7 @@ import { MainLayoutComponent } from './components/main-layout/main-layout.compon
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { NavigationSidenavComponent } from './components/navigation-sidenav/navigation-sidenav.component';
 import { AuthService } from './services/auth.service';
-import { UsersService } from '../features/user/services/users.service';
+import { UsersService } from '../pages/user/services/users.service';
 import { FirebaseAuthService } from './services/firebase-auth.service';
 import { IsAuthGuard } from './guards/is-auth.guard';
 import { IsNotAuthGuard } from './guards/is-not-auth.guard';

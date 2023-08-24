@@ -1,4 +1,4 @@
-import { PostDetail } from "../../features/posts/models/post.model";
+import { PostDetail } from "../../pages/posts/models/post.model";
 
 export type APIReportBody = {
     report_type: ReportType,

@@ -10,20 +10,20 @@ const routes: Routes = [
         children: [
             {
                 path: '',
-                loadChildren: () => import('../features/homepage/homepage.module').then(mod => mod.HomepageModule)
+                loadChildren: () => import('../pages/homepage/homepage.module').then(mod => mod.HomepageModule)
             },
             {
                 path: 'auth',
-                loadChildren: () => import('../features/auth/auth.module').then(mod => mod.AuthModule),
+                loadChildren: () => import('../pages/auth/auth.module').then(mod => mod.AuthModule),
                 canActivate: [IsNotAuthGuard]
             },
             {
                 path: 'posts',
-                loadChildren: () => import('../features/posts/posts.module').then(mod => mod.PostsModule)
+                loadChildren: () => import('../pages/posts/posts.module').then(mod => mod.PostsModule)
             },
             {
                 path: 'user',
-                loadChildren: () => import('../features/user/user.module').then(mod => mod.UserModule)
+                loadChildren: () => import('../pages/user/user.module').then(mod => mod.UserModule)
             }
         ]
     },

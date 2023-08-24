@@ -17,11 +17,11 @@ import {
 } from '@angular/fire/auth';
 
 import { FirebaseAuthService } from './firebase-auth.service';
-import { UsersService } from '../../features/user/services/users.service';
+import { UsersService } from '../../pages/user/services/users.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
 import { BasicCredentials } from '../models/auth.model';
-import { IUserDetail, IUserForm, UserDetail } from '../../features/user/models/user.model';
+import { IUserDetail, IUserForm, UserDetail } from '../../pages/user/models/user.model';
 import { IAuthUser } from '../models/auth.model';
 
 @Injectable({

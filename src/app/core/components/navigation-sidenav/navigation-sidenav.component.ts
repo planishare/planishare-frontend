@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { UserDetail } from 'src/app/features/user/models/user.model';
+import { UserDetail } from 'src/app/pages/user/models/user.model';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { SidenavService } from 'src/app/core/services/sidenav.service';
 
