@@ -10,7 +10,7 @@ import { WindowResizeService } from 'src/app/shared/services/window-resize.servi
 import { OrderingType, OrderingTypeName } from 'src/app/features/posts/constants/posts.enum';
 import { IOrdering, IURLPostsQueryParams, PostFilters } from 'src/app/features/posts/models/post-filter.model';
 import { IAcademicLevel, IAxis, ISubject, ISubjectWithAxis } from 'src/app/features/posts/models/post.model';
-import { RoundedSelectGroup, RoundedSelectOption } from 'src/app/shared/types/rounded-select.type';
+import { RoundedSelectGroup, RoundedSelectOption } from 'src/app/shared/models/rounded-select.type';
 
 @Component({
     selector: 'app-post-filters-card',

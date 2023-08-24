@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { RoundedSelectGroup, RoundedSelectOption } from '../../types/rounded-select.type';
+import { RoundedSelectGroup, RoundedSelectOption } from '../../models/rounded-select.type';
 import { startWith } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
 
