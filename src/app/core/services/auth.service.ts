@@ -20,7 +20,7 @@ import { FirebaseAuthService } from './firebase-auth.service';
 import { UsersService } from '../../features/user/services/users.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
-import { BasicCredentials } from '../types/auth.type';
+import { BasicCredentials } from '../models/auth.type';
 import { IUserDetail, IUserForm, UserDetail } from '../../features/user/models/user.model';
 import { IAuthUser } from '../models/auth.model';
 

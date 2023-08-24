@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { SidenavComponent } from 'src/app/shared/enums/sidenav.enum';
-import { SidenavService } from 'src/app/shared/services/sidenav.service';
+import { SidenavComponent } from 'src/app/core/models/sidenav.enum';
+import { SidenavService } from 'src/app/core/services/sidenav.service';
 import { takeUntil } from 'rxjs';
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 

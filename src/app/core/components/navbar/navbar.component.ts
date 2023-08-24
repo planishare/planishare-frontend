@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs';
 
 import { AuthService } from 'src/app/core/services/auth.service';
-import { SidenavService } from 'src/app/shared/services/sidenav.service';
-import { WindowResizeService } from '../../services/window-resize.service';
+import { SidenavService } from 'src/app/core/services/sidenav.service';
+import { WindowResizeService } from '../../../shared/services/window-resize.service';
 
-import { SidenavComponent } from 'src/app/shared/enums/sidenav.enum';
+import { SidenavComponent } from 'src/app/core/models/sidenav.enum';
 
-import { Unsubscriber } from '../../utils/unsubscriber';
+import { Unsubscriber } from '../../../shared/utils/unsubscriber';
 import { UserDetail } from 'src/app/features/user/models/user.model';
 
 @Component({

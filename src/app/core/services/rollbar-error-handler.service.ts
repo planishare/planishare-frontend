@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandler, Inject, Injectable } from '@angular/core';
 import * as Rollbar from 'rollbar';
-import { RollbarService } from 'src/app/app.module';
+import { RollbarService } from '../app.module';
 
 @Injectable({
     providedIn: 'root'

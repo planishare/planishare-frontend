@@ -6,8 +6,6 @@ import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../material.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
-import { NavbarComponent } from './components/navbar/navbar.component';
-import { NavigationSidenavComponent } from './components/navigation-sidenav/navigation-sidenav.component';
 import { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
 import { RoundedSelectComponent } from './components/rounded-select/rounded-select.component';
 import { ScrollToTopButtonComponent } from './components/scroll-to-top-button/scroll-to-top-button.component';
@@ -32,8 +30,6 @@ import { DebounceClickDirective } from './directives/debounce-click.directive';
 
         // Components
         ReportDialogComponent,
-        NavbarComponent,
-        NavigationSidenavComponent,
         RoundedSelectComponent,
         ScrollToTopButtonComponent
     ],
@@ -46,8 +42,6 @@ import { DebounceClickDirective } from './directives/debounce-click.directive';
     ],
     exports: [
         // Components
-        NavbarComponent,
-        NavigationSidenavComponent,
         RoundedSelectComponent,
         ReportDialogComponent,
         ScrollToTopButtonComponent,

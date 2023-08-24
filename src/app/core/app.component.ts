@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of } from 'rxjs';
 
-import { AuthService } from './core/services/auth.service';
-import { inOutYAnimation } from './shared/animations/animations';
-import { WindowResizeService } from './shared/services/window-resize.service';
-import { LoadersService } from './shared/services/loaders.service';
+import { AuthService } from './services/auth.service';
+import { WindowResizeService } from '../shared/services/window-resize.service';
+import { LoadersService } from '../shared/services/loaders.service';
 
 @Component({
     selector: 'app-root',
