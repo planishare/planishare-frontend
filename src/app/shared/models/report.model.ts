@@ -1,4 +1,5 @@
 import { PostDetail } from "../../pages/posts/models/post.model";
+import { ReportType } from "./report.enum";
 
 export type APIReportBody = {
     report_type: ReportType,
@@ -12,9 +13,4 @@ export type APIReportBody = {
 export type ReportInput = {
     post: PostDetail,
     userId: number
-}
-
-export enum ReportType {
-    USER = 1,
-    POST = 2
 }

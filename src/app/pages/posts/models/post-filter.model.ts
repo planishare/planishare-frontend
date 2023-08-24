@@ -1,4 +1,4 @@
-import { OrderingType, OrderingTypeName } from "../constants/posts.enum";
+import { OrderingType, OrderingTypeName } from "../models/posts.enum";
 import { IAcademicLevel, IAxis, ISubject } from "./post.model";
 
 export interface IPostFilters {

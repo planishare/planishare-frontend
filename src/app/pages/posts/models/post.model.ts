@@ -1,5 +1,5 @@
 import { IUserSimpleDetail, UserSimpleDetail } from "../../user/models/user.model";
-import { DOCUMENT_VIEWER, FILE_TAG_COLOR } from "../constants/files.constants";
+import { DOCUMENT_VIEWER, FILE_TAG_COLOR } from "./files.constants";
 import { viewerType } from "ngx-doc-viewer";
 
 export interface IPostDetail {

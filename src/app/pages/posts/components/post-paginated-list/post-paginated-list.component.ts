@@ -7,7 +7,7 @@ import { fadeInOutAnimation, inOutLeftAnimation, inOutRightAnimation } from 'src
 
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
-import { OrderingType } from 'src/app/pages/posts/constants/posts.enum';
+import { OrderingType } from 'src/app/pages/posts/models/posts.enum';
 import { Pageable } from 'src/app/shared/models/pageable.model';
 import { IURLPostsQueryParams, PostFilters } from 'src/app/pages/posts/models/post-filter.model';
 import { PostDetail } from 'src/app/pages/posts/models/post.model';

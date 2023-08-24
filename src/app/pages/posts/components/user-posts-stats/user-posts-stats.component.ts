@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { PostsStats } from '../../types/posts-stats.type';
+import { PostsStats } from '../../models/posts-stats.type';
 
 @Component({
     selector: 'app-user-posts-stats',
