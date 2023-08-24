@@ -13,9 +13,7 @@ import { MaterialModule } from 'src/app/material.module';
     ],
     imports: [
         CommonModule,
-        HomepageRoutingModule,
-        SharedModule,
-        MaterialModule
+        HomepageRoutingModule
     ]
 })
 export class HomepageModule { }

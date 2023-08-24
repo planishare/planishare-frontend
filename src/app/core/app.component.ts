@@ -20,12 +20,12 @@ export class AppComponent implements OnInit {
         private windowResize: WindowResizeService,
         private loadersService: LoadersService
     ) {
+        this.windowResize.startListening();
         this.authService.servicesLoaded$.subscribe(loaded => {
             if (loaded && !this.inMaintenance) {
                 this.loadersService.hideBookLoader();
             }
         });
-        this.windowResize.startListening();
     }
 
     public ngOnInit(): void {

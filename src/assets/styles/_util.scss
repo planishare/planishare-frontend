@@ -1,0 +1,18 @@
+.outline, .outline > * {
+    outline: 1px solid mediumturquoise;
+}
+
+.uppercase { text-transform: uppercase; }
+
+.text-center { text-align: center; }
+
+.text-ellipsis {
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
+
+.a-style-none {
+    text-decoration: none;
+    color: inherit;
+}

@@ -11,19 +11,6 @@ const routes: Routes = [
             {
                 path: '',
                 loadChildren: () => import('../pages/homepage/homepage.module').then(mod => mod.HomepageModule)
-            },
-            {
-                path: 'auth',
-                loadChildren: () => import('../pages/auth/auth.module').then(mod => mod.AuthModule),
-                canActivate: [IsNotAuthGuard]
-            },
-            {
-                path: 'posts',
-                loadChildren: () => import('../pages/posts/posts.module').then(mod => mod.PostsModule)
-            },
-            {
-                path: 'user',
-                loadChildren: () => import('../pages/user/user.module').then(mod => mod.UserModule)
             }
         ]
     },

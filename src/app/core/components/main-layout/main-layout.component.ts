@@ -11,17 +11,16 @@ import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 })
 export class MainLayoutComponent extends Unsubscriber {
     public sidenavComponent = SidenavComponent;
-    public isOpened = false;
+    public navbarOpen = false;
     public component: SidenavComponent | null = null;
 
     constructor(
         private sidenav: SidenavService
     ) {
         super();
-        this.sidenav.opened.asObservable()
-            .pipe(takeUntil(this.ngUnsubscribe$))
+        this.sidenav.opened.asObservable().pipe(takeUntil(this.ngUnsubscribe$))
             .subscribe(value => {
-                this.isOpened = !!value;
+                this.navbarOpen = !!value;
                 this.component = value;
             });
     }
