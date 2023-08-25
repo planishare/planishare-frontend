@@ -9,8 +9,7 @@ import { takeUntil } from 'rxjs';
     styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent extends Unsubscriber {
-    public desktop = this.windowResize.desktop$.pipe(takeUntil(this.ngUnsubscribe$));
-    public mobile = this.windowResize.mobile$.pipe(takeUntil(this.ngUnsubscribe$));
+    public desktop$ = this.windowResize.desktop$.pipe(takeUntil(this.ngUnsubscribe$));
 
     public navOpen = false;
 

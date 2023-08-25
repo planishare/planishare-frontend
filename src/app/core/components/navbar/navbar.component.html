@@ -1,6 +1,6 @@
 <header class="header bg-primary txt-on-primary container flex-between-center gap-1 p-y-1">
   <a class="a-style-none ft-medium" routerLink="/">Planishare</a>
-  <button class="button-style-none toggle-nav" (click)="navOpen = !navOpen" *ngIf="(desktop|async)===false">
+  <button class="button-style-none toggle-nav" (click)="navOpen = !navOpen" *ngIf="(desktop$|async)===false">
     <svg *ngIf="!navOpen" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
       <path d="M4 8l16 0" />
@@ -13,14 +13,14 @@
    </svg>
   </button>
   <nav class="nav container p-y-3 bg-on-primary txt-primary" [ngClass]="{'open': navOpen}">
-    <ul class="ul-style-none flex-col flex-start-center gap-1" [ngClass]="(desktop|async) ? 'ft-medium' : 'ft-headline'">
+    <ul class="ul-style-none flex-col flex-start-center gap-1" [ngClass]="(desktop$|async) ? 'ft-medium' : 'ft-headline'">
       <li><a class="a-style-none" href="">Registrarse</a></li>
       <li><a class="a-style-none" href="">Iniciar sesión</a></li>
       <li><a class="a-style-none" href="">Mi perfil</a></li>
       <li><a class="a-style-none" href="">Mis publicaciones</a></li>
       <li><a class="a-style-none" href="">Crear publicación</a></li>
       <li><a class="rounded-button w-fit-content m-x-auto"
-        [ngClass]="(desktop|async) ? 'bg-on-primary txt-primary' : 'bg-primary txt-on-primary'"
+        [ngClass]="(desktop$|async) ? 'bg-on-primary txt-primary' : 'bg-primary txt-on-primary'"
         href="">Ver planificaciones</a></li>
     </ul>
   </nav>
