@@ -97,7 +97,7 @@ export class PostFiltersCardComponent extends Unsubscriber implements OnInit, On
         private windowResize: WindowResizeService
     ) {
         super();
-        this.windowResize.isDesktop$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(value => {
+        this.windowResize.desktop$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(value => {
             this.isDesktop = value;
             this.showFilters = value;
         });

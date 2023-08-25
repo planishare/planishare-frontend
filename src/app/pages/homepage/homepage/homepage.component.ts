@@ -9,8 +9,8 @@ import { takeUntil } from 'rxjs';
     styleUrls: ['./homepage.component.scss']
 })
 export class HomepageComponent extends Unsubscriber {
-    public desktop = this.windowResize.isDesktop$.pipe(takeUntil(this.ngUnsubscribe$));
-    public mobile = this.windowResize.isMobile$.pipe(takeUntil(this.ngUnsubscribe$));
+    public desktop = this.windowResize.desktop$.pipe(takeUntil(this.ngUnsubscribe$));
+    public mobile = this.windowResize.mobile$.pipe(takeUntil(this.ngUnsubscribe$));
 
     constructor(
         private windowResize: WindowResizeService
