@@ -27,7 +27,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import * as Rollbar from 'rollbar';
 import { MainLayoutComponent } from './components/main-layout/main-layout.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { NavigationSidenavComponent } from './components/navigation-sidenav/navigation-sidenav.component';
 import { AuthService } from './services/auth.service';
 import { UsersService } from '../pages/user/services/users.service';
 import { FirebaseAuthService } from './services/firebase-auth.service';
@@ -43,8 +42,7 @@ export const RollbarService = new InjectionToken<Rollbar>('rollbar');
     declarations: [
         AppComponent,
         MainLayoutComponent,
-        NavbarComponent,
-        NavigationSidenavComponent
+        NavbarComponent
     ],
     imports: [
         BrowserModule,

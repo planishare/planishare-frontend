@@ -89,7 +89,7 @@
             "int32Hint": false
         }],
         "semi": ["error", "always"],                                        // Force semicolon ";" after each sentence
-        "@typescript-eslint/interface-name-prefix": "off" 
+        "@typescript-eslint/interface-name-prefix": "off"
       }
     },
     {

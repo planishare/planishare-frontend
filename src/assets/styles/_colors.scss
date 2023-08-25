@@ -1,0 +1,82 @@
+:root {
+    --clr-primary: #0D533B;
+    --clr-on-primary: #FFF4DE;
+    --clr-secondary: #dc5c36;
+    --clr-on-secondary: #FFFFFF;
+
+    --clr-primary-container: #F7F0F8;
+    --clr-on-primary-container: #0D533B;
+
+    --clr-background: #F8F6F1;
+    --clr-on-background: #1F1B1F;
+
+    // Fixed colors
+    --clr-red: #dc5c36;
+    --clr-on-red: #FFFFFF;
+    --clr-green: #0D533B;
+    --clr-on-green: #FFFFFF;
+    --clr-blue: #3777FF;
+    --clr-on-blue: #FFFFFF;
+    --clr-orange: #FFD166;
+    --clr-on-orange: #1F1B1F;
+    --clr-purple: #533A71;
+    --clr-on-purple: #FFFFFF;
+}
+
+.dark {}
+
+/* Text colors */
+.txt-primary { color: var(--clr-primary); }
+.txt-on-primary { color: var(--clr-on-primary); }
+
+.txt-secondary { color: var(--clr-secondary); }
+.txt-on-secondary { color: var(--clr-on-secondary); }
+
+.txt-primary-container { color: var(--clr-primary-container); }
+.txt-on-primary-container { color: var(--clr-on-primary-container); }
+
+.txt-background { color: var(--clr-background); }
+.txt-on-background { color: var(--clr-on-background); }
+
+.txt-red { color: var(--clr-red); }
+.txt-on-red { color: var(--clr-on-red); }
+
+.txt-green { color: var(--clr-green); }
+.txt-on-green { color: var(--clr-on-green); }
+
+.txt-blue { color: var(--clr-blue); }
+.txt-on-blue { color: var(--clr-on-blue); }
+
+.txt-orange { color: var(--clr-orange); }
+.txt-on-orange { color: var(--clr-on-orange); }
+
+.txt-purple { color: var(--clr-purple); }
+.txt-on-purple { color: var(--clr-on-purple); }
+
+/* Background colors */
+.bg-primary { background-color: var(--clr-primary); }
+.bg-on-primary { background-color: var(--clr-on-primary); }
+
+.bg-secondary { background-color: var(--clr-secondary); }
+.bg-on-secondary { background-color: var(--clr-on-secondary); }
+
+.bg-primary-container { background-color: var(--clr-primary-container); }
+.bg-on-primary-container { background-color: var(--clr-on-primary-container); }
+
+.bg-on-background { background-color: var(--clr-on-background); }
+.bg-background { background-color: var(--clr-background); }
+
+.bg-on-red { background-color: var(--clr-on-red); }
+.bg-red { background-color: var(--clr-red); }
+
+.bg-on-green { background-color: var(--clr-on-green); }
+.bg-green { background-color: var(--clr-green); }
+
+.bg-on-blue { background-color: var(--clr-on-blue); }
+.bg-blue { background-color: var(--clr-blue); }
+
+.bg-on-orange { background-color: var(--clr-on-orange); }
+.bg-orange { background-color: var(--clr-orange); }
+
+.bg-on-purple { background-color: var(--clr-on-purple); }
+.bg-purple { background-color: var(--clr-purple); }

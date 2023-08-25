@@ -1,3 +1,11 @@
+:root {
+    --container-space: min(6%, 2rem);
+}
+
+.container {
+    padding-inline: var(--container-space);
+}
+
 .outline, .outline > * {
     outline: 1px solid mediumturquoise;
 }
@@ -12,7 +20,21 @@
     text-overflow: ellipsis;
 }
 
-.a-style-none {
+a.a-style-none {
     text-decoration: none;
     color: inherit;
+}
+
+button.button-style-none {
+    background-color: transparent;
+    color: inherit;
+    border: none;
+    padding: none;
+    margin: none;
+}
+
+ul.ul-style-none {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }

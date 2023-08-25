@@ -1,0 +1,42 @@
+.flex,
+.flex-center-center,
+.flex-between-center,
+.flex-start-center,
+.flex-wrap,
+.flex-col {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.flex-center-center {
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-between-center {
+    justify-content: space-between;
+}
+
+.flex-start-center {
+    justify-content: start;
+}
+
+.flew-wrap {
+    flex-wrap: wrap;
+}
+
+// Gap
+.gap-3 {
+    gap: 3rem;
+}
+
+.gap-1 {
+    gap: 1rem;
+}
+
+.gap-05 {
+    gap: .5rem;
+}
