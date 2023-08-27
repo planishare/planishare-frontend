@@ -20,7 +20,7 @@ import { FirebaseAuthService } from './firebase-auth.service';
 import { UsersService } from '../../pages/user/services/users.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
-import { BasicCredentials } from '../models/auth.model';
+import { LoginCredentials } from '../models/auth.model';
 import { IUserDetail, IUserForm, UserDetail } from '../../pages/user/models/user.model';
 import { IAuthUser } from '../models/auth.model';
 
@@ -111,7 +111,7 @@ export class AuthService {
         });
     }
 
-    public registerWithEmailAndPassword(credentials: BasicCredentials): Observable<boolean> {
+    public registerWithEmailAndPassword(credentials: LoginCredentials): Observable<boolean> {
         return from(createUserWithEmailAndPassword(this.auth, credentials.email, credentials.password))
             .pipe(
                 switchMap(() => {
@@ -125,7 +125,7 @@ export class AuthService {
             );
     }
 
-    public registerInPlanishare(newUser: IUserForm | BasicCredentials): Observable<any> {
+    public registerInPlanishare(newUser: IUserForm | LoginCredentials): Observable<any> {
         return this.http.post(environment.planishare.protectedAnon + '/auth/register/', newUser).pipe(
             tap(() => {
                 this._alreadyRegistered$.next(true);
@@ -133,7 +133,7 @@ export class AuthService {
         );
     }
 
-    public loginWithEmailAndPassword(credentials: BasicCredentials): Observable<boolean> {
+    public loginWithEmailAndPassword(credentials: LoginCredentials): Observable<boolean> {
         return from(signInWithEmailAndPassword(this.auth, credentials.email, credentials.password)).pipe(
             tap(() => this._alreadyRegistered$.next(true)),
             switchMap(() => {

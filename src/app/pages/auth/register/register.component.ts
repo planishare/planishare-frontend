@@ -6,7 +6,7 @@ import { catchError, map, Observable, of } from 'rxjs';
 
 import { FirebaseError } from 'firebase/app';
 import { FirebaseAuthErrorCodes } from 'src/app/core/models/auth.enum';
-import { BasicCredentials } from 'src/app/core/models/auth.model';
+import { LoginCredentials } from 'src/app/core/models/auth.model';
 
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UsersService } from 'src/app/pages/user/services/users.service';
@@ -72,7 +72,7 @@ export class RegisterComponent {
         }
 
         this.loading = true;
-        const credentials: BasicCredentials = {
+        const credentials: LoginCredentials = {
             email: this.form.controls.email.value!,
             password: this.form.controls.password.value!
         };

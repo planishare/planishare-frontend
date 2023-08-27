@@ -1,5 +1,15 @@
-@media (min-width: 48rem) {
-    .login-card {
-        max-width: 480px;
+main.container {
+    min-height: calc(100vh - 58px);
+    min-height: calc(100dvh - 58px);
+}
+
+.section-image {
+    max-width: 570px;
+}
+
+@media(min-width: 64rem)  {
+    main.container {
+        min-height: calc(100vh - 72px);
+        min-height: calc(100dvh - 72px);
     }
 }

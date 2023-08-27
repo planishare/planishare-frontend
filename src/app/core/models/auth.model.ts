@@ -1,7 +1,7 @@
 import { User } from '@angular/fire/auth';
 import { UserDetail } from 'src/app/pages/user/models/user.model';
 
-export type BasicCredentials = {
+export type LoginCredentials = {
     email: string,
     password: string
 }

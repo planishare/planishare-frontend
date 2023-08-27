@@ -12,7 +12,20 @@
     margin-inline: auto;
 }
 
+.m-t-1 {
+    margin-top: 1rem;
+}
 // Width
 .w-fit-content {
     width: fit-content;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+// Height
+.h-100vh {
+    height: 100vh;
+    height: 100dvh;
 }

@@ -6,6 +6,23 @@
     padding-inline: var(--container-space);
 }
 
+.divided-container {
+    padding-inline: var(--container-space);
+
+    display: grid;
+    grid-template-columns: 1fr;
+    place-content: center center;
+    place-items: center center;
+}
+
+@media(min-width: 48rem)  {
+    .divided-container {
+        grid-template-columns: 1fr 1fr;
+        place-content: center center;
+        place-items: center center;
+    }   
+}
+
 .outline, .outline > * {
     outline: 1px solid mediumturquoise;
 }
@@ -26,8 +43,7 @@ a.a-style-none {
 }
 
 button.button-style-none {
-    background-color: transparent;
-    color: inherit;
+    background-color: unset;
     border: none;
     padding: none;
     margin: none;

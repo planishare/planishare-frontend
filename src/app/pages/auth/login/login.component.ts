@@ -3,27 +3,26 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { catchError, of } from 'rxjs';
+import { catchError, of, takeUntil } from 'rxjs';
 
 import { AuthService } from 'src/app/core/services/auth.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
 import { FirebaseError } from 'firebase/app';
 import { FirebaseAuthErrorCodes } from 'src/app/core/models/auth.enum';
-import { BasicCredentials } from 'src/app/core/models/auth.model';
+import { LoginCredentials } from 'src/app/core/models/auth.model';
 
 import { ForgotPasswordDialogComponent } from '../components/forgot-password-dialog/forgot-password-dialog.component';
 
-import { inOutLeftAnimation, inOutRightAnimation } from 'src/app/shared/animations/animations';
 import { WindowResizeService } from 'src/app/shared/services/window-resize.service';
+import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss'],
-    animations: [inOutLeftAnimation, inOutRightAnimation]
+    styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent extends Unsubscriber {
     public form = new FormGroup({
         email: new FormControl<string>('', [Validators.required, Validators.email]),
         password: new FormControl<string>('', [Validators.required])
@@ -33,8 +32,10 @@ export class LoginComponent {
     public wrongCredentials = false;
     public loading = false;
     public loadingGoogle = false;
-
     public redirectTo: string = '/';
+
+    public mobile$ = this.windowResize.mobile$.pipe(takeUntil(this.ngUnsubscribe$));
+    public desktop$ = this.windowResize.desktop$.pipe(takeUntil(this.ngUnsubscribe$));
 
     constructor(
         private authService: AuthService,
@@ -45,22 +46,24 @@ export class LoginComponent {
         private matDialog: MatDialog,
         public windowResize: WindowResizeService
     ) {
+        super();
         // Get url to redirect after login
         const params: Params = this.activatedRoute.snapshot.queryParams;
-        this.redirectTo = params['redirectTo'] ?? '/posts/list';
+        this.redirectTo = params['redirectTo'] ?? '/homepage';
     }
 
     public loginWithEmailAndPassword(event: Event): void {
         event.preventDefault();
+        this.loading = true;
+        this.wrongCredentials = false;
 
         if (this.form.invalid) {
             this.form.markAllAsTouched();
+            this.loading = false;
             return;
         }
 
-        this.loading = true;
-        this.wrongCredentials = false;
-        const credentials: BasicCredentials = {
+        const credentials: LoginCredentials = {
             email: this.form.controls.email.value!,
             password: this.form.controls.password.value!
         };
@@ -72,6 +75,7 @@ export class LoginComponent {
                 return of();
             })
         ).subscribe(() => {
+            this.loading = false;
             this.router.navigate([this.redirectTo]);
         });
 
@@ -86,6 +90,7 @@ export class LoginComponent {
                 return of();
             })
         ).subscribe(() => {
+            this.loadingGoogle = false;
             this.router.navigate([this.redirectTo]);
         });
     }

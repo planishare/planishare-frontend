@@ -1,0 +1,12 @@
+.card {
+    background-color: var(--clr-background);
+    padding: 1rem;
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+}
+
+@media(min-width: 48rem)  {
+    .card {
+        padding: 2rem;
+    }
+}

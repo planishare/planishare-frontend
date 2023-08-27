@@ -16,6 +16,7 @@ import { TruncatePipe } from './pipes/truncate.pipe';
 
 import { DragAndDropFileDirective } from './directives/drag-and-drop-file.directive';
 import { DebounceClickDirective } from './directives/debounce-click.directive';
+import { LoadingButtonDirective } from './directives/loading-button.directive';
 
 @NgModule({
     declarations: [
@@ -31,7 +32,8 @@ import { DebounceClickDirective } from './directives/debounce-click.directive';
         // Components
         ReportDialogComponent,
         RoundedSelectComponent,
-        ScrollToTopButtonComponent
+        ScrollToTopButtonComponent,
+        LoadingButtonDirective
     ],
     imports: [
         CommonModule,
@@ -53,7 +55,8 @@ import { DebounceClickDirective } from './directives/debounce-click.directive';
 
         // Directives
         DragAndDropFileDirective,
-        DebounceClickDirective
+        DebounceClickDirective,
+        LoadingButtonDirective
     ]
 })
 export class SharedModule { }
