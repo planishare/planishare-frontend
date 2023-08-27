@@ -11,7 +11,7 @@
 
     display: grid;
     grid-template-columns: 1fr;
-    place-content: center center;
+    place-content: flex-start center;
     place-items: center center;
 }
 
