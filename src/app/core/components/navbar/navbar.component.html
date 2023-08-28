@@ -14,14 +14,14 @@
   </button>
   <nav class="nav container p-y-3 bg-on-primary txt-primary" [ngClass]="{'open': navOpen}">
     <ul class="ul-style-none flex-col flex-start-center gap-1" [ngClass]="(desktop$|async) ? 'ft-body' : 'ft-headline'">
-      <li><a class="a-style-none" routerLink="/auth/register">Registrarse</a></li>
-      <li><a class="a-style-none" routerLink="/auth/login">Iniciar sesión</a></li>
-      <li><a class="a-style-none" href="">Mi perfil</a></li>
-      <li><a class="a-style-none" href="">Mis publicaciones</a></li>
-      <li><a class="a-style-none" href="">Crear publicación</a></li>
+      <li><a class="a-style-none" routerLink="/auth/register" (click)="navOpen=false">Registrarse</a></li>
+      <li><a class="a-style-none" routerLink="/auth/login" (click)="navOpen=false">Iniciar sesión</a></li>
+      <li><a class="a-style-none" href="" (click)="navOpen=false">Mi perfil</a></li>
+      <li><a class="a-style-none" href="" (click)="navOpen=false">Mis publicaciones</a></li>
+      <li><a class="a-style-none" href="" (click)="navOpen=false">Crear publicación</a></li>
       <li><a class="rounded-button w-fit-content m-x-auto"
         [ngClass]="(desktop$|async) ? 'bg-on-primary txt-primary' : 'bg-primary txt-on-primary'"
-        href="">Ver planificaciones</a></li>
+        href="" (click)="navOpen=false">Ver planificaciones</a></li>
     </ul>
   </nav>
 </header>
