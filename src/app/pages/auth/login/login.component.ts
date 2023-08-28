@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { catchError, of, takeUntil } from 'rxjs';
 
+import { WindowResizeService } from 'src/app/shared/services/window-resize.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
@@ -14,7 +15,6 @@ import { LoginCredentials } from 'src/app/core/models/auth.model';
 
 import { ForgotPasswordDialogComponent } from '../components/forgot-password-dialog/forgot-password-dialog.component';
 
-import { WindowResizeService } from 'src/app/shared/services/window-resize.service';
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 
 @Component({
@@ -35,7 +35,6 @@ export class LoginComponent extends Unsubscriber {
     public redirectTo: string = '/';
 
     public mobile$ = this.windowResize.mobile$.pipe(takeUntil(this.ngUnsubscribe$));
-    public desktop$ = this.windowResize.desktop$.pipe(takeUntil(this.ngUnsubscribe$));
 
     constructor(
         private authService: AuthService,
@@ -49,12 +48,11 @@ export class LoginComponent extends Unsubscriber {
         super();
         // Get url to redirect after login
         const params: Params = this.activatedRoute.snapshot.queryParams;
-        this.redirectTo = params['redirectTo'] ?? '/homepage';
+        this.redirectTo = params['redirectTo'] ?? '/';
     }
 
     public loginWithEmailAndPassword(event: Event): void {
         event.preventDefault();
-        this.loading = true;
         this.wrongCredentials = false;
 
         if (this.form.invalid) {
@@ -63,6 +61,7 @@ export class LoginComponent extends Unsubscriber {
             return;
         }
 
+        this.loading = true;
         const credentials: LoginCredentials = {
             email: this.form.controls.email.value!,
             password: this.form.controls.password.value!
@@ -73,7 +72,8 @@ export class LoginComponent extends Unsubscriber {
                 this.handleAuthError(error.code);
                 this.loading = false;
                 return of();
-            })
+            }),
+            takeUntil(this.ngUnsubscribe$)
         ).subscribe(() => {
             this.loading = false;
             this.router.navigate([this.redirectTo]);
@@ -88,7 +88,8 @@ export class LoginComponent extends Unsubscriber {
                 this.handleAuthError(error.code);
                 this.loadingGoogle = false;
                 return of();
-            })
+            }),
+            takeUntil(this.ngUnsubscribe$)
         ).subscribe(() => {
             this.loadingGoogle = false;
             this.router.navigate([this.redirectTo]);
