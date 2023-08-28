@@ -2,6 +2,7 @@
 .flex-center-center,
 .flex-between-center,
 .flex-start-center,
+.flex-end-center,
 .flex-wrap,
 .flex-col {
     display: flex;
@@ -25,7 +26,11 @@
     justify-content: start;
 }
 
-.flew-wrap {
+.flex-end-center {
+    justify-content: end;
+}
+
+.flex-wrap {
     flex-wrap: wrap;
 }
 
