@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AbstractControl, AbstractControlOptions, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, takeUntil } from 'rxjs';
 
 import { FirebaseError } from 'firebase/app';
 import { FirebaseAuthErrorCodes } from 'src/app/core/models/auth.enum';
@@ -12,16 +12,16 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { UsersService } from 'src/app/pages/user/services/users.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
-import { inOutLeftAnimation, inOutRightAnimation } from 'src/app/shared/animations/animations';
 import { WindowResizeService } from 'src/app/shared/services/window-resize.service';
+import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
-    styleUrls: ['./register.component.scss'],
-    animations: [inOutLeftAnimation, inOutRightAnimation]
+    styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent {
+export class RegisterComponent extends Unsubscriber {
+    public mobile$ = this.windowResize.mobile$.pipe(takeUntil(this.ngUnsubscribe$));
 
     public form = new FormGroup(
         {
@@ -58,6 +58,7 @@ export class RegisterComponent {
         private matSnackbar: MatSnackBar,
         public windowResize: WindowResizeService
     ) {
+        super();
         // Get url to redirect after login
         const params: Params = this.activatedRoute.snapshot.queryParams;
         this.redirectTo = params['redirectTo'] ?? '/';
@@ -65,7 +66,6 @@ export class RegisterComponent {
 
     public registerWithEmailAndPassword(event: Event): void {
         event.preventDefault();
-
         if (this.form.invalid) {
             this.form.markAllAsTouched();
             return;
@@ -76,7 +76,6 @@ export class RegisterComponent {
             email: this.form.controls.email.value!,
             password: this.form.controls.password.value!
         };
-
         this.authService.registerWithEmailAndPassword(credentials).pipe(
             catchError((error: FirebaseError) => {
                 switch (error.code) {
@@ -93,8 +92,10 @@ export class RegisterComponent {
                 }
                 this.loading = false;
                 return of();
-            })
+            }),
+            takeUntil(this.ngUnsubscribe$)
         ).subscribe(() => {
+            this.loading = false;
             this.router.navigate([this.redirectTo]);
         });
     }
@@ -118,8 +119,10 @@ export class RegisterComponent {
                 }
                 this.loadingGoogle = false;
                 return of();
-            })
+            }),
+            takeUntil(this.ngUnsubscribe$)
         ).subscribe(() => {
+            this.loadingGoogle = false;
             this.router.navigate([this.redirectTo]);
         });
     }

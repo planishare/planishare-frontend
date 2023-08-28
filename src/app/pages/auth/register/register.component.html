@@ -1,10 +1,15 @@
-<main class="container m-b-2 h-100 grid-center-center">
-  <div class="register-card rounded-card flex-column-center">
-    <img class="max-h-10" src="/assets/icons/icon-72x72.png" alt="Ícono de Planishare" *ngIf="(windowResize.desktop$)|async">
-    <h1 class="fs-x-large">Registrarse</h1>
-    <p class="fw-500 text-center">Registrate para dar me gusta a publicaciones y subir planificaciones 🙌</p>
+<main class="container divided-container gap-1 p-y-1 bg-primary">
+  <div *ngIf="(mobile$|async)===false">
+    <img class="section-image" src="../../../../assets/images/collab-cuate.png" alt="Ilustración de login">
+  </div>
 
-    <form [formGroup]="form" (ngSubmit)="registerWithEmailAndPassword($event)" class="w-100 m-t-05">
+  <section class="card flex-col flex-start-center gap-1 text-center ft-body w-100">
+    <div>
+      <h1 class="txt-secondary ft-title">Registrarse</h1>
+      <p>Registrate para dar me gusta y subir planificaciones 🙌</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="registerWithEmailAndPassword($event)">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Email</mat-label>
         <input matInput placeholder="Email" formControlName="email" type="email">
@@ -23,10 +28,21 @@
         <mat-label>Contraseña</mat-label>
         <input matInput placeholder="Contraseña" formControlName="password"
           [type]="showPassword? 'text' : 'password'">
-        <button mat-icon-button matSuffix type="button" (click)="showPassword = !showPassword">
-          <mat-icon *ngIf="showPassword">visibility_off</mat-icon>
-          <mat-icon *ngIf="!showPassword">visibility</mat-icon>
-        </button>
+          <button matSuffix type="button" class="button-style-none" (click)="showPassword = !showPassword">
+            <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye-off" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M10.585 10.587a2 2 0 0 0 2.829 2.828"></path>
+              <path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87"></path>
+              <path d="M3 3l18 18"></path>
+           </svg>
+            <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye"
+              width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+              <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path>
+            </svg>
+          </button>
         <mat-error *ngIf="form.controls.password.invalid && form.controls.password.errors!['required']">
           Debes ingresar una contraseña
         </mat-error>
@@ -42,10 +58,21 @@
         <mat-label>Repetir contraseña</mat-label>
         <input matInput placeholder="Repetir contraseña" formControlName="passwordConfirmation"
           [type]="showPasswordConfirmation? 'text' : 'password'">
-        <button mat-icon-button matSuffix type="button" (click)="showPasswordConfirmation = !showPasswordConfirmation">
-          <mat-icon *ngIf="showPasswordConfirmation">visibility_off</mat-icon>
-          <mat-icon *ngIf="!showPasswordConfirmation">visibility</mat-icon>
-        </button>
+          <button matSuffix type="button" class="button-style-none" (click)="showPasswordConfirmation = !showPasswordConfirmation">
+            <svg *ngIf="showPasswordConfirmation" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye-off" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M10.585 10.587a2 2 0 0 0 2.829 2.828"></path>
+              <path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87"></path>
+              <path d="M3 3l18 18"></path>
+           </svg>
+            <svg *ngIf="!showPasswordConfirmation" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye"
+              width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+              <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path>
+            </svg>
+          </button>
         <mat-error *ngIf="form.controls.passwordConfirmation.invalid && form.controls.passwordConfirmation.errors!['required']">
           Debes repetir la contraseña
         </mat-error>
@@ -54,34 +81,29 @@
         </mat-error>
       </mat-form-field>
 
-      <div class="flex-column-center m-t-05">
-        <button mat-raised-button type="submit" color="primary" class="w-100"
-        *ngIf="!loading" @inOutRight>
-          Registrarse
-          <mat-icon class="fs-medium">person_add</mat-icon>
-        </button>
-        <div class="shapes-loader" *ngIf="loading" @inOutLeft></div>
-      </div>
+      <button appLoadingButton [loading]="loading"
+        class="rounded-button bg-secondary txt-on-secondary w-100 m-t-1 shadow-md" type="submit">
+        Registrarse
+      </button>
     </form>
 
-    <div class="flex-column-center m-t-05 gap-05 w-100">
-      <button mat-stroked-button color="primary" (click)="loginWithGoogle()" class="w-100"
-      *ngIf="!loadingGoogle" @inOutRight>
+    <div class="flex-center-center gap-05">
+      <mat-divider class="w-100"></mat-divider>
+      <span>o</span>
+      <mat-divider class="w-100"></mat-divider>
+    </div>
+
+    <div class="flex-col gap-1">
+      <button appLoadingButton [loading]="loadingGoogle"
+        class="rounded-button shadow-md w-100 bg-primary-container txt-on-primary-container"
+        (click)="loginWithGoogle()">
+        <img class="" src="/assets/icons/icon-google.svg" alt="Google icon">
         Continuar con Google
-        <img class="inline-block m-l-025" src="/assets/icons/icon-google.svg" alt="Google icon">
       </button>
-      <div class="shapes-loader" *ngIf="loadingGoogle" @inOutLeft></div>
 
-      <div class="w-100 flex-center-center gap-05">
-        <mat-divider class="w-30"></mat-divider>
-        <span>o</span>
-        <mat-divider class="w-30"></mat-divider>
-      </div>
-
-      <a mat-raised-button [routerLink]="['/auth/login']" class="w-100 text-white bg-blue-dark">
+      <a class="rounded-button shadow-md w-100 bg-blue txt-on-blue" routerLink="/auth/login">
         Iniciar sesión
-        <mat-icon class="fs-medium">login</mat-icon>
       </a>
     </div>
-  </div>
+  </section>
 </main>
