@@ -6,20 +6,20 @@ export interface IPostFilterStatus {
     page?: number;
     search?: string;
     userId?: number;
-    academicLevel?: IFilterOption<number>;
-    subject?: IFilterOption<number>;
-    axis?: IFilterOption<number>;
-    ordering?: IFilterOption<string>;
+    academicLevel?: Partial<IFilterOption<number>>;
+    subject?: Partial<IFilterOption<number>>;
+    axis?: Partial<IFilterOption<number>>;
+    ordering?: Partial<IFilterOption<string>>;
 }
 
 export class PostFilterStatus implements IPostFilterStatus {
     public page?: number;
     public search?: string;
     public userId?: number;
-    public academicLevel?: IFilterOption<number>;
-    public subject?: IFilterOption<number>;
-    public axis?: IFilterOption<number>;
-    public ordering?: IFilterOption<string>;
+    public academicLevel?: Partial<IFilterOption<number>>;
+    public subject?: Partial<IFilterOption<number>>;
+    public axis?: Partial<IFilterOption<number>>;
+    public ordering?: Partial<IFilterOption<string>>;
 
     constructor(data: IPostFilterStatus) {
         this.page = data.page;

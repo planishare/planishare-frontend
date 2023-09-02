@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Observable, of, forkJoin, map, tap, takeUntil } from 'rxjs';
 
 import { IPageable, Pageable } from 'src/app/shared/models/pageable.model';
-import { IURLPostsParams, PostFilterStatus } from 'src/app/pages/posts/models/post-filter.model';
+import { IAPIPostsParams, IURLPostsParams, PostFilterStatus } from 'src/app/pages/posts/models/post-filter.model';
 import { PostDetail } from 'src/app/pages/posts/models/post.model';
 import { PostOrderingType, PostOrderingName, PostFilterName } from 'src/app/pages/posts/models/posts-filter.enum';
 
@@ -36,35 +36,61 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
         super();
     }
 
+    private getFiltersByUrlParams(): PostFilterStatus {
+        // Example query: ?page=1&search=radio&academicLevel=6&subject=8&axis=38&ordering=created_at
+        const params: IURLPostsParams = this.activatedRoute.snapshot.queryParams;
+        return new PostFilterStatus({
+            page: params.page ? Number(params.page) : 1,
+            search: params.search ?? undefined,
+            userId: params.userId ? Number(params.userId) : undefined,
+            academicLevel: params.academicLevel ? { value: Number(params.academicLevel) } : undefined,
+            subject: params.subject ? { value: Number(params.subject) } : undefined,
+            axis: params.axis ? { value: Number(params.axis) } : undefined,
+            ordering: params.ordering ? { value: params.ordering } : undefined
+        });
+    }
+
     public ngOnInit(): void {
-        // ?page=1&search=radio&academicLevel=6&subject=8&axis=38&ordering=created_at
-        const queryParams: IURLPostsParams = this.activatedRoute.snapshot.queryParams;
+        this.filtersStatus = this.getFiltersByUrlParams();
+        console.log({ filtersStatus: this.filtersStatus });
+        this.getPosts(this.filtersStatus!.toAPIParams());
+
+        // Set filters options and current filters text
         forkJoin([
             this.postsService.getAcademicLevels(),
             this.postsService.getSubjectWithAxis()
-        ]).subscribe(([academicLevels, subjectWithAxis]) => {
-            // Get query params
-            const urlQueryParams: IURLPostsParams = this.activatedRoute.snapshot.queryParams;
-            this.filtersStatus = new PostFilterStatus({
-                page: queryParams.page ? Number(queryParams.page) : 1,
-                search: queryParams.search ?? undefined,
-                userId: queryParams.userId ? Number(queryParams.userId) : undefined
-            });
-
+        ]).pipe(
+            takeUntil(this.ngUnsubscribe$),
+            catchError(() => {
+                // this.loadingFilters = false;
+                this.commonSnackbarMsg.showErrorMessage();
+                return of();
+            })
+        ).subscribe(([academicLevels, subjectWithAxis]) => {
             // Map academic levels
             const academicLevelOptions: IFilterOption<number>[] = academicLevels.map(el => {
-                if (Number(urlQueryParams.academicLevel) === el.id) {
-                    this.filtersStatus!.academicLevel = { text: el.name, value: el.id };
+                if (this.filtersStatus?.academicLevel?.value === el.id) {
+                    this.filtersStatus.academicLevel.text = el.name;
                 }
                 return { text: el.name, value: el.id };
+            });
+            this.filtersOptions.push({
+                text: PostFilterName.ACADEMIC_LEVEL,
+                id: PostFilterName.ACADEMIC_LEVEL,
+                options: academicLevelOptions
             });
 
             // Map subjects
             const subjectOptions: IFilterOption<number>[] = subjectWithAxis.map(el => {
-                if (Number(urlQueryParams.subject) === el.id) {
-                    this.filtersStatus!.subject = { text: el.name, value: el.id };
+                if (this.filtersStatus?.subject?.value === el.id) {
+                    this.filtersStatus.subject.text = el.name;
                 }
                 return { text: el.name, value: el.id };
+            });
+            this.filtersOptions.push({
+                text: PostFilterName.SUBJECT,
+                id: PostFilterName.SUBJECT,
+                options: subjectOptions
             });
 
             // Map axis
@@ -72,12 +98,17 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
                 return {
                     text: subject.name,
                     groupOptions: subject.axis.map(el => {
-                        if (Number(urlQueryParams.axis) === el.id) {
-                            this.filtersStatus!.axis = { text: el.name, value: el.id };
+                        if (this.filtersStatus?.axis?.value === el.id) {
+                            this.filtersStatus.axis.text = el.name;
                         }
                         return { text: el.name, value: el.id };
                     })
                 };
+            });
+            this.filtersOptions.push({
+                text: PostFilterName.AXIS,
+                id: PostFilterName.AXIS,
+                options: axisOptions
             });
 
             // Map ordering
@@ -99,44 +130,21 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
                     value: PostOrderingType.MOST_VIEWED
                 }
             ];
-            if (queryParams.ordering) {
-                this.filtersStatus.ordering = {
-                    text: PostOrderingName[queryParams.ordering],
-                    value: queryParams.ordering
-                };
+            if (this.filtersStatus?.ordering?.value) {
+                this.filtersStatus.ordering.text
+                    = PostOrderingName[this.filtersStatus.ordering.value as PostOrderingType];
             }
-
-            // Set filters options
-            this.filtersOptions.push({
-                text: PostFilterName.ACADEMIC_LEVEL,
-                id: PostFilterName.ACADEMIC_LEVEL,
-                options: academicLevelOptions
-            });
-            this.filtersOptions.push({
-                text: PostFilterName.SUBJECT,
-                id: PostFilterName.SUBJECT,
-                options: subjectOptions
-            });
-            this.filtersOptions.push({
-                text: PostFilterName.AXIS,
-                id: PostFilterName.AXIS,
-                options: axisOptions
-            });
             this.filtersOptions.push({
                 text: PostFilterName.ORDERING,
                 id: PostFilterName.ORDERING,
                 options: orderingOptions
             });
-            this.getPosts(this.filtersStatus!);
         });
     }
 
-    public getPosts(filters: PostFilterStatus) {
+    public getPosts(apiFilters: IAPIPostsParams) {
         this.loading = true;
-        this.setQueryParams(filters.toURLQueryParams());
-
-        const apiQueryParams = filters.toAPIParams();
-        this.postsService.getPosts(apiQueryParams).pipe(
+        this.postsService.getPosts(apiFilters).pipe(
             map(posts => {
                 return new Pageable<PostDetail>({
                     count: posts.count,
@@ -167,6 +175,7 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
 
     public changePage(page: number) {
         this.filtersStatus!.page = page;
-        this.getPosts(this.filtersStatus!);
+        this.getPosts(this.filtersStatus!.toAPIParams());
+        this.setQueryParams(this.filtersStatus!.toURLQueryParams());
     }
 }
