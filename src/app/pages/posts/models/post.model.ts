@@ -24,7 +24,6 @@ export class PostDetail {
     public user: UserSimpleDetail;
     public title: string;
     public description: string;
-    public shortDescription: string;
     public image: string;
     public academicLevel: IAcademicLevel;
     public axis: IAxis;
@@ -37,12 +36,13 @@ export class PostDetail {
     public totalViews: number;
     public alreadyLiked: number | null;
 
+    public shortDescription: string;
+
     constructor(post: IPostDetail) {
         this.id = post.id;
         this.user = new UserSimpleDetail(post.user);
         this.title = post.title;
         this.description = post.description;
-        this.shortDescription = this.setShortDescription(post.description);
         this.image = post.image;
         this.academicLevel = post.academic_level;
         this.axis = post.axis;
@@ -54,9 +54,10 @@ export class PostDetail {
         this.totalLikes = post.total_likes;
         this.totalViews = post.total_views;
         this.alreadyLiked = post.already_liked;
+        this.shortDescription = PostDetail.setShortDescription(post.description);
     }
 
-    private setShortDescription(description: string): string {
+    private static setShortDescription(description: string): string {
         const textLength = 150;
         return description.length > textLength
             ? description.slice(0, textLength) + '...'
@@ -95,6 +96,7 @@ export interface IPostFile {
     ngxDocViewer: viewerType | null
 }
 
+// TODO: Create another constructor for PostFile
 export class PostFile {
     public url: string;
     public name: string;
@@ -122,6 +124,7 @@ export class PostFile {
             this.uploadCompleted = true;
         }
 
+        // TODO: Use class names
         const fileTypeColors = FILE_TAG_COLOR;
         this.url = url;
         this.tagColor = fileTypeColors[this.ext.slice(1) as keyof typeof fileTypeColors];

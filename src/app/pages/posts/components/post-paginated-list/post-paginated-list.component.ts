@@ -7,9 +7,9 @@ import { fadeInOutAnimation, inOutLeftAnimation, inOutRightAnimation } from 'src
 
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
-import { OrderingType } from 'src/app/pages/posts/models/posts.enum';
+import { PostOrderingType } from 'src/app/pages/posts/models/posts-filter.enum';
 import { Pageable } from 'src/app/shared/models/pageable.model';
-import { IURLPostsQueryParams, PostFilters } from 'src/app/pages/posts/models/post-filter.model';
+import { IURLPostsParams } from 'src/app/pages/posts/models/post-filter.model';
 import { PostDetail } from 'src/app/pages/posts/models/post.model';
 import { UserDetail } from 'src/app/pages/user/models/user.model';
 
@@ -23,15 +23,15 @@ export class PostPaginatedListComponent implements OnChanges {
     @Input() public pageResults?: Pageable<PostDetail>;
     @Input() public loading = true;
     @Input() public authUser: UserDetail | null = null;
-    @Input() public currentFilters?: PostFilters;
-    @Input() public urlQueryParams?: IURLPostsQueryParams;
+    @Input() public currentFilters?: any;
+    @Input() public urlQueryParams?: IURLPostsParams;
 
     @Output() public changePage = new EventEmitter<number>();
     @Output() public removeFilter = new EventEmitter<string>();
 
     public posts: PostDetail[] = [];
 
-    public orderingType = OrderingType;
+    public orderingType = PostOrderingType;
 
     constructor(
         private commonSnackbarMsg: CommonSnackbarMsgService,

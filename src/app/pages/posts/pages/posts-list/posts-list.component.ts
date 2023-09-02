@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, Observable, of, takeUntil } from 'rxjs';
+import { catchError, Observable, of, forkJoin, map, tap } from 'rxjs';
 
-import { Pageable } from 'src/app/shared/models/pageable.model';
-import { PostFilters, IURLPostsQueryParams } from 'src/app/pages/posts/models/post-filter.model';
-import { IAcademicLevel, ISubjectWithAxis, PostDetail } from 'src/app/pages/posts/models/post.model';
-import { OrderingType } from 'src/app/pages/posts/models/posts.enum';
-import { UserDetail } from 'src/app/pages/user/models/user.model';
+import { IPageable, Pageable } from 'src/app/shared/models/pageable.model';
+import { IURLPostsParams, PostFilterStatus } from 'src/app/pages/posts/models/post-filter.model';
+import { PostDetail } from 'src/app/pages/posts/models/post.model';
+import { PostOrderingType, PostOrderingName, PostFilterName } from 'src/app/pages/posts/models/posts-filter.enum';
 
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/pages/posts/services/posts.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
+import { IFilter, IFilterGroupOption, IFilterOption } from 'src/app/shared/models/filter.model';
 
 @Component({
     selector: 'app-posts-list',
@@ -20,15 +20,11 @@ import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
     styleUrls: ['./posts-list.component.scss']
 })
 export class PostsListComponent extends Unsubscriber implements OnInit {
-    public urlQueryParams?: IURLPostsQueryParams;
-    public pageResults?: Pageable<PostDetail>;
+    public filtersOptions: IFilter<string|number>[] = [];
+    public filtersStatus?: PostFilterStatus;
+
     public loading = true;
-    public authUser: UserDetail | null;
-    public academicLevels$: Observable<IAcademicLevel[]> = of();
-    public subjectWithAxes$: Observable<ISubjectWithAxis[]> = of();
-    public currentFilters?: PostFilters;
-    public removeFilter?: { value: string };
-    public changePage?: { value: number };
+    public posts: Observable<IPageable<PostDetail>> = of();
 
     constructor(
         private postsService: PostsService,
@@ -38,46 +34,134 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
         private router: Router
     ) {
         super();
-        this.urlQueryParams = this.activatedRoute.snapshot.queryParams;
-        this.authUser = this.authService.getUserDetail();
     }
 
     public ngOnInit(): void {
-        this.academicLevels$ = this.postsService.getAcademicLevels();
-        this.subjectWithAxes$ = this.postsService.getSubjectWithAxis();
+        // ?page=1&search=radio&academicLevel=6&subject=8&axis=38&ordering=created_at
+        const queryParams: IURLPostsParams = this.activatedRoute.snapshot.queryParams;
+        forkJoin([
+            this.postsService.getAcademicLevels(),
+            this.postsService.getSubjectWithAxis()
+        ]).subscribe(([academicLevels, subjectWithAxis]) => {
+            // Get query params
+            const urlQueryParams: IURLPostsParams = this.activatedRoute.snapshot.queryParams;
+            this.filtersStatus = new PostFilterStatus({
+                page: Number(queryParams.page) ?? 0,
+                search: queryParams.search ?? undefined,
+                userId: Number(queryParams.userId) ?? undefined
+            });
+
+            // Map academic levels
+            const academicLevelOptions: IFilterOption<number>[] = academicLevels.map(el => {
+                if (Number(urlQueryParams.academicLevel) === el.id) {
+                    this.filtersStatus!.academicLevel = { text: el.name, value: el.id };
+                }
+                return { text: el.name, value: el.id };
+            });
+
+            // Map subjects
+            const subjectOptions: IFilterOption<number>[] = subjectWithAxis.map(el => {
+                if (Number(urlQueryParams.subject) === el.id) {
+                    this.filtersStatus!.subject = { text: el.name, value: el.id };
+                }
+                return { text: el.name, value: el.id };
+            });
+
+            // Map axis
+            const axisOptions: IFilterGroupOption<number>[] = subjectWithAxis.map(subject => {
+                return {
+                    text: subject.name,
+                    groupOptions: subject.axis.map(el => {
+                        if (Number(urlQueryParams.axis) === el.id) {
+                            this.filtersStatus!.axis = { text: el.name, value: el.id };
+                        }
+                        return { text: el.name, value: el.id };
+                    })
+                };
+            });
+
+            // Map ordering
+            const orderingOptions: IFilterOption<PostOrderingType>[] = [
+                {
+                    text: PostOrderingName[PostOrderingType.MOST_RECENT],
+                    value: PostOrderingType.MOST_RECENT
+                },
+                {
+                    text: PostOrderingName[PostOrderingType.LESS_RECENT],
+                    value: PostOrderingType.LESS_RECENT
+                },
+                {
+                    text: PostOrderingName[PostOrderingType.MOST_LIKED],
+                    value: PostOrderingType.MOST_LIKED
+                },
+                {
+                    text: PostOrderingName[PostOrderingType.MOST_VIEWED],
+                    value: PostOrderingType.MOST_VIEWED
+                }
+            ];
+            if (queryParams.ordering) {
+                this.filtersStatus.ordering = {
+                    text: PostOrderingName[queryParams.ordering],
+                    value: queryParams.ordering
+                };
+            }
+
+            // Set filters options
+            this.filtersOptions.push({
+                text: PostFilterName.ACADEMIC_LEVEL,
+                id: PostFilterName.ACADEMIC_LEVEL,
+                options: academicLevelOptions
+            });
+            this.filtersOptions.push({
+                text: PostFilterName.SUBJECT,
+                id: PostFilterName.SUBJECT,
+                options: subjectOptions
+            });
+            this.filtersOptions.push({
+                text: PostFilterName.AXIS,
+                id: PostFilterName.AXIS,
+                options: axisOptions
+            });
+            this.filtersOptions.push({
+                text: PostFilterName.ORDERING,
+                id: PostFilterName.ORDERING,
+                options: orderingOptions
+            });
+
+            console.log('filtersOptions', this.filtersOptions);
+            this.getPosts(this.filtersStatus!);
+        });
     }
 
-    public getPosts(postFilters: PostFilters): void {
-        this.currentFilters = postFilters;
-        this.loading = true;
-        this.urlQueryParams = postFilters.formatForURL();
-        console.log('Filters: ', this.urlQueryParams);
-        this.setQueryParams(this.urlQueryParams);
-
-        this.postsService.getPosts(postFilters.formatForAPI()).pipe(
+    public getPosts(filters: PostFilterStatus) {
+        const apiQueryParams = filters.toAPIParams();
+        console.log('getPosts', apiQueryParams);
+        this.setQueryParams(filters.toURLQueryParams());
+        this.posts = this.postsService.getPosts(apiQueryParams).pipe(
+            map(posts => {
+                return {
+                    count: posts.count,
+                    next: posts.next,
+                    previous: posts.previous,
+                    results: posts.results.map(post => new PostDetail(post))
+                };
+            }),
+            tap(posts => {
+                this.loading = false;
+                console.log('getPosts', posts);
+            }),
             catchError(() => {
                 this.loading = false;
                 this.commonSnackbarMsg.showErrorMessage();
                 return of();
-            }),
-            takeUntil(this.ngUnsubscribe$)
-        ).subscribe(resp => {
-            const posts: PostDetail[] = resp!.results.map(post => new PostDetail(post));
-            this.pageResults = new Pageable<PostDetail>({
-                ...resp,
-                results: posts
-            });
-            console.log('Results: ', this.pageResults);
-            this.loading = false;
-        });
+            })
+        );
     }
 
-    private setQueryParams(urlQueryParams: IURLPostsQueryParams): void {
-        urlQueryParams.ordering =
-            urlQueryParams.ordering !== OrderingType.MOST_RECENT ? urlQueryParams.ordering : undefined;
+    private setQueryParams(queryParams: IURLPostsParams): void {
         this.router.navigate([], {
             relativeTo: this.activatedRoute,
-            queryParams: urlQueryParams
+            queryParams: queryParams
         });
     }
 }

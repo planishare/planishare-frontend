@@ -7,10 +7,24 @@ import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 
 import { WindowResizeService } from 'src/app/shared/services/window-resize.service';
 
-import { OrderingType, OrderingTypeName } from 'src/app/pages/posts/models/posts.enum';
-import { IOrdering, IURLPostsQueryParams, PostFilters } from 'src/app/pages/posts/models/post-filter.model';
+import { PostOrderingType } from 'src/app/pages/posts/models/posts-filter.enum';
+import { IURLPostsParams } from 'src/app/pages/posts/models/post-filter.model';
 import { IAcademicLevel, IAxis, ISubject, ISubjectWithAxis } from 'src/app/pages/posts/models/post.model';
 import { RoundedSelectGroup, RoundedSelectOption } from 'src/app/shared/models/rounded-select.type';
+
+export enum PostOrderingName {
+    LESS_LIKED = 'Más gustadas (Descendente)',
+    MOST_LIKED = 'Más gustadas',
+    LESS_VIEWED = 'Más vistas (Descendente)',
+    MOST_VIEWED = 'Más vistas',
+    LESS_RECENT = 'Más antiguas',
+    MOST_RECENT = 'Más recientes',
+}
+
+export interface IOrdering {
+    id: PostOrderingType,
+    name: PostOrderingName
+}
 
 @Component({
     selector: 'app-post-filters-card',
@@ -19,7 +33,7 @@ import { RoundedSelectGroup, RoundedSelectOption } from 'src/app/shared/models/r
     animations: [inOutYAnimation]
 })
 export class PostFiltersCardComponent extends Unsubscriber implements OnInit, OnChanges {
-    @Input() public urlQueryParams?: IURLPostsQueryParams;
+    @Input() public urlQueryParams?: IURLPostsParams;
     @Input() public academicLevels: IAcademicLevel[] = [];
     @Input() public subjectWithAxis: ISubjectWithAxis[] = [];
 
@@ -27,7 +41,7 @@ export class PostFiltersCardComponent extends Unsubscriber implements OnInit, On
     @Input() public removeFilter: { value: string } | undefined;
     @Input() public changePage: { value: number } | undefined;
 
-    @Output() public filtersChange = new EventEmitter<PostFilters>();
+    @Output() public filtersChange = new EventEmitter<any>();
 
     public filtersLoaded$ = new BehaviorSubject<boolean>(false);
     public academicLevelsLoading = true;
@@ -41,31 +55,31 @@ export class PostFiltersCardComponent extends Unsubscriber implements OnInit, On
     public orderOptions: RoundedSelectOption<IOrdering>[] = [
         {
             data: {
-                id: OrderingType.MOST_RECENT,
-                name: OrderingTypeName.MOST_RECENT
+                id: PostOrderingType.MOST_RECENT,
+                name: PostOrderingName.MOST_RECENT
             },
-            text: OrderingTypeName.MOST_RECENT
+            text: PostOrderingName.MOST_RECENT
         },
         {
             data: {
-                id: OrderingType.LESS_RECENT,
-                name: OrderingTypeName.LESS_RECENT
+                id: PostOrderingType.LESS_RECENT,
+                name: PostOrderingName.LESS_RECENT
             },
-            text: OrderingTypeName.LESS_RECENT
+            text: PostOrderingName.LESS_RECENT
         },
         {
             data: {
-                id: OrderingType.MOST_LIKED,
-                name: OrderingTypeName.MOST_LIKED
+                id: PostOrderingType.MOST_LIKED,
+                name: PostOrderingName.MOST_LIKED
             },
-            text: OrderingTypeName.MOST_LIKED
+            text: PostOrderingName.MOST_LIKED
         },
         {
             data: {
-                id: OrderingType.MOST_VIEWED,
-                name: OrderingTypeName.MOST_VIEWED
+                id: PostOrderingType.MOST_VIEWED,
+                name: PostOrderingName.MOST_VIEWED
             },
-            text: OrderingTypeName.MOST_VIEWED
+            text: PostOrderingName.MOST_VIEWED
         }
     ];
 
@@ -83,15 +97,16 @@ export class PostFiltersCardComponent extends Unsubscriber implements OnInit, On
     public axisControl = this.form.controls.axis as FormControl<RoundedSelectOption<IAxis> | undefined>;
     public orderingControl = this.form.controls.ordering as FormControl<RoundedSelectOption<IOrdering>>;
 
-    public filters = new PostFilters({
-        page: 1,
-        ordering: this.orderOptions[0].data
-    });
+    public filters = {} as any;
+    // public filters = new PostFilters({
+    //     page: 1,
+    //     ordering: this.orderOptions[0].data
+    // });
     public hasFilters = false;
 
     public showFilters = false;
     public isDesktop = false;
-    public orderingType = OrderingType;
+    public orderingType = PostOrderingType;
 
     constructor(
         private windowResize: WindowResizeService
@@ -168,7 +183,7 @@ export class PostFiltersCardComponent extends Unsubscriber implements OnInit, On
         }
     }
 
-    private setFilterFromUrlParams(urlQueryParams: IURLPostsQueryParams): void {
+    private setFilterFromUrlParams(urlQueryParams: IURLPostsParams): void {
         this.form.patchValue({
             search: urlQueryParams.search ?? undefined,
             academicLevel: this.academicLevelsOptions.find(el => el.data?.id === Number(urlQueryParams.academicLevel)) ?? undefined,
