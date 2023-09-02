@@ -17,6 +17,7 @@ import { TruncatePipe } from './pipes/truncate.pipe';
 import { DragAndDropFileDirective } from './directives/drag-and-drop-file.directive';
 import { DebounceClickDirective } from './directives/debounce-click.directive';
 import { LoadingButtonDirective } from './directives/loading-button.directive';
+import { PaginatedFilterStatusComponent } from './components/paginated-filter-status/paginated-filter-status.component';
 
 @NgModule({
     declarations: [
@@ -33,7 +34,8 @@ import { LoadingButtonDirective } from './directives/loading-button.directive';
         ReportDialogComponent,
         RoundedSelectComponent,
         ScrollToTopButtonComponent,
-        LoadingButtonDirective
+        LoadingButtonDirective,
+        PaginatedFilterStatusComponent
     ],
     imports: [
         CommonModule,
@@ -47,6 +49,7 @@ import { LoadingButtonDirective } from './directives/loading-button.directive';
         RoundedSelectComponent,
         ReportDialogComponent,
         ScrollToTopButtonComponent,
+        PaginatedFilterStatusComponent,
 
         // Pipes
         TimeAgoPipe,

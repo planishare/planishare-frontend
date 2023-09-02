@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, Observable, of, forkJoin, map, tap } from 'rxjs';
+import { catchError, Observable, of, forkJoin, map, tap, takeUntil } from 'rxjs';
 
 import { IPageable, Pageable } from 'src/app/shared/models/pageable.model';
 import { IURLPostsParams, PostFilterStatus } from 'src/app/pages/posts/models/post-filter.model';
@@ -24,7 +24,7 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
     public filtersStatus?: PostFilterStatus;
 
     public loading = true;
-    public posts: Observable<IPageable<PostDetail>> = of();
+    public posts?: Pageable<PostDetail>;
 
     constructor(
         private postsService: PostsService,
@@ -46,9 +46,9 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
             // Get query params
             const urlQueryParams: IURLPostsParams = this.activatedRoute.snapshot.queryParams;
             this.filtersStatus = new PostFilterStatus({
-                page: Number(queryParams.page) ?? 0,
+                page: queryParams.page ? Number(queryParams.page) : 1,
                 search: queryParams.search ?? undefined,
-                userId: Number(queryParams.userId) ?? undefined
+                userId: queryParams.userId ? Number(queryParams.userId) : undefined
             });
 
             // Map academic levels
@@ -127,35 +127,35 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
                 id: PostFilterName.ORDERING,
                 options: orderingOptions
             });
-
-            console.log('filtersOptions', this.filtersOptions);
             this.getPosts(this.filtersStatus!);
         });
     }
 
     public getPosts(filters: PostFilterStatus) {
-        const apiQueryParams = filters.toAPIParams();
-        console.log('getPosts', apiQueryParams);
+        this.loading = true;
         this.setQueryParams(filters.toURLQueryParams());
-        this.posts = this.postsService.getPosts(apiQueryParams).pipe(
+
+        const apiQueryParams = filters.toAPIParams();
+        this.postsService.getPosts(apiQueryParams).pipe(
             map(posts => {
-                return {
+                return new Pageable<PostDetail>({
                     count: posts.count,
                     next: posts.next,
                     previous: posts.previous,
                     results: posts.results.map(post => new PostDetail(post))
-                };
+                });
             }),
-            tap(posts => {
-                this.loading = false;
-                console.log('getPosts', posts);
-            }),
+            takeUntil(this.ngUnsubscribe$),
             catchError(() => {
                 this.loading = false;
                 this.commonSnackbarMsg.showErrorMessage();
                 return of();
             })
-        );
+        ).subscribe(posts => {
+            console.log('getPosts', posts);
+            this.loading = false;
+            this.posts = posts;
+        });
     }
 
     private setQueryParams(queryParams: IURLPostsParams): void {
@@ -163,5 +163,10 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
             relativeTo: this.activatedRoute,
             queryParams: queryParams
         });
+    }
+
+    public changePage(page: number) {
+        this.filtersStatus!.page = page;
+        this.getPosts(this.filtersStatus!);
     }
 }

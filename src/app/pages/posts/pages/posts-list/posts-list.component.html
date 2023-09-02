@@ -1,3 +1,9 @@
 <main class="container">
-    <app-posts-grid [posts]="(posts|async)"></app-posts-grid>
+    <app-paginated-filter-status
+        [pageResults]="posts"
+        [filtersStatus]="filtersStatus"
+        [loading]="loading"
+        (changePage)="changePage($event)">
+    </app-paginated-filter-status>
+    <app-posts-grid [posts]="posts" [loading]="loading"></app-posts-grid>
 </main>

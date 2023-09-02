@@ -8,7 +8,8 @@ import { IPageable } from 'src/app/shared/models/pageable.model';
     styleUrls: ['./posts-grid.component.scss']
 })
 export class PostsGridComponent {
-    @Input() public posts: IPageable<PostDetail>|null = null;
+    @Input() public loading: boolean = true;
+    @Input() public posts?: IPageable<PostDetail>;
 
     constructor() { }
 }

@@ -32,15 +32,15 @@ export class PostFilterStatus implements IPostFilterStatus {
     }
 
     public toURLQueryParams(): IURLPostsParams {
-        return {
-            page: String(this.page ?? 1),
-            search: this.search ?? undefined,
-            userId: this.userId ? String(this.userId) : undefined,
-            academicLevel: this.academicLevel ? String(this.academicLevel?.value) : undefined,
-            subject: this.subject ? String(this.subject?.value) : undefined,
-            axis: this.axis ? String(this.axis?.value) : undefined,
-            ordering: this.ordering ? (this.ordering?.value as PostOrderingType) : undefined
-        };
+        const params: IURLPostsParams = {};
+        this.page && (params.page = String(this.page));
+        this.search && (params.search = this.search);
+        this.userId && (params.userId = String(this.userId));
+        this.academicLevel && (params.academicLevel = String(this.academicLevel.value));
+        this.subject && (params.subject = String(this.subject.value));
+        this.axis && (params.axis = String(this.axis.value));
+        this.ordering && (params.ordering = this.ordering.value as PostOrderingType);
+        return params;
     }
 
     public toAPIParams(): IAPIPostsParams {
