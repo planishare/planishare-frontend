@@ -6,4 +6,8 @@
         (changePage)="changePage($event)">
     </app-paginated-filter-status>
     <app-posts-grid [posts]="posts" [loading]="loading"></app-posts-grid>
+    <app-collapsable-filters
+        [filtersOptions]="filtersOptions"
+        [loading]="filtersLoading">
+    </app-collapsable-filters>
 </main>

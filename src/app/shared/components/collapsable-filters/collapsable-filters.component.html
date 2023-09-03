@@ -1,0 +1,11 @@
+<div *ngFor="let filter of filtersOptions">
+    <p class="ft-title"><b>{{ filter.title }}</b></p>
+    <ng-container *ngFor="let optionLevel1 of filter.options">
+        <p class="ft-medium" (click)="selectOption(optionLevel1)">{{ optionLevel1.text }}</p>
+        <p class="ft-label"
+            *ngFor="let optionLevel2 of optionLevel1.options"
+            (click)="selectOption(optionLevel2)">
+            {{ optionLevel2.text }}
+        </p>
+    </ng-container>
+</div>

@@ -1,6 +1,5 @@
 import { IFilterOption } from "src/app/shared/models/filter.model";
 import { PostOrderingType } from "./posts-filter.enum";
-import { IAcademicLevel, IAxis, ISubject } from "./post.model";
 
 export interface IPostFilterStatus {
     page?: number;
