@@ -1,11 +1,16 @@
-export interface IFilter<Type> {
-    title: string,
-    options: IFilterOption<Type>[];
+export type Filter<T> = {
+    name: string,
+    options: FilterOption<T>[],
+    currentOption?: FilterOption<T>
 };
 
-export interface IFilterOption<Type> {
-    text: string;
-    value: Type;
-    optionOf: string;
-    options?: IFilterOption<Type>[];
+export type FilterOption<T> = {
+    text: string,
+    value: T
+}
+
+export type FilterChange<T> = {
+    name: string,
+    option:  FilterOption<T>,
+    remove: boolean
 }

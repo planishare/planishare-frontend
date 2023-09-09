@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IPageable } from '../../../shared/models/pageable.model';
-import { IAPIPostsParams } from '../models/post-filter.model';
+import { APIPostsParams } from '../models/post-filter.model';
 import { IPostDetail, IAcademicLevel, ISubject, IAxis, ISubjectWithAxis, IPostForm } from '../models/post.model';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class PostsService {
         private http: HttpClient
     ) { }
 
-    public getPosts(queryParams: IAPIPostsParams): Observable<IPageable<IPostDetail>> {
+    public getPosts(queryParams: APIPostsParams): Observable<IPageable<IPostDetail>> {
         return this.http.get<IPageable<IPostDetail>>(environment.planishare.protectedAnon + '/posts/', {
             params: { ...queryParams }
         });

@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { IURLPostsParams } from 'src/app/pages/posts/models/post-filter.model';
+import { URLPostsParams } from 'src/app/pages/posts/models/post-filter.model';
 import { PostDetail } from 'src/app/pages/posts/models/post.model';
 
 @Component({
@@ -10,7 +10,7 @@ import { PostDetail } from 'src/app/pages/posts/models/post.model';
 export class PostCardComponent {
     @Input() public post?: PostDetail;
     @Input() public isOwner = false;
-    @Input() public urlQueryParams: IURLPostsParams = {};
+    @Input() public urlQueryParams: URLPostsParams = {};
     @Output() public report = new EventEmitter<PostDetail>();
     @Output() public delete = new EventEmitter<PostDetail>();
 

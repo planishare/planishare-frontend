@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IFilter, IFilterOption } from '../../models/filter.model';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Filter, FilterChange, FilterOption } from '../../models/filter.model';
 
 @Component({
     selector: 'app-collapsable-filters',
@@ -7,14 +7,21 @@ import { IFilter, IFilterOption } from '../../models/filter.model';
     styleUrls: ['./collapsable-filters.component.scss']
 })
 export class CollapsableFiltersComponent {
+    // Only get Filter type properties
+    @Input() public set filters(filters: {[key: string]: Filter<any>|any}) {
+        this._filters = Object.values(filters).filter((filter: any) => filter?.name && filter?.options);
+        console.log(this._filters);
+    };
     @Input() public loading: boolean = true;
-    @Input() public filtersOptions: IFilter<unknown>[] = [];
-    @Output() public filtersChange = new EventEmitter<IFilterOption<unknown>>();
+    @Output() public filtersChange = new EventEmitter<FilterChange<any>>();
 
-    constructor() { }
+    public _filters: Filter<any>[] = [];
 
-    public selectOption(option: IFilterOption<unknown>): void {
-        console.log(option);
-        this.filtersChange.emit(option);
+    constructor() {
+    }
+
+    public selectOption(filter: Filter<any>, option: FilterOption<any>, remove: boolean = false): void {
+        console.log({ filter, option });
+        this.filtersChange.emit({ name: filter.name, option, remove });
     }
 }

@@ -8,7 +8,7 @@ import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 import { WindowResizeService } from 'src/app/shared/services/window-resize.service';
 
 import { PostOrderingType } from 'src/app/pages/posts/models/posts-filter.enum';
-import { IURLPostsParams } from 'src/app/pages/posts/models/post-filter.model';
+import { URLPostsParams } from 'src/app/pages/posts/models/post-filter.model';
 import { IAcademicLevel, IAxis, ISubject, ISubjectWithAxis } from 'src/app/pages/posts/models/post.model';
 import { RoundedSelectGroup, RoundedSelectOption } from 'src/app/shared/models/rounded-select.type';
 
@@ -33,7 +33,7 @@ export interface IOrdering {
     animations: [inOutYAnimation]
 })
 export class PostFiltersCardComponent extends Unsubscriber implements OnInit, OnChanges {
-    @Input() public urlQueryParams?: IURLPostsParams;
+    @Input() public urlQueryParams?: URLPostsParams;
     @Input() public academicLevels: IAcademicLevel[] = [];
     @Input() public subjectWithAxis: ISubjectWithAxis[] = [];
 
@@ -183,7 +183,7 @@ export class PostFiltersCardComponent extends Unsubscriber implements OnInit, On
         }
     }
 
-    private setFilterFromUrlParams(urlQueryParams: IURLPostsParams): void {
+    private setFilterFromUrlParams(urlQueryParams: URLPostsParams): void {
         this.form.patchValue({
             search: urlQueryParams.search ?? undefined,
             academicLevel: this.academicLevelsOptions.find(el => el.data?.id === Number(urlQueryParams.academicLevel)) ?? undefined,

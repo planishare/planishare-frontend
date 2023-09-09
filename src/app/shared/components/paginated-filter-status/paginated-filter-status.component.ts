@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Pageable } from '../../models/pageable.model';
-import { PostFilterStatus } from 'src/app/pages/posts/models/post-filter.model';
+import { PostFilters } from 'src/app/pages/posts/models/post-filter.model';
+import { FilterChange } from '../../models/filter.model';
 
 @Component({
     selector: 'app-paginated-filter-status',
@@ -10,34 +11,29 @@ import { PostFilterStatus } from 'src/app/pages/posts/models/post-filter.model';
 export class PaginatedFilterStatusComponent {
     @Input() public loading: boolean = true;
     @Input() public pageResults?: Pageable<any>;
-    @Input() public filtersStatus?: PostFilterStatus;
+    @Input() public filters?: { page: number, [key: string]: any };
 
     @Output() public changePage = new EventEmitter<number>();
-    // @Output() public removeFilter = new EventEmitter<string>();
 
     constructor() { }
 
     public nextPage(): void {
         if (this.pageResults?.next) {
-            const newPage = (this.filtersStatus?.page ?? 0) + 1;
+            const newPage = (this.filters?.page ?? 0) + 1;
             this.changePage.next(newPage);
         }
     }
 
     public previousPage(): void {
         if (this.pageResults?.previous) {
-            const newPage = (this.filtersStatus?.page ?? 0) - 1;
+            const newPage = (this.filters?.page ?? 0) - 1;
             this.changePage.next(newPage);
         }
     }
 
     public changePageByNumber(newPage: number): void {
-        if (newPage !== this.filtersStatus?.page) {
+        if (newPage !== this.filters?.page) {
             this.changePage.next(newPage);
         }
     }
-
-    // public removeFilterByName(filterName: string): void {
-    //     this.removeFilter.next(filterName);
-    // }
 }

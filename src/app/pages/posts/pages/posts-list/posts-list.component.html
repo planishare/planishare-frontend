@@ -1,13 +1,14 @@
 <main class="container">
     <app-paginated-filter-status
         [pageResults]="posts"
-        [filtersStatus]="filtersStatus"
+        [filters]="filters"
         [loading]="loading"
         (changePage)="changePage($event)">
     </app-paginated-filter-status>
     <app-posts-grid [posts]="posts" [loading]="loading"></app-posts-grid>
     <app-collapsable-filters
-        [filtersOptions]="filtersOptions"
-        [loading]="filtersLoading">
+        [loading]="filtersLoading"
+        [filters]="(filters$|async)!"
+        (filtersChange)="changeFilter($event)">
     </app-collapsable-filters>
 </main>

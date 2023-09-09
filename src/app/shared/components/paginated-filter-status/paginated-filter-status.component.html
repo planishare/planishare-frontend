@@ -12,7 +12,7 @@
         </button>
         <button [matMenuTriggerFor]="pagesMenu" aria-label="Seleccionar Pág."
             matRipple [disabled]="loading || !pageResults?.count || pageResults?.count === 1">
-            <span>{{ filtersStatus?.page ?? 1 }}</span>
+            <span>{{ filters?.page ?? 1 }}</span>
         </button>
         <mat-menu #pagesMenu>
             <button mat-menu-item *ngFor="let page of (pageResults?.maxPage ?? 1)|fillArray" (click)="changePageByNumber(page)">

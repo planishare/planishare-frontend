@@ -9,7 +9,7 @@ import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackba
 
 import { PostOrderingType } from 'src/app/pages/posts/models/posts-filter.enum';
 import { Pageable } from 'src/app/shared/models/pageable.model';
-import { IURLPostsParams } from 'src/app/pages/posts/models/post-filter.model';
+import { URLPostsParams } from 'src/app/pages/posts/models/post-filter.model';
 import { PostDetail } from 'src/app/pages/posts/models/post.model';
 import { UserDetail } from 'src/app/pages/user/models/user.model';
 
@@ -24,7 +24,7 @@ export class PostPaginatedListComponent implements OnChanges {
     @Input() public loading = true;
     @Input() public authUser: UserDetail | null = null;
     @Input() public currentFilters?: any;
-    @Input() public urlQueryParams?: IURLPostsParams;
+    @Input() public urlQueryParams?: URLPostsParams;
 
     @Output() public changePage = new EventEmitter<number>();
     @Output() public removeFilter = new EventEmitter<string>();

@@ -1,61 +1,95 @@
-import { IFilterOption } from "src/app/shared/models/filter.model";
-import { PostOrderingType } from "./posts-filter.enum";
+import { Filter } from "src/app/shared/models/filter.model";
 
-export interface IPostFilterStatus {
-    page?: number;
-    search?: string;
-    userId?: number;
-    academicLevel?: Partial<IFilterOption<number>>;
-    subject?: Partial<IFilterOption<number>>;
-    axis?: Partial<IFilterOption<number>>;
-    ordering?: Partial<IFilterOption<string>>;
+export type PostFilters = {
+    page: number,
+    search?: string,
+    userId?: number,
+    academicLevel: Filter<number>,
+    subject: Filter<number>,
+    axis: Filter<number>,
+    ordering: Filter<string>
 }
 
-export class PostFilterStatus implements IPostFilterStatus {
-    public page?: number;
-    public search?: string;
-    public userId?: number;
-    public academicLevel?: Partial<IFilterOption<number>>;
-    public subject?: Partial<IFilterOption<number>>;
-    public axis?: Partial<IFilterOption<number>>;
-    public ordering?: Partial<IFilterOption<string>>;
+export enum PostFilterName {
+    ACADEMIC_LEVEL = 'Nivel',
+    SUBJECT = 'Asignatura',
+    AXIS = 'Eje',
+    ORDERING = 'Ordenar por',
+}
 
-    constructor(data: IPostFilterStatus) {
-        this.page = data.page;
-        this.search = data.search;
-        this.userId = data.userId;
-        this.academicLevel = data.academicLevel;
-        this.subject = data.subject;
-        this.axis = data.axis;
-        this.ordering = data.ordering;
-    }
+export enum PostOrderingType {
+    LESS_LIKED = 'total_likes',
+    MOST_LIKED = '-total_likes',
+    LESS_VIEWED = 'total_views',
+    MOST_VIEWED = '-total_views',
+    LESS_RECENT = 'created_at',
+    MOST_RECENT = '-created_at',
+}
 
-    public toURLQueryParams(): IURLPostsParams {
-        const params: IURLPostsParams = {};
-        this.page && (params.page = String(this.page));
-        this.search && (params.search = this.search);
-        this.userId && (params.userId = String(this.userId));
-        this.academicLevel && (params.academicLevel = String(this.academicLevel.value));
-        this.subject && (params.subject = String(this.subject.value));
-        this.axis && (params.axis = String(this.axis.value));
-        this.ordering && (params.ordering = this.ordering.value as PostOrderingType);
+export enum PostOrderingName {
+    'total_likes' = 'Más gustadas (Descendente)',
+    '-total_likes' = 'Más gustadas',
+    'total_views' = 'Más vistas (Descendente)',
+    '-total_views' = 'Más vistas',
+    'created_at' = 'Más antiguas',
+    '-created_at' = 'Más recientes',
+}
+
+export class MapPostFilters {
+    public static toURLQueryParams(filters: PostFilters): URLPostsParams {
+        const params: URLPostsParams = {};
+        if (filters.page) {
+            params.page = String(filters.page);
+        }
+        if (filters.search) {
+            params.search = filters.search;
+        }
+        if (filters.userId) {
+            params.userId = String(filters.userId);
+        }
+        if (filters.academicLevel.currentOption) {
+            params.academicLevel = String(filters.academicLevel.currentOption.value);
+        }
+        if (filters.subject.currentOption) {
+            params.subject = String(filters.subject.currentOption.value);
+        }
+        if (filters.axis.currentOption) {
+            params.axis = String(filters.axis.currentOption.value);
+        }
+        if (filters.ordering.currentOption) {
+            params.ordering = filters.ordering.currentOption.value as PostOrderingType;
+        }
         return params;
     }
 
-    public toAPIParams(): IAPIPostsParams {
-        const params: IAPIPostsParams = {};
-        this.page && (params.page = String(this.page));
-        this.search && (params.search = this.search);
-        this.userId && (params.user__id = String(this.userId));
-        this.academicLevel && (params.academic_level__id = String(this.academicLevel.value));
-        this.subject && (params.axis__subject__id = String(this.subject.value));
-        this.axis && (params.axis__id = String(this.axis.value));
-        this.ordering && (params.ordering = this.ordering.value as PostOrderingType);
+    public static toAPIParams(filters: PostFilters): APIPostsParams {
+        const params: APIPostsParams = {};
+        if (filters.page) {
+            params.page = String(filters.page);
+        }
+        if (filters.search) {
+            params.search = filters.search;
+        }
+        if (filters.userId) {
+            params.user__id = String(filters.userId);
+        }
+        if (filters.academicLevel.currentOption) {
+            params.academic_level__id = String(filters.academicLevel.currentOption.value);
+        }
+        if (filters.subject.currentOption) {
+            params.axis__subject__id = String(filters.subject.currentOption.value);
+        }
+        if (filters.axis.currentOption) {
+            params.axis__id = String(filters.axis.currentOption.value);
+        }
+        if (filters.ordering.currentOption) {
+            params.ordering = filters.ordering.currentOption.value as PostOrderingType;
+        }
         return params;
     }
 }
 
-export interface IURLPostsParams {
+export type URLPostsParams = {
     page?: string,
     search?: string,
     userId?: string,
@@ -65,7 +99,7 @@ export interface IURLPostsParams {
     ordering?: PostOrderingType
 }
 
-export interface IAPIPostsParams {
+export type APIPostsParams = {
     page?: string,
     search?: string,
     user__id?: string,
