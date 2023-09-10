@@ -11,6 +11,7 @@ import { MaterialModule } from 'src/app/material.module';
 import { PostsListComponent } from './pages/posts-list/posts-list.component';
 import { PostsGridComponent } from './components/posts-grid/posts-grid.component';
 import { PostCardComponent } from './components/post-card/post-card.component';
+import { IconsModule } from 'src/app/shared/icons/icons.module';
 // import { PostDetailComponent } from './pages/post-detail/post-detail.component';
 // import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 // import { PostFormComponent } from './pages/post-form/post-form.component';
@@ -39,7 +40,8 @@ import { PostCardComponent } from './components/post-card/post-card.component';
         MaterialModule,
         ReactiveFormsModule,
         NgxDocViewerModule,
-        NgxMatSelectSearchModule
+        NgxMatSelectSearchModule,
+        IconsModule
     ]
 })
 export class PostsModule { }

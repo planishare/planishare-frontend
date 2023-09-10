@@ -1,27 +1,29 @@
 <main class="container">
-    <app-paginated-filter-status
-        [pageResults]="posts"
-        [filters]="filters"
-        [loading]="loading"
-        (changePage)="changePage($event)">
-    </app-paginated-filter-status>
-
-    <section>
-        <p *ngIf="loading">Cargando...</p>
-        <ul *ngIf="!loading">
-            <li *ngFor="let post of posts?.results">
-                <app-post-card
-                    [post]="post"
-                    [ownPost]="post.user.id === authUser?.id"
-                    [loading]="loading"
-                ></app-post-card>
-            </li>
-        </ul>
-    </section>
-
     <app-collapsable-filters
         [loading]="filtersLoading"
         [filters]="(filters$|async)!"
         (filtersChange)="changeFilter($event)">
     </app-collapsable-filters>
+
+    <div>
+        <app-paginated-filter-status
+            [pageResults]="posts"
+            [filters]="filters"
+            [loading]="loading"
+            (changePage)="changePage($event)">
+        </app-paginated-filter-status>
+
+        <section>
+            <p *ngIf="loading">Cargando...</p>
+            <ul class="ul-style-none" *ngIf="!loading">
+                <li *ngFor="let post of posts?.results">
+                    <app-post-card
+                        [post]="post"
+                        [ownPost]="post.user.id === authUser?.id"
+                        [loading]="loading"
+                    ></app-post-card>
+                </li>
+            </ul>
+        </section>
+    </div>
 </main>

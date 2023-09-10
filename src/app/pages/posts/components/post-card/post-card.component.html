@@ -4,19 +4,19 @@
       <p>{{ post.user.fullName ?? post.user.email }} - {{ post.createdAt|timeAgo }}</p>
 
       <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Opciones">
-        <mat-icon>more_vert</mat-icon>
+        <i-tabler name="dots-vertical"></i-tabler>
       </button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item (click)="reportPost(post)" *ngIf="!ownPost">
-          <mat-icon>report</mat-icon>
+          <i-tabler name="message-report"></i-tabler>
           <span>Reportar</span>
         </button>
         <a mat-menu-item [routerLink]="['/posts/edit', post.id]" *ngIf="ownPost">
-          <mat-icon>edit</mat-icon>
+          <i-tabler name="pencil"></i-tabler>
           <span>Editar</span>
         </a>
         <button mat-menu-item (click)="deletePost(post)" *ngIf="ownPost">
-          <mat-icon>delete</mat-icon>
+          <i-tabler name="trash"></i-tabler>
           <span>Eliminar</span>
         </button>
       </mat-menu>
@@ -28,7 +28,7 @@
 
   <div class="flex">
     <div>
-      <mat-icon>description</mat-icon>
+      <i-tabler name="file-description"></i-tabler>
       <span>{{ post.totalFiles }} Documentos</span>
     </div>
 
@@ -49,18 +49,16 @@
   <div class="flex">
     <div class="flex">
       <div class="flex">
-        <mat-icon>favorite_outline</mat-icon>
+        <i-tabler name="heart"></i-tabler>
         <span>{{ post.totalLikes }} Me gusta</span>
       </div>
       <div class="flex">
-        <mat-icon>visibility</mat-icon>
+        <i-tabler name="eye"></i-tabler>
         <span>{{ post.totalViews }} Visualizaciones</span>
       </div>
     </div>
 
-    <mat-icon>
-      {{ post.alreadyLiked ? 'favorite' : 'favorite_outline' }}
-    </mat-icon>
+    <i-tabler [name]="post.alreadyLiked ? 'heart-filled' : 'heart'"></i-tabler>
   </div>
 </div>
 <p *ngIf="loading">Loading...</p>
