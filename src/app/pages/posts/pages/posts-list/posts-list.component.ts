@@ -12,6 +12,7 @@ import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackba
 
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 import { Filter, FilterChange, FilterOption } from 'src/app/shared/models/filter.model';
+import { UserDetail } from 'src/app/pages/user/models/user.model';
 
 @Component({
     selector: 'app-posts-list',
@@ -67,6 +68,7 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
 
     public loading = true;
     public posts?: Pageable<PostDetail>;
+    public authUser?: UserDetail;
 
     constructor(
         private postsService: PostsService,
@@ -76,6 +78,7 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
         private router: Router
     ) {
         super();
+        this.authUser = this.authService.getUserDetail() ?? undefined;
     }
 
     public ngOnInit(): void {

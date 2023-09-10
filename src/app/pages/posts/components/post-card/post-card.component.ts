@@ -1,6 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { URLPostsParams } from 'src/app/pages/posts/models/post-filter.model';
 import { PostDetail } from 'src/app/pages/posts/models/post.model';
+
+// TODO
+// [ ] Save query params when view post detail
 
 @Component({
     selector: 'app-post-card',
@@ -9,8 +11,9 @@ import { PostDetail } from 'src/app/pages/posts/models/post.model';
 })
 export class PostCardComponent {
     @Input() public post?: PostDetail;
-    @Input() public isOwner = false;
-    @Input() public urlQueryParams: URLPostsParams = {};
+    @Input() public ownPost = false;
+    @Input() public loading = true;
+
     @Output() public report = new EventEmitter<PostDetail>();
     @Output() public delete = new EventEmitter<PostDetail>();
 

@@ -1,69 +1,66 @@
-<div class="rounded-card flex-column flex-space_between gap-07" *ngIf="post">
-  <div>
-    <div class="flex-space_between-center">
+<div *ngIf="!loading && post">
+  <div class="flex-col">
+    <div class="flex">
       <p>{{ post.user.fullName ?? post.user.email }} - {{ post.createdAt|timeAgo }}</p>
 
       <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Opciones">
-        <mat-icon class="text-blue-dark">more_vert</mat-icon>
+        <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="reportPost(post)" *ngIf="!isOwner">
+        <button mat-menu-item (click)="reportPost(post)" *ngIf="!ownPost">
           <mat-icon>report</mat-icon>
           <span>Reportar</span>
         </button>
-        <a mat-menu-item [routerLink]="['/posts/edit', post.id]" *ngIf="isOwner">
+        <a mat-menu-item [routerLink]="['/posts/edit', post.id]" *ngIf="ownPost">
           <mat-icon>edit</mat-icon>
           <span>Editar</span>
         </a>
-        <button mat-menu-item (click)="deletePost(post)" *ngIf="isOwner">
+        <button mat-menu-item (click)="deletePost(post)" *ngIf="ownPost">
           <mat-icon>delete</mat-icon>
           <span>Eliminar</span>
         </button>
       </mat-menu>
     </div>
 
-    <h2><a [routerLink]="['/posts/view', post.id]" [queryParams]="urlQueryParams" class="reset-link-style">
-        {{ post.title }}
-      </a></h2>
-    <p><a [routerLink]="['/posts/view', post.id]" [queryParams]="urlQueryParams" class="reset-link-style">
-        {{ post.shortDescription }}
-      </a></p>
+    <h2><a [routerLink]="['/posts/view', post.id]">{{ post.title }}</a></h2>
+    <p><a [routerLink]="['/posts/view', post.id]">{{ post.shortDescription }}</a></p>
   </div>
 
-  <div class="flex-space_between-center flex-wrap gap-025">
-    <div class="flex-center-center gap-025">
-      <mat-icon class="text-blue-dark">description</mat-icon>
-      <span class="fw-600">{{ post.totalFiles }} Documentos</span>
+  <div class="flex">
+    <div>
+      <mat-icon>description</mat-icon>
+      <span>{{ post.totalFiles }} Documentos</span>
     </div>
 
-    <div class="flex-wrap gap-025">
-      <span class="small-border-tag{{ '-' + post.mainFile.tagColor }}">{{ post.mainFile.ext }}</span>
+    <div class="flex">
+      <span>{{ post.mainFile.ext }}</span>
       <ng-container *ngFor="let file of post.supportingMaterial">
-        <span class="small-border-tag{{ '-' + file.tagColor }}">{{ file.ext }}</span>
+        <span>{{ file.ext }}</span>
       </ng-container>
     </div>
   </div>
 
-  <div class="flex-wrap gap-025">
-    <span class="rounded-button-slim fs-small bg-text-academic-level">{{ post.academicLevel.name }}</span>
-    <span class="rounded-button-slim fs-small bg-text-axis">{{ post.axis.name }}</span>
-    <span class="rounded-button-slim fs-small bg-text-subject">{{ post.axis.subject.name }}</span>
+  <div class="flex">
+    <span>{{ post.academicLevel.name }}</span>
+    <span>{{ post.axis.name }}</span>
+    <span>{{ post.axis.subject.name }}</span>
   </div>
 
-  <div class="flex-space_between-center">
-    <div class="flex-center-center gap-05">
-      <div class="flex-center-center gap-025">
-        <mat-icon class="small-icon text-blue-dark">favorite_outline</mat-icon>
-        <span class="fw-600 text-center">{{ post.totalLikes }} Me gusta</span>
+  <div class="flex">
+    <div class="flex">
+      <div class="flex">
+        <mat-icon>favorite_outline</mat-icon>
+        <span>{{ post.totalLikes }} Me gusta</span>
       </div>
-      <div class="flex-center-center gap-025">
-        <mat-icon class="small-icon text-blue-dark">visibility</mat-icon>
-        <span class="fw-600 text-center">{{ post.totalViews }} Visualizaciones</span>
+      <div class="flex">
+        <mat-icon>visibility</mat-icon>
+        <span>{{ post.totalViews }} Visualizaciones</span>
       </div>
     </div>
 
-    <mat-icon class="text-red">
+    <mat-icon>
       {{ post.alreadyLiked ? 'favorite' : 'favorite_outline' }}
     </mat-icon>
   </div>
 </div>
+<p *ngIf="loading">Loading...</p>

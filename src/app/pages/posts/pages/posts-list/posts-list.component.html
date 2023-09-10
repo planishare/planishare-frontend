@@ -5,7 +5,20 @@
         [loading]="loading"
         (changePage)="changePage($event)">
     </app-paginated-filter-status>
-    <app-posts-grid [posts]="posts" [loading]="loading"></app-posts-grid>
+
+    <section>
+        <p *ngIf="loading">Cargando...</p>
+        <ul *ngIf="!loading">
+            <li *ngFor="let post of posts?.results">
+                <app-post-card
+                    [post]="post"
+                    [ownPost]="post.user.id === authUser?.id"
+                    [loading]="loading"
+                ></app-post-card>
+            </li>
+        </ul>
+    </section>
+
     <app-collapsable-filters
         [loading]="filtersLoading"
         [filters]="(filters$|async)!"
