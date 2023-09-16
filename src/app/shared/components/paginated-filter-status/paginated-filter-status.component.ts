@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Pageable } from '../../models/pageable.model';
-import { PostFilters } from 'src/app/pages/posts/models/post-filter.model';
-import { FilterChange } from '../../models/filter.model';
 
 @Component({
     selector: 'app-paginated-filter-status',

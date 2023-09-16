@@ -1,13 +1,20 @@
-import { Filter } from "src/app/shared/models/filter.model";
+import { FilterGroup, FilterOption } from "src/app/shared/models/filter.model";
 
 export type PostFilters = {
     page: number,
     search?: string,
     userId?: number,
-    academicLevel: Filter<number>,
-    subject: Filter<number>,
-    axis: Filter<number>,
-    ordering: Filter<string>
+    academicLevel?: FilterOption<number>,
+    subject?: FilterOption<number>,
+    axis?: FilterOption<number>,
+    ordering?: FilterOption<string>
+}
+
+export type PostFiltersOptions = {
+    academicLevel: FilterOption<number>[],
+    subject: FilterOption<number>[],
+    axis: FilterGroup<number>[],
+    ordering: FilterOption<string>[]
 }
 
 export enum PostFilterName {
@@ -47,17 +54,17 @@ export class MapPostFilters {
         if (filters.userId) {
             params.userId = String(filters.userId);
         }
-        if (filters.academicLevel.currentOption) {
-            params.academicLevel = String(filters.academicLevel.currentOption.value);
+        if (filters.academicLevel) {
+            params.academicLevel = String(filters.academicLevel.value);
         }
-        if (filters.subject.currentOption) {
-            params.subject = String(filters.subject.currentOption.value);
+        if (filters.subject) {
+            params.subject = String(filters.subject.value);
         }
-        if (filters.axis.currentOption) {
-            params.axis = String(filters.axis.currentOption.value);
+        if (filters.axis) {
+            params.axis = String(filters.axis.value);
         }
-        if (filters.ordering.currentOption) {
-            params.ordering = filters.ordering.currentOption.value as PostOrderingType;
+        if (filters.ordering) {
+            params.ordering = filters.ordering.value as PostOrderingType;
         }
         return params;
     }
@@ -73,17 +80,17 @@ export class MapPostFilters {
         if (filters.userId) {
             params.user__id = String(filters.userId);
         }
-        if (filters.academicLevel.currentOption) {
-            params.academic_level__id = String(filters.academicLevel.currentOption.value);
+        if (filters.academicLevel) {
+            params.academic_level__id = String(filters.academicLevel.value);
         }
-        if (filters.subject.currentOption) {
-            params.axis__subject__id = String(filters.subject.currentOption.value);
+        if (filters.subject) {
+            params.axis__subject__id = String(filters.subject.value);
         }
-        if (filters.axis.currentOption) {
-            params.axis__id = String(filters.axis.currentOption.value);
+        if (filters.axis) {
+            params.axis__id = String(filters.axis.value);
         }
-        if (filters.ordering.currentOption) {
-            params.ordering = filters.ordering.currentOption.value as PostOrderingType;
+        if (filters.ordering) {
+            params.ordering = filters.ordering.value as PostOrderingType;
         }
         return params;
     }

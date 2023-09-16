@@ -12,11 +12,11 @@ import { PostsListComponent } from './pages/posts-list/posts-list.component';
 import { PostsGridComponent } from './components/posts-grid/posts-grid.component';
 import { PostCardComponent } from './components/post-card/post-card.component';
 import { IconsModule } from 'src/app/shared/icons/icons.module';
+import { PostsFiltersComponent } from './components/posts-filters/posts-filters.component';
 // import { PostDetailComponent } from './pages/post-detail/post-detail.component';
 // import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 // import { PostFormComponent } from './pages/post-form/post-form.component';
 // import { PostCardShimmerComponent } from './components/post-card-shimmer/post-card-shimmer.component';
-// import { PostFiltersCardComponent } from './components/post-filters-card/post-filters-card.component';
 // import { PostPaginatedListComponent } from './components/post-paginated-list/post-paginated-list.component';
 // import { UserPostsStatsComponent } from './components/user-posts-stats/user-posts-stats.component';
 
@@ -24,12 +24,12 @@ import { IconsModule } from 'src/app/shared/icons/icons.module';
     declarations: [
         PostsListComponent,
         PostsGridComponent,
-        PostCardComponent
+        PostCardComponent,
+        PostsFiltersComponent
         // PostDetailComponent,
         // DeleteDialogComponent,
         // PostFormComponent,
         // PostCardShimmerComponent,
-        // PostFiltersCardComponent,
         // PostPaginatedListComponent,
         // UserPostsStatsComponent
     ],

@@ -9,6 +9,11 @@ export type FilterOption<T> = {
     value: T
 }
 
+export type FilterGroup<T> = {
+    text: string,
+    options: FilterOption<T>[]
+}
+
 export type FilterChange<T> = {
     name: string,
     option:  FilterOption<T>,

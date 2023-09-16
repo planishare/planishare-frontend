@@ -1,89 +1,78 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { RoundedSelectGroup, RoundedSelectOption } from '../../models/rounded-select.type';
 import { startWith } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
+import { FilterGroup, FilterOption } from '../../models/filter.model';
 
 @Component({
     selector: 'app-rounded-select',
     templateUrl: './rounded-select.component.html',
     styleUrls: ['./rounded-select.component.scss']
 })
-export class RoundedSelectComponent implements OnInit {
-    // Base input data
-    @Input() public baseText = 'Base text';
+export class RoundedSelectComponent implements OnInit, OnChanges {
+    @Input() public label = '';
     @Input() public control!: FormControl;
-    @Input() public set options(value: RoundedSelectOption<any>[] | RoundedSelectGroup<any>[]) {
-        this.checkInput(value, 'Options');
-        this._options = value;
-        this.filteredOptions = value;
-    }
-
-    // Configuration
-    @Input() public hasGroups = false;
-    @Input() public searchInput = false;
+    @Input() public options: (FilterOption<any> | FilterGroup<any>)[] = [];
+    @Input() public resetOption = false;
+    @Input() public search = false;
     @Input() public searchPlaceholder = 'Buscar';
-    @Input() public resetButton = false;
-
-    // Behavior config
-    @Input() public disabled: boolean = false;
     @Input() public loading: boolean = false;
 
-    // Internal variables
-    public _options: (RoundedSelectOption<any> | RoundedSelectGroup<any>)[] = [];
-    public filteredOptions: (RoundedSelectOption<any> | RoundedSelectGroup<any>)[] = [];
-    public textValue?: string;
-    public search: FormControl = new FormControl();
+    public filteredOptions: (FilterOption<any> | FilterGroup<any>)[] = [];
+    public searchCtrl: FormControl = new FormControl();
+    public hasGroups: boolean = false;
 
     constructor() {}
 
     public ngOnInit(): void {
-        this.checkInput(this.control, 'Control');
         this.control.valueChanges.pipe(startWith(this.control.value))
-            .subscribe((data: RoundedSelectOption<any>) => {
-                this.textValue = data?.text;
-                this.filteredOptions = this._options;
+            .subscribe((data: FilterOption<any>) => {
+                // this.filteredOptions = this.options;
             });
 
-        this.search.valueChanges.subscribe((inputText: string) => {
+        this.searchCtrl.valueChanges.subscribe((inputText: string) => {
             if (!!inputText) {
                 if (!this.hasGroups) {
-                    this.filteredOptions = this.simpleFilter(inputText, this._options as RoundedSelectOption<any>[]);
+                    this.filteredOptions = this.simpleFilter(inputText, this.options as FilterOption<any>[]);
                 } else {
-                    this.filteredOptions = this.groupFilter(inputText, this._options as RoundedSelectGroup<any>[]);
+                    this.filteredOptions = this.groupFilter(inputText, this.options as FilterGroup<any>[]);
                 }
             } else {
-                this.filteredOptions = this._options;
+                this.filteredOptions = this.options;
             }
         });
     }
 
-    private simpleFilter(
-        inputText: string, simpleOptions: RoundedSelectOption<any>[]
-    ): RoundedSelectOption<any>[] {
-        inputText = this.normilizeText(inputText);
-        return simpleOptions.filter(option => {
+    public ngOnChanges({ options }: SimpleChanges): void {
+        if (options) {
+            console.log(this.options);
+            this.filteredOptions = this.options;
+            this.hasGroups = this.options[0] && 'options' in this.options[0];
+        }
+    }
+
+    private simpleFilter(search: string, options: FilterOption<any>[]): FilterOption<any>[] {
+        search = this.normilizeText(search);
+        return options.filter(option => {
             const textNormalized = this.normilizeText(option.text);
-            return textNormalized.includes(inputText);
+            return textNormalized.includes(search);
         });
     }
 
-    private groupFilter(
-        inputText: string, optionGroups: RoundedSelectGroup<any>[]
-    ): RoundedSelectGroup<any>[] {
-        const results: RoundedSelectGroup<any>[] = [];
-        inputText = this.normilizeText(inputText);
-        optionGroups.forEach(el => {
+    private groupFilter(search: string, options: FilterGroup<any>[]): FilterGroup<any>[] {
+        const results: FilterGroup<any>[] = [];
+        search = this.normilizeText(search);
+        options.forEach(el => {
             const groupTextNormalized = this.normilizeText(el.text);
-            const filteredOptions: RoundedSelectOption<any>[] = [];
+            const filteredOptions: FilterOption<any>[] = [];
             el.options.forEach(option => {
                 const optionTextNormalized = this.normilizeText(option.text);
-                if (optionTextNormalized.includes(inputText)) {
+                if (optionTextNormalized.includes(search)) {
                     filteredOptions.push(option);
                 }
             });
 
-            if (groupTextNormalized.includes(inputText)) {
+            if (groupTextNormalized.includes(search)) {
                 results.push(el);
             } else if (filteredOptions.length) {
                 results.push(
@@ -92,15 +81,6 @@ export class RoundedSelectComponent implements OnInit {
             }
         });
         return results;
-    }
-
-    private checkInput(
-        value: FormControl | RoundedSelectOption<any>[] | RoundedSelectGroup<any>[],
-        attribute: string
-    ): void {
-        if (!value) {
-            throw `No ${attribute} provided in rounded-select!`;
-        }
     }
 
     public toggleSelect(select: MatSelect): void {

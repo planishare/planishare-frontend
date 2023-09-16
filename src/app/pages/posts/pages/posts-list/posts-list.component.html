@@ -1,10 +1,9 @@
 <main class="container">
-    <app-collapsable-filters
-        [loading]="filtersLoading"
-        [filters]="(filters$|async)!"
-        (filtersChange)="changeFilter($event)">
-    </app-collapsable-filters>
-
+    <app-posts-filters
+        [filters]="filters"
+        [options]="options"
+        (filtersChange)="changeFilters($event)"
+    ></app-posts-filters>
     <div>
         <app-paginated-filter-status
             [pageResults]="posts"

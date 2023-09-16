@@ -18,7 +18,6 @@ import { DragAndDropFileDirective } from './directives/drag-and-drop-file.direct
 import { DebounceClickDirective } from './directives/debounce-click.directive';
 import { LoadingButtonDirective } from './directives/loading-button.directive';
 import { PaginatedFilterStatusComponent } from './components/paginated-filter-status/paginated-filter-status.component';
-import { CollapsableFiltersComponent } from './components/collapsable-filters/collapsable-filters.component';
 
 @NgModule({
     declarations: [
@@ -36,8 +35,7 @@ import { CollapsableFiltersComponent } from './components/collapsable-filters/co
         RoundedSelectComponent,
         ScrollToTopButtonComponent,
         LoadingButtonDirective,
-        PaginatedFilterStatusComponent,
-        CollapsableFiltersComponent
+        PaginatedFilterStatusComponent
     ],
     imports: [
         CommonModule,
@@ -52,7 +50,6 @@ import { CollapsableFiltersComponent } from './components/collapsable-filters/co
         ReportDialogComponent,
         ScrollToTopButtonComponent,
         PaginatedFilterStatusComponent,
-        CollapsableFiltersComponent,
 
         // Pipes
         TimeAgoPipe,

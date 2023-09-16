@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, of, forkJoin, map, takeUntil, BehaviorSubject, Observable } from 'rxjs';
+import { catchError, of, forkJoin, map, takeUntil, BehaviorSubject } from 'rxjs';
 
 import { Pageable } from 'src/app/shared/models/pageable.model';
-import { APIPostsParams, URLPostsParams, MapPostFilters, PostFilterName, PostFilters, PostOrderingName, PostOrderingType } from 'src/app/pages/posts/models/post-filter.model';
-import { IAcademicLevel, ISubjectWithAxis, PostDetail } from 'src/app/pages/posts/models/post.model';
+import { APIPostsParams, URLPostsParams, MapPostFilters, PostFilters, PostOrderingName, PostOrderingType, PostFiltersOptions } from 'src/app/pages/posts/models/post-filter.model';
+import { PostDetail } from 'src/app/pages/posts/models/post.model';
 
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/pages/posts/services/posts.service';
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
-import { Filter, FilterChange, FilterOption } from 'src/app/shared/models/filter.model';
+import { FilterOption } from 'src/app/shared/models/filter.model';
 import { UserDetail } from 'src/app/pages/user/models/user.model';
 
 @Component({
@@ -20,55 +20,35 @@ import { UserDetail } from 'src/app/pages/user/models/user.model';
     styleUrls: ['./posts-list.component.scss']
 })
 export class PostsListComponent extends Unsubscriber implements OnInit {
-    public filtersLoading = true;
-
-    public filters: PostFilters = {
-        page: 1,
-        search: undefined,
-        userId: undefined,
-        academicLevel: {
-            name: PostFilterName.ACADEMIC_LEVEL,
-            options: [],
-            currentOption: undefined
-        },
-        subject: {
-            name: PostFilterName.SUBJECT,
-            options: [],
-            currentOption: undefined
-        },
-        axis: {
-            name: PostFilterName.AXIS,
-            options: [],
-            currentOption: undefined
-        },
-        ordering: {
-            name: PostFilterName.ORDERING,
-            options: [
-                {
-                    text: PostOrderingName[PostOrderingType.MOST_RECENT],
-                    value: PostOrderingType.MOST_RECENT
-                },
-                {
-                    text: PostOrderingName[PostOrderingType.LESS_RECENT],
-                    value: PostOrderingType.LESS_RECENT
-                },
-                {
-                    text: PostOrderingName[PostOrderingType.MOST_LIKED],
-                    value: PostOrderingType.MOST_LIKED
-                },
-                {
-                    text: PostOrderingName[PostOrderingType.MOST_VIEWED],
-                    value: PostOrderingType.MOST_VIEWED
-                }
-            ],
-            currentOption: undefined
-        }
-    };
+    public filters: PostFilters = { page: 1 };
     public filters$: BehaviorSubject<PostFilters> = new BehaviorSubject<PostFilters>(this.filters);
-
     public loading = true;
     public posts?: Pageable<PostDetail>;
     public authUser?: UserDetail;
+    public options: PostFiltersOptions = {
+        academicLevel: [],
+        subject: [],
+        axis: [],
+        ordering: [
+            {
+                text: PostOrderingName[PostOrderingType.MOST_RECENT],
+                value: PostOrderingType.MOST_RECENT
+            },
+            {
+                text: PostOrderingName[PostOrderingType.LESS_RECENT],
+                value: PostOrderingType.LESS_RECENT
+            },
+            {
+                text: PostOrderingName[PostOrderingType.MOST_LIKED],
+                value: PostOrderingType.MOST_LIKED
+            },
+            {
+                text: PostOrderingName[PostOrderingType.MOST_VIEWED],
+                value: PostOrderingType.MOST_VIEWED
+            }
+        ]
+    };
+    public loadingOptions = true;
 
     constructor(
         private postsService: PostsService,
@@ -91,35 +71,43 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
         ]).pipe(
             takeUntil(this.ngUnsubscribe$),
             catchError(() => {
-                this.filtersLoading = false;
                 this.commonSnackbarMsg.showErrorMessage();
                 return of();
             })
         ).subscribe(([academicLevels, subjectWithAxis]) => {
             // Set filters options and text of current values
             academicLevels.forEach(lvl => {
-                this.filters.academicLevel.options.push({ text: lvl.name, value: lvl.id });
-                if (lvl.id === this.filters.academicLevel.currentOption?.value) {
-                    this.filters.academicLevel.currentOption.text = lvl.name;
+                this.options.academicLevel.push({ text: lvl.name, value: lvl.id });
+                if (lvl.id === this.filters.academicLevel?.value) {
+                    this.filters.academicLevel.text = lvl.name;
                 }
             });
 
             subjectWithAxis.forEach(sub => {
-                this.filters.subject.options.push({ text: sub.name, value: sub.id });
-                if (sub.id === this.filters.subject.currentOption?.value) {
-                    this.filters.subject.currentOption.text = sub.name;
+                this.options.subject.push({ text: sub.name, value: sub.id });
+                if (sub.id === this.filters.subject?.value) {
+                    this.filters.subject.text = sub.name;
                 }
 
+                const options: FilterOption<number>[] = [];
                 sub.axis.forEach(ax => {
-                    this.filters.axis.options.push({ text: ax.name, value: ax.id });
-                    if (ax.id === this.filters.axis.currentOption?.value) {
-                        this.filters.axis.currentOption.text = ax.name;
+                    options.push({
+                        text: ax.name,
+                        value: ax.id
+                    });
+                    if (ax.id === this.filters.axis?.value) {
+                        this.filters.axis.text = ax.name;
                     }
                 });
+                this.options.axis.push({
+                    text: sub.name,
+                    options
+                });
             });
-            this.filtersLoading = false;
-            this.filters$.next(this.filters);
             console.log(this.filters);
+            this.loadingOptions = false;
+            this.options = { ...this.options }; // Force inputs update
+            this.filters = { ...this.filters }; // Force inputs update
         });
     }
 
@@ -159,16 +147,16 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
             this.filters.userId = Number(params.userId);
         }
         if (params.academicLevel) {
-            this.filters.academicLevel.currentOption = { text: 'Loading', value: Number(params.academicLevel) };
+            this.filters.academicLevel = { text: 'Loading', value: Number(params.academicLevel) };
         }
         if (params.subject) {
-            this.filters.subject.currentOption = { text: 'Loading', value: Number(params.subject) };
+            this.filters.subject = { text: 'Loading', value: Number(params.subject) };
         }
         if (params.axis) {
-            this.filters.axis.currentOption = { text: 'Loading', value: Number(params.axis) };
+            this.filters.axis = { text: 'Loading', value: Number(params.axis) };
         }
         if (params.ordering) {
-            this.filters.ordering.currentOption = { text: PostOrderingName[params.ordering], value: params.ordering };
+            this.filters.ordering = { text: PostOrderingName[params.ordering], value: params.ordering };
         }
     }
 
@@ -181,31 +169,13 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
 
     public changePage(page: number) {
         this.filters!.page = page;
-        this.filters$.next({ ...this.filters }); // Use spread operator to force update
+        this.filters = { ...this.filters }; // Force inputs update
         this.getPosts(MapPostFilters.toAPIParams(this.filters));
         this.setQueryParams(MapPostFilters.toURLQueryParams(this.filters));
     }
 
-    public changeFilter(filterChange: FilterChange<any>) {
-        console.log({ filterChange });
-        this.filters.page = 1;
-        const option = filterChange.option;
-        const remove = filterChange.remove;
-        switch (filterChange.name) {
-            case PostFilterName.ACADEMIC_LEVEL:
-                this.filters.academicLevel.currentOption = remove ? undefined : { text: option.text, value: Number(option.value) };
-                break;
-            case PostFilterName.SUBJECT:
-                this.filters.subject.currentOption = remove ? undefined : { text: option.text, value: Number(option.value) };
-                break;
-            case PostFilterName.AXIS:
-                this.filters.axis.currentOption = remove ? undefined : { text: option.text, value: Number(option.value) };
-                break;
-            case PostFilterName.ORDERING:
-                this.filters.ordering.currentOption = remove ? undefined : { text: option.text, value: String(option.value) };
-                break;
-        }
-        this.filters$.next({ ...this.filters }); // Use spread operator to force update
+    public changeFilters(filters: PostFilters) {
+        this.filters = filters;
         this.getPosts(MapPostFilters.toAPIParams(this.filters));
         this.setQueryParams(MapPostFilters.toURLQueryParams(this.filters));
     }
