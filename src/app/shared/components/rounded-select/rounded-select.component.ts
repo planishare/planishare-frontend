@@ -20,16 +20,11 @@ export class RoundedSelectComponent implements OnInit, OnChanges {
 
     public filteredOptions: (FilterOption<any> | FilterGroup<any>)[] = [];
     public searchCtrl: FormControl = new FormControl();
-    public hasGroups: boolean = false;
+    public hasGroups = false;
 
     constructor() {}
 
     public ngOnInit(): void {
-        this.control.valueChanges.pipe(startWith(this.control.value))
-            .subscribe((data: FilterOption<any>) => {
-                // this.filteredOptions = this.options;
-            });
-
         this.searchCtrl.valueChanges.subscribe((inputText: string) => {
             if (!!inputText) {
                 if (!this.hasGroups) {
@@ -45,9 +40,10 @@ export class RoundedSelectComponent implements OnInit, OnChanges {
 
     public ngOnChanges({ options }: SimpleChanges): void {
         if (options) {
-            console.log(this.options);
             this.filteredOptions = this.options;
-            this.hasGroups = this.options[0] && 'options' in this.options[0];
+            if (this.options.length) {
+                this.hasGroups = 'options' in this.options[0];
+            }
         }
     }
 

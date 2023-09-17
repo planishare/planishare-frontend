@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from
 import { FormControl, FormGroup } from '@angular/forms';
 import { FilterOption } from 'src/app/shared/models/filter.model';
 import { PostFilters, PostFiltersOptions } from '../../models/post-filter.model';
+import { cloneAsJson } from 'src/app/shared/utils/clone-object.util';
 
 @Component({
     selector: 'app-posts-filters[filters][options]',
@@ -39,7 +40,7 @@ export class PostsFiltersComponent implements OnChanges {
                 axis: this.filters?.axis,
                 ordering: this.filters?.ordering
             });
-            console.log(this.form.value);
+            this.options = cloneAsJson(this.options); // Force template inputs update
         }
     }
 

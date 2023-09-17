@@ -48,7 +48,6 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
             }
         ]
     };
-    public loadingOptions = true;
 
     constructor(
         private postsService: PostsService,
@@ -105,9 +104,8 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
                 });
             });
             console.log(this.filters);
-            this.loadingOptions = false;
-            this.options = { ...this.options }; // Force inputs update
-            this.filters = { ...this.filters }; // Force inputs update
+            this.options = { ...this.options }; // Force template inputs update
+            this.filters = { ...this.filters }; // Force template inputs update
         });
     }
 
@@ -169,7 +167,7 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
 
     public changePage(page: number) {
         this.filters!.page = page;
-        this.filters = { ...this.filters }; // Force inputs update
+        this.filters = { ...this.filters }; // Force template inputs update
         this.getPosts(MapPostFilters.toAPIParams(this.filters));
         this.setQueryParams(MapPostFilters.toURLQueryParams(this.filters));
     }
