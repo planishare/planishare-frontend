@@ -9,7 +9,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { MaterialModule } from 'src/app/material.module';
 
 import { PostsListComponent } from './pages/posts-list/posts-list.component';
-import { PostsGridComponent } from './components/posts-grid/posts-grid.component';
 import { PostCardComponent } from './components/post-card/post-card.component';
 import { IconsModule } from 'src/app/shared/icons/icons.module';
 import { PostsFiltersComponent } from './components/posts-filters/posts-filters.component';
@@ -24,7 +23,6 @@ import { PostFilterTagsComponent } from './components/post-filter-tags/post-filt
 @NgModule({
     declarations: [
         PostsListComponent,
-        PostsGridComponent,
         PostCardComponent,
         PostsFiltersComponent,
         PostFilterTagsComponent

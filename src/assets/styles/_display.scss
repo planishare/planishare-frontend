@@ -46,6 +46,10 @@
     flex-direction: row-reverse;
 }
 
+.flex-grow-1 {
+    flex-grow: 1;
+}
+
 // Gap
 .gap-3 {
     gap: 3rem;
@@ -57,4 +61,8 @@
 
 .gap-05 {
     gap: .5rem;
+}
+
+.gap-025 {
+    gap: .25rem;
 }

@@ -22,9 +22,8 @@
     border: none;
     border-radius: 100em;
     padding: .5em 1em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    place-items: center;
     gap: .5rem;
 
     transition-property: transform, opacity, background-color;

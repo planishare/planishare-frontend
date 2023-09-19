@@ -1,7 +1,7 @@
-<div *ngIf="!loading && post">
+<div *ngIf="!loading && post" class="card">
   <div class="flex-col">
-    <div class="flex">
-      <p>{{ post.user.fullName ?? post.user.email }} - {{ post.createdAt|timeAgo }}</p>
+    <div class="flex-between-center">
+      <p class="ft-label">{{ post.user.fullName ?? post.user.email }} - {{ post.createdAt|timeAgo }}</p>
 
       <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Opciones">
         <i-tabler name="dots-vertical"></i-tabler>
@@ -22,38 +22,38 @@
       </mat-menu>
     </div>
 
-    <h2><a [routerLink]="['/posts/view', post.id]">{{ post.title }}</a></h2>
-    <p><a [routerLink]="['/posts/view', post.id]">{{ post.shortDescription }}</a></p>
+    <h2><a class="a-style-none ft-title" [routerLink]="['/posts/view', post.id]">{{ post.title }}</a></h2>
+    <p><a class="a-style-none ft-body" [routerLink]="['/posts/view', post.id]">{{ post.shortDescription }}</a></p>
   </div>
 
-  <div class="flex">
-    <div>
-      <i-tabler name="file-description"></i-tabler>
+  <div class="flex-between-center m-t-1">
+    <div class="ft-body flex-center-center">
+      <i-tabler name="file-description" class="small-icon"></i-tabler>
       <span>{{ post.totalFiles }} Documentos</span>
     </div>
 
-    <div class="flex">
-      <span>{{ post.mainFile.ext }}</span>
+    <div class="flex ft-label">
+      <div class="rounded-border-tag--slime">{{ post.mainFile.ext }}</div>
       <ng-container *ngFor="let file of post.supportingMaterial">
-        <span>{{ file.ext }}</span>
+        <div class="rounded-border-tag--slime">{{ file.ext }}</div>
       </ng-container>
     </div>
   </div>
 
-  <div class="flex">
-    <span>{{ post.academicLevel.name }}</span>
-    <span>{{ post.axis.name }}</span>
-    <span>{{ post.axis.subject.name }}</span>
+  <div class="m-t-1 ft-label flex-center-center flex-wrap gap-05">
+    <span class="rounded-tag bg-primary txt-on-primary flex-grow-1">{{ post.academicLevel.name }}</span>
+    <span class="rounded-tag bg-primary txt-on-primary flex-grow-1">{{ post.axis.name }}</span>
+    <span class="rounded-tag bg-primary txt-on-primary flex-grow-1">{{ post.axis.subject.name }}</span>
   </div>
 
-  <div class="flex">
-    <div class="flex">
-      <div class="flex">
-        <i-tabler name="heart"></i-tabler>
+  <div class="m-t-1 ft-label flex-between-center">
+    <div class="flex-wrap gap-05">
+      <div class="flex-center-center gap-025">
+        <i-tabler name="heart" class="small-icon"></i-tabler>
         <span>{{ post.totalLikes }} Me gusta</span>
       </div>
-      <div class="flex">
-        <i-tabler name="eye"></i-tabler>
+      <div class="flex-center-center gap-025">
+        <i-tabler name="eye" class="small-icon"></i-tabler>
         <span>{{ post.totalViews }} Visualizaciones</span>
       </div>
     </div>
@@ -61,4 +61,5 @@
     <i-tabler [name]="post.alreadyLiked ? 'heart-filled' : 'heart'"></i-tabler>
   </div>
 </div>
+
 <p *ngIf="loading">Loading...</p>

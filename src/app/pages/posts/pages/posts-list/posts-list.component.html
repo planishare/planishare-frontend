@@ -1,4 +1,4 @@
-<main class="container flex-col gap-1 bg-background">
+<main class="container flex-col gap-05 bg-background p-y-1">
     <!-- <app-posts-filters
         [filters]="filters"
         [options]="options"
@@ -24,7 +24,7 @@
 
     <section>
         <p *ngIf="loading">Cargando...</p>
-        <ul class="ul-style-none" *ngIf="!loading">
+        <ul class="ul-style-none posts-grid gap-05" *ngIf="!loading">
             <li *ngFor="let post of posts?.results">
                 <app-post-card
                     [post]="post"
