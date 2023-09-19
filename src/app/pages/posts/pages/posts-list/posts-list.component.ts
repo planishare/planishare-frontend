@@ -145,13 +145,13 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
             this.filters.userId = Number(params.userId);
         }
         if (params.academicLevel) {
-            this.filters.academicLevel = { text: 'Loading', value: Number(params.academicLevel) };
+            this.filters.academicLevel = { text: 'Nivel académico', value: Number(params.academicLevel) };
         }
         if (params.subject) {
-            this.filters.subject = { text: 'Loading', value: Number(params.subject) };
+            this.filters.subject = { text: 'Asignatura', value: Number(params.subject) };
         }
         if (params.axis) {
-            this.filters.axis = { text: 'Loading', value: Number(params.axis) };
+            this.filters.axis = { text: 'Eje', value: Number(params.axis) };
         }
         if (params.ordering) {
             this.filters.ordering = { text: PostOrderingName[params.ordering], value: params.ordering };

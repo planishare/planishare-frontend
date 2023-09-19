@@ -1,6 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { startWith } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
 import { FilterGroup, FilterOption } from '../../models/filter.model';
 
@@ -11,7 +10,7 @@ import { FilterGroup, FilterOption } from '../../models/filter.model';
 })
 export class RoundedSelectComponent implements OnInit, OnChanges {
     @Input() public label = '';
-    @Input() public control!: FormControl;
+    @Input() public control!: FormControl<FilterOption<any>|undefined>;
     @Input() public options: (FilterOption<any> | FilterGroup<any>)[] = [];
     @Input() public resetOption = false;
     @Input() public search = false;
@@ -40,8 +39,8 @@ export class RoundedSelectComponent implements OnInit, OnChanges {
 
     public ngOnChanges({ options }: SimpleChanges): void {
         if (options) {
-            this.filteredOptions = this.options;
             if (this.options.length) {
+                this.filteredOptions = this.options;
                 this.hasGroups = 'options' in this.options[0];
             }
         }
@@ -81,6 +80,10 @@ export class RoundedSelectComponent implements OnInit, OnChanges {
 
     public toggleSelect(select: MatSelect): void {
         select.toggle();
+    }
+
+    public compareValues(option: FilterOption<any>, value: FilterOption<any>|undefined): boolean {
+        return option.value === value?.value;
     }
 
     // Utils
