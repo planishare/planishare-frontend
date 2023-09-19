@@ -3,21 +3,6 @@
     color: inherit;
     background-color: inherit;
     text-decoration: none;
-    transition-property: transform, opacity, background-color;
-    transition-duration: .25s, .25s, .25s;
-}
-
-.rounded-button:hover {
-    transform: translateY(-2px);
-    opacity: .9;
-}
-
-.rounded-button:active {
-    transform: translateY(0);
-    opacity: 1;
-}
-
-.rounded-button {
     border: none;
     border-radius: 100em;
     padding: .5em 1em;
@@ -25,4 +10,35 @@
     align-items: center;
     justify-content: center;
     gap: .5rem;
+
+    transition-property: transform, opacity, background-color;
+    transition-duration: .25s, .25s, .25s;
+}
+
+.circle-button {
+    color: inherit;
+    background-color: inherit;
+    text-decoration: none;
+    border: none;
+    border-radius: 100em;
+    padding: .5em 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+
+    transition-property: transform, opacity, background-color;
+    transition-duration: .25s, .25s, .25s;
+}
+
+.rounded-button:hover,
+.circle-button:hover {
+    transform: translateY(-.5px);
+    opacity: .9;
+}
+
+.rounded-button:active,
+.circle-button:active {
+    transform: translateY(2px);
+    opacity: 1;
 }

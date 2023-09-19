@@ -13,6 +13,7 @@ import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackba
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 import { FilterOption } from 'src/app/shared/models/filter.model';
 import { UserDetail } from 'src/app/pages/user/models/user.model';
+import { WindowResizeService } from 'src/app/shared/services/window-resize.service';
 
 @Component({
     selector: 'app-posts-list',
@@ -50,12 +51,16 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
         ]
     };
 
+    // public desktop$ = this.windowResize.desktop$.pipe(takeUntil(this.ngUnsubscribe$));
+    public mobile$ = this.windowResize.mobile$.pipe(takeUntil(this.ngUnsubscribe$));
+
     constructor(
         private postsService: PostsService,
         private authService: AuthService,
         private activatedRoute: ActivatedRoute,
         private commonSnackbarMsg: CommonSnackbarMsgService,
-        private router: Router
+        private router: Router,
+        private windowResize: WindowResizeService
     ) {
         super();
         this.authUser = this.authService.getUserDetail() ?? undefined;

@@ -3,6 +3,7 @@
 .flex-between-center,
 .flex-start-center,
 .flex-end-center,
+.flex-center-end,
 .flex-wrap,
 .flex-col {
     display: flex;
@@ -24,14 +25,25 @@
 
 .flex-start-center {
     justify-content: start;
+    align-items: center;
 }
 
 .flex-end-center {
     justify-content: end;
+    align-items: center;
+}
+
+.flex-center-end {
+    justify-content: center;
+    align-items: flex-end;
 }
 
 .flex-wrap {
     flex-wrap: wrap;
+}
+
+.flex-row-reverse {
+    flex-direction: row-reverse;
 }
 
 // Gap

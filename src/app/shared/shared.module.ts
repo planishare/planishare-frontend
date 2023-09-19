@@ -18,6 +18,7 @@ import { DragAndDropFileDirective } from './directives/drag-and-drop-file.direct
 import { DebounceClickDirective } from './directives/debounce-click.directive';
 import { LoadingButtonDirective } from './directives/loading-button.directive';
 import { PaginatedFilterStatusComponent } from './components/paginated-filter-status/paginated-filter-status.component';
+import { IconsModule } from './icons/icons.module';
 
 @NgModule({
     declarations: [
@@ -42,7 +43,8 @@ import { PaginatedFilterStatusComponent } from './components/paginated-filter-st
         MaterialModule,
         NgxMatSelectSearchModule,
         ReactiveFormsModule,
-        RouterModule
+        RouterModule,
+        IconsModule
     ],
     exports: [
         // Components

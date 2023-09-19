@@ -1,26 +1,26 @@
 <div>
-    <span *ngIf="!loading && pageResults?.count">
+    <span class="ft-label" *ngIf="!loading && pageResults?.count">
         {{ pageResults?.count + (pageResults?.count === 1 ? ' resultado' : ' resultados') }}
     </span>
-    <span *ngIf="!loading && !pageResults?.count">
+    <span class="ft-label" *ngIf="!loading && !pageResults?.count">
         Sin resultados
     </span>
+</div>
 
-    <div>
-        <button [disabled]="!pageResults?.previous || loading" (click)="previousPage()">
-            Pág. anterior
+<div class="flex-center-center gap-05">
+    <button class="ft-label circle-button bg-primary txt-on-primary" [disabled]="!pageResults?.previous || loading" (click)="previousPage()">
+        <i-tabler class="small-icon" name="chevron-left"></i-tabler>
+    </button>
+    <button class="ft-label rounded-button bg-primary txt-on-primary" [matMenuTriggerFor]="pagesMenu" aria-label="Seleccionar Pág."
+        matRipple [disabled]="loading || !pageResults?.count || pageResults?.count === 1">
+        <span>{{ filters?.page ?? 1 }}</span>
+    </button>
+    <mat-menu #pagesMenu>
+        <button mat-menu-item *ngFor="let page of (pageResults?.maxPage ?? 1)|fillArray" (click)="changePageByNumber(page)">
+            {{ page }}
         </button>
-        <button [matMenuTriggerFor]="pagesMenu" aria-label="Seleccionar Pág."
-            matRipple [disabled]="loading || !pageResults?.count || pageResults?.count === 1">
-            <span>{{ filters?.page ?? 1 }}</span>
-        </button>
-        <mat-menu #pagesMenu>
-            <button mat-menu-item *ngFor="let page of (pageResults?.maxPage ?? 1)|fillArray" (click)="changePageByNumber(page)">
-                {{ page }}
-            </button>
-        </mat-menu>
-        <button [disabled]="!pageResults?.next || loading" (click)="nextPage()">
-            Pág. siguiente
-        </button>
-    </div>
+    </mat-menu>
+    <button matRipple class="ft-label circle-button bg-primary txt-on-primary" [disabled]="!pageResults?.next || loading" (click)="nextPage()">
+        <i-tabler class="small-icon" name="chevron-right"></i-tabler>
+    </button>
 </div>

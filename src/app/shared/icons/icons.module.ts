@@ -9,7 +9,9 @@ import {
     IconTrash,
     IconFileDescription,
     IconEye,
-    IconX
+    IconX,
+    IconChevronRight,
+    IconChevronLeft
 } from 'angular-tabler-icons/icons';
 
 const icons = {
@@ -21,7 +23,9 @@ const icons = {
     IconTrash,
     IconFileDescription,
     IconEye,
-    IconX
+    IconX,
+    IconChevronRight,
+    IconChevronLeft
 };
 
 @NgModule({
