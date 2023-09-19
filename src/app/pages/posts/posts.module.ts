@@ -13,6 +13,7 @@ import { PostsGridComponent } from './components/posts-grid/posts-grid.component
 import { PostCardComponent } from './components/post-card/post-card.component';
 import { IconsModule } from 'src/app/shared/icons/icons.module';
 import { PostsFiltersComponent } from './components/posts-filters/posts-filters.component';
+import { PostFilterTagsComponent } from './components/post-filter-tags/post-filter-tags.component';
 // import { PostDetailComponent } from './pages/post-detail/post-detail.component';
 // import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 // import { PostFormComponent } from './pages/post-form/post-form.component';
@@ -25,7 +26,8 @@ import { PostsFiltersComponent } from './components/posts-filters/posts-filters.
         PostsListComponent,
         PostsGridComponent,
         PostCardComponent,
-        PostsFiltersComponent
+        PostsFiltersComponent,
+        PostFilterTagsComponent
         // PostDetailComponent,
         // DeleteDialogComponent,
         // PostFormComponent,

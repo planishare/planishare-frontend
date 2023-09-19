@@ -1,0 +1,20 @@
+<button *ngIf="filters?.search" (click)="removeFilter('search')">
+    <span>{{ filters?.search }}</span>
+    <span>x</span>
+</button>
+<button *ngIf="filters?.academicLevel" (click)="removeFilter('academicLevel')">
+    <span>{{ filters?.academicLevel?.text }}</span>
+    <span>x</span>
+</button>
+<button *ngIf="filters?.subject" (click)="removeFilter('subject')">
+    <span>{{ filters?.subject?.text }}</span>
+    <span>x</span>
+</button>
+<button *ngIf="filters?.axis" (click)="removeFilter('axis')">
+    <span>{{ filters?.axis?.text }}</span>
+    <span>x</span>
+</button>
+<button *ngIf="filters?.ordering" (click)="removeFilter('ordering')">
+    <span>{{ filters?.ordering?.text }}</span>
+    <span>x</span>
+</button>

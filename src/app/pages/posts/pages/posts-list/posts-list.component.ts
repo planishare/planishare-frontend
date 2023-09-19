@@ -23,6 +23,7 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
     public filters: PostFilters = { page: 1 };
     public filters$: BehaviorSubject<PostFilters> = new BehaviorSubject<PostFilters>(this.filters);
     public loading = true;
+    public optionsLoading = true;
     public posts?: Pageable<PostDetail>;
     public authUser?: UserDetail;
     public options: PostFiltersOptions = {
@@ -105,6 +106,7 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
             });
             console.log(this.filters);
             this.options = { ...this.options }; // Force template inputs update
+            this.optionsLoading = false;
             this.filters = { ...this.filters }; // Force template inputs update
         });
     }

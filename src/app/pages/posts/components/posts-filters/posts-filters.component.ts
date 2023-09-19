@@ -31,8 +31,7 @@ export class PostsFiltersComponent implements OnChanges {
     constructor() {}
 
     public ngOnChanges({ filters, options }: SimpleChanges): void {
-        // console.log({ filters: filters?.currentValue, options: options?.currentValue });
-        if (options) {
+        if (options || filters) {
             this.form.patchValue({
                 search: this.filters?.search,
                 academicLevel: this.filters?.academicLevel,
@@ -40,6 +39,8 @@ export class PostsFiltersComponent implements OnChanges {
                 axis: this.filters?.axis,
                 ordering: this.filters?.ordering
             });
+        }
+        if (options) {
             this.options = cloneAsJson(this.options); // Force template inputs update
         }
     }
