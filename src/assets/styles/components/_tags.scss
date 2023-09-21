@@ -1,8 +1,6 @@
-.rounded-tag {
-    color: inherit;
-    background-color: inherit;
+.rounded-tag,
+.rounded-tag--slime {
     text-decoration: none;
-    border: none;
     border-radius: 100em;
     padding: .5em 1em;
     display: flex;
@@ -11,10 +9,12 @@
     gap: .5rem;
 }
 
+.rounded-tag--slime {
+    padding: .1em .5em;
+}
+
 .rounded-border-tag,
 .rounded-border-tag--slime {
-    color: inherit;
-    background-color: inherit;
     text-decoration: none;
     border: 2px solid currentColor;
     border-radius: 100em;

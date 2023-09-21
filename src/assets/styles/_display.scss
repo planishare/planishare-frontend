@@ -1,4 +1,5 @@
 .flex,
+.flex-between,
 .flex-center-center,
 .flex-between-center,
 .flex-start-center,
@@ -21,6 +22,10 @@
 .flex-between-center {
     justify-content: space-between;
     align-items: center;
+}
+
+.flex-between {
+    justify-content: space-between;
 }
 
 .flex-start-center {

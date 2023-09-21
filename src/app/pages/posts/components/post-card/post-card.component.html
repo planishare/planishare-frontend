@@ -1,8 +1,8 @@
-<div *ngIf="!loading && post" class="card">
-  <div class="flex-col">
+<div *ngIf="!loading && post" class="card flex-col flex-between gap-05 w-100">
+  <div class="flex-col gap-05">
     <div class="flex-between-center">
       <p class="ft-label">{{ post.user.fullName ?? post.user.email }} - {{ post.createdAt|timeAgo }}</p>
-
+  
       <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Opciones">
         <i-tabler name="dots-vertical"></i-tabler>
       </button>
@@ -21,18 +21,18 @@
         </button>
       </mat-menu>
     </div>
-
+  
     <h2><a class="a-style-none ft-title" [routerLink]="['/posts/view', post.id]">{{ post.title }}</a></h2>
     <p><a class="a-style-none ft-body" [routerLink]="['/posts/view', post.id]">{{ post.shortDescription }}</a></p>
   </div>
 
-  <div class="flex-between-center m-t-1">
-    <div class="ft-body flex-center-center">
+  <div class="flex-between-center">
+    <div class="ft-body flex-center-center gap-05">
       <i-tabler name="file-description" class="small-icon"></i-tabler>
       <span>{{ post.totalFiles }} Documentos</span>
     </div>
 
-    <div class="flex ft-label">
+    <div class="flex ft-label gap-05">
       <div class="rounded-border-tag--slime">{{ post.mainFile.ext }}</div>
       <ng-container *ngFor="let file of post.supportingMaterial">
         <div class="rounded-border-tag--slime">{{ file.ext }}</div>
@@ -40,13 +40,13 @@
     </div>
   </div>
 
-  <div class="m-t-1 ft-label flex-center-center flex-wrap gap-05">
-    <span class="rounded-tag bg-primary txt-on-primary flex-grow-1">{{ post.academicLevel.name }}</span>
-    <span class="rounded-tag bg-primary txt-on-primary flex-grow-1">{{ post.axis.name }}</span>
-    <span class="rounded-tag bg-primary txt-on-primary flex-grow-1">{{ post.axis.subject.name }}</span>
+  <div class="ft-label flex-center-center flex-wrap gap-05">
+    <span class="rounded-tag--slime bg-primary txt-on-primary flex-grow-1">{{ post.academicLevel.name }}</span>
+    <span class="rounded-tag--slime bg-primary txt-on-primary flex-grow-1">{{ post.axis.name }}</span>
+    <span class="rounded-tag--slime bg-primary txt-on-primary flex-grow-1">{{ post.axis.subject.name }}</span>
   </div>
 
-  <div class="m-t-1 ft-label flex-between-center">
+  <div class="ft-label flex-between-center f-weight-500">
     <div class="flex-wrap gap-05">
       <div class="flex-center-center gap-025">
         <i-tabler name="heart" class="small-icon"></i-tabler>
@@ -58,7 +58,9 @@
       </div>
     </div>
 
-    <i-tabler [name]="post.alreadyLiked ? 'heart-filled' : 'heart'"></i-tabler>
+    <button mat-icon-button aria-label="Dar me gusta">
+      <i-tabler [name]="post.alreadyLiked ? 'heart-filled' : 'heart'"></i-tabler>
+    </button>
   </div>
 </div>
 

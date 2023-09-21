@@ -1,3 +1,18 @@
 .posts-grid {
-    // TODO
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 64rem) {
+    .posts-grid {
+        grid-template-columns: 1fr 1fr;
+
+        li {
+            display: flex;
+        }
+
+        app-post-card {
+            width: 100%;
+        }
+    }
 }
