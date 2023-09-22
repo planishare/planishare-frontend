@@ -1,30 +1,29 @@
-<main class="container flex-col gap-05 bg-background p-y-1">
-    <!-- <app-posts-filters
+<main class="container flex gap-05 bg-background p-y-1">
+    <app-posts-filters
         [filters]="filters"
         [options]="options"
         (filtersChange)="changeFilters($event)"
-    ></app-posts-filters> -->
-    <div
-        class="gap-1 flex-wrap"
-        [ngClass]="{
-            'flex-between-center flex-row-reverse': (mobile$|async)===false,
-            'flex-col flex-center-end': mobile$|async
-        }">
-        <app-paginated-filter-status
-            [pageResults]="posts"
-            [filters]="filters"
-            [loading]="loading"
-            (changePage)="changePage($event)">
-        </app-paginated-filter-status>
-        <app-post-filter-tags
-            [filters]="optionsLoading ? undefined : filters"
-            (filtersChange)="changeFilters($event)"
-        ></app-post-filter-tags>
-    </div>
-
+    ></app-posts-filters>
+    
     <section>
-        <p *ngIf="loading">Cargando...</p>
-        <ul class="ul-style-none posts-grid gap-05" *ngIf="!loading">
+        <div
+            class="gap-1 flex-wrap"
+            [ngClass]="{
+                'flex-between-center flex-row-reverse': (mobile$|async)===false,
+                'flex-col flex-center-end': mobile$|async
+            }">
+            <app-paginated-filter-status
+                [pageResults]="posts"
+                [filters]="filters"
+                [loading]="loading"
+                (changePage)="changePage($event)">
+            </app-paginated-filter-status>
+            <app-post-filter-tags
+                [filters]="optionsLoading ? undefined : filters"
+                (filtersChange)="changeFilters($event)"
+            ></app-post-filter-tags>
+        </div>
+        <ul class="ul-style-none posts-grid gap-05 m-t-1">
             <li *ngFor="let post of posts?.results">
                 <app-post-card
                     [post]="post"

@@ -73,3 +73,22 @@ select {
     scroll-behavior: auto !important;
   }
 }
+
+// Specifics
+.a-style-none {
+  text-decoration: none;
+  color: inherit;
+}
+
+.button-style-none {
+  background-color: unset;
+  border: none;
+  padding: none;
+  margin: none;
+}
+
+.ul-style-none {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}

@@ -1,3 +1,22 @@
 :host {
     background-color: var(--clr-primary);
+    padding: var(--container-space);
+    border-radius: 20px 20px 0 0;
+}
+
+.filter-selects {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 48rem) {
+    .filter-selects {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (min-width: 64rem) {
+    .filter-selects {
+        grid-template-columns: 1fr;
+    }
 }

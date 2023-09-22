@@ -1,47 +1,57 @@
-<div>
-  <span>Filtros y búsqueda</span>
-</div>
-<div>
-  <input type="search" [formControl]="searchCtrl" (keyup.enter)="applyFilters()" placeholder="Buscar">
-</div>
+<div class="flex-col gap-1">
+  <p class="ft-body txt-on-primary text-center f-weight-500">Filtros y búsqueda</p>
+  <input type="search"
+    class="w-100 rounded-search"
+    [formControl]="searchCtrl"
+    (keyup.enter)="applyFilters()"
+    placeholder="Buscar">
 
-<div>
-  <app-rounded-select
-    label="Nivel académico"
-    [control]="academicLevelCtrl"
-    [options]="options?.academicLevel ?? []"
-    [resetOption]="true"
-    [search]="true"
-    [loading]="!options?.academicLevel?.length">
-  </app-rounded-select>
-  
-  <app-rounded-select
-    label="Asignatura"
-    [control]="subjectCtrl"
-    [options]="options?.subject ?? []"
-    [resetOption]="true"
-    [search]="true"
-    [loading]="!options?.subject?.length">
-  </app-rounded-select>
-  
-  <app-rounded-select
-    label="Axis"
-    [control]="axisCtrl"
-    [options]="options?.axis ?? []"
-    [resetOption]="true"
-    [search]="true"
-    [loading]="!options?.axis?.length">
-  </app-rounded-select>
+  <div class="gap-05 filter-selects">
+    <app-rounded-select
+      label="Nivel académico"
+      [control]="academicLevelCtrl"
+      [options]="options?.academicLevel ?? []"
+      [resetOption]="true"
+      [search]="true"
+      [loading]="!options?.academicLevel?.length">
+    </app-rounded-select>
+    
+    <app-rounded-select
+      label="Asignatura"
+      [control]="subjectCtrl"
+      [options]="options?.subject ?? []"
+      [resetOption]="true"
+      [search]="true"
+      [loading]="!options?.subject?.length">
+    </app-rounded-select>
+    
+    <app-rounded-select
+      label="Axis"
+      [control]="axisCtrl"
+      [options]="options?.axis ?? []"
+      [resetOption]="true"
+      [search]="true"
+      [loading]="!options?.axis?.length">
+    </app-rounded-select>
 
-  <app-rounded-select
-    label="Orederar por"
-    [control]="orderingCtrl"
-    [options]="options?.ordering ?? []"
-    [resetOption]="true"
-    [search]="true"
-    [loading]="!options?.ordering?.length">
-  </app-rounded-select>
+    <app-rounded-select
+      label="Orederar por"
+      [control]="orderingCtrl"
+      [options]="options?.ordering ?? []"
+      [resetOption]="true"
+      [search]="true"
+      [loading]="!options?.ordering?.length">
+    </app-rounded-select>
+  </div>
 
-  <button (click)="applyFilters()">Aplicar</button>
-  <button (click)="removeFilters()">Remover filtros</button>
+  <div class="flex-col gap-05">
+    <button class="w-100 rounded-button bg-on-primary txt-primary ft-body" (click)="applyFilters()">
+      <span>Aplicar filtros</span>
+      <i-tabler name="filter-check" class="small-icon"></i-tabler>
+    </button>
+    <button class="w-100 rounded-button bg-red txt-on-red ft-body" (click)="removeFilters()">
+      <span>Remover filtros</span>
+      <i-tabler name="trash" class="small-icon"></i-tabler>
+    </button>
+  </div>
 </div>

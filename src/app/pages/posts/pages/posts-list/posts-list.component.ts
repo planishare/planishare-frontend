@@ -51,7 +51,7 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
         ]
     };
 
-    // public desktop$ = this.windowResize.desktop$.pipe(takeUntil(this.ngUnsubscribe$));
+    public desktop$ = this.windowResize.desktop$.pipe(takeUntil(this.ngUnsubscribe$));
     public mobile$ = this.windowResize.mobile$.pipe(takeUntil(this.ngUnsubscribe$));
 
     constructor(
