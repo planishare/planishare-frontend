@@ -16,6 +16,10 @@
 }
 
 @media (min-width: 64rem) {
+    :host {
+        border-radius: 20px;
+    }
+
     .filter-selects {
         grid-template-columns: 1fr;
     }

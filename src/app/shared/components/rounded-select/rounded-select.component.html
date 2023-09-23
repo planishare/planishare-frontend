@@ -1,6 +1,6 @@
-<button (click)="toggleSelect(matSelect)" aria-hidden="true" matRipple>
+<button class="rounded-button" [ngClass]="cssClass" (click)="toggleSelect(matSelect)" aria-hidden="true" matRipple>
   <span>{{ control.value?.text ?? label }}</span>
-  <!-- <mat-icon>expand_more</mat-icon> TODO -->
+  <i-tabler name="chevron-down" class="small-icon"></i-tabler>
 </button>
 
 <mat-form-field class="hidden-select">

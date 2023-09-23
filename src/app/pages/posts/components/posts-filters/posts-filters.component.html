@@ -13,7 +13,9 @@
       [options]="options?.academicLevel ?? []"
       [resetOption]="true"
       [search]="true"
-      [loading]="!options?.academicLevel?.length">
+      searchPlaceholder="Buscar nivel académico"
+      [loading]="!options?.academicLevel?.length"
+      [cssClass]="['bg-academic-level txt-on-academic-level']">
     </app-rounded-select>
     
     <app-rounded-select
@@ -22,7 +24,9 @@
       [options]="options?.subject ?? []"
       [resetOption]="true"
       [search]="true"
-      [loading]="!options?.subject?.length">
+      searchPlaceholder="Buscar asignatura"
+      [loading]="!options?.subject?.length"
+      [cssClass]="['bg-subject txt-on-subject']">
     </app-rounded-select>
     
     <app-rounded-select
@@ -31,7 +35,9 @@
       [options]="options?.axis ?? []"
       [resetOption]="true"
       [search]="true"
-      [loading]="!options?.axis?.length">
+      searchPlaceholder="Buscar eje"
+      [loading]="!options?.axis?.length"
+      [cssClass]="['bg-axis txt-on-axis']">
     </app-rounded-select>
 
     <app-rounded-select
@@ -40,7 +46,8 @@
       [options]="options?.ordering ?? []"
       [resetOption]="true"
       [search]="true"
-      [loading]="!options?.ordering?.length">
+      [loading]="!options?.ordering?.length"
+      [cssClass]="['bg-background txt-on-background']">
     </app-rounded-select>
   </div>
 

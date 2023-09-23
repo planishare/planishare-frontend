@@ -16,6 +16,7 @@ export class RoundedSelectComponent implements OnInit, OnChanges {
     @Input() public search = false;
     @Input() public searchPlaceholder = 'Buscar';
     @Input() public loading: boolean = false;
+    @Input() public cssClass: string[] = [];
 
     public filteredOptions: (FilterOption<any> | FilterGroup<any>)[] = [];
     public searchCtrl: FormControl = new FormControl();
