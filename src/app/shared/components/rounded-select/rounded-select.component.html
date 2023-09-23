@@ -1,5 +1,5 @@
 <button class="rounded-button" [ngClass]="cssClass" (click)="toggleSelect(matSelect)" aria-hidden="true" matRipple>
-  <span>{{ control.value?.text ?? label }}</span>
+  <span class="text-ellipsis">{{ control.value?.text ?? label }}</span>
   <i-tabler name="chevron-down" class="small-icon"></i-tabler>
 </button>
 

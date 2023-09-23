@@ -36,3 +36,10 @@
     overflow-x: hidden;
     text-overflow: ellipsis;
 }
+
+.fixed-b-r {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 11;
+}

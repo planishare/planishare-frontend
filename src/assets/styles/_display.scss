@@ -6,7 +6,8 @@
 .flex-end-center,
 .flex-center-end,
 .flex-wrap,
-.flex-col {
+.flex-col,
+.lg-flex-center-center {
     display: flex;
 }
 
@@ -53,6 +54,13 @@
 
 .flex-grow-1 {
     flex-grow: 1;
+}
+
+@media (min-width: 64rem) {
+    .lg-flex-center-center {
+        align-items: center;
+        justify-content: center;
+    }
 }
 
 // Gap

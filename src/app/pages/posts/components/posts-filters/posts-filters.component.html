@@ -1,5 +1,15 @@
+
 <div class="flex-col gap-1">
-  <p class="ft-body txt-on-primary text-center f-weight-500">Filtros y búsqueda</p>
+  <div class="flex-between-center lg-flex-center-center">
+    <p class="ft-body txt-on-primary text-center f-weight-500">Filtros y búsqueda</p>
+    <button
+      mat-icon-button
+      aria-label="Cerrar filtros"
+      *ngIf="(desktop$|async)===false"
+      (click)="closeFilters()">
+      <i-tabler name="x" class="txt-on-primary"></i-tabler>
+    </button>
+  </div>
   <input type="search"
     class="w-100 rounded-search"
     [formControl]="searchCtrl"
@@ -62,3 +72,12 @@
     </button>
   </div>
 </div>
+
+<button
+  class="rounded-button bg-primary txt-on-primary fixed-b-r"
+  (click)="openFilters()"
+  *ngIf="!open && (desktop$|async)===false"
+  @inOutY>
+    <span>Filtrar</span>
+    <i-tabler name="filter"></i-tabler>
+</button>

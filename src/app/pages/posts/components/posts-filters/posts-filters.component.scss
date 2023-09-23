@@ -1,7 +1,21 @@
 :host {
     background-color: var(--clr-primary);
     padding: var(--container-space);
+    padding-top: calc(var(--container-space)/3);
     border-radius: 20px 20px 0 0;
+
+    position: fixed;
+    bottom: -200%;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    height: min-content;
+
+    transition: bottom linear .2s;
+}
+
+:host.open {
+    bottom: 0;
 }
 
 .filter-selects {
@@ -18,6 +32,11 @@
 @media (min-width: 64rem) {
     :host {
         border-radius: 20px;
+
+        position: sticky;
+        top: calc(72px + 1rem);
+        z-index: 1;
+        max-width: 350px;
     }
 
     .filter-selects {

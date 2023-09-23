@@ -3,15 +3,6 @@
     grid-template-columns: 1fr;
 }
 
-app-posts-filters {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 10;
-    width: 100%;
-    height: min-content;
-}
-
 @media (min-width: 64rem) {
     .posts-grid {
         grid-template-columns: 1fr 1fr;
@@ -23,11 +14,5 @@ app-posts-filters {
         app-post-card {
             width: 100%;
         }
-    }
-
-    app-posts-filters {
-        position: static;
-        z-index: 1;
-        max-width: 350px;
     }
 }

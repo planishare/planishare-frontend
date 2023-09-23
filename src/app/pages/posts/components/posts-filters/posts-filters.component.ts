@@ -1,15 +1,20 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ElementRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FilterOption } from 'src/app/shared/models/filter.model';
 import { PostFilters, PostFiltersOptions } from '../../models/post-filter.model';
 import { cloneAsJson } from 'src/app/shared/utils/clone-object.util';
+import { WindowResizeService } from 'src/app/shared/services/window-resize.service';
+import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
+import { takeUntil } from 'rxjs';
+import { inOutYAnimation } from 'src/app/shared/animations/animations';
 
 @Component({
     selector: 'app-posts-filters[filters][options]',
     templateUrl: './posts-filters.component.html',
-    styleUrls: ['./posts-filters.component.scss']
+    styleUrls: ['./posts-filters.component.scss'],
+    animations: [inOutYAnimation]
 })
-export class PostsFiltersComponent implements OnChanges {
+export class PostsFiltersComponent extends Unsubscriber implements OnChanges {
     @Input() public filters?: PostFilters;
     @Input() public options?: PostFiltersOptions;
     @Output() public filtersChange = new EventEmitter<PostFilters>();
@@ -28,9 +33,18 @@ export class PostsFiltersComponent implements OnChanges {
     public axisCtrl = this.form.controls.axis as FormControl<FilterOption<number>|undefined>;
     public orderingCtrl = this.form.controls.ordering as FormControl<FilterOption<string>|undefined>;
 
-    constructor() {}
+    public desktop$ = this.windowResize.desktop$.pipe(takeUntil(this.ngUnsubscribe$));
 
-    public ngOnChanges({ filters, options }: SimpleChanges): void {
+    public open = false;
+
+    constructor(
+        private windowResize: WindowResizeService,
+        private el: ElementRef
+    ) {
+        super();
+    }
+
+    public ngOnChanges({ filters, options, open }: SimpleChanges): void {
         if (options || filters) {
             this.form.patchValue({
                 search: this.filters?.search,
@@ -57,6 +71,7 @@ export class PostsFiltersComponent implements OnChanges {
             };
             console.log(filters);
             this.filtersChange.emit(filters);
+            this.closeFilters();
         }
     }
 
@@ -65,5 +80,16 @@ export class PostsFiltersComponent implements OnChanges {
         this.filtersChange.emit({
             page: 1
         });
+        this.closeFilters();
+    }
+
+    public closeFilters(): void {
+        this.el.nativeElement.classList.remove('open');
+        this.open = false;
+    }
+
+    public openFilters(): void {
+        this.el.nativeElement.classList.add('open');
+        this.open = true;
     }
 }

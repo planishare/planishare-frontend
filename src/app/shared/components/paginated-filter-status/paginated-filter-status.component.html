@@ -8,7 +8,7 @@
 </div>
 
 <div class="flex-center-center gap-05">
-    <button class="ft-label f-weight-500 circle-button bg-primary txt-on-primary" [disabled]="!pageResults?.previous || loading" (click)="previousPage()">
+    <button matRipple class="ft-label f-weight-500 circle-button bg-primary txt-on-primary" [disabled]="!pageResults?.previous || loading" (click)="previousPage()">
         <i-tabler class="small-icon" name="chevron-left"></i-tabler>
     </button>
     <button class="ft-label f-weight-500 rounded-button bg-primary txt-on-primary" [matMenuTriggerFor]="pagesMenu" aria-label="Seleccionar Pág."
