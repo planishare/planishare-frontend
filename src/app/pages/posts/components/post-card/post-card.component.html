@@ -3,7 +3,7 @@
     <div class="flex-between-center">
       <p class="ft-label">{{ post.user.fullName ?? post.user.email }} - {{ post.createdAt|timeAgo }}</p>
   
-      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Opciones">
+      <button class="small-icon-button" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Opciones">
         <i-tabler name="dots-vertical"></i-tabler>
       </button>
       <mat-menu #menu="matMenu">

@@ -69,3 +69,15 @@ i-tabler.small-icon {
     height: 16px;
     min-width: 16px;
 }
+
+.mat-icon-button.small-icon-button {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+
+    i-tabler {
+        width: 16px;
+        height: 16px;
+        min-width: 16px;
+    }
+}

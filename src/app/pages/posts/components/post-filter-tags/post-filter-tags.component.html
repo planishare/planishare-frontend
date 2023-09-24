@@ -1,20 +1,30 @@
-<button *ngIf="filters?.search" (click)="removeFilter('search')">
+<button class="ft-label rounded-tag--slime gap-0 shadow-md bg-primary txt-on-primary" *ngIf="filters?.search" @inOutLeft>
     <span>{{ filters?.search }}</span>
-    <span>x</span>
+    <button mat-icon-button class="small-icon-button" (click)="removeFilter('search')">
+        <i-tabler name="x"></i-tabler>
+    </button>
 </button>
-<button *ngIf="filters?.academicLevel" (click)="removeFilter('academicLevel')">
+<button class="ft-label rounded-tag--slime gap-0 shadow-md bg-academic-level txt-on-academic-level" *ngIf="filters?.academicLevel" @inOutLeft>
     <span>{{ filters?.academicLevel?.text }}</span>
-    <span>x</span>
+    <button mat-icon-button class="small-icon-button" (click)="removeFilter('academicLevel')">
+        <i-tabler name="x"></i-tabler>
+    </button>
 </button>
-<button *ngIf="filters?.subject" (click)="removeFilter('subject')">
+<button class="ft-label rounded-tag--slime gap-0 shadow-md bg-subject txt-on-subject" *ngIf="filters?.subject" @inOutLeft>
     <span>{{ filters?.subject?.text }}</span>
-    <span>x</span>
+    <button mat-icon-button class="small-icon-button" (click)="removeFilter('subject')">
+        <i-tabler name="x"></i-tabler>
+    </button>
 </button>
-<button *ngIf="filters?.axis" (click)="removeFilter('axis')">
+<button class="ft-label rounded-tag--slime gap-0 shadow-md bg-axis txt-on-axis" *ngIf="filters?.axis" @inOutLeft>
     <span>{{ filters?.axis?.text }}</span>
-    <span>x</span>
+    <button mat-icon-button class="small-icon-button" (click)="removeFilter('axis')">
+        <i-tabler name="x"></i-tabler>
+    </button>
 </button>
-<button *ngIf="filters?.ordering" (click)="removeFilter('ordering')">
+<button class="ft-label rounded-tag--slime gap-0 shadow-md bg-primary txt-on-primary" *ngIf="filters?.ordering" @inOutLeft>
     <span>{{ filters?.ordering?.text }}</span>
-    <span>x</span>
+    <button mat-icon-button class="small-icon-button" (click)="removeFilter('ordering')">
+        <i-tabler name="x"></i-tabler>
+    </button>
 </button>
