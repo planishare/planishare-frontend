@@ -1,5 +1,5 @@
 <button
-  class="ft-label rounded-button bg-primary txt-on-primary w-100"
+  class="ft-body rounded-button bg-primary txt-on-primary w-100"
   (click)="openFilters()"
   *ngIf="(desktop$|async)===false">
     <span>Busqueda y filtros</span>
@@ -7,7 +7,10 @@
 </button>
 
 <div class="filters-card flex-col gap-1" *ngIf="open || (desktop$|async)" @inOutY>
-  <p class="ft-body txt-on-primary text-center f-weight-500">Busqueda y filtros</p>
+  <div class="flex-center-center gap-05 ft-body txt-on-primary">
+    <p class="text-center f-weight-500">Busqueda y filtros</p>
+    <i-tabler name="search" class="icon-small"></i-tabler>
+  </div>
   <input type="search"
     class="w-100 rounded-search ft-body"
     [formControl]="searchCtrl"
@@ -19,7 +22,7 @@
       label="Nivel académico"
       [control]="academicLevelCtrl"
       [options]="options?.academicLevel ?? []"
-      [resetOption]="true"
+      [resetOption]="false"
       [search]="true"
       searchPlaceholder="Buscar nivel académico"
       [loading]="!options?.academicLevel?.length"
@@ -30,7 +33,7 @@
       label="Asignatura"
       [control]="subjectCtrl"
       [options]="options?.subject ?? []"
-      [resetOption]="true"
+      [resetOption]="false"
       [search]="true"
       searchPlaceholder="Buscar asignatura"
       [loading]="!options?.subject?.length"
@@ -41,7 +44,7 @@
       label="Axis"
       [control]="axisCtrl"
       [options]="options?.axis ?? []"
-      [resetOption]="true"
+      [resetOption]="false"
       [search]="true"
       searchPlaceholder="Buscar eje"
       [loading]="!options?.axis?.length"
@@ -52,7 +55,7 @@
       label="Orederar por"
       [control]="orderingCtrl"
       [options]="options?.ordering ?? []"
-      [resetOption]="true"
+      [resetOption]="false"
       [search]="true"
       [loading]="!options?.ordering?.length"
       [cssClass]="['bg-background txt-on-background ft-body']">
@@ -64,7 +67,7 @@
       <span>Aplicar filtros</span>
       <i-tabler name="filter-check" class="small-icon"></i-tabler>
     </button>
-    <button class="w-100 rounded-button bg-red txt-on-red ft-body" *ngIf="form.touched" (click)="removeFilters()">
+    <button class="w-100 rounded-button bg-red txt-on-red ft-body" *ngIf="hasFilters" (click)="removeFilters()">
       <span>Remover filtros</span>
       <i-tabler name="trash" class="small-icon"></i-tabler>
     </button>

@@ -36,6 +36,7 @@ export class PostsFiltersComponent extends Unsubscriber implements OnChanges {
     public desktop$ = this.windowResize.desktop$.pipe(takeUntil(this.ngUnsubscribe$));
 
     public open = false;
+    public hasFilters = false;
 
     constructor(
         private windowResize: WindowResizeService
@@ -52,6 +53,7 @@ export class PostsFiltersComponent extends Unsubscriber implements OnChanges {
                 axis: this.filters?.axis,
                 ordering: this.filters?.ordering
             });
+            this.updateHasFilters();
         }
         if (options) {
             this.options = cloneAsJson(this.options); // Force template inputs update
@@ -88,5 +90,14 @@ export class PostsFiltersComponent extends Unsubscriber implements OnChanges {
 
     public openFilters(): void {
         this.open = true;
+    }
+
+    public updateHasFilters(): boolean {
+        this.hasFilters = !!this.searchCtrl.value ||
+            !!this.academicLevelCtrl.value ||
+            !!this.subjectCtrl.value ||
+            !!this.axisCtrl.value ||
+            !!this.orderingCtrl.value;
+        return this.hasFilters;
     }
 }
