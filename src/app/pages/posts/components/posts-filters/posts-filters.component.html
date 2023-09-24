@@ -1,17 +1,15 @@
+<button
+  class="ft-label rounded-button bg-primary txt-on-primary w-100"
+  (click)="openFilters()"
+  *ngIf="(desktop$|async)===false">
+    <span>Busqueda y filtros</span>
+    <i-tabler name="search" class="icon-small"></i-tabler>
+</button>
 
-<div class="flex-col gap-1">
-  <div class="flex-between-center lg-flex-center-center">
-    <p class="ft-body txt-on-primary text-center f-weight-500">Filtros y búsqueda</p>
-    <button
-      mat-icon-button
-      aria-label="Cerrar filtros"
-      *ngIf="(desktop$|async)===false"
-      (click)="closeFilters()">
-      <i-tabler name="x" class="txt-on-primary"></i-tabler>
-    </button>
-  </div>
+<div class="filters-card flex-col gap-1" *ngIf="open || (desktop$|async)" @inOutY>
+  <p class="ft-body txt-on-primary text-center f-weight-500">Busqueda y filtros</p>
   <input type="search"
-    class="w-100 rounded-search"
+    class="w-100 rounded-search ft-body"
     [formControl]="searchCtrl"
     (keyup.enter)="applyFilters()"
     placeholder="Buscar">
@@ -25,7 +23,7 @@
       [search]="true"
       searchPlaceholder="Buscar nivel académico"
       [loading]="!options?.academicLevel?.length"
-      [cssClass]="['bg-academic-level txt-on-academic-level']">
+      [cssClass]="['bg-academic-level txt-on-academic-level ft-body']">
     </app-rounded-select>
     
     <app-rounded-select
@@ -36,7 +34,7 @@
       [search]="true"
       searchPlaceholder="Buscar asignatura"
       [loading]="!options?.subject?.length"
-      [cssClass]="['bg-subject txt-on-subject']">
+      [cssClass]="['bg-subject txt-on-subject ft-body']">
     </app-rounded-select>
     
     <app-rounded-select
@@ -47,7 +45,7 @@
       [search]="true"
       searchPlaceholder="Buscar eje"
       [loading]="!options?.axis?.length"
-      [cssClass]="['bg-axis txt-on-axis']">
+      [cssClass]="['bg-axis txt-on-axis ft-body']">
     </app-rounded-select>
 
     <app-rounded-select
@@ -57,7 +55,7 @@
       [resetOption]="true"
       [search]="true"
       [loading]="!options?.ordering?.length"
-      [cssClass]="['bg-background txt-on-background']">
+      [cssClass]="['bg-background txt-on-background ft-body']">
     </app-rounded-select>
   </div>
 
@@ -66,18 +64,18 @@
       <span>Aplicar filtros</span>
       <i-tabler name="filter-check" class="small-icon"></i-tabler>
     </button>
-    <button class="w-100 rounded-button bg-red txt-on-red ft-body" (click)="removeFilters()">
+    <button class="w-100 rounded-button bg-red txt-on-red ft-body" *ngIf="form.touched" (click)="removeFilters()">
       <span>Remover filtros</span>
       <i-tabler name="trash" class="small-icon"></i-tabler>
     </button>
   </div>
+  <div class="flex-center-center m-t-1" *ngIf="open">
+    <button
+      mat-icon-button
+      aria-label="Cerrar filtros"
+      *ngIf="(desktop$|async)===false"
+      (click)="closeFilters()">
+        <i-tabler name="x" class="txt-on-primary"></i-tabler>
+    </button>
+  </div>
 </div>
-
-<button
-  class="rounded-button bg-primary txt-on-primary fixed-b-r"
-  (click)="openFilters()"
-  *ngIf="!open && (desktop$|async)===false"
-  @inOutY>
-    <span>Filtrar</span>
-    <i-tabler name="filter"></i-tabler>
-</button>

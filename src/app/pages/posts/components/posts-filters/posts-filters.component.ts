@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FilterOption } from 'src/app/shared/models/filter.model';
 import { PostFilters, PostFiltersOptions } from '../../models/post-filter.model';
@@ -38,8 +38,7 @@ export class PostsFiltersComponent extends Unsubscriber implements OnChanges {
     public open = false;
 
     constructor(
-        private windowResize: WindowResizeService,
-        private el: ElementRef
+        private windowResize: WindowResizeService
     ) {
         super();
     }
@@ -84,12 +83,10 @@ export class PostsFiltersComponent extends Unsubscriber implements OnChanges {
     }
 
     public closeFilters(): void {
-        this.el.nativeElement.classList.remove('open');
         this.open = false;
     }
 
     public openFilters(): void {
-        this.el.nativeElement.classList.add('open');
         this.open = true;
     }
 }

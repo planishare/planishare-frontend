@@ -1,21 +1,19 @@
 :host {
-    background-color: var(--clr-primary);
-    padding: var(--container-space);
-    padding-top: calc(var(--container-space)/3);
-    border-radius: 20px 20px 0 0;
-
-    position: fixed;
-    bottom: -100%;
-    left: 0;
-    z-index: 2;
     width: 100%;
-    height: min-content;
-
-    transition: bottom linear .2s;
 }
 
-:host.open {
+.filters-card {
+    background-color: var(--clr-primary);
+    padding: var(--container-space);
+    width: 100%;
+
+    position: fixed;
     bottom: 0;
+    height: calc(100% - 72px + 1rem);
+    left: 0;
+    z-index: 3;
+
+    transition: bottom linear .2s;
 }
 
 .filter-selects {
@@ -31,12 +29,15 @@
 
 @media (min-width: 64rem) {
     :host {
-        border-radius: 20px;
+        max-width: 350px;
+    }
 
+    .filters-card {
+        border-radius: 20px;
         position: sticky;
         top: calc(72px + 1rem);
         z-index: 1;
-        max-width: 350px;
+        height: unset;
     }
 
     .filter-selects {

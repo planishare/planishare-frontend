@@ -1,4 +1,4 @@
-<main class="container flex gap-05 bg-background p-y-1">
+<main class="container flex-col lg-flex-row gap-05 bg-background p-y-1">
     <app-posts-filters
         [filters]="filters"
         [options]="options"
@@ -7,7 +7,7 @@
     
     <section>
         <div
-            class="gap-1 flex-wrap"
+            class="gap-1 flex-wrap lg-m-b-1"
             [ngClass]="{
                 'flex-between-center flex-row-reverse': (mobile$|async)===false,
                 'flex-col flex-center-end': mobile$|async
@@ -23,7 +23,7 @@
                 (filtersChange)="changeFilters($event)"
             ></app-post-filter-tags>
         </div>
-        <ul class="ul-style-none posts-grid gap-05 m-t-1">
+        <ul class="ul-style-none posts-grid gap-05">
             <li *ngFor="let post of posts?.results">
                 <app-post-card
                     [post]="post"
