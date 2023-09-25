@@ -12,12 +12,12 @@
                 [filters]="optionsLoading ? undefined : filters"
                 (filtersChange)="changeFilters($event)"
             ></app-post-filter-tags>
-            <app-paginated-filter-status
+            <app-pagination-status
                 [pageResults]="posts"
                 [filters]="filters"
                 [loading]="loading"
                 (changePage)="changePage($event)">
-            </app-paginated-filter-status>
+            </app-pagination-status>
         </div>
         <ul class="ul-style-none posts-grid gap-05 m-t-1">
             <li *ngFor="let post of posts?.results">
@@ -27,6 +27,11 @@
                     [loading]="loading"
                 ></app-post-card>
             </li>
+            <ng-container *ngIf="loading">
+                <li *ngFor="let i in 10|fillArray">
+                    
+                </li>
+            </ng-container>
         </ul>
     </section>
 </main>

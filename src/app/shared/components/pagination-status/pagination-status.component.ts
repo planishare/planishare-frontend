@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Pageable } from '../../models/pageable.model';
 
 @Component({
-    selector: 'app-paginated-filter-status',
-    templateUrl: './paginated-filter-status.component.html',
-    styleUrls: ['./paginated-filter-status.component.scss']
+    selector: 'app-pagination-status',
+    templateUrl: './pagination-status.component.html',
+    styleUrls: ['./pagination-status.component.scss']
 })
-export class PaginatedFilterStatusComponent {
+export class PaginationStatusComponent {
     @Input() public loading: boolean = true;
     @Input() public pageResults?: Pageable<any>;
     @Input() public filters?: { page: number, [key: string]: any };
