@@ -63,11 +63,11 @@
   </div>
 
   <div class="flex-col gap-05">
-    <button class="w-100 rounded-button bg-on-primary txt-primary ft-body" (click)="applyFilters()">
+    <button matRipple class="w-100 rounded-button bg-on-primary txt-primary ft-body" (click)="applyFilters()">
       <span>Aplicar filtros</span>
       <i-tabler name="filter-check" class="small-icon"></i-tabler>
     </button>
-    <button class="w-100 rounded-button bg-red txt-on-red ft-body" *ngIf="hasFilters" (click)="removeFilters()">
+    <button matRipple class="w-100 rounded-button bg-red txt-on-red ft-body" *ngIf="hasFilters" (click)="removeFilters()">
       <span>Remover filtros</span>
       <i-tabler name="trash" class="small-icon"></i-tabler>
     </button>

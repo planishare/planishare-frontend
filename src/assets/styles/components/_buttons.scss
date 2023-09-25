@@ -30,14 +30,18 @@
     transition-duration: .25s, .25s, .25s;
 }
 
-.rounded-button:hover,
-.circle-button:hover {
+.rounded-button:hover:not(:disabled),
+.circle-button:hover:not(:disabled) {
     transform: translateY(-.5px);
-    opacity: .9;
 }
 
-.rounded-button:active,
-.circle-button:active {
+.rounded-button:active:not(:disabled),
+.circle-button:active:not(:disabled) {
     transform: translateY(2px);
-    opacity: 1;
+}
+
+.rounded-button:disabled,
+.circle-button:disabled {
+    background-color: rgba(0, 0, 0, .3);
+    color: black;
 }

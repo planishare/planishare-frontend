@@ -8,19 +8,22 @@
 </div>
 
 <div class="flex-center-center gap-05">
-    <button matRipple class="ft-label f-weight-500 circle-button bg-primary txt-on-primary" [disabled]="!pageResults?.previous || loading" (click)="previousPage()">
+    <button matRipple class="ft-label f-weight-500 circle-button bg-primary txt-on-primary"
+        [disabled]="!pageResults?.previous || loading" (click)="previousPage()">
         <i-tabler class="small-icon" name="chevron-left"></i-tabler>
     </button>
-    <button class="ft-label f-weight-500 rounded-button bg-primary txt-on-primary" [matMenuTriggerFor]="pagesMenu" aria-label="Seleccionar Pág."
-        matRipple [disabled]="loading || !pageResults?.count || pageResults?.count === 1">
+    <button class="ft-label f-weight-500 rounded-button bg-primary txt-on-primary" [matMenuTriggerFor]="pagesMenu"
+        aria-label="Seleccionar Pág." matRipple [disabled]="loading || !pageResults?.count || pageResults?.count === 1">
         <span>{{ filters?.page ?? 1 }}</span>
     </button>
     <mat-menu #pagesMenu>
-        <button mat-menu-item *ngFor="let page of (pageResults?.maxPage ?? 1)|fillArray" (click)="changePageByNumber(page)">
+        <button mat-menu-item *ngFor="let page of (pageResults?.maxPage ?? 1)|fillArray"
+            (click)="changePageByNumber(page)">
             {{ page }}
         </button>
     </mat-menu>
-    <button matRipple class="ft-label f-weight-500 circle-button bg-primary txt-on-primary" [disabled]="!pageResults?.next || loading" (click)="nextPage()">
+    <button matRipple class="ft-label f-weight-500 circle-button bg-primary txt-on-primary"
+        [disabled]="!pageResults?.next || loading" (click)="nextPage()">
         <i-tabler class="small-icon" name="chevron-right"></i-tabler>
     </button>
 </div>
