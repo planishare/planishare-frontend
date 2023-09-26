@@ -11,7 +11,11 @@
 }
 
 .rounded-tag--slime {
-    padding: .1em .5em;
+    padding: .25em .5em;
+}
+
+.rounded-tag--slime:has(.mat-icon-button.small-icon-button) {
+    padding-left: calc(.25em + 14px);
 }
 
 .rounded-border-tag,
@@ -27,5 +31,5 @@
 }
 
 .rounded-border-tag--slime {
-    padding: .1em .5em;
+    padding: .2em .5em;
 }
