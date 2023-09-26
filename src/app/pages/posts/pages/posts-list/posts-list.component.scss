@@ -1,9 +1,19 @@
+main {
+    min-height: calc(100vh - 58px);
+    min-height: calc(100dvh - 58px);
+}
+
 .posts-grid {
     display: grid;
     grid-template-columns: 1fr;
 }
 
 @media (min-width: 64rem) {
+    main {
+        min-height: calc(100vh - 72px);
+        min-height: calc(100dvh - 72px);
+    }
+
     .posts-grid {
         grid-template-columns: 1fr 1fr;
 

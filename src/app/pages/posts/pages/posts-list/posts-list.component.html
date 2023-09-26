@@ -20,17 +20,21 @@
             </app-pagination-status>
         </div>
         <ul class="ul-style-none posts-grid gap-05 m-t-1">
-            <li *ngFor="let post of posts?.results">
-                <app-post-card
-                    [post]="post"
-                    [ownPost]="post.user.id === authUser?.id"
-                    [loading]="loading"
-                ></app-post-card>
-            </li>
-            <ng-container *ngIf="loading">
-                <li *ngFor="let i in 10|fillArray">
-                    
+            <ng-container *ngIf="!loading">
+                <li *ngFor="let post of posts?.results">
+                    <app-post-card
+                        [post]="post"
+                        [ownPost]="post.user.id === authUser?.id"
+                        [loading]="loading"
+                    ></app-post-card>
                 </li>
+            </ng-container>
+            <ng-container *ngIf="loading">
+                <app-post-card-shimmer></app-post-card-shimmer>
+                <app-post-card-shimmer></app-post-card-shimmer>
+                <app-post-card-shimmer></app-post-card-shimmer>
+                <app-post-card-shimmer></app-post-card-shimmer>
+                <app-post-card-shimmer></app-post-card-shimmer>
             </ng-container>
         </ul>
     </section>

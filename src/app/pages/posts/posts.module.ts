@@ -13,10 +13,10 @@ import { PostCardComponent } from './components/post-card/post-card.component';
 import { IconsModule } from 'src/app/shared/icons/icons.module';
 import { PostsFiltersComponent } from './components/posts-filters/posts-filters.component';
 import { PostFilterTagsComponent } from './components/post-filter-tags/post-filter-tags.component';
+import { PostCardShimmerComponent } from './components/post-card-shimmer/post-card-shimmer.component';
 // import { PostDetailComponent } from './pages/post-detail/post-detail.component';
 // import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 // import { PostFormComponent } from './pages/post-form/post-form.component';
-// import { PostCardShimmerComponent } from './components/post-card-shimmer/post-card-shimmer.component';
 // import { PostPaginatedListComponent } from './components/post-paginated-list/post-paginated-list.component';
 // import { UserPostsStatsComponent } from './components/user-posts-stats/user-posts-stats.component';
 
@@ -25,11 +25,11 @@ import { PostFilterTagsComponent } from './components/post-filter-tags/post-filt
         PostsListComponent,
         PostCardComponent,
         PostsFiltersComponent,
-        PostFilterTagsComponent
+        PostFilterTagsComponent,
+        PostCardShimmerComponent
         // PostDetailComponent,
         // DeleteDialogComponent,
         // PostFormComponent,
-        // PostCardShimmerComponent,
         // PostPaginatedListComponent,
         // UserPostsStatsComponent
     ],
