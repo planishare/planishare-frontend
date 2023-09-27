@@ -1,6 +1,6 @@
 import { viewerType } from "ngx-doc-viewer";
 
-export const FILE_TAG_COLOR = {
+export const FILE_COLOR = {
     doc: 'blue',
     docm: 'blue',
     docx: 'blue',

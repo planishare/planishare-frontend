@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, of, takeUntil } from 'rxjs';
@@ -18,25 +18,22 @@ import { WindowResizeService } from 'src/app/shared/services/window-resize.servi
 
 import { DeleteDialogComponent } from '../../components/delete-dialog/delete-dialog.component';
 import { ReportDialogComponent } from 'src/app/shared/components/report-dialog/report-dialog.component';
-import { fadeInOutAnimation } from 'src/app/shared/animations/animations';
 
 @Component({
     selector: 'app-post-detail',
     templateUrl: './post-detail.component.html',
-    styleUrls: ['./post-detail.component.scss'],
-    animations: [fadeInOutAnimation]
+    styleUrls: ['./post-detail.component.scss']
 })
 export class PostDetailComponent extends Unsubscriber implements OnInit {
+    public postId: number;
     public searchParams: URLPostsParams;
 
-    public user: UserDetail | null;
-    public postId: number;
     public post?: PostDetail;
+    public user: UserDetail|null;
 
-    public currentFile: IPostFile | null = null;
-    public currentViewer: viewerType | null = null;
+    public currentFile: IPostFile|null = null;
+    public currentViewer: viewerType|null = null;
 
-    public isMobile = true;
     public hasPreview = true;
 
     constructor(
@@ -52,10 +49,8 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
         super();
         this.postId = Number(this.route.snapshot.paramMap.get('id'));
         this.searchParams = this.route.snapshot.queryParams;
+
         this.user = this.authService.getUserDetail();
-        this.windowResize.mobile$
-            .pipe(takeUntil(this.ngUnsubscribe$))
-            .subscribe(value => this.isMobile = value);
     }
 
     public ngOnInit(): void {
@@ -68,104 +63,105 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
                 takeUntil(this.ngUnsubscribe$)
             )
             .subscribe(post => {
-                this.post = new PostDetail(post!);
-                const firstPreview = !!this.post.mainFile.ngxDocViewer
-                    ? this.post.mainFile
-                    : this.post.supportingMaterial.find(file => !!file.ngxDocViewer);
-                if (!!firstPreview) {
-                    this.viewDocument(firstPreview);
-                } else {
-                    this.hasPreview = false;
-                }
-                this.registerView(this.post);
+                this.post = new PostDetail(post);
+                console.log(this.post);
+                // const firstPreview = !!this.post.mainFile.ngxDocViewer
+                //     ? this.post.mainFile
+                //     : this.post.supportingMaterial.find(file => !!file.ngxDocViewer);
+                // if (!!firstPreview) {
+                //     this.viewDocument(firstPreview);
+                // } else {
+                //     this.hasPreview = false;
+                // }
+                // this.registerView(this.post);
             });
     }
 
-    public viewDocument(file: IPostFile): void {
-        // Set null to force reload ngx-doc-viewer
-        this.currentViewer = null;
-        this.currentFile = null;
-        this.currentViewer = file.ngxDocViewer;
-        this.currentFile = file;
-    }
+    // public viewDocument(file: IPostFile): void {
+    //     // Set null to force reload ngx-doc-viewer
+    //     this.currentViewer = null;
+    //     this.currentFile = null;
+    //     this.currentViewer = file.ngxDocViewer;
+    //     this.currentFile = file;
+    // }
 
-    public report(post: PostDetail): any {
-        if (!!!this.user) {
-            this.commonSnackbarMsg.showLoginRequiredMessage('crear un reporte');
-            return;
-        }
+    // public report(post: PostDetail): any {
+    //     if (!!!this.user) {
+    //         this.commonSnackbarMsg.showLoginRequiredMessage('crear un reporte');
+    //         return;
+    //     }
 
-        this.dialog.open(ReportDialogComponent, {
-            data: {
-                post,
-                userId: this.user?.id
-            },
-            autoFocus: false,
-            maxWidth: '95%'
-        });
-    }
+    //     this.dialog.open(ReportDialogComponent, {
+    //         data: {
+    //             post,
+    //             userId: this.user?.id
+    //         },
+    //         autoFocus: false,
+    //         maxWidth: '95%'
+    //     });
+    // }
 
-    public deletePost(post: PostDetail): void {
-        const dialogRef = this.dialog.open(DeleteDialogComponent, {
-            data: { post }
-        });
+    // public deletePost(post: PostDetail): void {
+    //     const dialogRef = this.dialog.open(DeleteDialogComponent, {
+    //         data: { post }
+    //     });
 
-        dialogRef.afterClosed().subscribe(done => {
-            if (done) {
-                this.router.navigate(['/posts'], {
-                    queryParams: this.searchParams
-                });
-            }
-        });
-    }
+    //     dialogRef.afterClosed().subscribe(done => {
+    //         if (done) {
+    //             this.router.navigate(['/posts'], {
+    //                 queryParams: this.searchParams
+    //             });
+    //         }
+    //     });
+    // }
 
-    public toggleLike(post: PostDetail): any {
-        if (!!!this.user) {
-            this.commonSnackbarMsg.showLoginRequiredMessage('dar Me gusta');
-            return;
-        }
+    // public toggleLike(post: PostDetail): any {
+    //     if (!!!this.user) {
+    //         this.commonSnackbarMsg.showLoginRequiredMessage('dar Me gusta');
+    //         return;
+    //     }
 
-        post.totalLikes = !!post.alreadyLiked ? post.totalLikes - 1 : post.totalLikes + 1;
-        post.alreadyLiked = !!post.alreadyLiked ? null : -1;
+    //     post.totalLikes = !!post.alreadyLiked ? post.totalLikes - 1 : post.totalLikes + 1;
+    //     post.alreadyLiked = !!post.alreadyLiked ? null : -1;
 
-        this.reactionService.toggleLike(this.user.id, post.id)
-            .pipe(
-                catchError(() => {
-                    post.totalLikes = !!post.alreadyLiked ? post.totalLikes - 1 : post.totalLikes + 1;
-                    post.alreadyLiked = post.alreadyLiked ?? -1;
-                    this.commonSnackbarMsg.showErrorMessage();
-                    return of();
-                })
-            )
-            .subscribe(resp => {
-                post.alreadyLiked = resp.id!;
-            });
-    }
+    //     this.reactionService.toggleLike(this.user.id, post.id)
+    //         .pipe(
+    //             catchError(() => {
+    //                 post.totalLikes = !!post.alreadyLiked ? post.totalLikes - 1 : post.totalLikes + 1;
+    //                 post.alreadyLiked = post.alreadyLiked ?? -1;
+    //                 this.commonSnackbarMsg.showErrorMessage();
+    //                 return of();
+    //             })
+    //         )
+    //         .subscribe(resp => {
+    //             post.alreadyLiked = resp.id!;
+    //         });
+    // }
 
-    private registerView(post: PostDetail): void {
-        this.reactionService.registerView(post.id)
-            .pipe(
-                catchError(() => of()),
-                takeUntil(this.ngUnsubscribe$)
-            )
-            .subscribe(() => {
-                this.post!.totalViews += 1;
-            });
-    }
+    // private registerView(post: PostDetail): void {
+    //     this.reactionService.registerView(post.id)
+    //         .pipe(
+    //             catchError(() => of()),
+    //             takeUntil(this.ngUnsubscribe$)
+    //         )
+    //         .subscribe(() => {
+    //             this.post!.totalViews += 1;
+    //         });
+    // }
 
-    public goBackToResults(): any {
-        if (this.searchParams.userId === String(this.user?.id)) {
-            this.router.navigate(['/posts/user', this.user?.id], {
-                queryParams: this.searchParams
-            });
-            return;
-        }
-        this.router.navigate(['/posts/list'], {
-            queryParams: this.searchParams
-        });
-    }
+    // public goBackToResults(): any {
+    //     if (this.searchParams.userId === String(this.user?.id)) {
+    //         this.router.navigate(['/posts/user', this.user?.id], {
+    //             queryParams: this.searchParams
+    //         });
+    //         return;
+    //     }
+    //     this.router.navigate(['/posts/list'], {
+    //         queryParams: this.searchParams
+    //     });
+    // }
 
-    public scroll(el: HTMLElement): any {
-        return this.isMobile ? el.scrollIntoView({ behavior: 'smooth' }) : null;
-    }
+    // public scroll(el: HTMLElement): any {
+    //     return this.isMobile ? el.scrollIntoView({ behavior: 'smooth' }) : null;
+    // }
 }

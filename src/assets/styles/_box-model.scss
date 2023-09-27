@@ -16,6 +16,10 @@
     margin-top: 1rem;
 }
 
+.m-t-3 {
+    margin-top: 3rem;
+}
+
 .m-t-05 {
     margin-top: .5rem;
 }
@@ -27,6 +31,10 @@
 @media (min-width: 64rem) {
     .lg-m-b-1 {
         margin-bottom: 1rem;
+    }
+    
+    .lg-m-t-1 {
+        margin-top: 1rem;
     }
 }
 
@@ -49,6 +57,10 @@
 
 .w-40 {
     width: 40%;
+}
+
+.min-w-0 {
+    min-width: 0;
 }
 
 // Height

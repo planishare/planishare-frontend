@@ -26,6 +26,7 @@
                         [post]="post"
                         [ownPost]="post.user.id === authUser?.id"
                         [loading]="loading"
+                        [routerLink]="['/posts/views/', post.id]"
                     ></app-post-card>
                 </li>
             </ng-container>

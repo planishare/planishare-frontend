@@ -6,8 +6,8 @@ export interface IUserSimpleDetail {
     email: string,
     first_name: string,
     last_name: string,
-    education: IEducation | null,
-    institution: IInstitution | null
+    education: IEducation|null,
+    institution: IInstitution|null
 }
 
 export class UserSimpleDetail {
@@ -29,7 +29,7 @@ export class UserSimpleDetail {
         this.institution = user.institution ?? undefined;
     }
 
-    private getFullName(firstName: string, lastName: string): string | undefined {
+    private getFullName(firstName: string, lastName: string): string|undefined {
         if (firstName && lastName) {
             return `${firstName} ${lastName}`;
         }

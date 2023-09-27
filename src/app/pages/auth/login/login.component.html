@@ -9,7 +9,7 @@
       <p>Que bueno verte de nuevo 🙌</p>
     </div>
 
-    <form [formGroup]="form" (ngSubmit)="loginWithEmailAndPassword($event)">
+    <form [formGroup]="form" (ngSubmit)="loginWithEmailAndPassword($event)" class="w-100">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Email</mat-label>
         <input matInput placeholder="Email" formControlName="email" type="email">
@@ -21,7 +21,7 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" subs class="w-100">
+      <mat-form-field appearance="outline" class="w-100">
         <mat-label>Contraseña</mat-label>
         <input matInput placeholder="Contraseña" formControlName="password" [type]="showPassword? 'text' : 'password'">
         <button matSuffix type="button" class="button-style-none" (click)="showPassword = !showPassword">
