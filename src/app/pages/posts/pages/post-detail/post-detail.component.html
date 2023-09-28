@@ -1,5 +1,6 @@
 <main class="container flex-col lg-flex-row gap-05 bg-background p-y-1">
-  <div *ngIf="post" class="card flex-col gap-05" style="max-width: 350px;">
+  <!-- Post info -->
+  <div *ngIf="post" class="post-info card flex-col gap-1">
     <div class="flex-between-center">
       <p class="ft-label">{{ post.user.fullName ?? post.user.email }} - {{ post.createdAt|timeAgo }}</p>
 
@@ -34,16 +35,39 @@
     </div>
     <div class="flex-col gap-05 ft-body">
       <div class="flex-center-center gap-05">
-        <div class="rounded-tag--slime w-100 bg-{{post.mainFile.accentColor}}
-          txt-on-{{post.mainFile.accentColor}} min-w-0">
-            <span class="text-ellipsis">{{ post.mainFile.fullName }}</span>
-        </div>
-        <button mat-icon-button><i-tabler name="download"></i-tabler></button>
-        <button matRipple class="rounded-button txt-blue">Ver</button>
+        <button
+          matRipple
+          class="w-100 min-w-0"
+          [ngClass]="currentFile?.url === post.mainFile.url 
+            ? 'rounded-button bg- txt-on-'+post.mainFile.accentColor+' bg-'+post.mainFile.accentColor
+            : 'rounded-border-button txt-'+post.mainFile.accentColor"
+          (click)="viewDocument(post.mainFile); scroll(filePreview)">
+            <span class="text-ellipsis">{{ post.mainFile.name }}</span>
+            <span>{{ post.mainFile.ext }}</span>
+        </button>
+        <button mat-icon-button>
+          <i-tabler name="download" class="txt-on-background"></i-tabler>
+        </button>
+        <!-- <button matRipple class="rounded-button txt-blue">Ver</button> -->
       </div>
 
       <ng-container *ngFor="let file of post.supportingMaterial">
-        <!-- TODO -->
+        <div class="flex-center-center gap-05">
+          <button
+            matRipple
+            class="w-100 min-w-0"
+            [ngClass]="currentFile?.url === file.url 
+              ? 'rounded-button bg- txt-on-'+file.accentColor+' bg-'+file.accentColor
+              : 'rounded-border-button txt-'+file.accentColor"
+            (click)="viewDocument(file); scroll(filePreview)">
+              <span class="text-ellipsis">{{ file.name }}</span>
+              <span>{{ file.ext }}</span>
+          </button>
+          <button mat-icon-button>
+            <i-tabler name="download" class="txt-on-background"></i-tabler>
+          </button>
+          <!-- <button matRipple class="rounded-button txt-blue">Ver</button> -->
+        </div>
       </ng-container>
     </div>
 
@@ -71,4 +95,20 @@
     </div>
   </div>
 
+  <!-- Post info shimmer -->
+  <app-post-card-shimmer class="post-info" *ngIf="!post"></app-post-card-shimmer>
+
+  <!-- File viewer -->
+  <div class="w-100 card p-05 viewer-contianer" #filePreview>
+    <div class="doc-viewer shimmer-loading" *ngIf="(!!currentFile?.ngxDocViewer && !!post) || !post">
+      <ngx-doc-viewer *ngIf="!!currentFile && !!currentViewer" [url]="currentFile.url" [viewer]="currentViewer">
+      </ngx-doc-viewer>
+    </div>
+    <div *ngIf="!hasPreview">
+      <img class="no-preview-image" src="/assets/images/no-preview.png" alt="Vista previa no disponible">
+      <p>Vista previa no disponible</p>
+      <p>Esta publicación no tiene archivos que se puedan ver sin descargar</p>
+      <p>Pronto permitiremos previsualizar más arhivos en Planishare 👀</p>
+    </div>
+  </div>
 </main>

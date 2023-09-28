@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, of, takeUntil } from 'rxjs';
+import { catchError, filter, of, take, takeUntil } from 'rxjs';
 
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/pages/posts/services/posts.service';
@@ -10,7 +10,7 @@ import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackba
 
 import { URLPostsParams } from 'src/app/pages/posts/models/post-filter.model';
 import { UserDetail } from 'src/app/pages/user/models/user.model';
-import { IPostFile, PostDetail } from 'src/app/pages/posts/models/post.model';
+import { IPostFile, PostDetail, PostFile } from 'src/app/pages/posts/models/post.model';
 import { viewerType } from 'ngx-doc-viewer';
 
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
@@ -31,10 +31,12 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
     public post?: PostDetail;
     public user: UserDetail|null;
 
-    public currentFile: IPostFile|null = null;
+    public currentFile: PostFile|null = null;
     public currentViewer: viewerType|null = null;
 
     public hasPreview = true;
+
+    public desktop$ = this.windowResize.desktop$.pipe(takeUntil(this.ngUnsubscribe$));
 
     constructor(
         private route: ActivatedRoute,
@@ -65,25 +67,25 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
             .subscribe(post => {
                 this.post = new PostDetail(post);
                 console.log(this.post);
-                // const firstPreview = !!this.post.mainFile.ngxDocViewer
-                //     ? this.post.mainFile
-                //     : this.post.supportingMaterial.find(file => !!file.ngxDocViewer);
-                // if (!!firstPreview) {
-                //     this.viewDocument(firstPreview);
-                // } else {
-                //     this.hasPreview = false;
-                // }
+                const firstPreview = !!this.post.mainFile.ngxDocViewer
+                    ? this.post.mainFile
+                    : this.post.supportingMaterial.find(file => !!file.ngxDocViewer);
+                if (!!firstPreview) {
+                    this.viewDocument(firstPreview);
+                } else {
+                    this.hasPreview = false;
+                }
                 // this.registerView(this.post);
             });
     }
 
-    // public viewDocument(file: IPostFile): void {
-    //     // Set null to force reload ngx-doc-viewer
-    //     this.currentViewer = null;
-    //     this.currentFile = null;
-    //     this.currentViewer = file.ngxDocViewer;
-    //     this.currentFile = file;
-    // }
+    public viewDocument(file: PostFile): void {
+        // Set null to force reload ngx-doc-viewer
+        this.currentViewer = null;
+        this.currentFile = null;
+        this.currentViewer = file.ngxDocViewer;
+        this.currentFile = file;
+    }
 
     // public report(post: PostDetail): any {
     //     if (!!!this.user) {
@@ -149,19 +151,21 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
     //         });
     // }
 
-    // public goBackToResults(): any {
-    //     if (this.searchParams.userId === String(this.user?.id)) {
-    //         this.router.navigate(['/posts/user', this.user?.id], {
-    //             queryParams: this.searchParams
-    //         });
-    //         return;
-    //     }
-    //     this.router.navigate(['/posts/list'], {
-    //         queryParams: this.searchParams
-    //     });
-    // }
+    public goBackToResults(): any {
+        if (this.searchParams.userId === String(this.user?.id)) {
+            this.router.navigate(['/posts/user', this.user?.id], {
+                queryParams: this.searchParams
+            });
+            return;
+        }
+        this.router.navigate(['/posts/list'], {
+            queryParams: this.searchParams
+        });
+    }
 
-    // public scroll(el: HTMLElement): any {
-    //     return this.isMobile ? el.scrollIntoView({ behavior: 'smooth' }) : null;
-    // }
+    public scroll(el: HTMLElement): any {
+        this.desktop$.pipe(take(1), filter(desktop => !desktop)).subscribe(() => {
+            el.scrollIntoView({ behavior: 'smooth' });
+        });
+    }
 }
