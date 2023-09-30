@@ -1,4 +1,4 @@
-<div *ngIf="!loading && post" class="card flex-col flex-between gap-05 w-100">
+<div *ngIf="!loading && post" class="card flex-col flex-between gap-075 w-100">
   <div class="flex-col">
     <div class="flex-between-center">
       <p class="ft-label">{{ post.user.fullName ?? post.user.email }} - {{ post.createdAt|timeAgo }}</p>
@@ -26,7 +26,7 @@
     <p><a class="a-style-none ft-body" [routerLink]="['/posts/view', post.id]">{{ post.shortDescription }}</a></p>
   </div>
 
-  <div class="flex-between-center">
+  <div class="flex-between-center flex-wrap gap-05">
     <div class="ft-body flex-center-center gap-05">
       <i-tabler name="file-description" class="small-icon"></i-tabler>
       <span class="ft-label">{{ post.totalFiles }} Documentos</span>

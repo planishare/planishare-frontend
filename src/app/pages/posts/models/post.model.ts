@@ -126,7 +126,7 @@ export class PostFile {
 
         // TODO: Simplify this
         this.url = url;
-        this.accentColor = FILE_COLOR[this.ext.slice(1) as keyof typeof FILE_COLOR];
+        this.accentColor = FILE_COLOR[this.ext.slice(1) as keyof typeof FILE_COLOR] ?? 'secondary';
         this.ngxDocViewer = DOCUMENT_VIEWER[this.ext.replace('.','')] ?? null;
     }
 }

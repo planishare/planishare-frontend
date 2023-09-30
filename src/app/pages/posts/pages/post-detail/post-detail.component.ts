@@ -34,8 +34,6 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
     public currentFile: PostFile|null = null;
     public currentViewer: viewerType|null = null;
 
-    public hasPreview = true;
-
     public desktop$ = this.windowResize.desktop$.pipe(takeUntil(this.ngUnsubscribe$));
 
     constructor(
@@ -72,8 +70,6 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
                     : this.post.supportingMaterial.find(file => !!file.ngxDocViewer);
                 if (!!firstPreview) {
                     this.viewDocument(firstPreview);
-                } else {
-                    this.hasPreview = false;
                 }
                 // this.registerView(this.post);
             });
@@ -81,6 +77,7 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
 
     public viewDocument(file: PostFile): void {
         // Set null to force reload ngx-doc-viewer
+        console.log(file);
         this.currentViewer = null;
         this.currentFile = null;
         this.currentViewer = file.ngxDocViewer;
