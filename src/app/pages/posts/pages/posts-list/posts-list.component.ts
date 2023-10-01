@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, of, forkJoin, map, takeUntil, BehaviorSubject } from 'rxjs';
+import { catchError, of, forkJoin, map, takeUntil, BehaviorSubject, Subject, switchMap } from 'rxjs';
 
 import { Pageable } from 'src/app/shared/models/pageable.model';
 import { APIPostsParams, URLPostsParams, MapPostFilters, PostFilters, PostOrderingName, PostOrderingType, PostFiltersOptions } from 'src/app/pages/posts/models/post-filter.model';
@@ -52,6 +52,8 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
 
     public desktop$ = this.windowResize.desktop$.pipe(takeUntil(this.ngUnsubscribe$));
     public mobile$ = this.windowResize.mobile$.pipe(takeUntil(this.ngUnsubscribe$));
+
+    public cancelPreviousReq$ = new Subject();
 
     constructor(
         private postsService: PostsService,
@@ -116,6 +118,10 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
     }
 
     public getPosts(apiFilters: APIPostsParams) {
+        if (this.loading) {
+            this.cancelPreviousReq$.next(true);
+        }
+
         this.loading = true;
         this.postsService.getPosts(apiFilters).pipe(
             map(posts => {
@@ -126,6 +132,7 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
                     results: posts.results.map(post => new PostDetail(post))
                 });
             }),
+            takeUntil(this.cancelPreviousReq$),
             takeUntil(this.ngUnsubscribe$),
             catchError(() => {
                 this.loading = false;
