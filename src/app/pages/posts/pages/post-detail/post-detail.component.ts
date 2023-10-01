@@ -49,7 +49,6 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
         super();
         this.postId = Number(this.route.snapshot.paramMap.get('id'));
         this.searchParams = this.route.snapshot.queryParams;
-
         this.user = this.authService.getUserDetail();
     }
 
@@ -64,7 +63,6 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
             )
             .subscribe(post => {
                 this.post = new PostDetail(post);
-                console.log(this.post);
                 const firstPreview = !!this.post.mainFile.ngxDocViewer
                     ? this.post.mainFile
                     : this.post.supportingMaterial.find(file => !!file.ngxDocViewer);
@@ -77,7 +75,6 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
 
     public viewDocument(file: PostFile): void {
         // Set null to force reload ngx-doc-viewer
-        console.log(file);
         this.currentViewer = null;
         this.currentFile = null;
         this.currentViewer = file.ngxDocViewer;
@@ -147,18 +144,6 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
     //             this.post!.totalViews += 1;
     //         });
     // }
-
-    public goBackToResults(): any {
-        if (this.searchParams.userId === String(this.user?.id)) {
-            this.router.navigate(['/posts/user', this.user?.id], {
-                queryParams: this.searchParams
-            });
-            return;
-        }
-        this.router.navigate(['/posts/list'], {
-            queryParams: this.searchParams
-        });
-    }
 
     public scroll(el: HTMLElement): any {
         this.desktop$.pipe(take(1), filter(desktop => !desktop)).subscribe(() => {

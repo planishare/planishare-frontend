@@ -15,7 +15,8 @@ import {
     IconFilterCheck,
     IconChevronDown,
     IconSearch,
-    IconDownload
+    IconDownload,
+    IconArrowLeft
 } from 'angular-tabler-icons/icons';
 
 const icons = {
@@ -33,7 +34,8 @@ const icons = {
     IconFilterCheck,
     IconChevronDown,
     IconSearch,
-    IconDownload
+    IconDownload,
+    IconArrowLeft
 };
 
 @NgModule({

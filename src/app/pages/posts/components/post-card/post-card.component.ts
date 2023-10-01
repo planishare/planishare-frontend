@@ -1,8 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { PostDetail } from 'src/app/pages/posts/models/post.model';
-
-// TODO
-// [ ] Save query params when view post detail
 
 @Component({
     selector: 'app-post-card',
@@ -17,7 +15,13 @@ export class PostCardComponent {
     @Output() public report = new EventEmitter<PostDetail>();
     @Output() public delete = new EventEmitter<PostDetail>();
 
-    constructor() {}
+    public queryParams?: {[key: string]: string};
+
+    constructor(
+        private route: ActivatedRoute
+    ) {
+        this.queryParams = this.route.snapshot.queryParams;
+    }
 
     public reportPost(post: PostDetail) {
         this.report.next(post);

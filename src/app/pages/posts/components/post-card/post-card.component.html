@@ -22,8 +22,12 @@
       </mat-menu>
     </div>
   
-    <h2><a class="a-style-none ft-title" [routerLink]="['/posts/view', post.id]">{{ post.title }}</a></h2>
-    <p><a class="a-style-none ft-body" [routerLink]="['/posts/view', post.id]">{{ post.shortDescription }}</a></p>
+    <h2><a class="a-style-none ft-title" [routerLink]="['/posts/view', post.id]" [queryParams]="queryParams">
+      {{ post.title }}
+    </a></h2>
+    <p><a class="a-style-none ft-body" [routerLink]="['/posts/view', post.id]" [queryParams]="queryParams">
+      {{ post.shortDescription }}
+    </a></p>
   </div>
 
   <div class="flex-between-center flex-wrap gap-05">

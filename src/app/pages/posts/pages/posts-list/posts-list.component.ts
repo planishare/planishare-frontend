@@ -22,7 +22,6 @@ import { WindowResizeService } from 'src/app/shared/services/window-resize.servi
 })
 export class PostsListComponent extends Unsubscriber implements OnInit {
     public filters: PostFilters = { page: 1 };
-    public filters$: BehaviorSubject<PostFilters> = new BehaviorSubject<PostFilters>(this.filters);
     public loading = true;
     public optionsLoading = true;
     public posts?: Pageable<PostDetail>;

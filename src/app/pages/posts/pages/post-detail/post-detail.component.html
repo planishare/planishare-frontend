@@ -1,102 +1,111 @@
 <main class="container flex-col lg-flex-row gap-05 bg-background p-y-1">
-  <!-- Post info -->
-  <div *ngIf="post" class="post-info card flex-col gap-1">
-    <div class="flex-between-center">
-      <p class="ft-label">{{ post.user.fullName ?? post.user.email }} - {{ post.createdAt|timeAgo }}</p>
+  <div class="flex-col gap-05 post-info">
+    <a matRipple [routerLink]="['/posts']" [queryParams]="searchParams"
+      class="rounded-button bg-primary txt-on-primary">
+      <i-tabler name="arrow-left"></i-tabler>
+      <span>Volver a resultados</span>
+    </a>
 
-      <button class="small-icon-button" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Opciones">
-        <i-tabler name="dots-vertical"></i-tabler>
-      </button>
-      <mat-menu #menu="matMenu">
-        <!-- <button mat-menu-item (click)="reportPost(post)" *ngIf="!ownPost"> -->
-        <button mat-menu-item>
-          <i-tabler name="message-report"></i-tabler>
-          <span>Reportar</span>
+    <!-- Post info --> 
+    <div *ngIf="post" class="card flex-col gap-1">
+      <div class="flex-between-center">
+        <p class="ft-label">{{ post.user.fullName ?? post.user.email }} - {{ post.createdAt|timeAgo }}</p>
+  
+        <button class="small-icon-button" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Opciones">
+          <i-tabler name="dots-vertical"></i-tabler>
         </button>
-        <!-- <a mat-menu-item [routerLink]="['/posts/edit', post.id]" *ngIf="ownPost"> -->
-        <a mat-menu-item [routerLink]="['/posts/edit', post.id]">
-          <i-tabler name="pencil"></i-tabler>
-          <span>Editar</span>
-        </a>
-        <!-- <button mat-menu-item (click)="deletePost(post)" *ngIf="ownPost"> -->
-        <button mat-menu-item>
-          <i-tabler name="trash"></i-tabler>
-          <span>Eliminar</span>
-        </button>
-      </mat-menu>
-    </div>
-
-    <h2><a class="a-style-none ft-title">{{ post.title }}</a></h2>
-    <p><a class="a-style-none ft-body">{{ post.description }}</a></p>
-
-    <div class="ft-body flex-start-center gap-05">
-      <i-tabler name="file-description" class="small-icon"></i-tabler>
-      <span class="ft-label">{{ post.totalFiles }} Documentos</span>
-    </div>
-    <div class="flex-col gap-05 ft-body">
-      <div class="flex-center-center gap-05">
-        <button
-          matRipple
-          class="w-100 min-w-0"
-          [ngClass]="currentFile?.url === post.mainFile.url 
-            ? 'rounded-button bg- txt-on-'+post.mainFile.accentColor+' bg-'+post.mainFile.accentColor
-            : 'rounded-border-button txt-'+post.mainFile.accentColor"
-          (click)="viewDocument(post.mainFile); scroll(filePreview)">
-            <span class="text-ellipsis">{{ post.mainFile.name }}</span>
-            <span>{{ post.mainFile.ext }}</span>
-        </button>
-        <a mat-icon-button [href]="post.mainFile.url" download
-          [target]="post.mainFile.ngxDocViewer === 'office' ? '_self' : '_blank'" aria-label="Descargar">
-          <i-tabler name="download" class="txt-on-background"></i-tabler>
-        </a>
+        <mat-menu #menu="matMenu">
+          <!-- <button mat-menu-item (click)="reportPost(post)" *ngIf="!ownPost"> -->
+          <button mat-menu-item>
+            <i-tabler name="message-report"></i-tabler>
+            <span>Reportar</span>
+          </button>
+          <!-- <a mat-menu-item [routerLink]="['/posts/edit', post.id]" *ngIf="ownPost"> -->
+          <a mat-menu-item [routerLink]="['/posts/edit', post.id]">
+            <i-tabler name="pencil"></i-tabler>
+            <span>Editar</span>
+          </a>
+          <!-- <button mat-menu-item (click)="deletePost(post)" *ngIf="ownPost"> -->
+          <button mat-menu-item>
+            <i-tabler name="trash"></i-tabler>
+            <span>Eliminar</span>
+          </button>
+        </mat-menu>
       </div>
-
-      <ng-container *ngFor="let file of post.supportingMaterial">
+  
+      <h2><a class="a-style-none ft-title">{{ post.title }}</a></h2>
+      <p><a class="a-style-none ft-body">{{ post.description }}</a></p>
+  
+      <div class="ft-body flex-start-center gap-05">
+        <i-tabler name="file-description" class="small-icon"></i-tabler>
+        <span class="ft-label">{{ post.totalFiles }} Documentos</span>
+      </div>
+      <div class="flex-col gap-05 ft-body">
         <div class="flex-center-center gap-05">
           <button
             matRipple
             class="w-100 min-w-0"
-            [ngClass]="currentFile?.url === file.url 
-              ? 'rounded-button bg- txt-on-'+file.accentColor+' bg-'+file.accentColor
-              : 'rounded-border-button txt-'+file.accentColor"
-            (click)="viewDocument(file); scroll(filePreview)">
-              <span class="text-ellipsis">{{ file.name }}</span>
-              <span>{{ file.ext }}</span>
+            [ngClass]="currentFile?.url === post.mainFile.url 
+              ? 'rounded-button bg- txt-on-'+post.mainFile.accentColor+' bg-'+post.mainFile.accentColor
+              : 'rounded-border-button txt-'+post.mainFile.accentColor"
+            (click)="viewDocument(post.mainFile); scroll(filePreview)">
+              <span class="text-ellipsis">{{ post.mainFile.name }}</span>
+              <span>{{ post.mainFile.ext }}</span>
           </button>
-          <a mat-icon-button [href]="file.url" download
-            [target]="file.ngxDocViewer === 'office' ? '_self' : '_blank'" aria-label="Descargar">
+          <a mat-icon-button [href]="post.mainFile.url" download
+            [target]="post.mainFile.ngxDocViewer === 'office' ? '_self' : '_blank'" aria-label="Descargar">
             <i-tabler name="download" class="txt-on-background"></i-tabler>
           </a>
         </div>
-      </ng-container>
-    </div>
-
-    <div class="ft-label flex-center-center flex-wrap gap-05">
-      <span class="rounded-tag--slime bg-academic-level txt-on-academic-level flex-grow-1">{{ post.academicLevel.name }}</span>
-      <span class="rounded-tag--slime bg-axis txt-on-axis flex-grow-1">{{ post.axis.name }}</span>
-      <span class="rounded-tag--slime bg-subject txt-on-subject flex-grow-1">{{ post.axis.subject.name }}</span>
-    </div>
-
-    <div class="ft-label flex-between-center f-weight-500">
-      <div class="flex-wrap gap-05">
-        <div class="flex-center-center gap-025">
-          <i-tabler name="heart" class="small-icon"></i-tabler>
-          <span>{{ post.totalLikes }} Me gusta</span>
-        </div>
-        <div class="flex-center-center gap-025">
-          <i-tabler name="eye" class="small-icon"></i-tabler>
-          <span>{{ post.totalViews }} Visualizaciones</span>
-        </div>
+  
+        <ng-container *ngFor="let file of post.supportingMaterial">
+          <div class="flex-center-center gap-05">
+            <button
+              matRipple
+              class="w-100 min-w-0"
+              [ngClass]="currentFile?.url === file.url 
+                ? 'rounded-button bg- txt-on-'+file.accentColor+' bg-'+file.accentColor
+                : 'rounded-border-button txt-'+file.accentColor"
+              (click)="viewDocument(file); scroll(filePreview)">
+                <span class="text-ellipsis">{{ file.name }}</span>
+                <span>{{ file.ext }}</span>
+            </button>
+            <a mat-icon-button [href]="file.url" download
+              [target]="file.ngxDocViewer === 'office' ? '_self' : '_blank'" aria-label="Descargar">
+              <i-tabler name="download" class="txt-on-background"></i-tabler>
+            </a>
+          </div>
+        </ng-container>
       </div>
   
-      <button mat-icon-button aria-label="Dar me gusta">
-        <i-tabler [name]="post.alreadyLiked ? 'heart-filled' : 'heart'"></i-tabler>
-      </button>
+      <div class="ft-label flex-center-center flex-wrap gap-05">
+        <span class="rounded-tag--slime bg-academic-level txt-on-academic-level flex-grow-1">{{ post.academicLevel.name }}</span>
+        <span class="rounded-tag--slime bg-axis txt-on-axis flex-grow-1">{{ post.axis.name }}</span>
+        <span class="rounded-tag--slime bg-subject txt-on-subject flex-grow-1">{{ post.axis.subject.name }}</span>
+      </div>
+  
+      <div class="ft-label flex-between-center f-weight-500">
+        <div class="flex-wrap gap-05">
+          <div class="flex-center-center gap-025">
+            <i-tabler name="heart" class="small-icon"></i-tabler>
+            <span>{{ post.totalLikes }} Me gusta</span>
+          </div>
+          <div class="flex-center-center gap-025">
+            <i-tabler name="eye" class="small-icon"></i-tabler>
+            <span>{{ post.totalViews }} Visualizaciones</span>
+          </div>
+        </div>
+    
+        <button mat-icon-button aria-label="Dar me gusta">
+          <i-tabler [name]="post.alreadyLiked ? 'heart-filled' : 'heart'"></i-tabler>
+        </button>
+      </div>
     </div>
+    
+    <!-- Post info shimmer -->
+    <app-post-card-shimmer *ngIf="!post"></app-post-card-shimmer>
   </div>
 
-  <!-- Post info shimmer -->
-  <app-post-card-shimmer class="post-info" *ngIf="!post"></app-post-card-shimmer>
 
   <!-- File viewer -->
   <div class="w-100 card p-05 viewer-contianer" #filePreview>
