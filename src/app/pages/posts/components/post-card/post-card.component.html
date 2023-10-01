@@ -37,9 +37,9 @@
     </div>
 
     <div class="flex ft-label gap-05">
-      <div class="rounded-border-tag--slime">{{ post.mainFile.ext }}</div>
+      <div class="rounded-border-tag--slime txt-{{post.mainFile.accentColor}}">{{ post.mainFile.ext }}</div>
       <ng-container *ngFor="let file of post.supportingMaterial">
-        <div class="rounded-border-tag--slime">{{ file.ext }}</div>
+        <div class="rounded-border-tag--slime txt-{{file.accentColor}}">{{ file.ext }}</div>
       </ng-container>
     </div>
   </div>
