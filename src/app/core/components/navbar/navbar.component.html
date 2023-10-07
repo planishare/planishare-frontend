@@ -16,14 +16,14 @@
     <ul class="ul-style-none flex-col flex-start-center gap-1" [ngClass]="(desktop$|async) ? 'ft-body' : 'ft-headline'">
       <li *ngIf="(authUser$|async)===null"><a
         class="nav-link a-style-none"
-        routerLink="/auth/register"
-        routerLinkActive="active"
-        (click)="closeSidenav()">Registrarse</a></li>
-      <li *ngIf="(authUser$|async)===null"><a
-        class="nav-link a-style-none"
         routerLink="/auth/login"
         routerLinkActive="active"
         (click)="closeSidenav()">Iniciar sesión</a></li>
+      <li *ngIf="(authUser$|async)===null"><a
+        class="nav-link a-style-none"
+        routerLink="/auth/register"
+        routerLinkActive="active"
+        (click)="closeSidenav()">Registrarse</a></li>
       <li *ngIf="authUser$|async"><a
         class="nav-link a-style-none"
         routerLink="/user/profile"
