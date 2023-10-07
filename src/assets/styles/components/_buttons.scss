@@ -1,6 +1,6 @@
 // Rounded button
 .rounded-button,
-.rounded-button--slime {
+.rounded-button--slim {
     color: inherit;
     background-color: inherit;
     text-decoration: none;
@@ -16,7 +16,7 @@
     transition-duration: .25s, .25s, .25s;
 }
 
-.rounded-button--slime {
+.rounded-button--slim {
     padding: .25em .5em;
 }
 
@@ -55,7 +55,7 @@
     .rounded-button:hover:not(:disabled),
     .circle-button:hover:not(:disabled),
     .rounded-border-button:hover:not(:disabled),
-    .rounded-button--slime:hover:not(:disabled) {
+    .rounded-button--slim:hover:not(:disabled) {
         transform: translateY(-.5px);
     }
 }
@@ -63,14 +63,14 @@
 .rounded-button:active:not(:disabled),
 .circle-button:active:not(:disabled),
 .rounded-border-button:active:not(:disabled),
-.rounded-button--slime:active:not(:disabled) {
+.rounded-button--slim:active:not(:disabled) {
     transform: translateY(2px);
 }
 
 .rounded-button:disabled,
 .circle-button:disabled,
 .rounded-border-button:disabled,
-.rounded-button--slime:disabled {
+.rounded-button--slim:disabled {
     background-color: rgba(0, 0, 0, .1);
     color: black;
 }

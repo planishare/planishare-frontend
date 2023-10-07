@@ -37,17 +37,17 @@
     </div>
 
     <div class="flex ft-label gap-05">
-      <div class="rounded-border-tag--slime txt-{{post.mainFile.accentColor}}">{{ post.mainFile.ext }}</div>
+      <div class="rounded-border-tag--slim txt-{{post.mainFile.accentColor}}">{{ post.mainFile.ext }}</div>
       <ng-container *ngFor="let file of post.supportingMaterial">
-        <div class="rounded-border-tag--slime txt-{{file.accentColor}}">{{ file.ext }}</div>
+        <div class="rounded-border-tag--slim txt-{{file.accentColor}}">{{ file.ext }}</div>
       </ng-container>
     </div>
   </div>
 
   <div class="ft-label flex-center-center flex-wrap gap-05">
-    <span class="rounded-tag--slime bg-academic-level txt-on-academic-level flex-grow-1">{{ post.academicLevel.name }}</span>
-    <span class="rounded-tag--slime bg-axis txt-on-axis flex-grow-1">{{ post.axis.name }}</span>
-    <span class="rounded-tag--slime bg-subject txt-on-subject flex-grow-1">{{ post.axis.subject.name }}</span>
+    <span class="rounded-tag--slim bg-academic-level txt-on-academic-level flex-grow-1">{{ post.academicLevel.name }}</span>
+    <span class="rounded-tag--slim bg-axis txt-on-axis flex-grow-1">{{ post.axis.name }}</span>
+    <span class="rounded-tag--slim bg-subject txt-on-subject flex-grow-1">{{ post.axis.subject.name }}</span>
   </div>
 
   <div class="ft-label flex-between-center f-weight-500">
