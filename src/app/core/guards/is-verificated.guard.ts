@@ -21,7 +21,7 @@ export class IsVerificatedGuard implements CanActivate {
     }
 
     private isVerificated(): Observable<boolean> {
-        return this.authService.servicesLoaded$
+        return this.authService.loaded$
             .pipe(
                 filter(loaded => !!loaded),
                 switchMap(() => {

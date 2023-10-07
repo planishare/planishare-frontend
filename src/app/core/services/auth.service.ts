@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, filter, from, map, Observable, of, retry, skip, switchMap, take, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, catchError, filter, from, map, Observable, of, first, skip, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import {
@@ -29,15 +29,17 @@ import { IAuthUser } from '../models/auth.model';
 })
 export class AuthService {
     // Emits the Firebase accessToken even if is anon auth
-    private _accessToken$ = new BehaviorSubject<string | null>(null);
+    private _accessToken$ = new BehaviorSubject<string|null>(null);
     public accessToken$ = this._accessToken$.asObservable();
 
     // Emits true when Firebase auth completes and initial services are loaded.
-    private _servicesLoaded$ = new BehaviorSubject<boolean>(false);
-    public servicesLoaded$ = this._servicesLoaded$.asObservable();
+    private _loaded$ = new BehaviorSubject<boolean>(false);
+    public loaded$ = this._loaded$.asObservable();
 
     // Store user authentication data. TODO: use as observable
     public user: IAuthUser|null = null;
+    private _user$ = new Subject<IAuthUser|null>();
+    public user$ = this._user$.asObservable();
 
     // To manage internal service logic related to registration
     private _alreadyRegistered$ = new BehaviorSubject<boolean>(false);
@@ -51,63 +53,42 @@ export class AuthService {
         private router: Router
     ) {
         let isFirstAccess = true;
-        onAuthStateChanged(auth, (user: User | null) => {
+        onAuthStateChanged(auth, (user: User|null) => {
             this._alreadyRegistered$.next(isFirstAccess);
             isFirstAccess = false;
 
             if (!user) {
-                this.router.navigate(['/auth/login']);
                 this.authLog('onAuthStateChanged: no auth', user);
-                signInAnonymously(this.auth);
-                return;
-            }
-
-            if (user.isAnonymous) {
-                this.authLog('onAuthStateChanged: anonymous auth', user);
-                user.getIdToken().then(token => {
-                    this.user = {
-                        firebaseUser: user,
-                        isAnon: true
-                    };
-                    this._accessToken$.next(token);
-                    this._servicesLoaded$.next(true);
-                    this._alreadyRegistered$.next(false);
-                });
+                this._alreadyRegistered$.next(false);
+                this._accessToken$.next(null);
+                this._loaded$.next(true);
                 return;
             }
 
             // Login with email or Login/Register with Google
             this.authLog('onAuthStateChanged: auth', user);
-            this._alreadyRegistered$.pipe(
-                filter(value => value),
-                take(1),
-                switchMap(() => {
-                    return from(user.getIdToken());
-                }),
-                switchMap((token: string) => {
-                    this.user = {
-                        firebaseUser: user,
-                        isAnon: false
-                    };
-                    this._accessToken$.next(token);
-                    return this.userService.getUserProfileByEmail(user.email!);
-                }),
+            from(user.getIdToken()).pipe(
+                first(),
                 catchError(() => {
                     this.commonSnackbarMsg.showErrorMessage();
                     this.logout();
                     return of();
-                }),
-                takeUntil(this._servicesLoaded$.pipe(skip(1)))
-            ).subscribe((data: IUserDetail) => {
-                this.setUserDetail(new UserDetail(data));
-                this._servicesLoaded$.next(true);
+                })
+            ).subscribe((token: string) => {
+                this.user = { firebaseUser: user };
+                this._user$.next(this.user);
+                this._accessToken$.next(token);
+                this._loaded$.next(true);
+
+                this.userService.getUserProfileByEmail(user.email!).subscribe(user => {
+                    this.setUserDetail(new UserDetail(user)); // TODO: delete this method
+                });
             });
-            return;
         },
         error => {
             console.log(error);
             this.commonSnackbarMsg.showErrorMessage();
-            this._servicesLoaded$.next(true);
+            this._loaded$.next(true);
         });
     }
 
@@ -119,13 +100,13 @@ export class AuthService {
                 }),
                 switchMap(() => {
                     this.firebaseAuthService.sendEmailVerification();
-                    return this._servicesLoaded$.asObservable();
+                    return this._loaded$.asObservable();
                 }),
                 filter(loaded => !!loaded)
             );
     }
 
-    public registerInPlanishare(newUser: IUserForm | LoginCredentials): Observable<any> {
+    public registerInPlanishare(newUser: IUserForm|LoginCredentials): Observable<any> {
         return this.http.post(environment.planishare.protectedAnon + '/auth/register/', newUser).pipe(
             tap(() => {
                 this._alreadyRegistered$.next(true);
@@ -137,7 +118,7 @@ export class AuthService {
         return from(signInWithEmailAndPassword(this.auth, credentials.email, credentials.password)).pipe(
             tap(() => this._alreadyRegistered$.next(true)),
             switchMap(() => {
-                return this._servicesLoaded$.asObservable();
+                return this._loaded$.asObservable();
             }),
             filter(loaded => !!loaded)
         );
@@ -145,7 +126,7 @@ export class AuthService {
 
     public loginWithGoogle(): Observable<boolean> {
         return from(signInWithPopup(this.auth, new GoogleAuthProvider())).pipe(
-            switchMap((userCredential: UserCredential | any) => {
+            switchMap((userCredential: UserCredential|any) => {
                 const data = userCredential._tokenResponse;
                 if (data.isNewUser) {
                     const newUser: IUserForm = {
@@ -159,34 +140,37 @@ export class AuthService {
                 return of(userCredential);
             }),
             switchMap(() => {
-                return this._servicesLoaded$.asObservable();
+                return this._loaded$.asObservable();
             }),
             filter(loaded => !!loaded)
         );
     }
 
     public logout(): void {
-        this._servicesLoaded$.next(false);
+        this._loaded$.next(false);
         signOut(this.auth);
+        this.router.navigate(['/']);
     }
 
     // Current user methods
-    public setUserDetail(data: UserDetail | null) {
-        if (this.user && !this.user.isAnon) {
+    public setUserDetail(data: UserDetail|null) {
+        if (this.user) {
             this.user.detail = data ?? undefined;
-            localStorage.setItem('authUserDetail', JSON.stringify(data ?? {}));
+            this._user$.next(this.user);
+            localStorage.setItem('authUserDetail', JSON.stringify(data ?? {})); // For Rollbar logs
         }
     }
 
-    public getUserDetail(): UserDetail | null {
+    public getUserDetail(): UserDetail|null {
         return this.user?.detail ?? null;
     }
 
-    public refreshUserDetail(): Observable<IUserDetail | null> {
-        if (this.user && !this.user.isAnon) {
+    public refreshUserDetail(): Observable<IUserDetail|null> {
+        if (this.user) {
             return this.userService.getUserProfileByEmail(this.user.firebaseUser.email!).pipe(
                 tap((userDetail: IUserDetail) => {
                     this.user!.detail = new UserDetail(userDetail);
+                    this._user$.next(this.user);
                 })
             );
         }

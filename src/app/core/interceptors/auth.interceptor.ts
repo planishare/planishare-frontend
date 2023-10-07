@@ -24,16 +24,18 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     public addAccessToken(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-        return this.authService.accessToken$.pipe(
-            filter(token => !!token),
-            first(), // To complete the observable after get token
+        return this.authService.loaded$.pipe(
+            first(),
+            filter(loaded => !!loaded),
+            switchMap(() => this.authService.accessToken$),
+            first(),
             switchMap(token => {
                 const req = request.clone({
                     setHeaders: {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                return next.handle(req);
+                return token ? next.handle(req) : next.handle(request);
             })
         );
     }

@@ -14,36 +14,39 @@
   </button>
   <nav class="nav container p-y-3 bg-on-primary txt-primary" [ngClass]="{'open': navOpen}">
     <ul class="ul-style-none flex-col flex-start-center gap-1" [ngClass]="(desktop$|async) ? 'ft-body' : 'ft-headline'">
-      <li><a
+      <li *ngIf="(authUser$|async)===null"><a
         class="nav-link a-style-none"
         routerLink="/auth/register"
         routerLinkActive="active"
-        (click)="navOpen=false">Registrarse</a></li>
-      <li><a
+        (click)="closeSidenav()">Registrarse</a></li>
+      <li *ngIf="(authUser$|async)===null"><a
         class="nav-link a-style-none"
         routerLink="/auth/login"
         routerLinkActive="active"
-        (click)="navOpen=false">Iniciar sesión</a></li>
-      <li><a
+        (click)="closeSidenav()">Iniciar sesión</a></li>
+      <li *ngIf="authUser$|async"><a
         class="nav-link a-style-none"
         routerLink="/user/profile"
         routerLinkActive="active"
-        (click)="navOpen=false">Mi perfil</a></li>
-      <li><a
+        (click)="closeSidenav()">Mi perfil</a></li>
+      <li *ngIf="authUser$|async"><a
         class="nav-link a-style-none"
         routerLink="/user/posts"
         routerLinkActive="active"
-        (click)="navOpen=false">Mis publicaciones</a></li>
-      <li><a
+        (click)="closeSidenav()">Mis publicaciones</a></li>
+      <li *ngIf="authUser$|async"><a
         class="nav-link a-style-none"
         routerLink="/posts/create"
         routerLinkActive="active"
-        (click)="navOpen=false">Crear publicación</a></li>
+        (click)="closeSidenav()">Crear publicación</a></li>
       <li><a
         class="rounded-button"
         [ngClass]="(desktop$|async) ? 'bg-on-primary txt-primary' : 'bg-primary txt-on-primary'"
         routerLink="/posts"
-        (click)="navOpen=false">Ver planificaciones</a></li>
+        (click)="closeSidenav()">Ver planificaciones</a></li>
+      <li *ngIf="(authUser$|async) && (desktop$|async)===false"><button
+        class="rounded-button txt-red"
+        (click)="logout(); closeSidenav()">Cerrar sesión</button></li>
     </ul>
   </nav>
 </header>

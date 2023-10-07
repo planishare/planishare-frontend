@@ -441,7 +441,7 @@ export class PostsService {
     // Academic Level, Subjects and IAxis
     public getAcademicLevels(): Observable<IAcademicLevel[]> {
         if (!!!this.academicLevels) {
-            return this.http.get<IAcademicLevel[]>(environment.planishare.protectedAnon + '/academic-levels/').pipe(
+            return this.http.get<IAcademicLevel[]>(environment.planishare.public + '/academic-levels/').pipe(
                 tap(data => this.academicLevels = data)
             );
         }
@@ -450,7 +450,7 @@ export class PostsService {
 
     public getSubjects(): Observable<ISubject[]> {
         if (!!!this.subjects) {
-            return this.http.get<ISubject[]>(environment.planishare.protectedAnon + '/subjects/').pipe(
+            return this.http.get<ISubject[]>(environment.planishare.public + '/subjects/').pipe(
                 tap(data => this.subjects = data)
             );
         }
@@ -459,7 +459,7 @@ export class PostsService {
 
     public getAxes(): Observable<IAxis[]> {
         if (!!!this.axes) {
-            return this.http.get<IAxis[]>(environment.planishare.protectedAnon + '/axis/').pipe(
+            return this.http.get<IAxis[]>(environment.planishare.public + '/axis/').pipe(
                 tap(data => this.axes = data)
             );
         }
@@ -468,7 +468,7 @@ export class PostsService {
 
     public getSubjectWithAxis(): Observable<ISubjectWithAxis[]> {
         if (!!!this.subjectWithAxes) {
-            return this.http.get<ISubjectWithAxis[]>(environment.planishare.protectedAnon + '/subjects-with-axis/').pipe(
+            return this.http.get<ISubjectWithAxis[]>(environment.planishare.public + '/subjects-with-axis/').pipe(
                 tap(data => this.subjectWithAxes = data)
             );
         }

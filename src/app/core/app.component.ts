@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
         private loadersService: LoadersService
     ) {
         this.windowResize.startListening();
-        this.authService.servicesLoaded$.subscribe(loaded => {
+        this.authService.loaded$.subscribe(loaded => {
             if (loaded && !this.inMaintenance) {
                 this.loadersService.hideBookLoader();
             }

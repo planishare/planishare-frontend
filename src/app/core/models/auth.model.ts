@@ -8,5 +8,4 @@ export type LoginCredentials = {
 export interface IAuthUser {
     detail?: UserDetail;
     firebaseUser: User;
-    isAnon: boolean;
 }

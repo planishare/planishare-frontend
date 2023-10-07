@@ -14,7 +14,8 @@ const routes: Routes = [
             },
             {
                 path: 'auth',
-                loadChildren: () => import('../pages/auth/auth.module').then(mod => mod.AuthModule)
+                loadChildren: () => import('../pages/auth/auth.module').then(mod => mod.AuthModule),
+                canActivate: [IsNotAuthGuard]
             },
             {
                 path: 'posts',
