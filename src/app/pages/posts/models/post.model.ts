@@ -16,6 +16,7 @@ export interface IPostDetail {
     total_likes: number,
     total_views: number,
     already_liked: number|null
+    is_owner: boolean
 }
 
 export class PostDetail {
@@ -33,6 +34,7 @@ export class PostDetail {
     public totalLikes: number;
     public totalViews: number;
     public alreadyLiked: number|null;
+    public isOwner: boolean;
 
     public shortDescription: string;
 
@@ -51,6 +53,7 @@ export class PostDetail {
         this.totalLikes = post.total_likes;
         this.totalViews = post.total_views;
         this.alreadyLiked = post.already_liked;
+        this.isOwner = post.is_owner;
         this.shortDescription = PostDetail.setShortDescription(post.description);
     }
 

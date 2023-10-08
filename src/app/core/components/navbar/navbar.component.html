@@ -31,7 +31,7 @@
         (click)="closeSidenav()">Mi perfil</a></li>
       <li *ngIf="authUser$|async"><a
         class="nav-link a-style-none"
-        routerLink="/user/posts"
+        routerLink="/posts/own-posts"
         routerLinkActive="active"
         (click)="closeSidenav()">Mis publicaciones</a></li>
       <li *ngIf="authUser$|async"><a
@@ -40,12 +40,11 @@
         routerLinkActive="active"
         (click)="closeSidenav()">Crear publicación</a></li>
       <li><a
-        class="rounded-button"
-        [ngClass]="(desktop$|async) ? 'bg-on-primary txt-primary' : 'bg-primary txt-on-primary'"
+        [ngClass]="(desktop$|async) ? 'bg-on-primary txt-primary' : 'nav-link a-style-none'"
         routerLink="/posts"
         (click)="closeSidenav()">Ver planificaciones</a></li>
       <li *ngIf="(authUser$|async) && (desktop$|async)===false"><button
-        class="rounded-button txt-red"
+        class="rounded-button bg-red txt-on-red"
         (click)="logout(); closeSidenav()">Cerrar sesión</button></li>
     </ul>
   </nav>

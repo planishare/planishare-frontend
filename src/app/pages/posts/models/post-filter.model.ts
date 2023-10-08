@@ -3,7 +3,7 @@ import { FilterGroup, FilterOption } from "src/app/shared/models/filter.model";
 export type PostFilters = {
     page: number,
     search?: string,
-    userId?: number,
+    userEmail?: number,
     academicLevel?: FilterOption<number>,
     subject?: FilterOption<number>,
     axis?: FilterOption<number>,
@@ -51,8 +51,8 @@ export class MapPostFilters {
         if (filters.search) {
             params.search = filters.search;
         }
-        if (filters.userId) {
-            params.userId = String(filters.userId);
+        if (filters.userEmail) {
+            params.userEmail = String(filters.userEmail);
         }
         if (filters.academicLevel) {
             params.academicLevel = String(filters.academicLevel.value);
@@ -77,8 +77,8 @@ export class MapPostFilters {
         if (filters.search) {
             params.search = filters.search;
         }
-        if (filters.userId) {
-            params.user__id = String(filters.userId);
+        if (filters.userEmail) {
+            params.user__email = String(filters.userEmail);
         }
         if (filters.academicLevel) {
             params.academic_level__id = String(filters.academicLevel.value);
@@ -99,17 +99,18 @@ export class MapPostFilters {
 export type URLPostsParams = {
     page?: string,
     search?: string,
-    userId?: string,
+    userEmail?: string,
     academicLevel?: string,
     subject?: string,
     axis?: string,
-    ordering?: PostOrderingType
+    ordering?: PostOrderingType,
+    redirectTo?: string // To go back to the page where the filter was applied
 }
 
 export type APIPostsParams = {
     page?: string,
     search?: string,
-    user__id?: string,
+    user__email?: string,
     academic_level__id?: string,
     axis__subject__id?: string,
     axis__id?: string,

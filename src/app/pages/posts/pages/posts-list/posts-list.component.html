@@ -1,4 +1,6 @@
 <main class="container flex-col lg-flex-row gap-05 bg-background p-y-1">
+    <app-user-posts-stats *ngIf="ownPosts"></app-user-posts-stats>
+
     <app-posts-filters
         [filters]="filters"
         [options]="options"
@@ -24,7 +26,7 @@
                 <li *ngFor="let post of posts?.results">
                     <app-post-card
                         [post]="post"
-                        [ownPost]="post.user.id === authUser?.id"
+                        [ownPost]="post.isOwner"
                         [loading]="loading"
                     ></app-post-card>
                 </li>

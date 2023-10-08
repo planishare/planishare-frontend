@@ -15,10 +15,10 @@ import { PostsFiltersComponent } from './components/posts-filters/posts-filters.
 import { PostFilterTagsComponent } from './components/post-filter-tags/post-filter-tags.component';
 import { PostCardShimmerComponent } from './components/post-card-shimmer/post-card-shimmer.component';
 import { PostDetailComponent } from './pages/post-detail/post-detail.component';
+import { UserPostsStatsComponent } from './components/user-posts-stats/user-posts-stats.component';
 // import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 // import { PostFormComponent } from './pages/post-form/post-form.component';
 // import { PostPaginatedListComponent } from './components/post-paginated-list/post-paginated-list.component';
-// import { UserPostsStatsComponent } from './components/user-posts-stats/user-posts-stats.component';
 
 @NgModule({
     declarations: [
@@ -27,10 +27,10 @@ import { PostDetailComponent } from './pages/post-detail/post-detail.component';
         PostsFiltersComponent,
         PostFilterTagsComponent,
         PostCardShimmerComponent,
-        PostDetailComponent
+        PostDetailComponent,
+        UserPostsStatsComponent
         // DeleteDialogComponent,
         // PostFormComponent,
-        // UserPostsStatsComponent
     ],
     imports: [
         CommonModule,

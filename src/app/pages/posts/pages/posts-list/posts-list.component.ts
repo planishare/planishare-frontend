@@ -25,7 +25,6 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
     public loading = true;
     public optionsLoading = true;
     public posts?: Pageable<PostDetail>;
-    public authUser?: UserDetail;
     public options: PostFiltersOptions = {
         academicLevel: [],
         subject: [],
@@ -49,6 +48,7 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
             }
         ]
     };
+    public ownPosts = false;
 
     public desktop$ = this.windowResize.desktop$.pipe(takeUntil(this.ngUnsubscribe$));
     public mobile$ = this.windowResize.mobile$.pipe(takeUntil(this.ngUnsubscribe$));
@@ -64,7 +64,16 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
         private windowResize: WindowResizeService
     ) {
         super();
-        this.authUser = this.authService.getUserDetail() ?? undefined;
+        this.ownPosts = this.activatedRoute.snapshot.routeConfig?.path === 'own-posts';
+
+        // Add redirecTo to the URL
+        this.router.navigate([], {
+            relativeTo: this.activatedRoute,
+            queryParams: {
+                ...this.activatedRoute.snapshot.queryParams,
+                redirectTo: location.pathname
+            }
+        });
     }
 
     public ngOnInit(): void {
@@ -123,6 +132,9 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
         }
 
         this.loading = true;
+        if (this.ownPosts) {
+            apiFilters.user__email = this.authService.user!.firebaseUser.email!;
+        }
         this.postsService.getPosts(apiFilters).pipe(
             map(posts => {
                 return new Pageable<PostDetail>({
@@ -154,9 +166,6 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
         if (params.search) {
             this.filters.search = params.search;
         }
-        if (params.userId) {
-            this.filters.userId = Number(params.userId);
-        }
         if (params.academicLevel) {
             this.filters.academicLevel = { text: 'Nivel académico', value: Number(params.academicLevel) };
         }
@@ -174,7 +183,10 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
     private setQueryParams(queryParams: URLPostsParams): void {
         this.router.navigate([], {
             relativeTo: this.activatedRoute,
-            queryParams: queryParams
+            queryParams: {
+                ...queryParams,
+                redirectTo: location.pathname
+            }
         });
     }
 
