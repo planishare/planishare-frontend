@@ -1,11 +1,13 @@
 <main class="container flex-col lg-flex-row gap-05 bg-background p-y-1">
-    <app-user-posts-stats *ngIf="ownPosts"></app-user-posts-stats>
-
-    <app-posts-filters
-        [filters]="filters"
-        [options]="options"
-        (filtersChange)="changeFilters($event)"
-    ></app-posts-filters>
+    <div class="filters-stats w-100 flex-col gap-1">
+        <app-user-posts-stats *ngIf="ownPosts"></app-user-posts-stats>
+    
+        <app-posts-filters
+            [filters]="filters"
+            [options]="options"
+            (filtersChange)="changeFilters($event)"
+        ></app-posts-filters>
+    </div>
     
     <section class="w-100">
         <div

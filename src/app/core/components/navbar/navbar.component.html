@@ -12,7 +12,7 @@
       <path d="M6 6l12 12"></path>
    </svg>
   </button>
-  <nav class="nav container p-y-3 bg-on-primary txt-primary" [ngClass]="{'open': navOpen}">
+  <nav class="nav container p-y-3 bg-on-primary txt-primary flex-col flex-between-center gap-1" [ngClass]="{'open': navOpen}">
     <ul class="ul-style-none flex-col flex-start-center gap-1" [ngClass]="(desktop$|async) ? 'ft-body' : 'ft-headline'">
       <li *ngIf="(authUser$|async)===null"><a
         class="nav-link a-style-none"
@@ -39,13 +39,14 @@
         routerLink="/posts/create"
         routerLinkActive="active"
         (click)="closeSidenav()">Crear publicación</a></li>
-      <li><a
-        [ngClass]="(desktop$|async) ? 'bg-on-primary txt-primary' : 'nav-link a-style-none'"
-        routerLink="/posts"
-        (click)="closeSidenav()">Ver planificaciones</a></li>
-      <li *ngIf="(authUser$|async) && (desktop$|async)===false"><button
-        class="rounded-button bg-red txt-on-red"
-        (click)="logout(); closeSidenav()">Cerrar sesión</button></li>
+        <li><a
+          [ngClass]="(desktop$|async) ? 'rounded-button bg-on-primary txt-primary' : 'nav-link a-style-none'"
+          routerLink="/posts"
+          (click)="closeSidenav()">Ver publicaciones</a></li>
     </ul>
+
+    <button *ngIf="(authUser$|async) && (desktop$|async)===false"
+        class="rounded-button--slim bg-red txt-on-red"
+        (click)="logout(); closeSidenav()">Cerrar sesión</button>
   </nav>
 </header>

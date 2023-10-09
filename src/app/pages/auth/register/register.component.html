@@ -3,9 +3,9 @@
     <img class="section-image" src="../../../../assets/images/collab-cuate.png" alt="Ilustración de login">
   </div>
 
-  <section class="card flex-col flex-start-center gap-1 text-center ft-body w-100">
+  <section class="card flex-col flex-start-center gap-1 text-center ft-body w-100 max-w-500px">
     <div class="flex-col gap-05">
-      <h1 class="txt-secondary ft-title">Registrarse</h1>
+      <h1 class="txt-primary ft-title">Registrarse</h1>
       <p>Registrate para dar me gusta y subir planificaciones 🙌</p>
     </div>
 
@@ -95,13 +95,13 @@
 
     <div class="flex-col gap-1 w-100">
       <button appLoadingButton [loading]="loadingGoogle"
-        class="rounded-button shadow-md w-100 bg-primary-container txt-on-primary-container"
+        class="rounded-border-button shadow-md w-100 txt-on-background"
         (click)="loginWithGoogle()">
         <img class="" src="/assets/icons/icon-google.svg" alt="Google icon">
         Continuar con Google
       </button>
 
-      <a class="rounded-button shadow-md w-100 bg-blue txt-on-blue" routerLink="/auth/login">
+      <a class="rounded-button shadow-md w-100 bg-secondary txt-on-secondary" routerLink="/auth/login">
         Iniciar sesión
       </a>
     </div>
