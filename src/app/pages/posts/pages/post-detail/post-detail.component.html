@@ -1,6 +1,6 @@
 <main class="container flex-col lg-flex-row gap-05 bg-background p-y-1">
   <div class="flex-col gap-05 post-info">
-    <a matRipple [routerLink]="searchParams.redirectTo" [queryParams]="searchParams"
+    <a *ngIf="searchParams.redirectTo" matRipple [routerLink]="searchParams.redirectTo" [queryParams]="searchParams"
       class="ft-body rounded-button--slim bg-primary txt-on-primary">
       <i-tabler name="arrow-left"></i-tabler>
       <span>Volver a resultados</span>

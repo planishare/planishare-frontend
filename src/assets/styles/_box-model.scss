@@ -63,12 +63,22 @@
     width: 40%;
 }
 
+.w-10 {
+    width: 10%;
+}
+
 .min-w-0 {
     min-width: 0;
 }
 
 .max-w-500px {
     max-width: 500px;
+}
+
+@media (min-width: 64rem) {
+    .lg-max-w-50 {
+        max-width: 50%;
+    }
 }
 
 // Height
