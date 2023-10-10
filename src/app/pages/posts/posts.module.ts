@@ -17,7 +17,7 @@ import { PostCardShimmerComponent } from './components/post-card-shimmer/post-ca
 import { PostDetailComponent } from './pages/post-detail/post-detail.component';
 import { UserPostsStatsComponent } from './components/user-posts-stats/user-posts-stats.component';
 import { PostFormComponent } from './pages/post-form/post-form.component';
-// import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
+import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 
 @NgModule({
     declarations: [
@@ -28,8 +28,8 @@ import { PostFormComponent } from './pages/post-form/post-form.component';
         PostCardShimmerComponent,
         PostDetailComponent,
         UserPostsStatsComponent,
-        PostFormComponent
-        // DeleteDialogComponent,
+        PostFormComponent,
+        DeleteDialogComponent
     ],
     imports: [
         CommonModule,

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, filter, of, take, takeUntil } from 'rxjs';
+import { catchError, filter, of, switchMap, take, takeUntil } from 'rxjs';
 
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PostsService } from 'src/app/pages/posts/services/posts.service';
@@ -9,8 +9,7 @@ import { ReactionsService } from 'src/app/pages/posts/services/reactions.service
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
 import { URLPostsParams } from 'src/app/pages/posts/models/post-filter.model';
-import { UserDetail } from 'src/app/pages/user/models/user.model';
-import { IPostFile, PostDetail, PostFile } from 'src/app/pages/posts/models/post.model';
+import { PostDetail, PostFile } from 'src/app/pages/posts/models/post.model';
 import { viewerType } from 'ngx-doc-viewer';
 
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
@@ -29,7 +28,6 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
     public searchParams: URLPostsParams;
 
     public post?: PostDetail;
-    public user: UserDetail|null;
 
     public currentFile: PostFile|null = null;
     public currentViewer: viewerType|null = null;
@@ -49,7 +47,6 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
         super();
         this.postId = Number(this.route.snapshot.paramMap.get('id'));
         this.searchParams = this.route.snapshot.queryParams;
-        this.user = this.authService.getUserDetail();
     }
 
     public ngOnInit(): void {
@@ -69,7 +66,7 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
                 if (!!firstPreview) {
                     this.viewDocument(firstPreview);
                 }
-                // this.registerView(this.post);
+                this.registerView(this.post);
             });
     }
 
@@ -81,69 +78,84 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
         this.currentFile = file;
     }
 
-    // public report(post: PostDetail): any {
-    //     if (!!!this.user) {
-    //         this.commonSnackbarMsg.showLoginRequiredMessage('crear un reporte');
-    //         return;
-    //     }
+    public reportPost(post: PostDetail): any {
+        this.authService.loaded$.pipe(
+            filter(loaded => !!loaded),
+            switchMap(() => this.authService.user$),
+            take(1),
+            takeUntil(this.ngUnsubscribe$)
+        ).subscribe(user => {
+            if (!user) {
+                this.commonSnackbarMsg.showLoginRequiredMessage('crear un reporte');
+                return;
+            }
 
-    //     this.dialog.open(ReportDialogComponent, {
-    //         data: {
-    //             post,
-    //             userId: this.user?.id
-    //         },
-    //         autoFocus: false,
-    //         maxWidth: '95%'
-    //     });
-    // }
+            this.dialog.open(ReportDialogComponent, {
+                data: {
+                    post,
+                    userId: user.detail?.id
+                },
+                autoFocus: false,
+                maxWidth: '95%'
+            });
+        });
+    }
 
-    // public deletePost(post: PostDetail): void {
-    //     const dialogRef = this.dialog.open(DeleteDialogComponent, {
-    //         data: { post }
-    //     });
+    public deletePost(post: PostDetail): void {
+        const dialogRef = this.dialog.open(DeleteDialogComponent, {
+            data: { post }
+        });
 
-    //     dialogRef.afterClosed().subscribe(done => {
-    //         if (done) {
-    //             this.router.navigate(['/posts'], {
-    //                 queryParams: this.searchParams
-    //             });
-    //         }
-    //     });
-    // }
+        dialogRef.afterClosed().subscribe(done => {
+            if (done) {
+                this.router.navigate(['/posts'], {
+                    queryParams: this.searchParams
+                });
+            }
+        });
+    }
 
-    // public toggleLike(post: PostDetail): any {
-    //     if (!!!this.user) {
-    //         this.commonSnackbarMsg.showLoginRequiredMessage('dar Me gusta');
-    //         return;
-    //     }
+    public toggleLike(post: PostDetail): void {
+        this.authService.loaded$.pipe(
+            filter(loaded => !!loaded),
+            switchMap(() => this.authService.user$),
+            take(1),
+            takeUntil(this.ngUnsubscribe$)
+        ).subscribe(user => {
+            if (!user) {
+                this.commonSnackbarMsg.showLoginRequiredMessage('dar Me gusta');
+                return;
+            }
 
-    //     post.totalLikes = !!post.alreadyLiked ? post.totalLikes - 1 : post.totalLikes + 1;
-    //     post.alreadyLiked = !!post.alreadyLiked ? null : -1;
+            post.totalLikes = !!post.alreadyLiked ? post.totalLikes - 1 : post.totalLikes + 1;
+            post.alreadyLiked = !!post.alreadyLiked ? null : -1;
 
-    //     this.reactionService.toggleLike(this.user.id, post.id)
-    //         .pipe(
-    //             catchError(() => {
-    //                 post.totalLikes = !!post.alreadyLiked ? post.totalLikes - 1 : post.totalLikes + 1;
-    //                 post.alreadyLiked = post.alreadyLiked ?? -1;
-    //                 this.commonSnackbarMsg.showErrorMessage();
-    //                 return of();
-    //             })
-    //         )
-    //         .subscribe(resp => {
-    //             post.alreadyLiked = resp.id!;
-    //         });
-    // }
+            this.reactionService.toggleLike(user.detail!.id, post.id)
+                .pipe(
+                    catchError(() => {
+                        post.totalLikes = !!post.alreadyLiked ? post.totalLikes - 1 : post.totalLikes + 1;
+                        post.alreadyLiked = post.alreadyLiked ?? -1;
+                        this.commonSnackbarMsg.showErrorMessage();
+                        return of();
+                    })
+                )
+                .subscribe(resp => {
+                    post.alreadyLiked = resp.id!;
+                });
+        });
 
-    // private registerView(post: PostDetail): void {
-    //     this.reactionService.registerView(post.id)
-    //         .pipe(
-    //             catchError(() => of()),
-    //             takeUntil(this.ngUnsubscribe$)
-    //         )
-    //         .subscribe(() => {
-    //             this.post!.totalViews += 1;
-    //         });
-    // }
+    }
+
+    private registerView(post: PostDetail): void {
+        this.reactionService.registerView(post.id)
+            .pipe(
+                catchError(() => of()), // TODO: Refactor this endpoint.
+                takeUntil(this.ngUnsubscribe$)
+            )
+            .subscribe(() => {
+                this.post!.totalViews += 1;
+            });
+    }
 
     public scroll(el: HTMLElement): any {
         this.desktop$.pipe(take(1), filter(desktop => !desktop)).subscribe(() => {

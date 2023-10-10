@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, of, forkJoin, map, takeUntil, BehaviorSubject, Subject, switchMap } from 'rxjs';
+import { catchError, of, forkJoin, map, takeUntil, BehaviorSubject, Subject, switchMap, filter, take } from 'rxjs';
 
 import { Pageable } from 'src/app/shared/models/pageable.model';
 import { APIPostsParams, URLPostsParams, MapPostFilters, PostFilters, PostOrderingName, PostOrderingType, PostFiltersOptions } from 'src/app/pages/posts/models/post-filter.model';
@@ -14,6 +14,9 @@ import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 import { FilterOption } from 'src/app/shared/models/filter.model';
 import { UserDetail } from 'src/app/pages/user/models/user.model';
 import { WindowResizeService } from 'src/app/shared/services/window-resize.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ReportDialogComponent } from 'src/app/shared/components/report-dialog/report-dialog.component';
+import { DeleteDialogComponent } from '../../components/delete-dialog/delete-dialog.component';
 
 @Component({
     selector: 'app-posts-list',
@@ -61,7 +64,8 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
         private activatedRoute: ActivatedRoute,
         private commonSnackbarMsg: CommonSnackbarMsgService,
         private router: Router,
-        private windowResize: WindowResizeService
+        private windowResize: WindowResizeService,
+        public dialog: MatDialog
     ) {
         super();
         this.ownPosts = this.activatedRoute.snapshot.routeConfig?.path === 'own-posts';
@@ -201,5 +205,47 @@ export class PostsListComponent extends Unsubscriber implements OnInit {
         this.filters = filters;
         this.getPosts(MapPostFilters.toAPIParams(this.filters));
         this.setQueryParams(MapPostFilters.toURLQueryParams(this.filters));
+    }
+
+    // Post actions
+    public reportPost(post: PostDetail): any {
+        this.authService.loaded$.pipe(
+            filter(loaded => !!loaded),
+            switchMap(() => this.authService.user$),
+            take(1),
+            takeUntil(this.ngUnsubscribe$)
+        ).subscribe(user => {
+            if (!user) {
+                this.commonSnackbarMsg.showLoginRequiredMessage('crear un reporte');
+                return;
+            }
+
+            this.dialog.open(ReportDialogComponent, {
+                data: {
+                    post,
+                    userId: user.detail?.id
+                },
+                autoFocus: false,
+                maxWidth: '95%'
+            });
+        });
+    }
+
+    public deletePost(post: PostDetail): void {
+        const dialogRef = this.dialog.open(DeleteDialogComponent, {
+            data: { post }
+        });
+
+        dialogRef.afterClosed().subscribe(done => {
+            // Check if is the only post in current page
+            const loadPrevPag = this.posts!.count - ( (this.filters.page - 1) * this.posts!.elementsPerPage) > 1;
+            if (loadPrevPag && this.filters.page > 1) {
+                this.filters.page--;
+            }
+
+            if (done) {
+                this.getPosts(MapPostFilters.toAPIParams(this.filters));
+            }
+        });
     }
 }

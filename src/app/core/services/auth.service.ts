@@ -76,7 +76,7 @@ export class AuthService {
                 })
             ).subscribe((token: string) => {
                 this.user = { firebaseUser: user };
-                this._user$.next(this.user);
+                // this._user$.next(this.user);
                 this._accessToken$.next(token);
                 this._loaded$.next(true);
 

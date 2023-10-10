@@ -15,18 +15,15 @@
           <i-tabler name="dots-vertical"></i-tabler>
         </button>
         <mat-menu #menu="matMenu">
-          <!-- <button mat-menu-item (click)="reportPost(post)" *ngIf="!ownPost"> -->
-          <button mat-menu-item>
+          <button mat-menu-item (click)="reportPost(post)" *ngIf="!post.isOwner">
             <i-tabler name="message-report"></i-tabler>
             <span>Reportar</span>
           </button>
-          <!-- <a mat-menu-item [routerLink]="['/posts/edit', post.id]" *ngIf="ownPost"> -->
-          <a mat-menu-item [routerLink]="['/posts/edit', post.id]">
+          <a mat-menu-item [routerLink]="['/posts/edit', post.id]" *ngIf="post.isOwner">
             <i-tabler name="pencil"></i-tabler>
             <span>Editar</span>
           </a>
-          <!-- <button mat-menu-item (click)="deletePost(post)" *ngIf="ownPost"> -->
-          <button mat-menu-item>
+          <button mat-menu-item (click)="deletePost(post)" *ngIf="post.isOwner">
             <i-tabler name="trash"></i-tabler>
             <span>Eliminar</span>
           </button>
@@ -96,7 +93,7 @@
           </div>
         </div>
     
-        <button mat-icon-button aria-label="Dar me gusta">
+        <button mat-icon-button aria-label="Dar me gusta" (click)="toggleLike(post)">
           <i-tabler [name]="post.alreadyLiked ? 'heart-filled' : 'heart'"></i-tabler>
         </button>
       </div>

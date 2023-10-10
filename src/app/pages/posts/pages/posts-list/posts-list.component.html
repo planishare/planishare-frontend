@@ -30,6 +30,8 @@
                         [post]="post"
                         [ownPost]="post.isOwner"
                         [loading]="loading"
+                        (delete)="deletePost($event)"
+                        (report)="reportPost($event)"
                     ></app-post-card>
                 </li>
             </ng-container>
