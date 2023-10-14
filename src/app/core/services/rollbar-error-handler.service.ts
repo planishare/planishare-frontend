@@ -12,18 +12,22 @@ export class RollbarErrorHandlerService implements ErrorHandler {
 
     public handleError(error: Error | HttpErrorResponse) : void {
         console.error(error);
-        const authUserDetail = JSON.parse(localStorage.getItem('authUserDetail') ?? '{}');
-        this.rollbar.configure({
-            payload: {
-                person: {
-                    id: authUserDetail.id ?? 0,
-                    email: authUserDetail.email ?? ''
-                },
-                userDetail: authUserDetail
-            }
-        });
-        const reportedError = error.name === 'HttpErrorResponse' ? (error as HttpErrorResponse).message : (error as Error);
-        this.rollbar.error(reportedError);
+
+        // Reload when a request fail because the token has expired
+        if (error instanceof HttpErrorResponse && error.status === 403 && error.error.detail.includes('Token expired')) {
+            location.reload();
+        } else {
+            const authUserDetail = JSON.parse(localStorage.getItem('authUserDetail') ?? '{}');
+            this.rollbar.configure({
+                payload: {
+                    person: { id: authUserDetail.id ?? 0, email: authUserDetail.email ?? '' },
+                    userDetail: authUserDetail
+                }
+            });
+
+            const reportedError = error instanceof HttpErrorResponse ? error.message : error;
+            this.rollbar.error(reportedError);
+        }
     }
 
 }
