@@ -6,7 +6,7 @@ import { cloneAsJson } from 'src/app/shared/utils/clone-object.util';
 import { WindowResizeService } from 'src/app/shared/services/window-resize.service';
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
 import { takeUntil } from 'rxjs';
-import { inOutYAnimation } from 'src/app/shared/animations/animations';
+import { fadeInOutAnimation, inOutYAnimation } from 'src/app/shared/animations/animations';
 
 @Component({
     selector: 'app-posts-filters[filters][options]',
