@@ -33,6 +33,7 @@ import { FirebaseAuthService } from './services/firebase-auth.service';
 import { IsAuthGuard } from './guards/is-auth.guard';
 import { IsNotAuthGuard } from './guards/is-not-auth.guard';
 import { IsVerificatedGuard } from './guards/is-verificated.guard';
+import { IconsModule } from '../shared/icons/icons.module';
 export function rollbarFactory() {
     return new Rollbar(environment.externalService.rollbar);
 }
@@ -60,7 +61,8 @@ export const RollbarService = new InjectionToken<Rollbar>('rollbar');
             // Register the ServiceWorker as soon as the application is stable
             // or after 30 seconds (whichever comes first).
             registrationStrategy: 'registerWhenStable:30000'
-        })
+        }),
+        IconsModule
     ],
     providers: [
         {

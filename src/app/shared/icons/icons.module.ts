@@ -19,7 +19,9 @@ import {
     IconArrowLeft,
     IconPlus,
     IconSend,
-    IconDeviceFloppy
+    IconDeviceFloppy,
+    IconMenu,
+    IconLogout
 } from 'angular-tabler-icons/icons';
 
 const icons = {
@@ -41,7 +43,9 @@ const icons = {
     IconArrowLeft,
     IconPlus,
     IconSend,
-    IconDeviceFloppy
+    IconDeviceFloppy,
+    IconMenu,
+    IconLogout
 };
 
 @NgModule({
