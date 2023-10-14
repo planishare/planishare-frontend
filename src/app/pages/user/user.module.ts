@@ -8,6 +8,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
+import { IconsModule } from 'src/app/shared/icons/icons.module';
 
 @NgModule({
     declarations: [
@@ -19,7 +20,8 @@ import { EditProfileComponent } from './pages/edit-profile/edit-profile.componen
         SharedModule,
         MaterialModule,
         ReactiveFormsModule,
-        NgxMatSelectSearchModule
+        NgxMatSelectSearchModule,
+        IconsModule
     ]
 })
 export class UserModule { }

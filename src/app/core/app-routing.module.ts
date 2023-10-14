@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { IsNotAuthGuard } from './guards/is-not-auth.guard';
 import { MainLayoutComponent } from './components/main-layout/main-layout.component';
+import { IsAuthGuard } from './guards/is-auth.guard';
 
 const routes: Routes = [
     {
@@ -20,6 +21,11 @@ const routes: Routes = [
             {
                 path: 'posts',
                 loadChildren: () => import('../pages/posts/posts.module').then(mod => mod.PostsModule)
+            },
+            {
+                path: 'user',
+                loadChildren: () => import('../pages/user/user.module').then(mod => mod.UserModule),
+                canActivate: [IsAuthGuard]
             }
         ]
     },

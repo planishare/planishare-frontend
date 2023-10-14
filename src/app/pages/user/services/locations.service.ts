@@ -15,6 +15,6 @@ export class LocationsService {
     ) { }
 
     public getRegionsWithCommunes(): Observable<IRegionWithCommunes[]> {
-        return this.http.get<IRegionWithCommunes[]>(environment.planishare.protectedAnon + '/regions-with-communes/');
+        return this.http.get<IRegionWithCommunes[]>(environment.planishare.public + '/regions-with-communes/');
     }
 }
