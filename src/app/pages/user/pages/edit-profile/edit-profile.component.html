@@ -81,6 +81,22 @@
         </button>
       </div>
     </form>
+
+    <!-- Form shimmer -->
+    <div *ngIf="loadingUser">
+      <div class="shimmer-input-form"></div>
+      <div class="shimmer-input-form"></div>
+      <div class="shimmer-input-form"></div>
+      <div class="shimmer-input-form"></div>
+      <div class="shimmer-input-form"></div>
+      <div class="shimmer-input-form"></div>
+      <div class="flex-end-center ft-body m-t-1">
+        <button matRipple class="rounded-button" disabled>
+          <span>Guardado</span>
+          <i-tabler name="device-floppy"></i-tabler>
+        </button>
+      </div>
+    </div>
   </div>
 
   <div class="card w-100 ft-body h-fit-content">
