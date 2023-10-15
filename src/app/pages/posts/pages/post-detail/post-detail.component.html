@@ -49,11 +49,10 @@
               <span class="text-ellipsis">{{ post.mainFile.name }}</span>
               <span>{{ post.mainFile.ext }}</span>
           </button>
-          <!-- TODO: Fix download button -->
-          <!-- <a mat-icon-button [href]="post.mainFile.url" download
-            [target]="post.mainFile.ngxDocViewer === 'office' ? '_self' : '_blank'" aria-label="Descargar">
+          <a mat-icon-button [href]="post.mainFile.url" download
+            [target]="post.mainFile.viewer?.viewer === 'office' ? '_self' : '_blank'" aria-label="Descargar">
             <i-tabler name="download" class="txt-on-background"></i-tabler>
-          </a> -->
+          </a>
         </div>
   
         <ng-container *ngFor="let file of post.supportingMaterial">
@@ -68,11 +67,10 @@
                 <span class="text-ellipsis">{{ file.name }}</span>
                 <span>{{ file.ext }}</span>
             </button>
-            <!-- TODO: Fix download button -->
-            <!-- <a mat-icon-button [href]="file.url" download
-              [target]="file.ngxDocViewer === 'office' ? '_self' : '_blank'" aria-label="Descargar">
+            <a mat-icon-button [href]="file.url" download
+              [target]="post.mainFile.viewer?.viewer === 'office' ? '_self' : '_blank'" aria-label="Descargar">
               <i-tabler name="download" class="txt-on-background"></i-tabler>
-            </a> -->
+            </a>
           </div>
         </ng-container>
       </div>
@@ -126,15 +124,14 @@
 
     <!-- Not viewer available -->
     <div *ngIf="post && currentFile && !currentFile.viewer" class="flex-col flex-center-center gap-05 text-center">
-      <img class="no-preview-image" src="/assets/images/construction-cuate.png" alt="Vista previa no disponible">
+      <img class="no-preview-image w-100" src="/assets/images/construction-cuate.png" alt="Vista previa no disponible">
       <p class="ft-title txt-primary">Vista previa no disponible 😢</p>
       <div class="flex-center-center ft-body txt-secondary">
         <p>Pero puedes descargar el archivo</p>
-        <!-- TODO: Fix download button -->
-        <!-- <a mat-icon-button [href]="currentFile.url" [download]="currentFile.fullName"
-          [target]="currentFile?.ngxDocViewer === 'office' ? '_self' : '_blank'" aria-label="Descargar">
-          <i-tabler name="download" class="txt-on-background"></i-tabler>
-        </a> -->
+        <a mat-icon-button [href]="currentFile.url" [download]="currentFile.fullName"
+          [target]="post.mainFile.viewer?.viewer === 'office' ? '_self' : '_blank'" aria-label="Descargar">
+          <i-tabler name="download"></i-tabler>
+        </a>
       </div>
       <p class="ft-label">Estamos trabajando para que puedas previsualizar más archivos en Planishare 👀</p>
     </div>

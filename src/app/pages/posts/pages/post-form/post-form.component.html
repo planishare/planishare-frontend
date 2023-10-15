@@ -132,11 +132,10 @@
             <span class="text-ellipsis" [attr.aria-label]="file.fullName">{{ file.fullName }}</span>
           </div>
           <div *ngIf="file.uploadCompleted" class="flex-start-center gap-05">
-            <!-- TODO: Fix download button -->
-            <!-- <a mat-icon-button [href]="file.url" download [target]="file.ngxDocViewer === 'office' ? '_self' : '_blank'"
+            <a mat-icon-button [href]="file.url" download [target]="file.viewer?.viewer === 'office' ? '_self' : '_blank'"
               aria-label="Descargar">
               <i-tabler name="download" class="txt-blue"></i-tabler>
-            </a> -->
+            </a>
             <button *ngIf="!editForm" (click)="removeFile(i)" mat-icon-button aria-label="Remover">
               <i-tabler name="trash" class="txt-red"></i-tabler>
             </button>
