@@ -1,0 +1,31 @@
+.banner__text {
+    text-align: center;
+}
+
+.banner__image {
+    max-width: 100%;
+}
+
+@media(min-width: 48rem)  {
+    .banner {
+        flex-direction: row;
+    }
+
+    .banner__text {
+        text-align: unset;
+    }
+
+    .banner__action-button {
+        width: fit-content;
+    }
+
+    .banner__image {
+        max-width: 40%;
+    }
+}
+
+@media(min-width: 64rem)  {
+    .banner__text {
+        max-width: 50ch;
+    }
+}

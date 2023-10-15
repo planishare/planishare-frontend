@@ -5,7 +5,7 @@ import {
     HttpEvent,
     HttpInterceptor
 } from '@angular/common/http';
-import { filter, Observable, switchMap, first } from 'rxjs';
+import { filter, Observable, switchMap, take } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { environment } from 'src/environments/environment';
 
@@ -24,16 +24,17 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     public addAccessToken(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-        return this.authService.accessToken$.pipe(
-            filter(token => !!token),
-            first(), // To complete the observable after get token
+        return this.authService.loaded$.pipe(
+            filter(loaded => !!loaded),
+            switchMap(() => this.authService.accessToken$),
+            take(1),
             switchMap(token => {
                 const req = request.clone({
                     setHeaders: {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                return next.handle(req);
+                return token ? next.handle(req) : next.handle(request);
             })
         );
     }

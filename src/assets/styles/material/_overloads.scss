@@ -1,4 +1,4 @@
-// ngx-mat-select-search tablet and mobile fix
+// // ngx-mat-select-search tablet and mobile fix
 @media (max-width: calc(48rem - 1px)) {
     .mat-select-search-input {
         padding: 0 0 0 16px !important;
@@ -21,27 +21,33 @@
     }
 }
 
-// Material icons
-.small-icon.mat-icon {
-    width: fit-content;
-    font-size: 18px;
-}
+// // Material icons
+// .small-icon.mat-icon {
+//     width: fit-content;
+//     font-size: 18px;
+// }
 
-.mat-icon {
-    height: fit-content !important;
-}
+// .mat-icon {
+//     height: fit-content !important;
+// }
 
-// Material buttons
-.mat-stroked-button,
-.mat-flat-button,
-.mat-raised-button {
-    border-radius: 100px !important;
-}
+// // Material buttons
+// .mat-stroked-button,
+// .mat-flat-button,
+// .mat-raised-button {
+//     border-radius: 100px !important;
+// }
 
-.mat-stroked-button:hover,
-.mat-flat-button:hover,
-.mat-raised-button:hover {
-    opacity: .9;
+// .mat-stroked-button:hover,
+// .mat-flat-button:hover,
+// .mat-raised-button:hover {
+//     opacity: .9;
+// }
+
+// Material icon buttons
+.mat-menu-item i-tabler {
+    margin-right: 16px;
+    vertical-align: middle;
 }
 
 // Material dialogs
@@ -49,16 +55,29 @@
     border-radius: 15px !important;
 }
 
-@media (min-width: 48rem) {
-    .mat-dialog-container {
-        border-radius: 18px !important;
-    }
-}
-
 // Dialog pannelClasses
 .default-dialog {
     border-radius: 12px !important;
-    background-color: hsl(var(--clr-white), .7);
+    background-color: var(--clr-background);
     backdrop-filter: blur(20px);
-    color: hsl(var(--clr-grey-dark), .8);
+    color: var(--clr-on-background);
+}
+
+// Icons
+i-tabler.small-icon {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+}
+
+.mat-icon-button.small-icon-button {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+
+    i-tabler {
+        width: 16px;
+        height: 16px;
+        min-width: 16px;
+    }
 }

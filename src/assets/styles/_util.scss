@@ -1,0 +1,56 @@
+:root {
+    --container-space: min(6%, 2rem);
+}
+
+.container {
+    padding-inline: var(--container-space);
+}
+
+.divided-container {
+    padding-inline: var(--container-space);
+
+    display: grid;
+    grid-template-columns: 1fr;
+    place-content: flex-start center;
+    place-items: center center;
+}
+
+@media(min-width: 48rem)  {
+    .divided-container {
+        grid-template-columns: 1fr 1fr;
+        place-content: center center;
+        place-items: center center;
+    }   
+}
+
+.outline, .outline > * {
+    outline: 1px solid mediumturquoise;
+}
+
+.uppercase { text-transform: uppercase; }
+
+.text-center { text-align: center; }
+
+.text-ellipsis {
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
+
+.fixed-b-r {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 9;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}

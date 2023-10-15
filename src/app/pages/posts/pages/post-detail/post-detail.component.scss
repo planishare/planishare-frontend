@@ -1,0 +1,25 @@
+.post-info {
+    width: 100%;
+    height: min-content;
+}
+
+@media (min-width: 64rem) {
+    .post-info {
+        max-width: 450px;
+    }
+}
+
+.viewer-contianer {
+    height: 85vh;
+    height: 85dvh;
+    resize: vertical;
+    overflow: auto;
+}
+
+.doc-viewer {
+    height: 100%;
+
+    ngx-doc-viewer {
+        height: 100%;
+    }
+}

@@ -1,0 +1,35 @@
+.rounded-tag,
+.rounded-tag--slim {
+    text-decoration: none;
+    border-radius: 100em;
+    border: none;
+    padding: .5em 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+}
+
+.rounded-tag--slim {
+    padding: .25em .5em;
+}
+
+.rounded-tag--slim:has(.mat-icon-button.small-icon-button) {
+    padding-left: calc(.25em + 14px);
+}
+
+.rounded-border-tag,
+.rounded-border-tag--slim {
+    text-decoration: none;
+    border: 2px solid currentColor;
+    border-radius: 100em;
+    padding: .5em 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+}
+
+.rounded-border-tag--slim {
+    padding: .2em .5em;
+}

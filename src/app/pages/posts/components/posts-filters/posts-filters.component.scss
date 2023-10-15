@@ -1,0 +1,46 @@
+:host {
+    width: 100%;
+}
+
+.filters-card {
+    background-color: var(--clr-primary);
+    padding: var(--container-space);
+    width: 100%;
+
+    position: fixed;
+    bottom: 0;
+    height: calc(100% - 72px + 1rem);
+    left: 0;
+    z-index: 3;
+
+    transition: bottom linear .2s;
+}
+
+.filter-selects {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 48rem) {
+    .filter-selects {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (min-width: 64rem) {
+    :host {
+        max-width: 350px;
+    }
+
+    .filters-card {
+        border-radius: 20px;
+        position: sticky;
+        top: calc(72px + 1rem);
+        z-index: 1;
+        height: unset;
+    }
+
+    .filter-selects {
+        grid-template-columns: 1fr;
+    }
+}

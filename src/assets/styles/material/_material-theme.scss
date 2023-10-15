@@ -11,8 +11,10 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$planishare-primary: mat.define-palette(mat.$blue-palette, 700);
-$planishare-accent: mat.define-palette(mat.$blue-palette, A200);
+$planishare-primary: mat.define-palette(mat.$green-palette, 900);
+$planishare-accent: mat.define-palette(mat.$purple-palette, 800);
+// $planishare-primary: mat.define-palette(mat.$green-palette, 900);
+// $planishare-accent: mat.define-palette(mat.$purple-palette, 800);
 
 // The warn palette is optional (defaults to red).
 $planishare-warn: mat.define-palette(mat.$red-palette, 700);
@@ -33,12 +35,3 @@ $planishare-theme: mat.define-light-theme((
 @include mat.all-component-themes($planishare-theme);
 
 // Custom theme tool: shorturl.at/fRWZ3
-
-// Icon style
-.material-icons {
-  font-size: 24px;
-  font-family: 'Material Icons Outlined', 'Material Icons';
-  .mat-badge-content {
-    font-family: 'Manrope';
-  }
-}

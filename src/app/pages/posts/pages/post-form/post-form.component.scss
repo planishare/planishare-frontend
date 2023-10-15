@@ -1,0 +1,36 @@
+// .container {
+//     display: flex;
+//     align-items: flex-start;
+//     justify-content: space-between;
+//     gap: 1rem;
+//     padding-bottom: 1.5rem;
+//     flex-wrap: wrap;
+// }
+
+// @media (min-width: 48rem) {
+//     .container {
+//         flex-wrap: nowrap;
+//     }
+    
+//     .right-card {
+//         width: 500px;
+//     }
+// }
+
+
+.upload-area {
+    border: 3px var(--clr-primary) dashed;
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.upload-area_invalid {
+    border-color: var(--clr-red);
+}
+
+// .file-box {
+//     padding: .5rem;
+//     width: 100%;
+//     max-width: 60px;
+//     border-radius: 10px;
+// }

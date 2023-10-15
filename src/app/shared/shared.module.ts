@@ -5,12 +5,12 @@ import { RouterModule } from '@angular/router';
 
 import { MaterialModule } from '../material.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { IconsModule } from './icons/icons.module';
 
-import { NavbarComponent } from './components/navbar/navbar.component';
-import { NavigationSidenavComponent } from './components/navigation-sidenav/navigation-sidenav.component';
 import { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
 import { RoundedSelectComponent } from './components/rounded-select/rounded-select.component';
 import { ScrollToTopButtonComponent } from './components/scroll-to-top-button/scroll-to-top-button.component';
+import { PaginationStatusComponent } from './components/pagination-status/pagination-status.component';
 
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { FillArrayPipe } from './pipes/fill-array.pipe';
@@ -18,6 +18,7 @@ import { TruncatePipe } from './pipes/truncate.pipe';
 
 import { DragAndDropFileDirective } from './directives/drag-and-drop-file.directive';
 import { DebounceClickDirective } from './directives/debounce-click.directive';
+import { LoadingButtonDirective } from './directives/loading-button.directive';
 
 @NgModule({
     declarations: [
@@ -32,25 +33,25 @@ import { DebounceClickDirective } from './directives/debounce-click.directive';
 
         // Components
         ReportDialogComponent,
-        NavbarComponent,
-        NavigationSidenavComponent,
         RoundedSelectComponent,
-        ScrollToTopButtonComponent
+        ScrollToTopButtonComponent,
+        LoadingButtonDirective,
+        PaginationStatusComponent
     ],
     imports: [
         CommonModule,
         MaterialModule,
         NgxMatSelectSearchModule,
         ReactiveFormsModule,
-        RouterModule
+        RouterModule,
+        IconsModule
     ],
     exports: [
         // Components
-        NavbarComponent,
-        NavigationSidenavComponent,
         RoundedSelectComponent,
         ReportDialogComponent,
         ScrollToTopButtonComponent,
+        PaginationStatusComponent,
 
         // Pipes
         TimeAgoPipe,
@@ -59,7 +60,8 @@ import { DebounceClickDirective } from './directives/debounce-click.directive';
 
         // Directives
         DragAndDropFileDirective,
-        DebounceClickDirective
+        DebounceClickDirective,
+        LoadingButtonDirective
     ]
 })
 export class SharedModule { }

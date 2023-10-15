@@ -1,0 +1,87 @@
+<main class="container divided-container gap-1 p-y-1 bg-primary">
+  <div *ngIf="(mobile$|async)===false">
+    <img class="section-image" src="../../../../assets/images/collab-cuate.png" alt="Ilustración de login">
+  </div>
+
+  <section class="card flex-col flex-start-center gap-1 text-center ft-body w-100 max-w-500px">
+    <div class="flex-col gap-05">
+      <h1 class="txt-primary ft-title">Registrarse</h1>
+      <p>Registrate para dar me gusta y subir planificaciones 🙌</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="registerWithEmailAndPassword($event)">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Email" formControlName="email" type="email">
+        <mat-error *ngIf="form.controls.email.invalid && form.controls.email.errors!['required']">
+          Debes ingresar un email
+        </mat-error>
+        <mat-error *ngIf="form.controls.email.invalid && form.controls.email.errors!['email']">
+          Debes ingresar un email válido
+        </mat-error>
+        <mat-error *ngIf="form.controls.email.invalid && form.controls.email.errors!['alreadyUsed']">
+          Ya existe una cuenta registrada con este email 👀
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Contraseña</mat-label>
+        <input matInput placeholder="Contraseña" formControlName="password"
+          [type]="showPassword? 'text' : 'password'">
+          <button matSuffix type="button" class="button-style-none" (click)="showPassword = !showPassword">
+            <i-tabler *ngIf="showPassword" name="eye-off"></i-tabler>
+            <i-tabler *ngIf="!showPassword" name="eye"></i-tabler>
+          </button>
+        <mat-error *ngIf="form.controls.password.invalid && form.controls.password.errors!['required']">
+          Debes ingresar una contraseña
+        </mat-error>
+        <mat-error *ngIf="form.controls.password.invalid && form.controls.password.errors!['minLength']">
+          Debes ingresar una contraseña con almenos 8 carácteres
+        </mat-error>
+        <mat-error *ngIf="form.controls.password.invalid && form.controls.password.errors!['pattern']">
+          Debes ingresar una contraseña con almenos una letra y un número
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Repetir contraseña</mat-label>
+        <input matInput placeholder="Repetir contraseña" formControlName="passwordConfirmation"
+          [type]="showPasswordConfirmation? 'text' : 'password'">
+          <button matSuffix type="button" class="button-style-none" (click)="showPasswordConfirmation = !showPasswordConfirmation">
+            <i-tabler *ngIf="showPasswordConfirmation" name="eye-off"></i-tabler>
+            <i-tabler *ngIf="!showPasswordConfirmation" name="eye"></i-tabler>
+          </button>
+        <mat-error *ngIf="form.controls.passwordConfirmation.invalid && form.controls.passwordConfirmation.errors!['required']">
+          Debes repetir la contraseña
+        </mat-error>
+        <mat-error *ngIf="form.controls.passwordConfirmation.invalid && form.controls.passwordConfirmation.errors!['notSame']">
+          Las contraseñas ingresadas no coinciden
+        </mat-error>
+      </mat-form-field>
+
+      <button appLoadingButton [loading]="loading"
+        class="rounded-button bg-primary txt-on-primary w-100 m-t-1 shadow-md" type="submit">
+        Registrarse
+      </button>
+    </form>
+
+    <div class="flex-center-center gap-05">
+      <mat-divider class="w-100"></mat-divider>
+      <span>o</span>
+      <mat-divider class="w-100"></mat-divider>
+    </div>
+
+    <div class="flex-col gap-1 w-100">
+      <button appLoadingButton [loading]="loadingGoogle"
+        class="rounded-border-button shadow-md w-100 txt-on-background"
+        (click)="loginWithGoogle()">
+        <img class="" src="/assets/icons/icon-google.svg" alt="Google icon">
+        Continuar con Google
+      </button>
+
+      <a class="rounded-button shadow-md w-100 bg-secondary txt-on-secondary" routerLink="/auth/login">
+        Iniciar sesión
+      </a>
+    </div>
+  </section>
+</main>

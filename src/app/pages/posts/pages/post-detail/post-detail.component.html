@@ -1,0 +1,139 @@
+<main class="container flex-col lg-flex-row gap-05 bg-background p-y-1">
+  <div class="flex-col gap-05 post-info">
+    <a *ngIf="searchParams.redirectTo" matRipple [routerLink]="searchParams.redirectTo" [queryParams]="searchParams"
+      class="ft-body rounded-button--slim bg-primary txt-on-primary">
+      <i-tabler name="arrow-left"></i-tabler>
+      <span>Volver a resultados</span>
+    </a>
+
+    <!-- Post info --> 
+    <div *ngIf="post" class="card flex-col gap-1">
+      <div class="flex-between-center">
+        <p class="ft-label">{{ post.user.fullName ?? post.user.email }} - {{ post.createdAt|timeAgo }}</p>
+  
+        <button class="small-icon-button" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Opciones">
+          <i-tabler name="dots-vertical"></i-tabler>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="reportPost(post)" *ngIf="!post.isOwner">
+            <i-tabler name="message-report"></i-tabler>
+            <span>Reportar</span>
+          </button>
+          <a mat-menu-item [routerLink]="['/posts/edit', post.id]" *ngIf="post.isOwner">
+            <i-tabler name="pencil"></i-tabler>
+            <span>Editar</span>
+          </a>
+          <button mat-menu-item (click)="deletePost(post)" *ngIf="post.isOwner">
+            <i-tabler name="trash"></i-tabler>
+            <span>Eliminar</span>
+          </button>
+        </mat-menu>
+      </div>
+  
+      <h2><a class="a-style-none ft-title">{{ post.title }}</a></h2>
+      <p><a class="a-style-none ft-body">{{ post.description }}</a></p>
+  
+      <div class="ft-body flex-start-center gap-05">
+        <i-tabler name="file-description" class="small-icon"></i-tabler>
+        <span class="ft-label">{{ post.totalFiles }} Documentos</span>
+      </div>
+      <div class="flex-col gap-05 ft-body">
+        <div class="flex-center-center gap-05">
+          <button
+            matRipple
+            class="w-100 min-w-0"
+            [ngClass]="currentFile?.url === post.mainFile.url 
+              ? 'rounded-button bg- txt-on-'+post.mainFile.accentColor+' bg-'+post.mainFile.accentColor
+              : 'rounded-border-button txt-'+post.mainFile.accentColor"
+            (click)="viewDocument(post.mainFile); scroll(filePreview)">
+              <span class="text-ellipsis">{{ post.mainFile.name }}</span>
+              <span>{{ post.mainFile.ext }}</span>
+          </button>
+          <a mat-icon-button [href]="post.mainFile.url" download
+            [target]="post.mainFile.viewer?.viewer === 'office' ? '_self' : '_blank'" aria-label="Descargar">
+            <i-tabler name="download" class="txt-on-background"></i-tabler>
+          </a>
+        </div>
+  
+        <ng-container *ngFor="let file of post.supportingMaterial">
+          <div class="flex-center-center gap-05">
+            <button
+              matRipple
+              class="w-100 min-w-0"
+              [ngClass]="currentFile?.url === file.url 
+                ? 'rounded-button bg- txt-on-'+file.accentColor+' bg-'+file.accentColor
+                : 'rounded-border-button txt-'+file.accentColor"
+              (click)="viewDocument(file); scroll(filePreview)">
+                <span class="text-ellipsis">{{ file.name }}</span>
+                <span>{{ file.ext }}</span>
+            </button>
+            <a mat-icon-button [href]="file.url" download
+              [target]="post.mainFile.viewer?.viewer === 'office' ? '_self' : '_blank'" aria-label="Descargar">
+              <i-tabler name="download" class="txt-on-background"></i-tabler>
+            </a>
+          </div>
+        </ng-container>
+      </div>
+  
+      <div class="ft-label flex-center-center flex-wrap gap-05">
+        <span class="rounded-tag--slim bg-academic-level txt-on-academic-level flex-grow-1">{{ post.academicLevel.name }}</span>
+        <span class="rounded-tag--slim bg-axis txt-on-axis flex-grow-1">{{ post.axis.name }}</span>
+        <span class="rounded-tag--slim bg-subject txt-on-subject flex-grow-1">{{ post.axis.subject.name }}</span>
+      </div>
+  
+      <div class="ft-label flex-between-center f-weight-500">
+        <div class="flex-wrap gap-05">
+          <div class="flex-center-center gap-025">
+            <i-tabler name="heart" class="small-icon"></i-tabler>
+            <span>{{ post.totalLikes }} Me gusta</span>
+          </div>
+          <div class="flex-center-center gap-025">
+            <i-tabler name="eye" class="small-icon"></i-tabler>
+            <span>{{ post.totalViews }} Visualizaciones</span>
+          </div>
+        </div>
+    
+        <button mat-icon-button aria-label="Dar me gusta" (click)="toggleLike(post)">
+          <i-tabler [name]="post.alreadyLiked ? 'heart-filled' : 'heart'"></i-tabler>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Post info shimmer -->
+    <app-post-card-shimmer *ngIf="!post"></app-post-card-shimmer>
+  </div>
+
+
+  <!-- File viewer -->
+  <div class="w-100 card p-05 viewer-contianer" #filePreview>
+    <!-- Shimmer -->
+    <div class="shimmer-loading h-100" *ngIf="!currentFile"></div>
+
+    <!-- Native view -->
+    <ng-container *ngIf="currentFile?.viewer?.type === fileViewType.NATIVE_VIEWER">
+      <div class="flex-center-center h-100" *ngIf="currentFile?.viewer?.viewer === 'img'">
+        <img class="w-100 max-w-600px" [src]="currentFile?.url" [alt]="currentFile?.name">
+      </div>
+    </ng-container>
+
+    <!-- NGX Doc viewer -->
+    <div class="doc-viewer shimmer-loading" *ngIf="currentFile?.viewer?.type === fileViewType.NGX_DOC_VIEWER">
+      <ngx-doc-viewer [url]="currentFile!.url" [viewer]="$any(currentFile!.viewer!.viewer)">
+      </ngx-doc-viewer>
+    </div>
+
+    <!-- Not viewer available -->
+    <div *ngIf="post && currentFile && !currentFile.viewer" class="flex-col flex-center-center gap-05 text-center">
+      <img class="max-w-350px w-100" src="/assets/images/construction-cuate.png" alt="Vista previa no disponible">
+      <p class="ft-title txt-primary">Vista previa no disponible 😢</p>
+      <div class="flex-center-center ft-body txt-secondary">
+        <p>Pero puedes descargar el archivo</p>
+        <a mat-icon-button [href]="currentFile.url" [download]="currentFile.fullName"
+          [target]="post.mainFile.viewer?.viewer === 'office' ? '_self' : '_blank'" aria-label="Descargar">
+          <i-tabler name="download"></i-tabler>
+        </a>
+      </div>
+      <p class="ft-label">Estamos trabajando para que puedas previsualizar más archivos en Planishare 👀</p>
+    </div>
+  </div>
+</main>

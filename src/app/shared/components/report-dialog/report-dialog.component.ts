@@ -4,10 +4,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, of } from 'rxjs';
 
-import { ReportType } from 'src/app/shared/enums/report.enum';
-import { APIReportBody, ReportInput } from 'src/app/shared/types/report.type';
+import { ReportType } from 'src/app/shared/models/report.enum';
+import { APIReportBody, ReportInput } from 'src/app/shared/models/report.model';
 
-import { ReportService } from 'src/app/features/posts/services/report.service';
+import { ReportService } from 'src/app/pages/posts/services/report.service';
 import { CommonSnackbarMsgService } from '../../services/common-snackbar-msg.service';
 import { inOutLeftAnimation, inOutRightAnimation } from '../../animations/animations';
 

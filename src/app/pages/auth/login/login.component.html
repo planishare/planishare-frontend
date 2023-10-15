@@ -1,0 +1,69 @@
+<main class="container divided-container gap-1 p-y-1 bg-primary">
+  <div *ngIf="(mobile$|async)===false">
+    <img class="section-image" src="../../../../assets/images/fingerprint-cuate.png" alt="Ilustración de login">
+  </div>
+
+  <section class="card flex-col flex-start-center gap-1 text-center ft-body w-100 max-w-500px">
+    <div class="flex-col gap-05">
+      <h1 class="txt-primary ft-title">Iniciar sesión</h1>
+      <p>Que bueno verte de nuevo 🙌</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="loginWithEmailAndPassword($event)" class="w-100">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Email" formControlName="email" type="email">
+        <mat-error *ngIf="form.controls.email.invalid && form.controls.email.errors!['required']">
+          Debes ingresar un email
+        </mat-error>
+        <mat-error *ngIf="form.controls.email.invalid && form.controls.email.errors!['email']">
+          Debes ingresar un email válido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Contraseña</mat-label>
+        <input matInput placeholder="Contraseña" formControlName="password" [type]="showPassword? 'text' : 'password'">
+        <button matSuffix type="button" class="button-style-none" (click)="showPassword = !showPassword">
+          <i-tabler *ngIf="showPassword" name="eye-off"></i-tabler>
+          <i-tabler *ngIf="!showPassword" name="eye"></i-tabler>
+        </button>
+        <mat-error
+          *ngIf="!wrongCredentials && form.controls.password.invalid && form.controls.password.errors!['required']">
+          Debes ingresar una contraseña
+        </mat-error>
+        <mat-error *ngIf="wrongCredentials">
+          El email y/o contraseña ingresados son incorrectos
+        </mat-error>
+      </mat-form-field>
+
+      <button appLoadingButton [loading]="loading"
+        class="rounded-button bg-primary txt-on-primary w-100 m-t-1 shadow-md" type="submit">
+        Iniciar sesión
+      </button>
+    </form>
+
+    <div class="flex-center-center gap-05">
+      <mat-divider class="w-100"></mat-divider>
+      <span>o</span>
+      <mat-divider class="w-100"></mat-divider>
+    </div>
+
+    <div class="flex-col gap-1 w-100">
+      <button appLoadingButton [loading]="loadingGoogle"
+        class="rounded-border-button shadow-md w-100 txt-on-background"
+        (click)="loginWithGoogle()">
+        <img class="" src="/assets/icons/icon-google.svg" alt="Google icon">
+        Continuar con Google
+      </button>
+
+      <a class="rounded-button shadow-md w-100 bg-secondary txt-on-secondary" routerLink="/auth/register">
+        Registrarse
+      </a>
+
+      <button class="txt-blue button-style-none" (click)="openForgotPasswordDialog()">
+        ¿Olvidaste tu contraseña? <span *ngIf="wrongCredentials">👀</span>
+      </button>
+    </div>
+  </section>
+</main>
