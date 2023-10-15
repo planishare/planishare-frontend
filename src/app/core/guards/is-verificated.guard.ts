@@ -29,7 +29,7 @@ export class IsVerificatedGuard implements CanActivate {
                         return of(true);
                     }
                     this.commonSnackbarMsgService.showVerficatedMessage();
-                    return this.router.navigate(['/','auth','login']);
+                    return of(false);
                 })
             );
     }

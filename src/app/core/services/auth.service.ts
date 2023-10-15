@@ -41,9 +41,6 @@ export class AuthService {
     private _user$ = new BehaviorSubject<IAuthUser|null>(this.user);
     public user$ = this._user$.asObservable();
 
-    // To manage internal service logic related to registration
-    private _alreadyRegistered$ = new BehaviorSubject<boolean>(false);
-
     constructor(
         private auth: Auth,
         private http: HttpClient,
@@ -52,14 +49,9 @@ export class AuthService {
         private firebaseAuthService: FirebaseAuthService,
         private router: Router
     ) {
-        let isFirstAccess = true;
         onAuthStateChanged(auth, (user: User|null) => {
-            this._alreadyRegistered$.next(isFirstAccess);
-            isFirstAccess = false;
-
             if (!user) {
                 this.authLog('onAuthStateChanged: no auth', user);
-                this._alreadyRegistered$.next(false);
                 this._accessToken$.next(null);
                 this._loaded$.next(true);
                 return;
@@ -80,9 +72,7 @@ export class AuthService {
                 this._accessToken$.next(token);
                 this._loaded$.next(true);
 
-                this.userService.getUserProfileByEmail(user.email!).subscribe(user => {
-                    this.setUserDetail(new UserDetail(user)); // TODO: delete this method
-                });
+                this.requestUserDetail(user.email!).subscribe();
             });
         },
         error => {
@@ -107,16 +97,13 @@ export class AuthService {
     }
 
     public registerInPlanishare(newUser: IUserForm|LoginCredentials): Observable<any> {
-        return this.http.post(environment.planishare.protectedAnon + '/auth/register/', newUser).pipe(
-            tap(() => {
-                this._alreadyRegistered$.next(true);
-            })
+        return this.http.post(environment.planishare.public + '/auth/register/', newUser).pipe(
+            switchMap(() => this.requestUserDetail(this.user?.firebaseUser.email!))
         );
     }
 
     public loginWithEmailAndPassword(credentials: LoginCredentials): Observable<boolean> {
         return from(signInWithEmailAndPassword(this.auth, credentials.email, credentials.password)).pipe(
-            tap(() => this._alreadyRegistered$.next(true)),
             switchMap(() => {
                 return this._loaded$.asObservable();
             }),
@@ -136,7 +123,6 @@ export class AuthService {
                     };
                     return this.registerInPlanishare(newUser).pipe(map(() => userCredential));
                 }
-                this._alreadyRegistered$.next(true);
                 return of(userCredential);
             }),
             switchMap(() => {
@@ -152,29 +138,16 @@ export class AuthService {
         this.router.navigate(['/']);
     }
 
-    // Current user methods
-    public setUserDetail(data: UserDetail|null) {
-        if (this.user) {
-            this.user.detail = data ?? undefined;
-            this._user$.next(this.user);
-            localStorage.setItem('authUserDetail', JSON.stringify(data ?? {})); // For Rollbar logs
-        }
-    }
-
-    public getUserDetail(): UserDetail|null {
-        return this.user?.detail ?? null;
-    }
-
-    public refreshUserDetail(): Observable<IUserDetail|null> {
-        if (this.user) {
-            return this.userService.getUserProfileByEmail(this.user.firebaseUser.email!).pipe(
-                tap((userDetail: IUserDetail) => {
-                    this.user!.detail = new UserDetail(userDetail);
+    public requestUserDetail(email: string): Observable<IUserDetail|null> {
+        return this.userService.getUserProfileByEmail(email).pipe(
+            tap((userDetail: IUserDetail) => {
+                if (this.user) {
+                    this.user.detail = new UserDetail(userDetail);
                     this._user$.next(this.user);
-                })
-            );
-        }
-        return of(null);
+                    localStorage.setItem('authUserDetail', JSON.stringify(userDetail ?? {})); // For Rollbar logs
+                }
+            })
+        );
     }
 
     // Utils

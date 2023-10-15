@@ -213,7 +213,7 @@ export class PostFormComponent extends Unsubscriber implements OnInit {
 
     private createPost(): void {
         this.loading = true;
-        const userId = this.authService.getUserDetail()?.id;
+        const userId = this.authService.user?.detail?.id ?? null;
         const files = this.form.controls.files.value!;
         if (this.form.valid && userId) {
             const postData: IPostForm = {

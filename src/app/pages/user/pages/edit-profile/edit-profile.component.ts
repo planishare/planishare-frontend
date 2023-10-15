@@ -86,7 +86,7 @@ export class EditProfileComponent extends Unsubscriber implements OnInit {
         const dataRequests = forkJoin([
             this.occupationService.getEducations(),
             this.locationService.getRegionsWithCommunes(),
-            this.authService.refreshUserDetail()
+            this.authService.requestUserDetail(this.authService.user!.firebaseUser.email!)
         ]);
 
         dataRequests.pipe(
@@ -179,10 +179,7 @@ export class EditProfileComponent extends Unsubscriber implements OnInit {
                 this.matSnackBar.open('Perfil actualizado 🙌', 'Cerrar', { duration: 2000 });
                 this.saving = false;
                 this.saved = true;
-
-                const userDetail = this.authService.getUserDetail();
-                userDetail?.update(newUserDetail);
-                this.authService.setUserDetail(userDetail);
+                this.authService.requestUserDetail(this.authService.user!.firebaseUser.email!).subscribe();
             });
     }
 

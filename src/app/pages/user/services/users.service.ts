@@ -14,11 +14,7 @@ export class UsersService {
     ) { }
 
     public isEmailAvailable(email: string): Observable<any> {
-        return this.http.get(`${environment.planishare.protectedAnon}/users/is-email-available/${email}/`);
-    }
-
-    public getUserById(id: number): Observable<IUserDetail> {
-        return this.http.get<IUserDetail>(`${environment.planishare.protectedAnon}/users/${id}/`);
+        return this.http.get(`${environment.planishare.public}/users/is-email-available/${email}/`);
     }
 
     public getUserProfileByEmail(email: string): Observable<IUserDetail> {

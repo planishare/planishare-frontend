@@ -43,9 +43,9 @@ export class UserPostsStatsComponent extends Unsubscriber implements OnInit {
             filter(user => !!user?.detail),
             takeUntil(this.ngUnsubscribe$)
         ).subscribe(user => {
-            this.stats.posts.value = user?.detail?.totalPosts;
-            this.stats.views.value = user?.detail?.totalViews;
-            this.stats.likes.value = user?.detail?.totalLikes;
+            this.stats.posts.value = user?.detail?.totalPosts ?? 0;
+            this.stats.views.value = user?.detail?.totalViews ?? 0;
+            this.stats.likes.value = user?.detail?.totalLikes ?? 0;
 
             if (this.stats.posts.value) {
                 if (this.stats.views.value) {
