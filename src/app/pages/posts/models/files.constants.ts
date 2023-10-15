@@ -1,4 +1,5 @@
 import { viewerType } from "ngx-doc-viewer";
+import { NativeViewer } from "./post.model";
 
 export const FILE_COLOR = {
     doc: 'blue',
@@ -15,7 +16,21 @@ export const FILE_COLOR = {
     pdf: 'red'
 };
 
-export const DOCUMENT_VIEWER: { [key: string]: viewerType } = {
+export const NATIVE_VIEWER: { [key: string]: NativeViewer } = {
+    jpg: 'img',
+    jpeg: 'img',
+    png: 'img',
+    gif: 'img',
+    bmp: 'img',
+    webp: 'img',
+    svg: 'img',
+    tiff: 'img',
+    ico: 'img',
+    heif: 'img',
+    jp2: 'img'
+};
+
+export const NGX_DOC_VIEWER: { [key: string]: viewerType } = {
     doc: 'office',
     docm: 'office',
     docx: 'office',

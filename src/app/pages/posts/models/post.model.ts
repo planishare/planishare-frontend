@@ -1,5 +1,5 @@
 import { IUserSimpleDetail, UserSimpleDetail } from "../../user/models/user.model";
-import { DOCUMENT_VIEWER, FILE_COLOR } from "./files.constants";
+import { NGX_DOC_VIEWER, FILE_COLOR, NATIVE_VIEWER } from "./files.constants";
 import { viewerType } from "ngx-doc-viewer";
 
 export interface IPostDetail {
@@ -87,14 +87,17 @@ export type ISubjectWithAxis = {
     axis: IAxis[]
 }
 
-export interface IPostFile {
-    url: string,
-    name: string,
-    fullName: string,
-    ext: string,
-    accentColor: string,
-    ngxDocViewer: viewerType|null
+export type FileViewer = {
+    type: FILE_VIEWER_TYPE,
+    viewer: viewerType|NativeViewer
+};
+
+export enum FILE_VIEWER_TYPE {
+    NGX_DOC_VIEWER,
+    NATIVE_VIEWER
 }
+
+export type NativeViewer = 'img';
 
 export class PostFile {
     public url: string;
@@ -102,7 +105,8 @@ export class PostFile {
     public name: string;
     public ext: string;
     public accentColor: string;
-    public ngxDocViewer: viewerType|null;
+
+    public viewer: FileViewer|null;
 
     // To upload file
     public progress: number;
@@ -130,7 +134,16 @@ export class PostFile {
         // TODO: Simplify this
         this.url = url;
         this.accentColor = FILE_COLOR[this.ext.slice(1) as keyof typeof FILE_COLOR] ?? 'secondary';
-        this.ngxDocViewer = DOCUMENT_VIEWER[this.ext.replace('.','')] ?? null;
+
+        // Get viewer
+        const ext = this.ext.replace('.','');
+        if (NGX_DOC_VIEWER[ext]) {
+            this.viewer = { type: FILE_VIEWER_TYPE.NGX_DOC_VIEWER, viewer: NGX_DOC_VIEWER[ext] };
+        } else if (NATIVE_VIEWER[ext]) {
+            this.viewer = { type: FILE_VIEWER_TYPE.NATIVE_VIEWER, viewer: NATIVE_VIEWER[ext] };
+        } else {
+            this.viewer = null;
+        }
     }
 }
 

@@ -9,7 +9,7 @@ import { ReactionsService } from 'src/app/pages/posts/services/reactions.service
 import { CommonSnackbarMsgService } from 'src/app/shared/services/common-snackbar-msg.service';
 
 import { URLPostsParams } from 'src/app/pages/posts/models/post-filter.model';
-import { PostDetail, PostFile } from 'src/app/pages/posts/models/post.model';
+import { FILE_VIEWER_TYPE, FileViewer, PostDetail, PostFile } from 'src/app/pages/posts/models/post.model';
 import { viewerType } from 'ngx-doc-viewer';
 
 import { Unsubscriber } from 'src/app/shared/utils/unsubscriber';
@@ -30,9 +30,10 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
     public post?: PostDetail;
 
     public currentFile: PostFile|null = null;
-    public currentViewer: viewerType|null = null;
 
     public desktop$ = this.windowResize.desktop$.pipe(takeUntil(this.ngUnsubscribe$));
+
+    public fileViewType = FILE_VIEWER_TYPE;
 
     constructor(
         private route: ActivatedRoute,
@@ -60,9 +61,9 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
             )
             .subscribe(post => {
                 this.post = new PostDetail(post);
-                const firstPreview = !!this.post.mainFile.ngxDocViewer
+                const firstPreview = !!this.post.mainFile.viewer
                     ? this.post.mainFile
-                    : this.post.supportingMaterial.find(file => !!file.ngxDocViewer);
+                    : this.post.supportingMaterial.find(file => !!file.viewer);
                 if (!!firstPreview) {
                     this.viewDocument(firstPreview);
                 }
@@ -72,9 +73,7 @@ export class PostDetailComponent extends Unsubscriber implements OnInit {
 
     public viewDocument(file: PostFile): void {
         // Set null to force reload ngx-doc-viewer
-        this.currentViewer = null;
         this.currentFile = null;
-        this.currentViewer = file.ngxDocViewer;
         this.currentFile = file;
     }
 

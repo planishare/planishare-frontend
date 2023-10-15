@@ -79,6 +79,10 @@
     max-width: 500px;
 }
 
+.max-w-600px {
+    max-width: 600px;
+}
+
 @media (min-width: 64rem) {
     .lg-max-w-50 {
         max-width: 50%;
@@ -86,6 +90,10 @@
 }
 
 // Height
+.h-100 {
+    height: 100%;
+}
+
 .h-100vh {
     height: 100vh;
     height: 100dvh;
