@@ -36,7 +36,7 @@ export class AuthService {
     private _loaded$ = new BehaviorSubject<boolean>(false);
     public loaded$ = this._loaded$.asObservable();
 
-    // Store user authentication data. TODO: use as observable
+    // Store user authentication data
     public user: IAuthUser|null = null;
     private _user$ = new BehaviorSubject<IAuthUser|null>(this.user);
     public user$ = this._user$.asObservable();
