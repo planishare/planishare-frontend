@@ -23,6 +23,12 @@
                 (changePage)="changePage($event)">
             </app-pagination-status>
         </div>
+        <div class="flex-col flex-center-center gap-05 text-center" *ngIf="!loading && posts?.results?.length === 0">
+            <img class="max-w-350px w-100" src="../../../../assets/images/empty-cuate.png" alt="Imagen de sin resultados">
+            <p class="ft-title txt-primary">No se han encontrado resultados 😢</p>
+            <p *ngIf="!ownPosts" class="ft-body txt-secondary">Intenta simplificando tu búsqueda</p>
+            <p *ngIf="ownPosts" class="ft-body txt-secondary">No has creado ninguna publicación</p>
+        </div>
         <ul class="ul-style-none posts-grid gap-05 m-t-1">
             <ng-container *ngIf="!loading">
                 <li *ngFor="let post of posts?.results">
