@@ -9,6 +9,7 @@ import { MaterialModule } from 'src/app/material.module';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ForgotPasswordDialogComponent } from './components/forgot-password-dialog/forgot-password-dialog.component';
+import { IconsModule } from 'src/app/shared/icons/icons.module';
 
 @NgModule({
     declarations: [
@@ -21,7 +22,8 @@ import { ForgotPasswordDialogComponent } from './components/forgot-password-dial
         AuthRoutingModule,
         SharedModule,
         MaterialModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        IconsModule
     ]
 })
 export class AuthModule { }
