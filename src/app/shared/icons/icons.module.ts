@@ -22,7 +22,9 @@ import {
     IconDeviceFloppy,
     IconMenu,
     IconLogout,
-    IconEyeOff
+    IconEyeOff,
+    IconBrandLinkedin,
+    IconPalette
 } from 'angular-tabler-icons/icons';
 
 const icons = {
@@ -47,7 +49,9 @@ const icons = {
     IconDeviceFloppy,
     IconMenu,
     IconLogout,
-    IconEyeOff
+    IconEyeOff,
+    IconBrandLinkedin,
+    IconPalette
 };
 
 @NgModule({

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HomepageRoutingModule } from './homepage-routing.module';
 
 import { HomepageComponent } from './homepage/homepage.component';
+import { IconsModule } from 'src/app/shared/icons/icons.module';
 
 @NgModule({
     declarations: [
@@ -11,7 +12,8 @@ import { HomepageComponent } from './homepage/homepage.component';
     ],
     imports: [
         CommonModule,
-        HomepageRoutingModule
+        HomepageRoutingModule,
+        IconsModule
     ]
 })
 export class HomepageModule { }
