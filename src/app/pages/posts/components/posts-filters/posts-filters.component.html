@@ -41,7 +41,7 @@
     </app-rounded-select>
     
     <app-rounded-select
-      label="Axis"
+      label="Eje temático"
       [control]="axisCtrl"
       [options]="options?.axis ?? []"
       [resetOption]="false"
@@ -52,7 +52,7 @@
     </app-rounded-select>
 
     <app-rounded-select
-      label="Orederar por"
+      label="Ordenar por"
       [control]="orderingCtrl"
       [options]="options?.ordering ?? []"
       [resetOption]="false"
@@ -62,8 +62,8 @@
     </app-rounded-select>
   </div>
 
-  <div class="flex-col gap-05 m-t-3 lg-m-t-1" *ngIf="form.touched || hasFilters">
-    <button *ngIf="form.touched" matRipple class="w-100 rounded-button bg-on-primary txt-primary ft-body" (click)="applyFilters()" @inOutY>
+  <div class="flex-col gap-05 m-t-3 lg-m-t-1" *ngIf="form.dirty || hasFilters">
+    <button *ngIf="form.dirty" matRipple class="w-100 rounded-button bg-on-primary txt-primary ft-body" (click)="applyFilters()" @inOutY>
       <span>Aplicar filtros</span>
       <i-tabler name="filter-check" class="small-icon"></i-tabler>
     </button>

@@ -26,6 +26,12 @@
 
 @media(min-width: 64rem)  {
     .banner__text {
-        max-width: 50ch;
+        max-width: 70ch;
     }
+}
+
+.demo-gif {
+    border-radius: 20px;
+    border: 5px var(--clr-primary) solid;
+    background-color: var(--clr-primary);
 }
