@@ -1,0 +1,16 @@
+main.container {
+    min-height: calc(100vh);
+    min-height: calc(100dvh);
+}
+
+.section-image {
+    max-width: 570px;
+    width: 100%;
+}
+
+@media(min-width: 64rem)  {
+    main.container {
+        min-height: calc(100vh - 72px);
+        min-height: calc(100dvh - 72px);
+    }
+}

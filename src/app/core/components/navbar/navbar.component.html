@@ -1,0 +1,64 @@
+<header class="header bg-primary txt-on-primary container flex-between-center gap-1 p-y-1">
+  <a class="a-style-none ft-medium" routerLink="/">Planishare</a>
+  <button class="button-style-none toggle-nav txt-on-primary" (click)="navOpen = !navOpen" *ngIf="(desktop$|async)===false">
+   <i-tabler *ngIf="!navOpen" name="menu"></i-tabler>
+   <i-tabler *ngIf="navOpen" name="x" class="txt-primary"></i-tabler>
+  </button>
+  <nav class="nav container p-y-3 bg-on-primary txt-primary flex-col flex-between-center gap-1" [ngClass]="{'open': navOpen}">
+    <ul class="ul-style-none flex-col flex-start-center gap-1" [ngClass]="(desktop$|async) ? 'ft-body' : 'ft-headline'">
+      <li *ngIf="(authUser$|async)===null"><a
+        class="nav-link a-style-none"
+        routerLink="/auth/login"
+        routerLinkActive="active"
+        (click)="closeSidenav()">Iniciar sesión</a>
+      </li>
+      <li *ngIf="(authUser$|async)===null"><a
+        class="nav-link a-style-none"
+        routerLink="/auth/register"
+        routerLinkActive="active"
+        (click)="closeSidenav()">Registrarse</a>
+      </li>
+      <li *ngIf="authUser$|async"><a
+        class="nav-link a-style-none"
+        routerLink="/user/profile"
+        routerLinkActive="active"
+        (click)="closeSidenav()">Mi perfil</a>
+      </li>
+      <li *ngIf="authUser$|async"><a
+        class="nav-link a-style-none"
+        routerLink="/posts/own-posts"
+        routerLinkActive="active"
+        (click)="closeSidenav()">Mis publicaciones</a>
+      </li>
+      <li *ngIf="authUser$|async"><a
+        class="nav-link a-style-none"
+        routerLink="/posts/create"
+        routerLinkActive="active"
+        (click)="closeSidenav()">Crear publicación</a>
+      </li>
+      <li><a
+        [ngClass]="(desktop$|async) ? 'rounded-button bg-on-primary txt-primary' : 'nav-link a-style-none'"
+        routerLink="/posts"
+        (click)="closeSidenav()">Ver publicaciones</a>
+      </li>
+      <li *ngIf="(authUser$|async) && (desktop$|async)">
+        <button class="txt-on-primary" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Opciones">
+          <i-tabler name="dots-vertical"></i-tabler>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="logout(); closeSidenav()">
+            <i-tabler name="logout"></i-tabler>
+            <span>Cerrar sesión</span>
+          </button>
+        </mat-menu>
+      </li>
+    </ul>
+
+    <button *ngIf="(authUser$|async) && (desktop$|async)===false"
+    class="rounded-button--slim bg-red txt-on-red"
+    (click)="logout(); closeSidenav()">
+      <i-tabler name="logout"></i-tabler>
+      Cerrar sesión
+    </button>
+  </nav>
+</header>

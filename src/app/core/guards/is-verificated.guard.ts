@@ -21,7 +21,7 @@ export class IsVerificatedGuard implements CanActivate {
     }
 
     private isVerificated(): Observable<boolean> {
-        return this.authService.servicesLoaded$
+        return this.authService.loaded$
             .pipe(
                 filter(loaded => !!loaded),
                 switchMap(() => {
@@ -29,7 +29,7 @@ export class IsVerificatedGuard implements CanActivate {
                         return of(true);
                     }
                     this.commonSnackbarMsgService.showVerficatedMessage();
-                    return this.router.navigate(['/','auth','login']);
+                    return of(false);
                 })
             );
     }

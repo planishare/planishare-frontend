@@ -1,8 +1,8 @@
 import { animate, style, transition, trigger } from "@angular/animations";
 
 // States
-const fromYState = style({ height: 0, opacity: 0, transform: 'translateY(-100%)' });
-const toYState = style({ height: '*', opacity: .8, transform: 'translateY(0)' });
+const fromYState = style({ opacity: .5, transform: 'translateY(100%)' });
+const toYState = style({ opacity: 1, transform: 'translateY(0)' });
 
 const fromLeftState = style({ width: '0', opacity: 0, transform: 'translateX(-100px)', overflowX: 'hidden', whiteSpace: 'nowrap' });
 const fromRightState = style({ width: '0', opacity: 0, transform: 'translateX(100px)', overflowX: 'hidden', whiteSpace: 'nowrap' });

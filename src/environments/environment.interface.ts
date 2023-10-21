@@ -8,6 +8,7 @@ export interface IEnviroment {
     },
     planishare: {
         baseUrl: string,
+        public: string,
         protected: string,
         protectedAnon: string
     }

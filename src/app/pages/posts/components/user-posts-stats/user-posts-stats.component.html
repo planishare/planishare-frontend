@@ -1,0 +1,22 @@
+<div class="card">
+  <div class="flex-center-center gap-05">
+    <h1 class="ft-title">Mis publicaciones</h1>
+    <a mat-icon-button class="txt-blue" aria-label="Crear publicación"
+      [routerLink]="['/posts/create']">
+      <i-tabler name="plus"></i-tabler>
+    </a>
+  </div>
+  
+  <p class="text-center ft-body m-t-05">{{ summary }}</p>
+  <div class="flex-center-center gap-05 m-t-05">
+    <div class="flex-column-center text-center" *ngFor="let stat of stats | keyvalue">
+      <ng-container *ngIf="stat.key !== 'posts'">
+        <div class="flex-center-center">
+          <span class="fs-medium f-weight-500 txt-{{ stat.value.color }}">{{ stat.value.value }}</span>
+          <i-tabler class="txt-{{ stat.value.color }}" [name]="stat.value.icon!"></i-tabler>
+        </div>
+        <span class="fs-body f-weight-500 txt-{{ stat.value.color }}">{{ stat.value.text }}</span>
+      </ng-container>
+    </div>
+  </div>
+</div>

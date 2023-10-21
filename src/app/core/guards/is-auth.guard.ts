@@ -15,18 +15,19 @@ export class IsAuthGuard implements CanActivate {
     public canActivate(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        // Return true if auth user is NOT anonymous
         return this.isAuth();
     }
 
+    // TODO: Allow redirect to specific route after redirect to login
     private isAuth(): Observable<boolean> {
-        return this.authService.servicesLoaded$
+        return this.authService.loaded$
             .pipe(
                 filter(loaded => !!loaded),
                 switchMap(() => {
-                    // TODO: Allow redirect to specific route after redirect to login
-                    const isAuth = !this.authService.user?.isAnon;
-                    return isAuth ? of(true) : this.router.navigate(['/','auth','login']);
+                    return this.authService.accessToken$;
+                }),
+                switchMap(accessToken => {
+                    return !!accessToken ? of(true) : this.router.navigate(['/','auth','login']);
                 })
             );
     }

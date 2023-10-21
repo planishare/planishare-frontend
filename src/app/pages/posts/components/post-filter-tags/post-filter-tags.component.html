@@ -1,0 +1,30 @@
+<button class="ft-label rounded-tag--slim gap-0 shadow-md bg-primary txt-on-primary" *ngIf="filters?.search" @inOutLeft>
+    <span>{{ filters?.search }}</span>
+    <button mat-icon-button class="small-icon-button" (click)="removeFilter('search')">
+        <i-tabler name="x"></i-tabler>
+    </button>
+</button>
+<button class="ft-label rounded-tag--slim gap-0 shadow-md bg-academic-level txt-on-academic-level" *ngIf="filters?.academicLevel" @inOutLeft>
+    <span>{{ filters?.academicLevel?.text }}</span>
+    <button mat-icon-button class="small-icon-button" (click)="removeFilter('academicLevel')">
+        <i-tabler name="x"></i-tabler>
+    </button>
+</button>
+<button class="ft-label rounded-tag--slim gap-0 shadow-md bg-subject txt-on-subject" *ngIf="filters?.subject" @inOutLeft>
+    <span>{{ filters?.subject?.text }}</span>
+    <button mat-icon-button class="small-icon-button" (click)="removeFilter('subject')">
+        <i-tabler name="x"></i-tabler>
+    </button>
+</button>
+<button class="ft-label rounded-tag--slim gap-0 shadow-md bg-axis txt-on-axis" *ngIf="filters?.axis" @inOutLeft>
+    <span>{{ filters?.axis?.text }}</span>
+    <button mat-icon-button class="small-icon-button" (click)="removeFilter('axis')">
+        <i-tabler name="x"></i-tabler>
+    </button>
+</button>
+<button class="ft-label rounded-tag--slim gap-0 shadow-md bg-primary txt-on-primary" *ngIf="filters?.ordering" @inOutLeft>
+    <span>{{ filters?.ordering?.text }}</span>
+    <button mat-icon-button class="small-icon-button" (click)="removeFilter('ordering')">
+        <i-tabler name="x"></i-tabler>
+    </button>
+</button>

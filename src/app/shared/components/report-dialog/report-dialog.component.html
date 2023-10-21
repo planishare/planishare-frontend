@@ -1,8 +1,8 @@
-<h1 class="fs-large">Crear un reporte 🕵️</h1>
+<h1 class="ft-title">Crear un reporte 🕵️</h1>
 <div mat-dialog-content>
-  <p class="m-y-1">Completa los siguientes datos explicando el motivo de tu reporte y lo revisaremos a la brevedad.</p>
+  <p class="m-y-1 ft-body">Completa los siguientes datos explicando el motivo de tu reporte y lo revisaremos a la brevedad.</p>
   <form [formGroup]="form" (ngSubmit)="createReport($event)">
-    <mat-form-field appearance="outline" class="w-100">
+    <mat-form-field appearance="outline" class="w-100 ft-body">
       <mat-label>¿Qué quieres reportar?</mat-label>
       <mat-select formControlName="type">
         <mat-option [value]="reportType.POST">Reportar publicación</mat-option>
@@ -10,7 +10,7 @@
       </mat-select>
     </mat-form-field>
   
-    <mat-form-field appearance="outline" class="w-100">
+    <mat-form-field appearance="outline" class="w-100 ft-body">
       <mat-label>Descripción</mat-label>
       <textarea matInput formControlName="description" cdkTextareaAutosize cdkAutosizeMinRows="3"
         cdkAutosizeMaxRows="20">
@@ -20,14 +20,13 @@
         Debes ingresar una descripción con menos de 1000 carácteres.
       </mat-error>
     </mat-form-field>
-    <div class="flex-end-center gap-025 m-t-1 m-b-05">
-      <button mat-raised-button color="primary" type="submit" *ngIf="!loading" @inOutRight [@.disabled]="!loading">
+    <div class="flex-end-center gap-025 m-t-1 m-b-05 ft-body">
+      <button type="submit" class="rounded-button bg-primary txt-on-primary" appLoadingButton [loading]="loading">
         Enviar
-        <mat-icon class="fs-medium">send</mat-icon>
+        <i-tabler name="send"></i-tabler>
       </button>
-      <div class="shapes-loader" *ngIf="loading" @inOutLeft></div>
       
-      <button mat-flat-button type="button" mat-dialog-close>
+      <button class="rounded-button bg-red txt-on-red" type="button" mat-dialog-close>
         Cancelar
       </button>
     </div>

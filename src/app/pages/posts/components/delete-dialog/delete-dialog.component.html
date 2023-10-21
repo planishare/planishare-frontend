@@ -1,0 +1,17 @@
+<h1 class="ft-title">Eliminar publicación 🗑️</h1>
+<div mat-dialog-content>
+  <p class="m-y-1 ft-body">
+    ¿Seguro que quieres eliminar <span class="fw-700">{{ post!.title }}</span>?
+  </p>
+  <p class="ft-body">No podrás recuperar esta publicación.</p>
+</div>
+<div mat-dialog-actions class="flex-end-center gap-025">
+  <button class="rounded-button bg-orange txt-on-orange" appLoadingButton [loading]="loading" (click)="deletePost()">
+    Eliminar
+    <i-tabler name="trash"></i-tabler>
+  </button>
+
+  <button class="rounded-button bg-red txt-on-red" type="button" mat-dialog-close>
+    Cancelar
+  </button>
+</div>

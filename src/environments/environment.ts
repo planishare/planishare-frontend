@@ -25,9 +25,10 @@ export const environment: IEnviroment = {
         }
     },
     planishare: {
-        baseUrl: 'https://planishare-backend-dev.onrender.com',
-        protected: 'https://planishare-backend-dev.onrender.com/api/protected',
-        protectedAnon: 'https://planishare-backend-dev.onrender.com/api/protected/a'
+        baseUrl: 'https://planishare-backend-dev.azurewebsites.net/api',
+        public: 'https://planishare-backend-dev.azurewebsites.net/api/public',
+        protected: 'https://planishare-backend-dev.azurewebsites.net/api/protected',
+        protectedAnon: `https://planishare-backend-dev.azurewebsites.net/api/protected/allow-no-auth`
     }
 };
 

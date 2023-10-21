@@ -1,0 +1,131 @@
+<main class="container flex-col lg-flex-row gap-05 bg-background p-y-1">
+  <div class="card w-100">
+    <h1 class="ft-title">Editar perfil</h1>
+
+    <form class="m-t-1 ft-body" [formGroup]="form" (ngSubmit)="save($event)" *ngIf="!loadingUser">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Email" [value]="form.controls.email.value" disabled="true">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Nombre</mat-label>
+        <input matInput placeholder="Nombre" formControlName="firstName">
+        <mat-error *ngIf="!!this.form.controls.firstName.errors">Debe tener al menos 2 carácteres de largo</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Apellido</mat-label>
+        <input matInput placeholder="Apellido" formControlName="lastName">
+        <mat-error *ngIf="!!this.form.controls.lastName.errors">Debe tener al menos 2 carácteres de largo</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Ocupación</mat-label>
+        <mat-select formControlName="education" disableOptionCentering>
+          <mat-option *ngFor="let option of educations" [value]="option.id">
+            {{ option.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Comuna</mat-label>
+        <mat-select formControlName="commune" disableOptionCentering>
+          <mat-option>
+            <ngx-mat-select-search [searching]="loadingLocations" [formControl]="searchLocation"
+              placeholderLabel="Buscar por comuna/region" noEntriesFoundLabel="No se encontraron resultados">
+            </ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngIf="!loadingLocations && !!form.get('commune')?.value && !!(filteredLocations|async)?.length"
+            [value]="null">
+            Borrar
+          </mat-option>
+          <mat-optgroup *ngFor="let region of filteredLocations|async" [label]="region.name">
+            <mat-option *ngFor="let commune of region.communes" [value]="commune.id">
+              {{ commune.name }}
+            </mat-option>
+          </mat-optgroup>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Institución</mat-label>
+        <mat-select formControlName="institution" disableOptionCentering>
+          <mat-option>
+            <ngx-mat-select-search [searching]="loadingInstitutions" [formControl]="searchInstitution"
+              placeholderLabel="Escribe para cargar más instituciones"
+              [noEntriesFoundLabel]="!loadingInstitutions ? 'No se encontraron resultados' : 'Cargando...'">
+            </ngx-mat-select-search>
+          </mat-option>
+          <mat-option
+            *ngIf="!loadingInstitutions && !!form.controls.institution.value && !!institutions?.length"
+            [value]="null">
+            Borrar
+          </mat-option>
+          <mat-option *ngFor="let institution of institutions" [value]="institution.id">
+            {{ institution.name }}
+          </mat-option>
+        </mat-select>
+        <mat-hint>Pronto agregaremos más instituciones.</mat-hint>
+      </mat-form-field>
+
+      <div class="flex-end-center ft-body m-t-1">
+        <button *ngIf="!saved" type="submit" matRipple appLoadingButton [loading]="saving" class="rounded-button bg-primary txt-on-primary">
+          <span>Guardar</span>
+          <i-tabler name="send"></i-tabler>
+        </button>
+        <button *ngIf="saved" matRipple class="rounded-button" disabled>
+          <span>Guardado</span>
+          <i-tabler name="device-floppy"></i-tabler>
+        </button>
+      </div>
+    </form>
+
+    <!-- Form shimmer -->
+    <div *ngIf="loadingUser">
+      <div class="shimmer-input-form"></div>
+      <div class="shimmer-input-form"></div>
+      <div class="shimmer-input-form"></div>
+      <div class="shimmer-input-form"></div>
+      <div class="shimmer-input-form"></div>
+      <div class="shimmer-input-form"></div>
+      <div class="flex-end-center ft-body m-t-1">
+        <button matRipple class="rounded-button" disabled>
+          <span>Guardado</span>
+          <i-tabler name="device-floppy"></i-tabler>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card w-100 ft-body h-fit-content">
+    <h2 class="ft-medium">Ayúdanos contandonos más sobre tí :)</h2>
+    <p>¿Para que se usa esta información?</p>
+    <ul>
+      <li>Esta información será visible para todos los usuarios del sitio, incluso para usuarios no registrados.</li>
+      <li>
+        Además, será utilizada exclusivamente por Planishare para realizar análisis o nuevas carácteristicas para la plataforma.
+      </li>
+    </ul>
+
+    <div *ngIf="userVerified" class="m-t-1">
+      <h2 class="ft-medium">Cambiar contraseña</h2>
+      <p>{{ changePasswordMsg }}</p>
+      <div class="flex-end-center m-t-1">
+        <button (click)="resetPassword()" class="rounded-button bg-blue txt-on-blue">
+          <span class="m-r-05">Cambiar contraseña</span>
+        </button>
+      </div>
+    </div>
+    <div *ngIf="!userVerified" class="m-t-1">
+      <h2 class="ft-medium">Verificar cuenta</h2>
+      <p>Revisa tu email y valida tu cuenta para poder crear publicaciones y dar Me gusta 💙</p>
+      <div class="flex-end-center m-t-1">
+        <button (click)="resendEmail()" class="rounded-button bg-blue txt-on-blue">
+          Reenviar correo de verificación
+        </button>
+      </div>
+    </div>
+  </div>
+</main>

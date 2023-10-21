@@ -23,7 +23,8 @@ export const environment: IEnviroment = {
     },
     planishare: {
         baseUrl: 'https://planishare-backend.azurewebsites.net/api',
+        public: 'https://planishare-backend.azurewebsites.net/api/public',
         protected: 'https://planishare-backend.azurewebsites.net/api/protected',
-        protectedAnon: `https://planishare-backend.azurewebsites.net/api/protected/a`
+        protectedAnon: `https://planishare-backend.azurewebsites.net/api/protected/allow-no-auth`
     }
 };

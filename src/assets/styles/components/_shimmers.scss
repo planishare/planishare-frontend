@@ -1,0 +1,63 @@
+// Shimmers loadings
+.shimmer-loading,
+.shimmer-ft-title,
+.shimmer-ft-body,
+.shimmer-ft-label,
+.shimmer-input-form {
+    animation-duration: 2.2s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: shimmer;
+    animation-timing-function: linear;
+    background: #f6f7f8;
+    background: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+    background-size: 1200px 100%;
+}
+
+@-webkit-keyframes shimmer {
+    0% {
+        background-position: -100% 0;
+    }
+
+    100% {
+        background-position: 100% 0;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1200px 0;
+    }
+
+    100% {
+        background-position: 1200px 0;
+    }
+}
+
+.shimmer-input-form {
+    height: calc(var(--body-font-size) * 3);
+    border-radius: 10px;
+    margin-block: var(--body-font-size);
+}
+
+.shimmer-ft-title {
+    height: var(--title-font-size);
+    border-radius: 20px;
+    margin-block: calc((var(--title-line-height) - var(--title-font-size)) / 2);
+}
+
+.shimmer-ft-body {
+    height: var(--body-font-size);
+    border-radius: 8px;
+    margin-block: calc((var(--body-line-height) - var(--body-font-size)) / 2);
+}
+
+.shimmer-ft-label {
+    height: var(--label-font-size);
+    border-radius: 20px;
+    margin-block: calc((var(--label-line-height) - var(--label-font-size)) / 2);
+}
+
+.txt-shimmer {
+    color: #edeef1;
+}
