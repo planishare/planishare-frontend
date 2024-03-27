@@ -20,14 +20,24 @@ export class ReactionsService {
         });
     }
 
+    // TODO: Refactor this to send firebase user id instead JWT
     public registerView(postId: number): Observable<any> {
         return this.authService.accessToken$.pipe(
             switchMap(accessToken => {
+                let id = accessToken;
+                if (!accessToken) {
+                    let noAuthId = localStorage.getItem('noAuthId');
+                    if (!noAuthId) {
+                        noAuthId = crypto.randomUUID();
+                        localStorage.setItem('noAuthId', noAuthId);
+                    }
+                    id = `NO_AUTH_${noAuthId}`;
+                }
                 const body = {
-                    firebase_user_id: accessToken,
+                    firebase_user_id: id,
                     post: postId
                 };
-                return this.http.post<any>(environment.planishare.protected + '/views/create/', body);
+                return this.http.post<any>(environment.planishare.public + '/views/create/', body);
             })
         );
     }
