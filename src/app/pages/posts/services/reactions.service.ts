@@ -20,12 +20,11 @@ export class ReactionsService {
         });
     }
 
-    // TODO: Refactor this to send firebase user id instead JWT
     public registerView(postId: number): Observable<any> {
-        return this.authService.accessToken$.pipe(
-            switchMap(accessToken => {
-                let id = accessToken;
-                if (!accessToken) {
+        return this.authService.user$.pipe(
+            switchMap(authUser => {
+                let id = authUser?.firebaseUser?.uid;
+                if (!authUser) {
                     let noAuthId = localStorage.getItem('noAuthId');
                     if (!noAuthId) {
                         noAuthId = crypto.randomUUID();
